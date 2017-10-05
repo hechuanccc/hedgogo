@@ -29,38 +29,6 @@
                     </div>
                 </form>
             </div>
-
-            <div class="navbar-nav pull-right m-r" v-if="$root.$data.userType !== 'agent'">
-                <ul class="nav navbar-nav pull-left prompt">
-                    <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer"  :to="'/bill/remit?status=' + status" >
-                        <a class="nav-link" >
-                            <label class="pointer label">{{$t('header.deposit')}}</label>
-                            <span v-if="remit_count" class="label label-sm up warn">{{remit_count}}</span>
-                            <span v-else class="label label-sm up ">{{remit_count}}</span>
-                        </a>
-                    </router-link>
-                    <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer" :to="'/bill/withdraw?status=' + status">
-                        <a class="nav-link" >
-                            <label class="pointer label">{{$t('header.withdraw')}}</label>
-                            <span v-if="withdraw_count" class="label label-sm up warn">{{withdraw_count}}</span>
-                            <span v-else class="label label-sm up">{{withdraw_count}}</span>
-                        </a>
-                    </router-link>
-                    <router-link tag="li" v-if="agent_application" class="nav-item dropdown pos-stc-xs pointer" to="/agent/applications?status=3">
-                        <a class="nav-link" >
-                            <label class="pointer label">代理申请</label>
-                            <span  class="label label-sm up warn">{{agent_application}}</span>
-                        </a>
-                    </router-link>
-                    <li class="nav-item dropdown pos-stc-xs pointer" >
-                        <router-link class="nav-link" to="/member?logined=1">
-                            <label class=" label pointer" >{{$t('common.onlinemembers')}}</label>
-                            <span v-if="online_member" class="label label-sm up warn">{{online_member}} </span>
-                            <span v-else class="label label-sm up">{{online_member}} </span>
-                        </router-link>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </template>
@@ -123,41 +91,6 @@
                     vm.iNotify.setTitle().title = vm.oldTitle
                     vm.iNotify.setTitle()
                     vm.iNotify.faviconClear()
-                }
-            },
-            remit_count (newObj, old) {
-                if (this.iNotify) {
-                    if (newObj > old) {
-                        if (old) {
-                            this.$root.$data.remit_count = this.remit_count
-                        }
-                        this.message(newObj, 'remit')
-                        this.iNotify.player()
-                    } else if (old !== '') {
-                        this.iNotify.setFavicon(newObj)
-                    }
-                }
-            },
-            withdraw_count (newObj, old) {
-                if (newObj > old) {
-                    if (old) {
-                        this.$root.$data.withdraw_count = this.withdraw_count
-                    }
-                    this.message(newObj, 'withdraw')
-                    this.iNotify.player()
-                } else if (old !== '') {
-                    this.iNotify.setFavicon(newObj)
-                }
-            },
-            agent_application (newObj, old) {
-                if (newObj > old) {
-                    if (old) {
-                        this.$root.$data.agent_application = this.agent_application
-                    }
-                    this.message(newObj, 'agent')
-                    this.iNotify.player()
-                } else if (old !== '') {
-                    this.iNotify.setFavicon(newObj)
                 }
             }
         },
