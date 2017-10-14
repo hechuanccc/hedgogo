@@ -46,6 +46,59 @@ export default new Router({
             title: Vue.t('nav.overview'),
             group: 'overview'
         }
+    },
+    {
+        path: '/member',
+        name: 'member',
+        component: function (resolve) {
+            require(['./views/member/member.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.member'),
+            agentPermission: 'true',
+            group: 'member'
+        }
+    },
+    {
+        path: '/member/add',
+        name: 'member-add',
+        component: function (resolve) {
+            require(['./views/member/form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.member_add'),
+            group: 'member'
+        }
+    },
+    {
+        path: '/member/:memberId',
+        name: 'member-detail',
+        component: function (resolve) {
+            require(['./views/member/detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.member_detail'),
+            group: 'member'
+        }
+    },
+    {
+        path: '/member/:memberId/edit',
+        name: 'member-edit',
+        component: function (resolve) {
+            require(['./views/member/form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.edit_member'),
+            group: 'member'
+        }
     }
     ]
 })

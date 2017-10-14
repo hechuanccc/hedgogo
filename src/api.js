@@ -4,8 +4,17 @@ const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 const host = env.HOST
 const prefix = host + '/manage/'
+const managePrefix = host + '/api/v1.0/manage/'
 
 export default {
     static: host + '/static/',
-    login: prefix + 'login/'
+    member: managePrefix + 'member/',
+    agent: managePrefix + 'agent/',
+    level: managePrefix + 'level/',
+    return: managePrefix + 'returnsetting/',
+    bank: prefix + 'bank/',
+    login: prefix + 'login/',
+    resetmember: prefix + 'password/member/',
+    resetwithdraw: prefix + 'withdraw_password/member/',
+    betrecords: managePrefix + 'member/betrecord/'
 }
