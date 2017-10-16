@@ -6,6 +6,7 @@
           <li class="active">{{$route.meta.title}}</li>
         </ol>
       </div>
+      <div class="alert alert-danger" v-if="!$root.permissions.includes('update_member_details')">{{$t('common.errorPermission')}}</div>
       <div class="box">
         <div class="box-header b-b ">
           <h3>{{$t('common.attention')}}：</h3>
@@ -111,7 +112,7 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.real_name')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" :placeholder="member.id!='' ? '' : '比如：张三丰'" v-model="member.real_name">
+                    <input class="form-control" :placeholder="member.id!='' ? '' : '比如：张三丰'" v-model="member.real_name" :disabled="!$root.permissions.includes('update_member_name')">
                   </div>
                 </div>
                 <div class="form-group">
@@ -132,7 +133,7 @@
                     <returnsetting :returnsetting="member.return_settings" @myReturn="returnData"></returnsetting>
                   </div>
                 </div>
-                <div>
+                <div v-if="$root.permissions.includes('list_update_member_bank')">
                   <h5 class="m-b">{{$t('bank.bank_title')}} </h5>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.name')}}</label>
@@ -153,7 +154,7 @@
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.account')}} </label>
                     <div class="inline-form-control">
-                      <input class="form-control w-lg" placeholder="比如：张三丰" v-model="member.bank.account" :required="bankFilled">
+                      <input class="form-control w-lg" type="number" placeholder="比如：张三丰" v-model="member.bank.account" :required="bankFilled">
                     </div>
                   </div>
                 </div>
@@ -161,7 +162,7 @@
             </div>
             <div>
               <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
-              <button type="submit" class="md-btn blue w-sm" >{{$t('common.save')}} </button>
+              <button type="submit" :disabled="!$root.permissions.includes('update_member_details')" class="md-btn blue w-sm" >{{$t('common.save')}} </button>
             </div>
           </form>
         </div>

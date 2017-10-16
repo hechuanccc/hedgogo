@@ -46,6 +46,8 @@ export default {
         message: 'Message',
         action_record: 'Action Records',
         staff: 'Staff',
+        add_staff: 'Add Staff',
+        staff_detail: 'Staff Detail',
         payment_type_setting: 'Payment Type Setting',
         envelope: 'Envelope',
         envelope_setting: 'Envelope Setting',
@@ -182,6 +184,7 @@ export default {
         confirmreturn: 'Confirm',
         selectallreturn: 'Select All Return',
         activeremit: 'This remit payee cannot be deleted because it has active transaction.',
+        errorPermission: 'You do not have permission to perform this action!',
         saved_successfully: 'Saved successfully!',
         balance_before: 'Balance Before',
         balance_after: 'Balance After',
@@ -246,5 +249,25 @@ export default {
         change_audit_status: 'Change Audit Status',
         login_password_changed: 'The login password has been modified to: ',
         withdraw_password_changed: 'The withdraw password has been modified to: '
+    },
+    staff: {
+        roles: 'Roles / Permission',
+        account: 'Account',
+        permission: 'Permission',
+        update_staff: 'Edit Staff',
+        staff_info: 'Staff Information',
+        staff_name: 'Staff Name',
+        password: 'Staff Password',
+        role: 'Role',
+        quick_selection: 'Quick Selection',
+        select_permission_group: 'Permisission Group Quick Selection',
+        select_all: 'Select All',
+        deselect_all: 'Deselect All',
+        webmster_permission: 'Webmaster',
+        account_permission: 'Account',
+        customer_service: 'Customer Service',
+        technical_customer_service: 'Technical Customer Service',
+        close: 'Close',
+        status: 'Status'
     }
 }

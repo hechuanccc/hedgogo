@@ -241,5 +241,25 @@ export default {
         change_audit_status: '修改此会员稽核',
         login_password_changed: '登录密码已修改为：',
         withdraw_password_changed: '取款密码已修改为：'
+    },
+    staff: {
+        roles: '角色 / 权限',
+        account: '账号',
+        permission: '权限',
+        update_staff: '更新子账号',
+        staff_info: '子账号信息',
+        staff_name: '用户名',
+        password: '密码',
+        role: '角色',
+        quick_selection: '快速选择',
+        select_permission_group: '权限 快速选取',
+        select_all: '全选',
+        deselect_all: '清空',
+        webmster_permission: '站长',
+        account_permission: '帐务',
+        customer_service: '客服',
+        technical_customer_service: '技术客服',
+        close: '关闭',
+        status: '目前状态'
     }
 }

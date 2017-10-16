@@ -11,7 +11,7 @@
             <div>
                 <nav class="nav-stacked nav-active-blue" >
                     <ul class="nav" ui-nav="">
-                        <template>
+                        <template v-if="$root.permissions.includes('list_report_betrecord')">
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
 
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
@@ -29,12 +29,12 @@
                                 <span class="nav-text">{{$t("nav.bills")}}</span>
                             </a>
                             <ul class="nav-sub">
-                                <li><router-link to="/bill/remit?report_flag=True"><span class="nav-text">{{$t('nav.remit_audit')}}</span></router-link></li>
-                                <li><router-link to="/bill/online?report_flag=True"><span class="nav-text">{{$t('nav.online_payment')}}</span></router-link></li>
-                                <li><router-link to="/bill/withdraw?report_flag=True"><span class="nav-text">{{$t('nav.withdrawal_audit')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('list_remit_online_withdraw_page')"><router-link to="/bill/remit?report_flag=True"><span class="nav-text">{{$t('nav.remit_audit')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('list_remit_online_withdraw_page')"><router-link to="/bill/online?report_flag=True"><span class="nav-text">{{$t('nav.online_payment')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('list_remit_online_withdraw_page')"><router-link to="/bill/withdraw?report_flag=True"><span class="nav-text">{{$t('nav.withdrawal_audit')}}</span></router-link></li>
                                 <li><router-link to="/bill/search?report_flag=True"><span class="nav-text">{{$t('nav.transcations_query')}}</span></router-link></li>
                                 <li><router-link to="/bill/returnrate"><span class="nav-text">{{$t('nav.return_report')}}</span></router-link></li>
-                                <li><router-link to="/bill/commission?report_flag=True"><span class="nav-text">{{$t('nav.commission_report')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('calculate_commission')"><router-link to="/bill/commission?report_flag=True"><span class="nav-text">{{$t('nav.commission_report')}}</span></router-link></li>
                             </ul>
                         </li>
 
@@ -49,7 +49,7 @@
                                 <span class="nav-text">{{$t("nav.report")}}</span>
                             </a>
                             <ul class="nav-sub">
-                                <li><router-link to="/report/game"><span class="nav-text">{{$t('nav.game_report')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('list_report_betrecord')"><router-link to="/report/game"><span class="nav-text">{{$t('nav.game_report')}}</span></router-link></li>
                                 <li><router-link to="/report/login?report_flag=True"><span class="nav-text">{{$t('nav.login_record')}}</span></router-link></li>
                                 <li><router-link to="/report/actionrecord"><span class="nav-text">{{$t('nav.action_record')}}</span></router-link></li>
                                 <li><router-link to="/report/betrecord?report_flag=True"><span class="nav-text">{{$t('nav.bet_record')}}</span></router-link></li>
@@ -69,7 +69,7 @@
                                         <span class="nav-text">{{$t("nav.member_list")}}</span>
                                     </router-link>
                                 </li>
-                                <li>
+                                <li v-if="$root.permissions.includes('update_member_details')">
                                     <router-link  to="/member/add">
                                         <span class="nav-text">{{$t("nav.member_add")}}</span>
                                     </router-link>
@@ -90,7 +90,7 @@
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/agent"><span class="nav-text">{{$t("nav.agent_list")}}</span></router-link></li>
-                                <li><router-link to="/agent/add"><span class="nav-text">{{$t("nav.agent_add")}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('change_agent_level_4')"><router-link to="/agent/add"><span class="nav-text">{{$t("nav.agent_add")}}</span></router-link></li>
                                 <li><router-link to="/agent/applications"><span class="nav-text">{{$t("nav.agent_application")}}</span></router-link></li>
                             </ul>
                         </li>

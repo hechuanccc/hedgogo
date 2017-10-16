@@ -13,7 +13,7 @@
                     <a class="dropdown-item" @click="logout">退出登录</a>
                 </div>
             </div>
-            <div class="collapse navbar-toggleable-sm" id="collapse" v-if="$root.$data.userType !== 'agent'">
+            <div class="collapse navbar-toggleable-sm" id="collapse">
                 <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m ng-pristine ng-valid" role="search">
                     <div class="form-group l-h m-a-0">
                         <div class="input-group input-group-sm">
