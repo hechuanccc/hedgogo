@@ -101,6 +101,20 @@ export default new Router({
         }
     },
     {
+        path: '/game_list',
+        name: 'game_list',
+        component: function (resolve) {
+            require(['./views/game_manage/game_list.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.game_list'),
+            agentPermission: 'true',
+            group: 'game_manage'
+        }
+    },
+    {
         path: '/staff',
         name: 'staff',
         component: function (resolve) {

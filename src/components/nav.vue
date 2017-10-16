@@ -124,6 +124,15 @@
                                 <li><router-link to="/envelope_settings"><span class="nav-text">{{$t("nav.envelope_setting")}}</span></router-link></li>
                             </ul>
                         </li>
+                        <li :class="$route.meta.group == 'game_manage' ? 'active' : ''">
+                            <a>
+                                <span class="nav-icon"><i class="material-icons">&#xE021;</i></span>
+                                <span class="nav-text">{{$t("nav.game_manage")}}</span>
+                            </a>
+                            <ul class="nav-sub">
+                                <li><router-link to="/game_list"><span class="nav-text">{{$t("nav.game_list")}}</span></router-link></li>
+                            </ul>
+                        </li>
                         <li :class="$route.meta.group == 'manage' ? 'active' : ''">
                             <a>
                                 <span class="nav-icon"><i class="material-icons">&#xE051;</i></span>

@@ -53,7 +53,9 @@ export default {
         envelope_setting: 'Envelope Setting',
         title_announcement: 'Announcement',
         title_banner: 'Banner',
-        title_website: 'Website'
+        title_website: 'Website',
+        game_manage: 'Game Manage',
+        game_list: 'Game List'
     },
     member: {
         page_title: 'Search Members',
@@ -269,5 +271,8 @@ export default {
         technical_customer_service: 'Technical Customer Service',
         close: 'Close',
         status: 'Status'
+    },
+    game_manage: {
+
     }
 }
