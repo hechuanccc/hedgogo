@@ -99,6 +99,54 @@ export default new Router({
             title: Vue.t('nav.edit_member'),
             group: 'member'
         }
+    },
+    {
+        path: '/staff',
+        name: 'staff',
+        component: function (resolve) {
+            require(['./views/setting/staff.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.staff')
+        }
+    },
+    {
+        path: '/staff/add',
+        name: 'staff_add',
+        component: function (resolve) {
+            require(['./views/setting/staff_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.add_staff')
+        }
+    },
+    {
+        path: '/staff/:staffId',
+        name: 'staff_detail',
+        component: function (resolve) {
+            require(['./views/setting/staff_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.staff_detail')
+        }
+    },
+    {
+        path: '/staff/:staffId/edit',
+        name: 'staff_edit',
+        component: function (resolve) {
+            require(['./views/setting/staff_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('staff.update_staff')
+        }
     }
     ]
 })

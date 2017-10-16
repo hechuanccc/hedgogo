@@ -16,5 +16,11 @@ export default {
     login: prefix + 'login/',
     resetmember: prefix + 'password/member/',
     resetwithdraw: prefix + 'withdraw_password/member/',
-    betrecords: managePrefix + 'member/betrecord/'
+    betrecords: managePrefix + 'member/betrecord/',
+    staff: managePrefix + 'staff/',
+    managerole: managePrefix + 'group/',
+    permissionsUser: managePrefix + 'permissions/user/',
+    permissions: managePrefix + 'permissions/',
+    staffPermissions: managePrefix + 'staff/permissions/',
+    passwordstaff: prefix + 'password/staff/'
 }

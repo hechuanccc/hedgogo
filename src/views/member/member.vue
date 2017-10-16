@@ -13,6 +13,7 @@
                 <label class="text-sm" >{{$t('member.level')}}</label>
                 <level :level="query.level" @level-select="levelSelect"></level>
               </div>
+
               <div class="col-xs-2">
                 <label class="text-sm">{{$t('member.agent')}}</label>
                 <input type="text" v-model="query.agent_q" class="form-control" />
@@ -28,6 +29,7 @@
                     <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
                     <span v-else>{{$t('member.collapse_options')}} <i class="fa fa-angle-double-up"></i></span>
                   </button>
+
                   <button type="submit" class="md-btn w-sm blue">{{$t('common.search')}}</button>
                 </div>
               </div>
