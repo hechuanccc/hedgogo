@@ -55,7 +55,8 @@ export default {
         title_banner: 'Banner',
         title_website: 'Website',
         game_manage: 'Game Manage',
-        game_list: 'Game List'
+        game_list: 'Game List',
+        game_detail: 'Game Detail'
     },
     member: {
         page_title: 'Search Members',
@@ -273,6 +274,9 @@ export default {
         status: 'Status'
     },
     game_manage: {
-
+        id: 'Game ID',
+        name: 'Game Name',
+        rank: 'Game Rank',
+        code: 'Game Code'
     }
 }

@@ -48,7 +48,8 @@ export default {
         title_banner: 'banner管理',
         title_website: '网站管理',
         game_manage: '游戏管理',
-        game_list: '游戏列表'
+        game_list: '游戏列表',
+        game_detail: '游戏详情'
     },
     member: {
         page_title: '查询条件',
@@ -265,6 +266,9 @@ export default {
         status: '目前状态'
     },
     game_manage: {
-
+        id: ' 游戏ID',
+        name: '游戏名称',
+        rank: '游戏排名',
+        code: '游戏号码'
     }
 }
