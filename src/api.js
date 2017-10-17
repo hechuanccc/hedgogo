@@ -10,6 +10,7 @@ export default {
     static: host + '/static/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
+    game_list: managePrefix + 'game/lottery/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',
