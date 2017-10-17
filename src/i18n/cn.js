@@ -49,7 +49,8 @@ export default {
         title_website: '网站管理',
         game_manage: '游戏管理',
         game_list: '游戏列表',
-        game_detail: '游戏详情'
+        game_detail: '游戏详情',
+        edit_game: '编辑游戏资料'
     },
     member: {
         page_title: '查询条件',
@@ -119,6 +120,8 @@ export default {
         type: '类型',
         male: '男',
         female: '女',
+        yes: '是',
+        no: '否',
         phone: '电话',
         wechat: '微信',
         gender: '性别',
@@ -221,6 +224,7 @@ export default {
         view_today_report: '查看今日报表',
         update_agent: '修改代理商资料',
         update_member: '修改会员资料',
+        edit_game: '编辑游戏資料',
         view_member_record: '查看所有会员交易记录',
         add_member: '新增会员',
         reset_password: '重设密码',
