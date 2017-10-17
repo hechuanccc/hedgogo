@@ -278,5 +278,33 @@ export default {
         name: 'Game Name',
         rank: 'Game Rank',
         code: 'Game Code'
+    },
+    agent: {
+        number: 'No.',
+        joined_at: 'Joined At',
+        no_agent: 'There is no Agents',
+        level: 'Agent Level',
+        account: 'Account',
+        parent_agent: 'Parent Agent',
+        bank_account: 'Bank Account',
+        promo_code: 'Promo Code',
+        commission_setting: 'Commission Setting',
+        no_parent: 'No parent agent',
+        dft_member_lv: 'Default Member Level',
+        dft_return_setting: 'Default Return Setting',
+        member_count: 'Member Count',
+        reset_confirm: 'Are you sure want to {action}？',
+        ip: 'IP Address',
+        updated_by: 'Updated By',
+        log: 'Operation Log',
+        status_update: 'Details are now saved.',
+        domain: 'Domain',
+        unDomain: 'No agent domain name',
+        link: 'Promotion address',
+        account_type: 'Account Type',
+        direct_account: 'Direct',
+        affiliated_account: 'Affiliated',
+        reset_agent_password: 'The agent password has been modified to:',
+        domain_label: 'Multiple Domains should be separated by "comma".'
     }
 }

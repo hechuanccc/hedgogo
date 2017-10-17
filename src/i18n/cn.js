@@ -270,5 +270,33 @@ export default {
         name: '游戏名称',
         rank: '游戏排名',
         code: '游戏号码'
+    },
+    agent: {
+        number: '编号',
+        joined_at: '加盟日期',
+        no_agent: '查无代理',
+        level: '代理等级',
+        account: '账号',
+        parent_agent: '上线',
+        bank_account: '银行账号',
+        promo_code: '推广码',
+        commission_setting: '佣金设定',
+        no_parent: '无上线',
+        dft_member_lv: '预设会员等级',
+        dft_return_setting: '预设反水设定',
+        member_count: '会员数量',
+        reset_confirm: '确认要{action}吗？',
+        ip: 'IP 地址',
+        updated_by: '操作人',
+        log: '操作日志',
+        status_update: '详细资料已储存',
+        domain: '代理域名',
+        unDomain: '暂无代理域名',
+        link: '推广地址',
+        account_type: '帐户类型',
+        direct_account: '试用账户',
+        affiliated_account: '真实账户',
+        reset_agent_password: '代理登录密码已修改为:',
+        domain_label: '多个域名请用 “英文逗号” 隔开'
     }
 }
