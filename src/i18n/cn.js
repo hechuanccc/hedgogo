@@ -50,7 +50,10 @@ export default {
         envelope_setting: '配置红包',
         title_announcement: '公告管理',
         title_banner: 'banner管理',
-        title_website: '网站管理'
+        title_website: '网站管理',
+        game_manage: '游戏管理',
+        game_list: '游戏列表',
+        game_detail: '游戏详情'
     },
     member: {
         page_title: '查询条件',

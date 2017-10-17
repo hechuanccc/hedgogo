@@ -55,7 +55,10 @@ export default {
         envelope_setting: 'Envelope Setting',
         title_announcement: 'Announcement',
         title_banner: 'Banner',
-        title_website: 'Website'
+        title_website: 'Website',
+        game_manage: 'Game Manage',
+        game_list: 'Game List',
+        game_detail: 'Game Detail'
     },
     member: {
         page_title: 'Search Members',

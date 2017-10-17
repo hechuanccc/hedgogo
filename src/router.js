@@ -101,6 +101,34 @@ export default new Router({
         }
     },
     {
+        path: '/game_list',
+        name: 'game_list',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.game_list'),
+            agentPermission: 'true',
+            group: 'game_manage'
+        }
+    },
+    {
+        path: '/game_detail/:id',
+        name: 'game_detail',
+        component: function (resolve) {
+            require(['./views/game_manage/detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.game_detail'),
+            agentPermission: 'true',
+            group: 'game_manage'
+        }
+    },
+    {
         path: '/staff',
         name: 'staff',
         component: function (resolve) {
