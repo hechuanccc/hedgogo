@@ -175,6 +175,84 @@ export default new Router({
             auth: true,
             title: Vue.t('staff.update_staff')
         }
+    },
+    {
+        path: '/agent',
+        name: 'agent',
+        component: function (resolve) {
+            require(['./views/agent/agent.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.agent'),
+            group: 'agent'
+        }
+    },
+    {
+        path: '/agent/add',
+        name: 'agent-add',
+        component: function (resolve) {
+            require(['./views/agent/form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.agent_add'),
+            group: 'agent'
+        }
+    },
+    {
+        path: '/agent/applications',
+        name: 'agent-applications',
+        component: function (resolve) {
+            require(['./views/agent/applications.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.agent_application'),
+            group: 'agent'
+        }
+    },
+    {
+        path: '/agent/:agentId',
+        name: 'agent-detail',
+        component: function (resolve) {
+            require(['./views/agent/detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.agent_detail'),
+            group: 'agent'
+        }
+    },
+    {
+        path: '/agent/:agentId/edit',
+        name: 'agent-edit',
+        component: function (resolve) {
+            require(['./views/agent/form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.edit_agent'),
+            group: 'agent'
+        }
+    },
+    {
+        path: '/agent_application/:agentId',
+        name: 'ageapplication_detail',
+        component: function (resolve) {
+            require(['./views/agent/application_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.agent_application'),
+            group: 'agent'
+        }
     }
     ]
 })

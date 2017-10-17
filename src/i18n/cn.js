@@ -24,6 +24,8 @@ export default {
         setting_online_payee: '线上支付管理',
         member_detail: '会员详情',
         edit_member: '编辑会员资料',
+        agent_detail: '代理商详情',
+        edit_agent: '编辑代理商',
         remit_audit: '公司入款审核',
         online_payment: '线上支付看板',
         withdrawal_audit: '取款申请审核',
@@ -41,6 +43,8 @@ export default {
         message: '站内信',
         action_record: '操作记录',
         staff: '子账号管理',
+        add_staff: '新增账号',
+        staff_detail: '子账号详情',
         payment_type_setting: '支付方式管理',
         envelope: '红包',
         envelope_setting: '配置红包',
@@ -94,8 +98,6 @@ export default {
         loggedin_ip: '登录IP',
         sug_balance: '估算额度',
         recent_action: '最近操作',
-        add_bank_information: '建立银行资讯',
-        edit_bank_information: '编辑银行资讯',
         current_audit: '当前稽核：',
         account_type: '帐户类型',
         trial_account: '试用账户',
@@ -104,6 +106,7 @@ export default {
         failed: '未通过'
     },
     common: {
+        default_agent_password: '代理商登录密码预设',
         default_password: '会员登录密码预设',
         default_withdraw_password: '取款密码预设',
         date: '日期',
@@ -185,7 +188,9 @@ export default {
         export: '下载',
         no_record: '无记录',
         remarks: '备注',
-        no_remarks: '暂无备注'
+        no_remarks: '暂无备注',
+        add_bank_information: '建立银行资讯',
+        edit_bank_information: '编辑银行资讯'
     },
     bank: {
         bank_title: '银行资讯',
@@ -204,7 +209,8 @@ export default {
         declined: '已拒绝',
         success: '成功',
         canceled: '已取消',
-        failed: '失败'
+        failed: '失败',
+        disabled: '停用'
     },
     betrecord: {
         win: '赢',
@@ -270,5 +276,33 @@ export default {
         name: '游戏名称',
         rank: '游戏排名',
         code: '游戏号码'
+    },
+    agent: {
+        number: '编号',
+        joined_at: '加盟日期',
+        no_agent: '查无代理',
+        level: '代理等级',
+        account: '账号',
+        parent_agent: '上线',
+        bank_account: '银行账号',
+        promo_code: '推广码',
+        commission_setting: '佣金设定',
+        no_parent: '无上线',
+        dft_member_lv: '预设会员等级',
+        dft_return_setting: '预设反水设定',
+        member_count: '会员数量',
+        reset_confirm: '确认要{action}吗？',
+        ip: 'IP 地址',
+        updated_by: '操作人',
+        log: '操作日志',
+        status_update: '详细资料已储存',
+        domain: '代理域名',
+        unDomain: '暂无代理域名',
+        link: '推广地址',
+        account_type: '帐户类型',
+        direct_account: '试用账户',
+        affiliated_account: '真实账户',
+        reset_agent_password: '代理登录密码已修改为:',
+        domain_label: '多个域名请用 “英文逗号” 隔开'
     }
 }
