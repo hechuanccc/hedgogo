@@ -217,8 +217,8 @@
               </div>
             </div>
             <div class="col-xs-4">
-              <router-link :to="'/member/' + member.id + '/edit'" v-if="!member.bank">{{$t('member.add_bank_information')}}</router-link>
-              <router-link :to="'/member/' + member.id + '/edit'" v-else>{{$t('member.edit_bank_information')}}</router-link>
+              <router-link :to="'/member/' + member.id + '/edit'" v-if="!member.bank">{{$t('common.add_bank_information')}}</router-link>
+              <router-link :to="'/member/' + member.id + '/edit'" v-else>{{$t('common.edit_bank_information')}}</router-link>
             </div>
           </div>
 

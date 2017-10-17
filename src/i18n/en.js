@@ -29,6 +29,8 @@ export default {
         setting_online_payee: 'Online Payee',
         member_detail: 'Member Detail',
         edit_member: 'Edit Member',
+        agent_detail: 'Agent Detail',
+        edit_agent: 'Edit Agent',
         remit_audit: 'Remit',
         online_payment: 'Online Payment',
         withdrawal_audit: 'Withdraw',
@@ -98,8 +100,6 @@ export default {
         loggedin_ip: 'Logged In Ip',
         sug_balance: 'Suggestion Balance',
         recent_action: 'Recent Actions',
-        add_bank_information: 'Add Bank Information',
-        edit_bank_information: 'Edit Bank Information',
         current_audit: 'Current Audit:',
         account_type: 'Account Type',
         trial_account: 'Trial',
@@ -108,6 +108,7 @@ export default {
         failed: 'Failed'
     },
     common: {
+        default_agent_password: 'Default Agent Password',
         default_password: 'Default Password',
         default_withdraw_password: 'Default Withdraw Password',
         date: 'Date',
@@ -116,7 +117,7 @@ export default {
         name: 'Name',
         save: 'Save',
         send: 'Send',
-        attention: 'Attention',
+        attention: 'Attention:',
         member: 'Member',
         status_updated_at: 'Status updated at',
         merchant: 'Merchant',
@@ -191,7 +192,9 @@ export default {
         export: 'Export',
         no_record: 'No Record',
         remarks: 'Remarks',
-        no_remarks: 'No Remarks'
+        no_remarks: 'No Remarks',
+        add_bank_information: 'Add Bank Information',
+        edit_bank_information: 'Edit Bank Information'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -210,7 +213,8 @@ export default {
         declined: 'Declined',
         success: 'Success',
         canceled: 'Canceled',
-        failed: 'Failed'
+        failed: 'Failed',
+        disabled: 'Disabled'
     },
     betrecord: {
         win: 'Win',
@@ -269,5 +273,33 @@ export default {
         technical_customer_service: 'Technical Customer Service',
         close: 'Close',
         status: 'Status'
+    },
+    agent: {
+        number: 'No.',
+        joined_at: 'Joined At',
+        no_agent: 'There is no Agents',
+        level: 'Agent Level',
+        account: 'Account',
+        parent_agent: 'Parent Agent',
+        bank_account: 'Bank Account',
+        promo_code: 'Promo Code',
+        commission_setting: 'Commission Setting',
+        no_parent: 'No parent agent',
+        dft_member_lv: 'Default Member Level',
+        dft_return_setting: 'Default Return Setting',
+        member_count: 'Member Count',
+        reset_confirm: 'Are you sure want to {action}？',
+        ip: 'IP Address',
+        updated_by: 'Updated By',
+        log: 'Operation Log',
+        status_update: 'Details are now saved.',
+        domain: 'Domain',
+        unDomain: 'No agent domain name',
+        link: 'Promotion address',
+        account_type: 'Account Type',
+        direct_account: 'Direct',
+        affiliated_account: 'Affiliated',
+        reset_agent_password: 'The agent password has been modified to:',
+        domain_label: 'Multiple Domains should be separated by "comma".'
     }
 }
