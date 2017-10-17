@@ -212,6 +212,19 @@ export default new Router({
             title: Vue.t('nav.edit_agent'),
             group: 'agent'
         }
+    },
+    {
+        path: '/agent_application/:agentId',
+        name: 'ageapplication_detail',
+        component: function (resolve) {
+            require(['./views/agent/application_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.agent_application'),
+            group: 'agent'
+        }
     }
     ]
 })
