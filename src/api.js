@@ -12,6 +12,7 @@ export default {
     static: host + '/static/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
+    game_list: managePrefix + 'game/lottery/',
     agentapplication: managePrefix + 'agentapplication/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',

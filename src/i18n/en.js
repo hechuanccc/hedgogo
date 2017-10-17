@@ -274,6 +274,12 @@ export default {
         close: 'Close',
         status: 'Status'
     },
+    game_manage: {
+        id: 'Game ID',
+        name: 'Game Name',
+        rank: 'Game Rank',
+        code: 'Game Code'
+    },
     agent: {
         number: 'No.',
         joined_at: 'Joined At',

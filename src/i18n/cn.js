@@ -268,6 +268,12 @@ export default {
         close: '关闭',
         status: '目前状态'
     },
+    game_manage: {
+        id: ' 游戏ID',
+        name: '游戏名称',
+        rank: '游戏排名',
+        code: '游戏号码'
+    },
     agent: {
         number: '编号',
         joined_at: '加盟日期',
