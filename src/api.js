@@ -13,7 +13,6 @@ export default {
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/lottery/',
-    agentapplication: managePrefix + 'agentapplication/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',
@@ -29,5 +28,6 @@ export default {
     permissionsUser: managePrefix + 'permissions/user/',
     passwordstaff: prefix + 'password/staff/',
     permissions: managePrefix + 'permissions/',
-    staffPermissions: managePrefix + 'staff/permissions/'
+    staffPermissions: managePrefix + 'staff/permissions/',
+    agentapplication: managePrefix + 'agentapplication/'
 }
