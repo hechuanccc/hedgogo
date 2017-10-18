@@ -54,7 +54,10 @@ export default {
         game_manage: '游戏管理',
         game_list: '游戏列表',
         game_detail: '游戏详情',
-        edit_game: '编辑游戏资料'
+        edit_game: '编辑游戏资料',
+        level_detail: '会员等级详细资料',
+        member_level_edit: '修改会员等级',
+        member_level_add: '增加会员等级'
     },
     member: {
         page_title: '查询条件',
@@ -142,7 +145,9 @@ export default {
         operator: '操作人员',
         saved: '已存入',
         deposit_declined: '入款已拒绝',
-        withdraw_declined: '汇款已拒绝'
+        withdraw_declined: '汇款已拒绝',
+        onlinepay: '线上支付',
+        card_pay: '点卡支付'
     },
     common: {
         default_agent_password: '代理商登录密码预设',
@@ -231,7 +236,10 @@ export default {
         remarks: '备注',
         no_remarks: '暂无备注',
         add_bank_information: '建立银行资讯',
-        edit_bank_information: '编辑银行资讯'
+        edit_bank_information: '编辑银行资讯',
+        member_count: '会员数量',
+        agent_count: '目前代理人数',
+        not_set: '未设定'
     },
     bank: {
         bank_title: '银行资讯',
@@ -291,7 +299,10 @@ export default {
         view_action_record: '查看操作记录',
         change_audit_status: '修改此会员稽核',
         login_password_changed: '登录密码已修改为：',
-        withdraw_password_changed: '取款密码已修改为：'
+        withdraw_password_changed: '取款密码已修改为：',
+        add_level: '新增会员等级',
+        edit_level: '修改会员等级',
+        delete_level: '删除会员等级'
     },
     staff: {
         roles: '角色 / 权限',
@@ -348,5 +359,43 @@ export default {
         affiliated_account: '真实账户',
         reset_agent_password: '代理登录密码已修改为:',
         domain_label: '多个域名请用 “英文逗号” 隔开'
+    },
+    level: {
+        remit_limit: '公司入款限额',
+        online_pay_limit: '线上支付限额',
+        withdraw_limit: '单次取款限额',
+        withdraw_fee_rate: '取款手续费',
+        withdraw_fee_type: '取款手续费收取方式',
+        discount: '入款优惠',
+        report_flag: '显示会员报表',
+        display_report: '是否显示该等级会员的所有报表',
+        service_rate: '行政费用比',
+        free: '免手续费',
+        preset: '视具体情况',
+        everytime: '每次皆收',
+        hour: '小时内取款',
+        times: '次免收',
+        withdraw_fee_type_danger: '会员申请取款时，若有任何一笔存款稽核未通过，都将强制收取手续费',
+        remit_offer: '公司入款优惠',
+        threshold: '存款金额',
+        rate: '优惠比例',
+        check_rate: '稽核倍数',
+        discount_limit: '优惠上限',
+        no_limit: '无上限',
+        online_pay_offer: '线上支付优惠',
+        deposit_audit_ratio: '存款稽核比',
+        reg_present: '注册送彩金',
+        reg_present_status: '是否启用',
+        reg_present_allow_add: '管端新增',
+        reg_present_amount: '赠送金额',
+        reg_present_check_amount: '稽核金额',
+        no_online_payment_offer: '未设定线上支付优惠',
+        no_remit_offer: '未设置公司入款优惠',
+        level_settings: '组设定',
+        available_onlinepay_acct_lbl: '可使用的线上支付商户',
+        available_remit_acct_lbl: '可使用的公司入款账号',
+        view_all_members: '查看该等级所有会员',
+        allowed: '允许',
+        not_allowed: '不允许'
     }
 }

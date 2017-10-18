@@ -13,7 +13,7 @@ export default {
         order_detail: 'Order detail',
         created_at: 'Created at',
         transaction_type: 'Transaction type',
-        online_pay: 'Online pay',
+        online_pay: 'Online Pay',
         remit: 'Remit',
         withdraw: 'Withdraw',
         discount: 'Discount',
@@ -37,7 +37,10 @@ export default {
         operator: 'Operator',
         saved: 'Saved',
         deposit_declined: 'Deposit Declined',
-        withdraw_declined: 'Withdraw Declined'
+        withdraw_declined: 'Withdraw Declined',
+        deposit_amount: 'Deposit Amount',
+        audit_method: 'Audit Method',
+        card_pay: 'Card Pay'
     },
     nav: {
         overview: 'Overview',
@@ -92,7 +95,14 @@ export default {
         game_manage: 'Game Manage',
         game_list: 'Game List',
         game_detail: 'Game Detail',
+<<<<<<< HEAD
+        edit_game: 'Edit Game',
+        level_detail: 'Member Level Detail',
+        member_level_edit: 'Edit Member Level',
+        member_level_add: 'Add Member Level'
+=======
         edit_game: 'Edit Game'
+>>>>>>> 109037c4c4bd7a9da5ddd47f514ec861df777773
     },
     member: {
         page_title: 'Search Members',
@@ -233,7 +243,10 @@ export default {
         remarks: 'Remarks',
         no_remarks: 'No Remarks',
         add_bank_information: 'Add Bank Information',
-        edit_bank_information: 'Edit Bank Information'
+        edit_bank_information: 'Edit Bank Information',
+        member_count: 'Member Count',
+        agent_count: 'Agent Count',
+        not_set: 'Not Set'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -292,7 +305,10 @@ export default {
         view_action_record: 'View Action Records',
         change_audit_status: 'Change Audit Status',
         login_password_changed: 'The login password has been modified to: ',
-        withdraw_password_changed: 'The withdraw password has been modified to: '
+        withdraw_password_changed: 'The withdraw password has been modified to: ',
+        add_level: 'Add Level',
+        edit_level: 'Modify Level',
+        delete_level: 'Delete Level'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -349,5 +365,43 @@ export default {
         affiliated_account: 'Affiliated',
         reset_agent_password: 'The agent password has been modified to:',
         domain_label: 'Multiple Domains should be separated by "comma".'
+    },
+    level: {
+        remit_limit: 'Remit Limit',
+        online_pay_limit: 'Online Pay Limit',
+        withdraw_limit: 'Withdraw Limit',
+        withdraw_fee_rate: 'Withdraw Fee Rate',
+        withdraw_fee_type: 'Withdraw Fee Type',
+        discount: 'Discount',
+        report_flag: 'Report Flag',
+        display_report: 'Display Report for this Member Level',
+        service_rate: 'Service Rate',
+        free: 'Free',
+        preset: 'Preset',
+        everytime: 'Everytime',
+        hour: 'Hour',
+        times: 'Time',
+        withdraw_fee_type_danger: 'If member applies for withdrawal and did not pass deposit audit，fees will be collected.',
+        remit_offer: 'Remit Offer',
+        threshold: 'Threshold',
+        rate: 'Rate',
+        check_rate: 'Check Rate',
+        discount_limit: 'Limit',
+        no_limit: 'No Limit',
+        online_pay_offer: 'Online Pay Offer',
+        deposit_audit_ratio: 'Deposit Audit Ratio',
+        reg_present: 'Register Prize',
+        reg_present_status: 'Status',
+        reg_present_allow_add: 'Allow Adding',
+        reg_present_amount: 'Amount',
+        reg_present_check_amount: 'Check Amount',
+        no_online_payment_offer: 'No Online Payment Offer',
+        no_remit_offer: 'No Remit Offer',
+        level_settings: 'Level Settings',
+        available_onlinepay_acct_lbl: 'Available Online Pay Merchants',
+        available_remit_acct_lbl: 'Available Remit Accounts',
+        view_all_members: 'View All Members of this Level',
+        allowed: 'Allowed',
+        not_allowed: 'Not Allowed'
     }
 }
