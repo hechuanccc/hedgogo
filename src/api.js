@@ -7,6 +7,8 @@ const prefix = host + '/manage/'
 const managePrefix = host + '/api/v1.0/manage/'
 
 export default {
+    my: prefix + 'my/',
+    logout: host + '/logout/',
     static: host + '/static/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
@@ -14,15 +16,19 @@ export default {
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',
+    agentlevel: managePrefix + 'agentlevel/',
+    commission: managePrefix + 'commissionsetting/',
     login: prefix + 'login/',
     resetmember: prefix + 'password/member/',
+    resetagent: prefix + 'password/agent/',
     resetwithdraw: prefix + 'withdraw_password/member/',
     betrecords: managePrefix + 'member/betrecord/',
     staff: managePrefix + 'staff/',
     returnhistory: prefix + 'report/returnrate/history/',
     managerole: managePrefix + 'group/',
     permissionsUser: managePrefix + 'permissions/user/',
+    passwordstaff: prefix + 'password/staff/',
     permissions: managePrefix + 'permissions/',
     staffPermissions: managePrefix + 'staff/permissions/',
-    passwordstaff: prefix + 'password/staff/'
+    agentapplication: managePrefix + 'agentapplication/'
 }
