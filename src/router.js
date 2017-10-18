@@ -253,6 +253,50 @@ export default new Router({
             title: Vue.t('nav.agent_application'),
             group: 'agent'
         }
+    },
+    {
+        path: '/level',
+        component: function (resolve) {
+            require(['./views/setting/level.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            group: 'setting',
+            title: Vue.t('nav.setting_level')
+        }
+    },
+    {
+        path: '/level/add',
+        component: function (resolve) {
+            require(['./views/setting/level_form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.member_level_add'),
+            group: 'setting'
+        }
+    },
+    {
+        path: '/level/:levelId',
+        component: function (resolve) {
+            require(['./views/setting/level_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.level_detail'),
+            group: 'setting'
+        }
+    },
+    {
+        path: '/level/:levelId/edit',
+        component: function (resolve) {
+            require(['./views/setting/level_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.member_level_edit'),
+            auth: true
+        }
     }
     ]
 })
