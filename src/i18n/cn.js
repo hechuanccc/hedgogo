@@ -1,12 +1,6 @@
 'use strict'
 
 export default {
-    bill: {
-        remit: '公司存款',
-        withdraw: '取款',
-        onlinepay: '线上支付',
-        card_pay: '点卡支付'
-    },
     nav: {
         overview: '总览',
         bills: '财务',
@@ -151,7 +145,9 @@ export default {
         operator: '操作人员',
         saved: '已存入',
         deposit_declined: '入款已拒绝',
-        withdraw_declined: '汇款已拒绝'
+        withdraw_declined: '汇款已拒绝',
+        onlinepay: '线上支付',
+        card_pay: '点卡支付'
     },
     common: {
         default_agent_password: '代理商登录密码预设',

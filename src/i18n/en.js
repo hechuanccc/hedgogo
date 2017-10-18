@@ -12,8 +12,6 @@ export default {
         order_id: 'Order id',
         order_detail: 'Order detail',
         created_at: 'Created at',
-        deposit_amount: 'Deposit Amount',
-        audit_method: 'Audit Method',
         transaction_type: 'Transaction type',
         online_pay: 'Online Pay',
         remit: 'Remit',
@@ -40,6 +38,8 @@ export default {
         saved: 'Saved',
         deposit_declined: 'Deposit Declined',
         withdraw_declined: 'Withdraw Declined',
+        deposit_amount: 'Deposit Amount',
+        audit_method: 'Audit Method',
         card_pay: 'Card Pay'
     },
     nav: {
