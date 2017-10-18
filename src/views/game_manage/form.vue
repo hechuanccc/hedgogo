@@ -60,7 +60,7 @@
             <div class="form-group">
               <label for="icon" class="label-width">icon</label>
               <div class="inline-form-control">
-                <img :src="game.icon" alt="">
+                <img class="w-32" :src="iconSrc" alt="">
                 <input type="file" class="inline-form-control" id="icon" @change="fileChange">
               </div>
             </div>
@@ -90,7 +90,15 @@ export default {
                 remarks: '',
                 icon: ''
             },
-            changeIcon: '',
+            initGame: {
+                display_name: '',
+                rank: '',
+                code: '',
+                to_display: '',
+                remarks: '',
+                icon: ''
+            },
+            iconSrc: '',
             errorMsg: ''
         }
     },
@@ -98,12 +106,15 @@ export default {
         onSubmit () {
             const formData = new FormData()
             Object.keys(this.game).forEach(key => {
-                if (key !== 'icon') {
+                // these fields are required even if their values never change
+                if (['code', 'display_name'].includes(key)) {
+                    formData.append(key, this.game[key])
+                } else if (this.game[key] !== this.initGame[key]) {
                     formData.append(key, this.game[key])
                 }
             })
             if (this.changeIcon) {
-                formData.append('icon', this.changeIcon)
+                formData.append('icon', this.game.icon)
             }
             this.$http.put(api.game_list + this.$route.params.id + '/', formData).then(response => {
                 if (response.status === 200) {
@@ -118,18 +129,36 @@ export default {
         },
         getGame (id) {
             this.$http.get(api.game_list + id).then(
-          response => {
-              Object.keys(this.game).forEach(key => {
-                  this.game[key] = response.data[key]
-              })
-          }, response => {
+            response => {
+                Object.keys(this.game).forEach(key => {
+                    if (key === 'icon') {
+                        this.iconSrc = response.data[key]
+                    } else {
+                        this.game[key] = response.data[key]
+                        this.initGame[key] = response.data[key]
+                    }
+                })
+            }, response => {
                 if (('' + response.status).indexOf('4') === 0) {
                     this.$router.push('/login?next=' + this.$route.path)
                 }
             })
         },
         fileChange (e) {
-            this.changeIcon = e.target.files[0]
+            this.game.icon = e.target.files[0]
+            this.imgPreview(e.target.files[0])
+        },
+        imgPreview (file) {
+            let self = this
+            if (!file || !window.FileReader) return
+
+            if (/^image/.test(file.type)) {
+                var reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onloadend = function () {
+                    self.iconSrc = this.result
+                }
+            }
         }
     },
     beforeRouteEnter (to, from, next) {
