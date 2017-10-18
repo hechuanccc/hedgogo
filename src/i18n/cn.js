@@ -59,6 +59,17 @@ export default {
         member_level_edit: '修改会员等级',
         member_level_add: '增加会员等级'
     },
+    returnrate: {
+        created_at: '反水生成时间',
+        created_by: '注册人员',
+        history_id: '历史 ID',
+        member_count: '成员数量',
+        total_return: '总反水',
+        success: '反水成功确认',
+        export: '下载',
+        generate: '生成',
+        cycle: '反水计算周期'
+    },
     member: {
         page_title: '查询条件',
         account: '账号',
