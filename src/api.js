@@ -10,6 +10,8 @@ export default {
     my: prefix + 'my/',
     logout: host + '/logout/',
     static: host + '/static/',
+    bill: prefix + 'transaction/',
+    report_deposit: host + '/report/deposit/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/lottery/',
