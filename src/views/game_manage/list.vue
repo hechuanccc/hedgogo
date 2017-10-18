@@ -22,22 +22,10 @@
           </tbody>
         </table>
     </div>
-    <div class="row m-b-lg">
-        <pulling
-          :queryset="queryset"
-          :query="query"
-          :optexpand="optexpand"
-          :api="gameApi"
-          ref="pulling"
-          @query-data="queryData"
-          @query-param="queryParam">
-        </pulling>
-      </div>
   </div>
 </template>
 <script>
 import api from '../../api'
-import pulling from '../../components/pulling'
 
 export default {
     data () {
@@ -49,20 +37,13 @@ export default {
         }
     },
     created () {
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
+        this.$http.get(api.game_list).then(response => {
+            this.queryset = response.data
+        }, response => {
+            if (response.status === 401) {
+                this.$router.push('/login?next=' + this.$route.path)
+            }
         })
-    },
-    methods: {
-        queryData (queryset) {
-            this.queryset = queryset
-        },
-        queryParam (query) {
-            this.query = query
-        }
-    },
-    components: {
-        pulling
     }
 }
 </script>

@@ -95,10 +95,14 @@ export default {
         game_manage: 'Game Manage',
         game_list: 'Game List',
         game_detail: 'Game Detail',
+<<<<<<< HEAD
         edit_game: 'Edit Game',
         level_detail: 'Member Level Detail',
         member_level_edit: 'Edit Member Level',
         member_level_add: 'Add Member Level'
+=======
+        edit_game: 'Edit Game'
+>>>>>>> 109037c4c4bd7a9da5ddd47f514ec861df777773
     },
     member: {
         page_title: 'Search Members',
