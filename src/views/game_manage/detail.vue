@@ -41,7 +41,7 @@
             </div>
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">to_display</span>
+                <span class="text-md text-muted">{{$t('game_manage.to_display')}}</span>
               </strong>
               <div class="text-md text-muted">{{game.to_display}}</div>
             </div>
@@ -49,13 +49,13 @@
           <div class="row b-b p-b m-b">
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">remarks</span>
+                <span class="text-md text-muted">{{$t('common.remarks')}}</span>
               </strong>
               <div class="text-md text-muted">{{game.remarks}}</div>
             </div>
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">icon</span>
+                <span class="text-md text-muted">{{$t('game_manage.icon')}}</span>
               </strong>
               <div>
                 <img class="w-32" :src="game.icon" alt=".">
@@ -68,7 +68,6 @@
 </template>
 <script>
 import api from '../../api'
-import pulling from '../../components/pulling'
 
 export default {
     data () {
@@ -84,9 +83,6 @@ export default {
             },
             optexpand: 'group'
         }
-    },
-    created () {
-
     },
     beforeRouteEnter (to, from, next) {
         next(vm => {
@@ -105,9 +101,6 @@ export default {
                 }
             })
         }
-    },
-    components: {
-        pulling
     }
 }
 </script>

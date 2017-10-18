@@ -279,7 +279,9 @@ export default {
         id: ' 游戏ID',
         name: '游戏名称',
         rank: '游戏排名',
-        code: '游戏号码'
+        code: '游戏号码',
+        to_display: '是否显示',
+        icon: '图标'
     },
     agent: {
         number: '编号',

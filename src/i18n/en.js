@@ -285,7 +285,9 @@ export default {
         id: 'Game ID',
         name: 'Game Name',
         rank: 'Game Rank',
-        code: 'Game Code'
+        code: 'Game Code',
+        to_display: 'Is Display',
+        icon: 'Icon'
     },
     agent: {
         number: 'No.',

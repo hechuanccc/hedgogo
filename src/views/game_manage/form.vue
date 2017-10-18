@@ -34,7 +34,7 @@
           </div>
           <div class="col-md-8">
             <div class="form-group">
-              <label class="label-width">to_display</label>
+              <label class="label-width">{{$t('game_manage.to_display')}}</label>
               <div class="from-control inline-form-control">
                 <label class="md-check">
                   <input type="radio" :value="true" v-model="game.to_display">
@@ -51,14 +51,14 @@
             </div>
 
             <div class="form-group">
-              <label for="remarks" class="label-width">remarks</label>
+              <label for="remarks" class="label-width">{{$t('common.remarks')}}</label>
               <div class="inline-form-control">
                 <input class="form-control" id="remarks" v-model="game.remarks">
               </div>
             </div>
 
             <div class="form-group">
-              <label for="icon" class="label-width">icon</label>
+              <label for="icon" class="label-width">{{$t('game_manage.icon')}}</label>
               <div class="inline-form-control">
                 <img class="w-32" :src="iconSrc" alt="">
                 <input type="file" class="inline-form-control" id="icon" @change="fileChange">
@@ -77,7 +77,6 @@
 </template>
 <script>
 import api from '../../api'
-import { handleError } from '../../utils/handleError'
 
 export default {
     data () {
@@ -121,10 +120,7 @@ export default {
                     this.$router.push('/game_detail/' + response.data.id)
                 }
             }, response => {
-                this.errorMsg = ''
-                for (let field in this.field_locales) {
-                    this.errorMsg += handleError(response, field, this.field_locales)
-                }
+
             })
         },
         getGame (id) {
