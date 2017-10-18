@@ -91,7 +91,8 @@ export default {
         title_website: 'Website',
         game_manage: 'Game Manage',
         game_list: 'Game List',
-        game_detail: 'Game Detail'
+        game_detail: 'Game Detail',
+        edit_game: 'Edit Game'
     },
     member: {
         page_title: 'Search Members',
@@ -160,6 +161,8 @@ export default {
         type: 'Type',
         male: 'Male',
         female: 'Female',
+        yes: 'Yes',
+        no: 'No',
         phone: 'Phone',
         wechat: 'Wechat',
         gender: 'Gender',
@@ -267,6 +270,7 @@ export default {
         view_today_report: 'View today\'s Report',
         update_agent: 'Update agent\'s info',
         update_member: 'Update member\'s info',
+        edit_game: 'Edit game\'s info',
         view_member_record: 'View all members\' record',
         add_member: 'Add member',
         reset_password: 'Reset password',
@@ -314,7 +318,9 @@ export default {
         id: 'Game ID',
         name: 'Game Name',
         rank: 'Game Rank',
-        code: 'Game Code'
+        code: 'Game Code',
+        to_display: 'Is Display',
+        icon: 'Icon'
     },
     agent: {
         number: 'No.',

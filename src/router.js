@@ -231,7 +231,6 @@ export default new Router({
         },
         meta: {
             auth: true,
-            disable_tabs: true,
             title: Vue.t('nav.game_list'),
             agentPermission: 'true',
             group: 'game_manage'
@@ -245,9 +244,20 @@ export default new Router({
         },
         meta: {
             auth: true,
-            disable_tabs: true,
             title: Vue.t('nav.game_detail'),
             agentPermission: 'true',
+            group: 'game_manage'
+        }
+    },
+    {
+        path: '/game_detail/:id/edit',
+        name: 'game_edit',
+        component: function (resolve) {
+            require(['./views/game_manage/form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.edit_game'),
             group: 'game_manage'
         }
     },
