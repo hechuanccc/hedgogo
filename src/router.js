@@ -48,6 +48,129 @@ export default new Router({
         }
     },
     {
+        path: '/bill/remit',
+        name: 'bill-remit',
+        component: function (resolve) {
+            require(['./views/bill/remit.vue'], resolve)
+        },
+        meta: {
+            group: 'bill',
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.remit_audit'),
+            permission: 'list_remit_online_withdraw_page'
+        }
+    },
+    {
+        path: '/bill/online',
+        name: 'bill-online',
+        component: function (resolve) {
+            require(['./views/bill/online.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.online_payment'),
+            group: 'bill',
+            permission: 'list_remit_online_withdraw_page'
+        }
+    },
+    {
+        path: '/bill/withdraw',
+        name: 'bill-withdraw',
+        component: function (resolve) {
+            require(['./views/bill/withdraw.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.withdrawal_audit'),
+            group: 'bill',
+            permission: 'list_remit_online_withdraw_page'
+        }
+    },
+    {
+        path: '/bill/search',
+        name: 'bill-search',
+        component: function (resolve) {
+            require(['./views/bill/search.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            group: 'bill',
+            title: Vue.t('bill.transcations_query')
+        }
+    },
+    {
+        path: '/transaction/:id',
+        name: 'transaction',
+        component: function (resolve) {
+            require(['./views/bill/detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            group: 'bill',
+            title: Vue.t('nav.transaction')
+        }
+    },
+    {
+        path: '/bill/returnrate',
+        name: 'returnrate',
+        component: function (resolve) {
+            require(['./views/bill/returnrate.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.return_report'),
+            group: 'bill'
+        }
+    },
+    {
+        path: '/bill/returnrate/:returnId',
+        name: 'returnrate_detail',
+        component: function (resolve) {
+            require(['./views/bill/returnrate_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.returnrate'),
+            group: 'bill'
+        }
+    },
+    {
+        path: '/bill/operation',
+        name: 'bill-operation',
+        component: function (resolve) {
+            require(['./views/bill/operation.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.operation'),
+            permission: 'manual_deposit_withdraw',
+            group: 'bill'
+        }
+    },
+    {
+        path: '/bill/commission',
+        name: 'bill-commission',
+        component: function (resolve) {
+            require(['./views/bill/commission.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.commission'),
+            permission: 'calculate_commission',
+            agentPermission: 'true',
+            group: 'bill'
+        }
+    },
+    {
         path: '/member',
         name: 'member',
         component: function (resolve) {

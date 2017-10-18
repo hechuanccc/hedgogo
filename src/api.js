@@ -24,6 +24,7 @@ export default {
     resetwithdraw: prefix + 'withdraw_password/member/',
     betrecords: managePrefix + 'member/betrecord/',
     staff: managePrefix + 'staff/',
+    returnhistory: prefix + 'report/returnrate/history/',
     managerole: managePrefix + 'group/',
     permissionsUser: managePrefix + 'permissions/user/',
     passwordstaff: prefix + 'password/staff/',
