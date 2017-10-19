@@ -430,6 +430,183 @@ export default new Router({
             title: Vue.t('nav.member_level_edit'),
             auth: true
         }
+    },
+    {
+        path: '/online_payee',
+        component: function (resolve) {
+            require(['./views/setting/online_payee.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_online_payee')
+        }
+    },
+    {
+        path: '/online_payee/add',
+        component: function (resolve) {
+            require(['./views/setting/online_payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('setting.create_online_payee'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payee/:online_payeeId',
+        component: function (resolve) {
+            require(['./views/setting/online_payee_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.online_payee_detail'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payee/:online_payeeId/edit',
+        component: function (resolve) {
+            require(['./views/setting/online_payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.online_payee_detail_edit'),
+            auth: true
+        }
+    },
+    {
+        path: '/paymenttype',
+        component: function (resolve) {
+            require(['./views/setting/payment_type.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.payment_type_setting')
+        }
+    },
+    {
+        path: '/paymenttype/:id/edit',
+        component: function (resolve) {
+            require(['./views/setting/payment_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            permission: 'change_paymenttype',
+            title: Vue.t('nav.payment_type_setting_detail')
+        }
+    },
+    {
+        path: '/remit_payee',
+        component: function (resolve) {
+            require(['./views/setting/payee.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_remit_payee')
+        }
+    },
+    {
+        path: '/remit_payee/add',
+        component: function (resolve) {
+            require(['./views/setting/payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.remit_payee_add')
+        }
+    },
+    {
+        path: '/remit_payee/:payeeId',
+        component: function (resolve) {
+            require(['./views/setting/payee_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.remit_payee_detail')
+        }
+    },
+    {
+        path: '/remit_payee/:payeeId/edit',
+        component: function (resolve) {
+            require(['./views/setting/payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.remit_payee_update'),
+            auth: true
+        }
+    },
+    {
+        path: '/return',
+        component: function (resolve) {
+            require(['./views/setting/return.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_return')
+        }
+    },
+    {
+        path: '/return/add',
+        component: function (resolve) {
+            require(['./views/setting/return_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_return_add')
+        }
+    },
+    {
+        path: '/return/:returnId/edit',
+        component: function (resolve) {
+            require(['./views/setting/return_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_return_edit')
+        }
+    },
+    {
+        path: '/commission',
+        component: function (resolve) {
+            require(['./views/setting/commission.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_commission')
+        }
+    },
+    {
+        path: '/commission/add',
+        component: function (resolve) {
+            require(['./views/setting/commission_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_commission_add')
+        }
+    },
+    {
+        path: '/commission/:commissionId/edit',
+        component: function (resolve) {
+            require(['./views/setting/commission_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_commission_edit')
+        }
     }
     ]
 })

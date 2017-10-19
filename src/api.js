@@ -33,5 +33,9 @@ export default {
     passwordstaff: prefix + 'password/staff/',
     permissions: managePrefix + 'permissions/',
     staffPermissions: managePrefix + 'staff/permissions/',
-    agentapplication: managePrefix + 'agentapplication/'
+    agentapplication: managePrefix + 'agentapplication/',
+    onlinepayee: managePrefix + 'onlinepayee/',
+    paymenttype: managePrefix + 'paymenttype/',
+    remitpayee: managePrefix + 'remitpayee/',
+    paymentgateway: managePrefix + 'paymentgateway/'
 }
