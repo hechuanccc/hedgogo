@@ -18,6 +18,7 @@ export default {
         withdraw: 'Withdraw',
         discount: 'Discount',
         manual_operation: 'Manual operation',
+        operation: 'Manual adjust balance',
         return: 'Return',
         game_settlement: 'Game Settlement',
         remit_payee: 'Remit Payee',
