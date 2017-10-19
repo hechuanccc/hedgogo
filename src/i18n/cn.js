@@ -141,6 +141,7 @@ export default {
         game_settlement: '游戏结算',
         remit_payee: '入款账号',
         view_detailed: '查看详情',
+        operation: '手工存提',
         depositor: '存款人',
         deposited_at: '存款时间',
         merchant_status: '商户状态',
