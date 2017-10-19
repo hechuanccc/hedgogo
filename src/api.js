@@ -10,8 +10,9 @@ export default {
     my: prefix + 'my/',
     logout: host + '/logout/',
     static: host + '/static/',
-    bill: prefix + 'transaction/',
+    bill: managePrefix + 'transaction/',
     report_deposit: host + '/report/deposit/',
+    transactiontype: managePrefix + 'transaction_type/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/lottery/',
@@ -32,5 +33,9 @@ export default {
     passwordstaff: prefix + 'password/staff/',
     permissions: managePrefix + 'permissions/',
     staffPermissions: managePrefix + 'staff/permissions/',
-    agentapplication: managePrefix + 'agentapplication/'
+    agentapplication: managePrefix + 'agentapplication/',
+    onlinepayee: managePrefix + 'onlinepayee/',
+    paymenttype: managePrefix + 'paymenttype/',
+    remitpayee: managePrefix + 'remitpayee/',
+    paymentgateway: managePrefix + 'paymentgateway/'
 }
