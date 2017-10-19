@@ -111,6 +111,18 @@ export default {
         online_payee_detail_edit: 'Edit Online Payee Detail',
         payment_type_setting_detail: 'Payment Type Setting Detail'
     },
+    returnrate: {
+        created_at: 'Created at',
+        created_by: 'Created by',
+        history_id: 'History ID',
+        member_count: 'Member Count',
+        total_return: 'Total Return',
+        success: 'Return Rate successfully confirmed.',
+        export: 'Export',
+        updatedby: 'Updated by',
+        generate: 'Generate',
+        cycle: 'cycle'
+    },
     member: {
         page_title: 'Search Members',
         account: 'Account',
