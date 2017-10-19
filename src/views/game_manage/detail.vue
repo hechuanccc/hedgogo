@@ -21,41 +21,41 @@
           <div class="row b-b p-b m-b">
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">{{$t('game_manage.id')}}</span>
+                <span class="text-muted">{{$t('game_manage.id')}}</span>
               </strong>
-              <div class="text-md text-muted">{{game.id}}</div>
+              <div class="text-muted">{{game.id}}</div>
             </div>
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">{{$t('game_manage.code')}}</span>
+                <span class="text-muted">{{$t('game_manage.code')}}</span>
               </strong>
-              <div class="text-md text-muted">{{game.code}}</div>
-            </div>
-          </div>
-          <div class="row b-b p-b m-b">
-            <div class="col-md-4">
-              <strong>
-                <span class="text-md text-muted">{{$t('game_manage.rank')}}</span>
-              </strong>
-              <div class="text-md text-muted">{{game.rank}}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>
-                <span class="text-md text-muted">{{$t('game_manage.to_display')}}</span>
-              </strong>
-              <div class="text-md text-muted">{{game.to_display}}</div>
+              <div class="text-muted">{{game.code}}</div>
             </div>
           </div>
           <div class="row b-b p-b m-b">
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">{{$t('common.remarks')}}</span>
+                <span class="text-muted">{{$t('game_manage.rank')}}</span>
               </strong>
-              <div class="text-md text-muted">{{game.remarks}}</div>
+              <div class="text-muted">{{game.rank}}</div>
             </div>
             <div class="col-md-4">
               <strong>
-                <span class="text-md text-muted">{{$t('game_manage.icon')}}</span>
+                <span class="text-muted">{{$t('game_manage.to_display')}}</span>
+              </strong>
+              <div class="text-muted">{{game.to_display}}</div>
+            </div>
+          </div>
+          <div class="row b-b p-b m-b">
+            <div class="col-md-4">
+              <strong>
+                <span class="text-muted">{{$t('common.remarks')}}</span>
+              </strong>
+              <div class="text-muted">{{game.remarks}}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>
+                <span class="text-muted">{{$t('game_manage.icon')}}</span>
               </strong>
               <div>
                 <img class="w-32" :src="game.icon" alt=".">
