@@ -10,6 +10,10 @@ export default {
     my: prefix + 'my/',
     logout: host + '/logout/',
     static: host + '/static/',
+    bill: managePrefix + 'transaction/',
+    report_deposit: host + '/report/deposit/',
+    transactiontype: managePrefix + 'transaction_type/',
+    returnrate: prefix + 'report/returnrate/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/lottery/',
@@ -24,10 +28,15 @@ export default {
     resetwithdraw: prefix + 'withdraw_password/member/',
     betrecords: managePrefix + 'member/betrecord/',
     staff: managePrefix + 'staff/',
+    returnhistory: managePrefix + 'report/returnrate/history/',
     managerole: managePrefix + 'group/',
     permissionsUser: managePrefix + 'permissions/user/',
     passwordstaff: prefix + 'password/staff/',
     permissions: managePrefix + 'permissions/',
     staffPermissions: managePrefix + 'staff/permissions/',
-    agentapplication: managePrefix + 'agentapplication/'
+    agentapplication: managePrefix + 'agentapplication/',
+    onlinepayee: managePrefix + 'onlinepayee/',
+    paymenttype: managePrefix + 'paymenttype/',
+    remitpayee: managePrefix + 'remitpayee/',
+    paymentgateway: managePrefix + 'paymentgateway/'
 }

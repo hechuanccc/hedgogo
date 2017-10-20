@@ -48,6 +48,129 @@ export default new Router({
         }
     },
     {
+        path: '/bill/remit',
+        name: 'bill-remit',
+        component: function (resolve) {
+            require(['./views/bill/remit.vue'], resolve)
+        },
+        meta: {
+            group: 'bill',
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.remit_audit'),
+            permission: 'list_remit_online_withdraw_page'
+        }
+    },
+    {
+        path: '/bill/online',
+        name: 'bill-online',
+        component: function (resolve) {
+            require(['./views/bill/online.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.online_payment'),
+            group: 'bill',
+            permission: 'list_remit_online_withdraw_page'
+        }
+    },
+    {
+        path: '/bill/withdraw',
+        name: 'bill-withdraw',
+        component: function (resolve) {
+            require(['./views/bill/withdraw.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.withdrawal_audit'),
+            group: 'bill',
+            permission: 'list_remit_online_withdraw_page'
+        }
+    },
+    {
+        path: '/bill/search',
+        name: 'bill-search',
+        component: function (resolve) {
+            require(['./views/bill/search.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            group: 'bill',
+            title: Vue.t('bill.transcations_query')
+        }
+    },
+    {
+        path: '/transaction/:id',
+        name: 'transaction',
+        component: function (resolve) {
+            require(['./views/bill/detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            group: 'bill',
+            title: Vue.t('nav.transaction')
+        }
+    },
+    {
+        path: '/bill/returnrate',
+        name: 'returnrate',
+        component: function (resolve) {
+            require(['./views/bill/returnrate.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.return_report'),
+            group: 'bill'
+        }
+    },
+    {
+        path: '/bill/returnrate/:returnId',
+        name: 'returnrate_detail',
+        component: function (resolve) {
+            require(['./views/bill/returnrate_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.returnrate'),
+            group: 'bill'
+        }
+    },
+    {
+        path: '/bill/operation',
+        name: 'bill-operation',
+        component: function (resolve) {
+            require(['./views/bill/operation.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('bill.operation'),
+            permission: 'manual_deposit_withdraw',
+            group: 'bill'
+        }
+    },
+    {
+        path: '/bill/commission',
+        name: 'bill-commission',
+        component: function (resolve) {
+            require(['./views/bill/commission.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.commission'),
+            permission: 'calculate_commission',
+            agentPermission: 'true',
+            group: 'bill'
+        }
+    },
+    {
         path: '/member',
         name: 'member',
         component: function (resolve) {
@@ -262,6 +385,227 @@ export default new Router({
             disable_tabs: true,
             title: Vue.t('nav.agent_application'),
             group: 'agent'
+        }
+    },
+    {
+        path: '/level',
+        component: function (resolve) {
+            require(['./views/setting/level.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            group: 'setting',
+            title: Vue.t('nav.setting_level')
+        }
+    },
+    {
+        path: '/level/add',
+        component: function (resolve) {
+            require(['./views/setting/level_form.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.member_level_add'),
+            group: 'setting'
+        }
+    },
+    {
+        path: '/level/:levelId',
+        component: function (resolve) {
+            require(['./views/setting/level_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.level_detail'),
+            group: 'setting'
+        }
+    },
+    {
+        path: '/level/:levelId/edit',
+        component: function (resolve) {
+            require(['./views/setting/level_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.member_level_edit'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payee',
+        component: function (resolve) {
+            require(['./views/setting/online_payee.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_online_payee')
+        }
+    },
+    {
+        path: '/online_payee/add',
+        component: function (resolve) {
+            require(['./views/setting/online_payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('setting.create_online_payee'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payee/:online_payeeId',
+        component: function (resolve) {
+            require(['./views/setting/online_payee_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.online_payee_detail'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payee/:online_payeeId/edit',
+        component: function (resolve) {
+            require(['./views/setting/online_payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.online_payee_detail_edit'),
+            auth: true
+        }
+    },
+    {
+        path: '/paymenttype',
+        component: function (resolve) {
+            require(['./views/setting/payment_type.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.payment_type_setting')
+        }
+    },
+    {
+        path: '/paymenttype/:id/edit',
+        component: function (resolve) {
+            require(['./views/setting/payment_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            permission: 'change_paymenttype',
+            title: Vue.t('nav.payment_type_setting_detail')
+        }
+    },
+    {
+        path: '/remit_payee',
+        component: function (resolve) {
+            require(['./views/setting/payee.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_remit_payee')
+        }
+    },
+    {
+        path: '/remit_payee/add',
+        component: function (resolve) {
+            require(['./views/setting/payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.remit_payee_add')
+        }
+    },
+    {
+        path: '/remit_payee/:payeeId',
+        component: function (resolve) {
+            require(['./views/setting/payee_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.remit_payee_detail')
+        }
+    },
+    {
+        path: '/remit_payee/:payeeId/edit',
+        component: function (resolve) {
+            require(['./views/setting/payee_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.remit_payee_update'),
+            auth: true
+        }
+    },
+    {
+        path: '/return',
+        component: function (resolve) {
+            require(['./views/setting/return.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_return')
+        }
+    },
+    {
+        path: '/return/add',
+        component: function (resolve) {
+            require(['./views/setting/return_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_return_add')
+        }
+    },
+    {
+        path: '/return/:returnId/edit',
+        component: function (resolve) {
+            require(['./views/setting/return_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_return_edit')
+        }
+    },
+    {
+        path: '/commission',
+        component: function (resolve) {
+            require(['./views/setting/commission.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_commission')
+        }
+    },
+    {
+        path: '/commission/add',
+        component: function (resolve) {
+            require(['./views/setting/commission_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_commission_add')
+        }
+    },
+    {
+        path: '/commission/:commissionId/edit',
+        component: function (resolve) {
+            require(['./views/setting/commission_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_commission_edit')
         }
     }
     ]
