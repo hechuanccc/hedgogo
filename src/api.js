@@ -38,5 +38,7 @@ export default {
     onlinepayee: managePrefix + 'onlinepayee/',
     paymenttype: managePrefix + 'paymenttype/',
     remitpayee: managePrefix + 'remitpayee/',
-    paymentgateway: managePrefix + 'paymentgateway/'
+    paymentgateway: managePrefix + 'paymentgateway/',
+    loginrecord: managePrefix + 'loginrecord/',
+    action_record: managePrefix + 'actionrecord/'
 }

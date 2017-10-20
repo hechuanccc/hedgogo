@@ -469,5 +469,24 @@ export default {
         com_group_threshold: 'Group Threshold',
         com_discount_rate: 'Discount Rate',
         valid_member: 'Valid Member'
+    },
+    report: {
+        number_login: 'No.',
+        no_record_found: 'No Record Found'
+    },
+    actionrecord: {
+        id: 'ID',
+        action_username: 'Staff Name',
+        username: 'Member Name',
+        action_time: 'Action Time',
+        ipaddr: 'IP',
+        action_type: 'Action Type',
+        provider: 'Provider',
+        game_name: 'Game Name',
+        action_result: 'Action Result',
+        login: 'Log in',
+        change_password: 'Change Password',
+        change_withdraw_password: 'Change Withdraw Password',
+        launch_game: 'Launch Game'
     }
 }
