@@ -465,5 +465,24 @@ export default {
         com_group_threshold: '派彩',
         com_discount_rate: '优惠',
         valid_member: '有效会员'
+    },
+    report: {
+        number_login: '序号',
+        no_record_found: '查无记录，请更换条件再查询'
+    },
+    actionrecord: {
+        id: '序号',
+        action_username: '操作账户',
+        username: '用户名',
+        action_time: '操作时间',
+        ipaddr: 'IP',
+        action_type: '操作类型',
+        provider: '娱乐城',
+        game_name: '游戏名称',
+        action_result: '状态',
+        login: '登入',
+        change_password: '修改密码',
+        change_withdraw_password: '修改取款密码',
+        launch_game: '登入游戏'
     }
 }

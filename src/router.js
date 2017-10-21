@@ -607,6 +607,32 @@ export default new Router({
             auth: true,
             title: Vue.t('nav.setting_commission_edit')
         }
+    },
+    {
+        path: '/report/login',
+        name: 'report_login',
+        component: function (resolve) {
+            require(['./views/report/login_record.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.login_record'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/report/actionrecord',
+        name: 'action_record',
+        component: function (resolve) {
+            require(['./views/report/action_record.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.action_record'),
+            group: 'report'
+        }
     }
     ]
 })
