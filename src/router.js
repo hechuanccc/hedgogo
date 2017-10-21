@@ -103,6 +103,67 @@ export default new Router({
         }
     },
     {
+        path: '/envelope_settings',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_config.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '红包设定'
+        }
+    }, {
+        path: '/envelope_settings/add',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_config_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '新增红包组'
+        }
+    }, {
+        path: '/envelope_settings/:envelopeId/edit',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_config_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '编辑红包组'
+        }
+    }, {
+        path: '/envelope',
+        component: function (resolve) {
+            require(['./views/envelope/envelope.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '红包'
+        }
+    }, {
+        path: '/envelope/add',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '新增红包'
+        }
+    }, {
+        path: '/envelope/:envelopeId/edit',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '编辑红包'
+        }
+    },
+    {
         path: '/transaction/:id',
         name: 'transaction',
         component: function (resolve) {

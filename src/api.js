@@ -14,6 +14,8 @@ export default {
     report_deposit: host + '/report/deposit/',
     transactiontype: managePrefix + 'transaction_type/',
     returnrate: prefix + 'report/returnrate/',
+    envelope_settings: managePrefix + 'envelope/settings/',
+    envelope: managePrefix + 'envelope/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/lottery/',

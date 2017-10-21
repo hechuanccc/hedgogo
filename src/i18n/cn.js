@@ -69,6 +69,26 @@ export default {
         online_payee_detail_edit: '线上支付商户修改',
         payment_type_setting_detail: '支付方式管理'
     },
+    envelope: {
+        name: '名称',
+        member_level: '会员等级',
+        bet_amount: '下注金额',
+        status: '状态',
+        envelope_name: '红包名称',
+        add_envelope: '新增红包',
+        min_money: '红包最小金额',
+        max_money: '红包最大金额',
+        envelope_config: '红包配置',
+        deposit_threshold: '存款金额大于等于',
+        envelope_count: '红包个数',
+        select_envelope: '选择红包',
+        bet_threshold: '投注金额大于等于',
+        condition: '达成条件',
+        and: '同时满足',
+        or: '存款或下注',
+        envelope_setting: '配置红包',
+        envelope: '红包'
+    },
     returnrate: {
         created_at: '反水生成时间',
         created_by: '注册人员',

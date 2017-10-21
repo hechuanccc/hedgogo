@@ -44,6 +44,25 @@ export default {
         card_pay: 'Card Pay',
         onlinepay: 'Online Pay'
     },
+    envelope: {
+        name: 'Name',
+        member_level: 'Member Level',
+        bet_amount: 'Bet Amount',
+        status: 'Status',
+        envelope_name: 'Envelope Name',
+        add_envelope: 'Add Envelope',
+        min_money: 'Min Money',
+        max_money: 'Max Money',
+        deposit_threshold: 'Deposit Threshold',
+        envelope_count: 'Envelope Count',
+        select_envelope: 'Select Envelope',
+        bet_threshold: 'Bet Threshold',
+        condition: 'Condition',
+        and: 'And',
+        or: 'Or',
+        envelope_setting: 'Envelope Setting',
+        envelope: 'envelope'
+    },
     nav: {
         overview: 'Overview',
         bills: 'Accounting',
