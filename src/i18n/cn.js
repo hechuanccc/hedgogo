@@ -67,7 +67,10 @@ export default {
         setting_commission_edit: '修改佣金设定',
         online_payee_detail: '线上支付商户',
         online_payee_detail_edit: '线上支付商户修改',
-        payment_type_setting_detail: '支付方式管理'
+        payment_type_setting_detail: '支付方式管理',
+        bet_record_detail: '投注记录详情',
+        add_message: '新增站内信',
+        message_details: '站内信详情'
     },
     envelope: {
         name: '名称',
@@ -488,7 +491,9 @@ export default {
     },
     report: {
         number_login: '序号',
-        no_record_found: '查无记录，请更换条件再查询'
+        no_record_found: '查无记录，请更换条件再查询',
+        bet_record_number: '注单号',
+        no_bet_details: '无投注详细信息'
     },
     actionrecord: {
         id: '序号',
@@ -504,5 +509,43 @@ export default {
         change_password: '修改密码',
         change_withdraw_password: '修改取款密码',
         launch_game: '登入游戏'
+    },
+    manage: {
+        platform: '平台',
+        platform_select: '平台选择',
+        img: '图片',
+        operate: '操作',
+        sequence: '排序',
+        add_announcement: '新增公告',
+        title_announcement: '公告管理',
+        title_banner: 'banner管理',
+        title_website: '网站管理',
+        pc: '电脑',
+        mobile: '手机',
+        all: '全部',
+        name: '网站名称',
+        second_name: '网站别名',
+        logo: 'logo',
+        description: '网站简介',
+        link: '推广地址',
+        prev_password: '原密码',
+        new_password: '新密码',
+        repeat_password: '重复密码'
+    },
+    cms: {
+        pctitle: '电脑网页管理',
+        mobiletitle: '手机网页管理',
+        banner: '旗帜',
+        announcement: '公告'
+    },
+    messages: {
+        number: '编号',
+        title: '标题',
+        receiver: '接收人',
+        members: '群发',
+        transaction: '相关交易',
+        text: '发送内容',
+        time: '创建时间',
+        add_message: '新增站内信'
     }
 }

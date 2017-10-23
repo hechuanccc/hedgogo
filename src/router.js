@@ -694,6 +694,100 @@ export default new Router({
             title: Vue.t('nav.action_record'),
             group: 'report'
         }
+    },
+    {
+        path: '/report/betrecord',
+        name: 'report_betrecord',
+        component: function (resolve) {
+            require(['./views/report/bet_record.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.bet_record'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/report/betrecord/:betrecordId',
+        name: 'betrecord_detail',
+        component: function (resolve) {
+            require(['./views/report/betrecord_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.bet_record_detail'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/banner',
+        component: function (resolve) {
+            require(['./views/manage/banner.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: Vue.t('manage.title_banner')
+        }
+    },
+    {
+        path: '/announcement',
+        component: function (resolve) {
+            require(['./views/manage/announcement.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: Vue.t('manage.title_announcement')
+        }
+    },
+    {
+        path: '/website',
+        component: function (resolve) {
+            require(['./views/manage/website.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: Vue.t('manage.title_website')
+        }
+    },
+    {
+        path: '/messages',
+        name: 'manage',
+        component: function (resolve) {
+            require(['./views/setting/messages.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            title: Vue.t('nav.message'),
+            auth: true
+        }
+    },
+    {
+        path: '/messages/add',
+        name: 'messages_add',
+        component: function (resolve) {
+            require(['./views/setting/messages_form.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            title: Vue.t('nav.add_message'),
+            auth: true
+        }
+    }, {
+        path: '/messages/:messagesId',
+        name: 'messages_detail',
+        component: function (resolve) {
+            require(['./views/setting/messages_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            title: Vue.t('nav.message_details'),
+            auth: true
+        }
     }
     ]
 })

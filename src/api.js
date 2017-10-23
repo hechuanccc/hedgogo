@@ -28,7 +28,7 @@ export default {
     resetmember: prefix + 'password/member/',
     resetagent: prefix + 'password/agent/',
     resetwithdraw: prefix + 'withdraw_password/member/',
-    betrecords: managePrefix + 'member/betrecord/',
+    betrecords: managePrefix + 'betrecord/',
     staff: managePrefix + 'staff/',
     returnhistory: managePrefix + 'report/returnrate/history/',
     managerole: managePrefix + 'group/',
@@ -42,5 +42,9 @@ export default {
     remitpayee: managePrefix + 'remitpayee/',
     paymentgateway: managePrefix + 'paymentgateway/',
     loginrecord: managePrefix + 'loginrecord/',
-    action_record: managePrefix + 'actionrecord/'
+    action_record: managePrefix + 'actionrecord/',
+    banner: managePrefix + 'banner/',
+    announcement: managePrefix + 'announcement/',
+    messages: managePrefix + 'message/',
+    website: managePrefix + 'website/home-page/'
 }
