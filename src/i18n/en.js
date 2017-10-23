@@ -44,6 +44,25 @@ export default {
         card_pay: 'Card Pay',
         onlinepay: 'Online Pay'
     },
+    envelope: {
+        name: 'Name',
+        member_level: 'Member Level',
+        bet_amount: 'Bet Amount',
+        status: 'Status',
+        envelope_name: 'Envelope Name',
+        add_envelope: 'Add Envelope',
+        min_money: 'Min Money',
+        max_money: 'Max Money',
+        deposit_threshold: 'Deposit Threshold',
+        envelope_count: 'Envelope Count',
+        select_envelope: 'Select Envelope',
+        bet_threshold: 'Bet Threshold',
+        condition: 'Condition',
+        and: 'And',
+        or: 'Or',
+        envelope_setting: 'Envelope Setting',
+        envelope: 'envelope'
+    },
     nav: {
         overview: 'Overview',
         bills: 'Accounting',
@@ -110,7 +129,10 @@ export default {
         setting_commission_edit: 'Edit Commission Setting',
         online_payee_detail: 'Online Payee Detail',
         online_payee_detail_edit: 'Edit Online Payee Detail',
-        payment_type_setting_detail: 'Payment Type Setting Detail'
+        payment_type_setting_detail: 'Payment Type Setting Detail',
+        bet_record_detail: 'Bet Record Detail',
+        add_message: 'Add Message',
+        message_details: 'Message Detail'
     },
     returnrate: {
         created_at: 'Created at',
@@ -472,7 +494,9 @@ export default {
     },
     report: {
         number_login: 'No.',
-        no_record_found: 'No Record Found'
+        no_record_found: 'No Record Found',
+        bet_record_number: 'Bet Record ID',
+        no_bet_details: 'No Bet Details'
     },
     actionrecord: {
         id: 'ID',
@@ -488,5 +512,42 @@ export default {
         change_password: 'Change Password',
         change_withdraw_password: 'Change Withdraw Password',
         launch_game: 'Launch Game'
+    },
+    manage: {
+        platform: 'Platform',
+        platform_select: 'Platform select',
+        img: 'Img',
+        operate: 'Operate',
+        sequence: 'Sequence',
+        add_announcement: 'Create',
+        title_announcement: 'Announcement',
+        title_banner: 'Banner',
+        pc: 'PC',
+        mobile: 'Mobile',
+        all: 'All',
+        name: 'Site name',
+        second_name: 'Second name',
+        logo: 'Logo',
+        description: 'Description',
+        link: 'Promotion address',
+        prev_password: 'Prev Password',
+        new_password: 'New Password',
+        repeat_password: 'Repeat Password',
+        title_website: 'Website'
+    },
+    cms: {
+        pctitle: 'PC Website Management',
+        mobiletitle: 'Mobile Website Management',
+        banner: 'Banner',
+        announcement: 'Announcement'
+    },
+    messages: {
+        number: 'No.',
+        title: 'Title',
+        receiver: 'Receiver',
+        members: 'Members',
+        transaction: 'Transaction',
+        text: 'Message',
+        time: 'Time Created'
     }
 }
