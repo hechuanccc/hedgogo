@@ -70,7 +70,8 @@ export default {
         payment_type_setting_detail: '支付方式管理',
         bet_record_detail: '投注记录详情',
         add_message: '新增站内信',
-        message_details: '站内信详情'
+        message_details: '站内信详情',
+        change_password: '修改密码'
     },
     envelope: {
         name: '名称',
@@ -90,7 +91,10 @@ export default {
         and: '同时满足',
         or: '存款或下注',
         envelope_setting: '配置红包',
-        envelope: '红包'
+        envelope: '红包',
+        add_setting: '添加红包设置',
+        edit_envelope: '编辑红包',
+        edit_envelope_setting: '编辑红包组'
     },
     returnrate: {
         created_at: '反水生成时间',
@@ -192,7 +196,17 @@ export default {
         deposit_declined: '入款已拒绝',
         withdraw_declined: '汇款已拒绝',
         onlinepay: '线上支付',
-        card_pay: '点卡支付'
+        card_pay: '点卡支付',
+        deposit_amount: '存款金额',
+        others: '其他',
+        audit_type: '稽核方式',
+        free_audit: '免稽核',
+        deposit_audit: '存款稽核',
+        preferential_audit: '优惠稽核',
+        suggested_balance: '是否记入审查记录',
+        sug_balance_alert: '用于补偿额度丢失，选否',
+        deposit_amount_alert: '输入负数即为扣款',
+        submit_alert: '注意：提交该交易将直接更新会员账户余额'
     },
     common: {
         default_agent_password: '代理商登录密码预设',
@@ -347,7 +361,8 @@ export default {
         withdraw_password_changed: '取款密码已修改为：',
         add_level: '新增会员等级',
         edit_level: '修改会员等级',
-        delete_level: '删除会员等级'
+        delete_level: '删除会员等级',
+        logout: '退出登录'
     },
     staff: {
         roles: '角色 / 权限',
@@ -547,5 +562,30 @@ export default {
         text: '发送内容',
         time: '创建时间',
         add_message: '新增站内信'
+    },
+    promotion: {
+        title: '优惠活动管理',
+        add: '新增优惠活动',
+        update: '更新优惠活动',
+        promotion_detail: '优惠活动详情',
+        banner: '题图',
+        mobileBanner: '手机端题图',
+        desc: '电脑优惠活动详情',
+        desc_mobile: '手机优惠活动详情',
+        level: '适用的会员等级',
+        rank: '优惠活动排序',
+        availability: '有效期',
+        detail: '优惠活动详情',
+        start_date: '起始日期',
+        end_date: '结束日期',
+        roles: '角色/权限',
+        account: '账号',
+        permission: '权限',
+        password: '密码',
+        role: '角色'
+    },
+    header: {
+        deposit: '入款',
+        withdraw: '取款'
     }
 }

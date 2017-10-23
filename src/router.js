@@ -110,7 +110,7 @@ export default new Router({
         meta: {
             group: 'envelopes',
             auth: true,
-            title: '红包设定'
+            title: Vue.t('nav.envelope_setting')
         }
     }, {
         path: '/envelope_settings/add',
@@ -120,7 +120,7 @@ export default new Router({
         meta: {
             group: 'envelopes',
             auth: true,
-            title: '新增红包组'
+            title: Vue.t('envelope.add_setting')
         }
     }, {
         path: '/envelope_settings/:envelopeId/edit',
@@ -130,7 +130,7 @@ export default new Router({
         meta: {
             group: 'envelopes',
             auth: true,
-            title: '编辑红包组'
+            title: Vue.t('envelope.edit_envelope_setting')
         }
     }, {
         path: '/envelope',
@@ -140,7 +140,7 @@ export default new Router({
         meta: {
             group: 'envelopes',
             auth: true,
-            title: '红包'
+            title: Vue.t('nav.envelope')
         }
     }, {
         path: '/envelope/add',
@@ -150,7 +150,7 @@ export default new Router({
         meta: {
             group: 'envelopes',
             auth: true,
-            title: '新增红包'
+            title: Vue.t('envelope.add_envelope')
         }
     }, {
         path: '/envelope/:envelopeId/edit',
@@ -160,7 +160,7 @@ export default new Router({
         meta: {
             group: 'envelopes',
             auth: true,
-            title: '编辑红包'
+            title: Vue.t('envelope.edit_envelope')
         }
     },
     {
@@ -211,7 +211,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('bill.operation'),
+            title: Vue.t('member.manual_adjust'),
             permission: 'manual_deposit_withdraw',
             group: 'bill'
         }
@@ -777,7 +777,8 @@ export default new Router({
             title: Vue.t('nav.add_message'),
             auth: true
         }
-    }, {
+    },
+    {
         path: '/messages/:messagesId',
         name: 'messages_detail',
         component: function (resolve) {
@@ -787,6 +788,67 @@ export default new Router({
             group: 'manage',
             title: Vue.t('nav.message_details'),
             auth: true
+        }
+    },
+    {
+        path: '/promotion',
+        name: 'promotion',
+        component: function (resolve) {
+            require(['./views/setting/promotion.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('promotion.title')
+        }
+    },
+    {
+        path: '/promotion/add',
+        name: 'promotion_add',
+        component: function (resolve) {
+            require(['./views/setting/promotion_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('promotion.add')
+        }
+    },
+    {
+        path: '/promotion/:promotionId',
+        name: 'promotion_detail',
+        component: function (resolve) {
+            require(['./views/setting/promotion_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('promotion.detail')
+        }
+    },
+    {
+        path: '/promotion/:promotionId/edit',
+        name: 'promotion_edit',
+        component: function (resolve) {
+            require(['./views/setting/promotion_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('promotion.update')
+        }
+    },
+    {
+        path: '/change_password',
+        name: 'change_password',
+        component: function (resolve) {
+            require(['./views/setting/change_password.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.change_password')
         }
     }
     ]
