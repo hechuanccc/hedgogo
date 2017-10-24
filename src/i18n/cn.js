@@ -349,10 +349,22 @@ export default {
     game_manage: {
         id: ' 游戏ID',
         name: '游戏名称',
-        rank: '游戏排名',
+        rank: '排序',
         code: '游戏号码',
-        to_display: '是否显示',
-        icon: '图标'
+        to_display: '启用状态',
+        icon: '图标',
+        holiday_start_time: '公休开始时间',
+        holiday_end_time: '公休结束时间',
+        to_closed: '封盘状态',
+        operating: '操作',
+        enabled: '启用',
+        disabled: '停用',
+        closed: '封盘',
+        openning: '开盘',
+        no_setting: '未设置',
+        setting: '设置',
+        handicap_setting: '盘口设定',
+        transaction_setting: '交易设定'
     },
     agent: {
         number: '编号',

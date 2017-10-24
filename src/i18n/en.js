@@ -355,8 +355,19 @@ export default {
         name: 'Game Name',
         rank: 'Game Rank',
         code: 'Game Code',
-        to_display: 'Is Display',
-        icon: 'Icon'
+        to_display: 'Enable Status',
+        icon: 'Icon',
+        holiday_start_time: 'Holiday Start',
+        holiday_end_time: 'Holiday End',
+        to_closed: 'Closed Status',
+        operating: 'Operating',
+        enabled: 'Enabled',
+        disabled: 'Disabled',
+        closed: 'Closed',
+        openning: 'Openning',
+        no_setting: 'No Setting',
+        handicap_setting: 'Handicap Setting',
+        transaction_setting: 'Transaction Setting'
     },
     agent: {
         number: 'No.',
