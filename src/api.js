@@ -14,6 +14,8 @@ export default {
     report_deposit: host + '/report/deposit/',
     transactiontype: managePrefix + 'transaction_type/',
     returnrate: prefix + 'report/returnrate/',
+    envelope_settings: managePrefix + 'envelope/settings/',
+    envelope: managePrefix + 'envelope/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/lottery/',
@@ -26,7 +28,7 @@ export default {
     resetmember: prefix + 'password/member/',
     resetagent: prefix + 'password/agent/',
     resetwithdraw: prefix + 'withdraw_password/member/',
-    betrecords: managePrefix + 'member/betrecord/',
+    betrecords: managePrefix + 'betrecord/',
     staff: managePrefix + 'staff/',
     returnhistory: managePrefix + 'report/returnrate/history/',
     managerole: managePrefix + 'group/',
@@ -38,5 +40,11 @@ export default {
     onlinepayee: managePrefix + 'onlinepayee/',
     paymenttype: managePrefix + 'paymenttype/',
     remitpayee: managePrefix + 'remitpayee/',
-    paymentgateway: managePrefix + 'paymentgateway/'
+    paymentgateway: managePrefix + 'paymentgateway/',
+    loginrecord: managePrefix + 'loginrecord/',
+    action_record: managePrefix + 'actionrecord/',
+    banner: managePrefix + 'banner/',
+    announcement: managePrefix + 'announcement/',
+    messages: managePrefix + 'message/',
+    website: managePrefix + 'website/home-page/'
 }

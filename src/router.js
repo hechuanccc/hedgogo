@@ -103,6 +103,67 @@ export default new Router({
         }
     },
     {
+        path: '/envelope_settings',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_config.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '红包设定'
+        }
+    }, {
+        path: '/envelope_settings/add',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_config_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '新增红包组'
+        }
+    }, {
+        path: '/envelope_settings/:envelopeId/edit',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_config_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '编辑红包组'
+        }
+    }, {
+        path: '/envelope',
+        component: function (resolve) {
+            require(['./views/envelope/envelope.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '红包'
+        }
+    }, {
+        path: '/envelope/add',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '新增红包'
+        }
+    }, {
+        path: '/envelope/:envelopeId/edit',
+        component: function (resolve) {
+            require(['./views/envelope/envelope_form.vue'], resolve)
+        },
+        meta: {
+            group: 'envelopes',
+            auth: true,
+            title: '编辑红包'
+        }
+    },
+    {
         path: '/transaction/:id',
         name: 'transaction',
         component: function (resolve) {
@@ -606,6 +667,126 @@ export default new Router({
             group: 'setting',
             auth: true,
             title: Vue.t('nav.setting_commission_edit')
+        }
+    },
+    {
+        path: '/report/login',
+        name: 'report_login',
+        component: function (resolve) {
+            require(['./views/report/login_record.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.login_record'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/report/actionrecord',
+        name: 'action_record',
+        component: function (resolve) {
+            require(['./views/report/action_record.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.action_record'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/report/betrecord',
+        name: 'report_betrecord',
+        component: function (resolve) {
+            require(['./views/report/bet_record.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.bet_record'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/report/betrecord/:betrecordId',
+        name: 'betrecord_detail',
+        component: function (resolve) {
+            require(['./views/report/betrecord_detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.bet_record_detail'),
+            group: 'report'
+        }
+    },
+    {
+        path: '/banner',
+        component: function (resolve) {
+            require(['./views/manage/banner.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: Vue.t('manage.title_banner')
+        }
+    },
+    {
+        path: '/announcement',
+        component: function (resolve) {
+            require(['./views/manage/announcement.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: Vue.t('manage.title_announcement')
+        }
+    },
+    {
+        path: '/website',
+        component: function (resolve) {
+            require(['./views/manage/website.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: Vue.t('manage.title_website')
+        }
+    },
+    {
+        path: '/messages',
+        name: 'manage',
+        component: function (resolve) {
+            require(['./views/setting/messages.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            title: Vue.t('nav.message'),
+            auth: true
+        }
+    },
+    {
+        path: '/messages/add',
+        name: 'messages_add',
+        component: function (resolve) {
+            require(['./views/setting/messages_form.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            title: Vue.t('nav.add_message'),
+            auth: true
+        }
+    }, {
+        path: '/messages/:messagesId',
+        name: 'messages_detail',
+        component: function (resolve) {
+            require(['./views/setting/messages_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            title: Vue.t('nav.message_details'),
+            auth: true
         }
     }
     ]
