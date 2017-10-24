@@ -4,7 +4,7 @@ const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 const host = env.HOST
 const prefix = host + '/manage/'
-const managePrefix = host + '/api/v1.0/manage/'
+const managePrefix = host + '/v1/manage/'
 
 export default {
     my: prefix + 'my/',
@@ -18,7 +18,10 @@ export default {
     envelope: managePrefix + 'envelope/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
-    game_list: managePrefix + 'game/lottery/',
+    game_list: managePrefix + 'game/',
+    game_play: managePrefix + 'game/play/',
+    game_schedule: managePrefix + 'game/schedule/',
+    gameplay_odds: managePrefix + '/game/odds/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',
