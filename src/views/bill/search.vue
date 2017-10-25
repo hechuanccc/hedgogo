@@ -13,7 +13,7 @@
                         <input type="text" v-model="query.member_q" class="form-control w-sm" />
                     </div>
 
-                    <div class="col-xs-2" v-if="$root.$data.userType !== 'agent'" >
+                    <div class="col-xs-2">
                         <label class="text-sm">{{$t('common.agent')}}</label>
                         <input type="text" v-model="query.agent_q" class="form-control w-sm" />
                     </div>

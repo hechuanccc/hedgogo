@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/bill/returnrate">反水计算</router-link></li>
+                <li class="active"><router-link to="/bill/returnrate">{{$t('nav.returnreport')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>

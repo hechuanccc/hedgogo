@@ -12,7 +12,7 @@
           <div class="col-md-4">
 
             <h2 class="v-m m-t-sm">
-              订单号：
+              {{$t('report.bet_record_number')}}：
               <span>{{betrecords.betrecord_id}}</span>
             </h2>
           </div>
