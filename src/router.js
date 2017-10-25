@@ -54,10 +54,10 @@ export default new Router({
             require(['./views/bill/remit.vue'], resolve)
         },
         meta: {
-            group: 'bill',
+            group: 'financing',
             auth: true,
             disable_tabs: true,
-            title: Vue.t('bill.remit_audit'),
+            title: Vue.t('nav.remit'),
             permission: 'list_remit_online_withdraw_page'
         }
     },
@@ -70,8 +70,8 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('bill.online_payment'),
-            group: 'bill',
+            title: Vue.t('nav.online_pay_orders'),
+            group: 'financing',
             permission: 'list_remit_online_withdraw_page'
         }
     },
@@ -84,8 +84,8 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('bill.withdrawal_audit'),
-            group: 'bill',
+            title: Vue.t('nav.withdraw_request'),
+            group: 'financing',
             permission: 'list_remit_online_withdraw_page'
         }
     },
@@ -98,67 +98,67 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            group: 'bill',
-            title: Vue.t('bill.transcations_query')
+            group: 'financing',
+            title: Vue.t('nav.transaction')
         }
     },
     {
         path: '/envelope_settings',
         component: function (resolve) {
-            require(['./views/envelope/envelope_config.vue'], resolve)
+            require(['./views/marketing/envelope/envelope_config.vue'], resolve)
         },
         meta: {
-            group: 'envelopes',
+            group: 'setting',
             auth: true,
             title: Vue.t('nav.envelope_setting')
         }
     }, {
         path: '/envelope_settings/add',
         component: function (resolve) {
-            require(['./views/envelope/envelope_config_form.vue'], resolve)
+            require(['./views/marketing/envelope/envelope_config_form.vue'], resolve)
         },
         meta: {
-            group: 'envelopes',
+            group: 'setting',
             auth: true,
             title: Vue.t('envelope.add_setting')
         }
     }, {
         path: '/envelope_settings/:envelopeId/edit',
         component: function (resolve) {
-            require(['./views/envelope/envelope_config_form.vue'], resolve)
+            require(['./views/marketing/envelope/envelope_config_form.vue'], resolve)
         },
         meta: {
-            group: 'envelopes',
+            group: 'setting',
             auth: true,
             title: Vue.t('envelope.edit_envelope_setting')
         }
     }, {
         path: '/envelope',
         component: function (resolve) {
-            require(['./views/envelope/envelope.vue'], resolve)
+            require(['./views/marketing/envelope/envelope.vue'], resolve)
         },
         meta: {
-            group: 'envelopes',
+            group: 'marketing',
             auth: true,
             title: Vue.t('nav.envelope')
         }
     }, {
         path: '/envelope/add',
         component: function (resolve) {
-            require(['./views/envelope/envelope_form.vue'], resolve)
+            require(['./views/marketing/envelope/envelope_form.vue'], resolve)
         },
         meta: {
-            group: 'envelopes',
+            group: 'marketing',
             auth: true,
             title: Vue.t('envelope.add_envelope')
         }
     }, {
         path: '/envelope/:envelopeId/edit',
         component: function (resolve) {
-            require(['./views/envelope/envelope_form.vue'], resolve)
+            require(['./views/marketing/envelope/envelope_form.vue'], resolve)
         },
         meta: {
-            group: 'envelopes',
+            group: 'marketing',
             auth: true,
             title: Vue.t('envelope.edit_envelope')
         }
@@ -172,7 +172,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            group: 'bill',
+            group: 'financing',
             title: Vue.t('nav.transaction')
         }
     },
@@ -185,8 +185,8 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('bill.return_report'),
-            group: 'bill'
+            title: Vue.t('nav.returnrate'),
+            group: 'financing'
         }
     },
     {
@@ -199,7 +199,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.returnrate'),
-            group: 'bill'
+            group: 'financing'
         }
     },
     {
@@ -213,11 +213,11 @@ export default new Router({
             disable_tabs: true,
             title: Vue.t('member.manual_adjust'),
             permission: 'manual_deposit_withdraw',
-            group: 'bill'
+            group: 'financing'
         }
     },
     {
-        path: '/bill/commission',
+        path: '/agent/commission',
         name: 'bill-commission',
         component: function (resolve) {
             require(['./views/bill/commission.vue'], resolve)
@@ -225,63 +225,63 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.commission'),
+            title: Vue.t('nav.commission_report'),
             permission: 'calculate_commission',
             agentPermission: 'true',
-            group: 'bill'
+            group: 'agent'
         }
     },
     {
         path: '/member',
         name: 'member',
         component: function (resolve) {
-            require(['./views/member/member.vue'], resolve)
+            require(['./views/users/member/member.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.member'),
             agentPermission: 'true',
-            group: 'member'
+            group: 'users'
         }
     },
     {
         path: '/member/add',
         name: 'member-add',
         component: function (resolve) {
-            require(['./views/member/form.vue'], resolve)
+            require(['./views/users/member/form.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.member_add'),
-            group: 'member'
+            group: 'users'
         }
     },
     {
         path: '/member/:memberId',
         name: 'member-detail',
         component: function (resolve) {
-            require(['./views/member/detail.vue'], resolve)
+            require(['./views/users/member/detail.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.member_detail'),
-            group: 'member'
+            group: 'users'
         }
     },
     {
         path: '/member/:memberId/edit',
         name: 'member-edit',
         component: function (resolve) {
-            require(['./views/member/form.vue'], resolve)
+            require(['./views/users/member/form.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.edit_member'),
-            group: 'member'
+            group: 'users'
         }
     },
     {
@@ -326,10 +326,10 @@ export default new Router({
         path: '/staff',
         name: 'staff',
         component: function (resolve) {
-            require(['./views/setting/staff.vue'], resolve)
+            require(['./views/users/staff/staff.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'users',
             auth: true,
             title: Vue.t('nav.staff')
         }
@@ -338,10 +338,10 @@ export default new Router({
         path: '/staff/add',
         name: 'staff_add',
         component: function (resolve) {
-            require(['./views/setting/staff_form.vue'], resolve)
+            require(['./views/users/staff/staff_form.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'users',
             auth: true,
             title: Vue.t('nav.add_staff')
         }
@@ -350,10 +350,10 @@ export default new Router({
         path: '/staff/:staffId',
         name: 'staff_detail',
         component: function (resolve) {
-            require(['./views/setting/staff_detail.vue'], resolve)
+            require(['./views/users/staff/staff_detail.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'users',
             auth: true,
             title: Vue.t('nav.staff_detail')
         }
@@ -362,10 +362,10 @@ export default new Router({
         path: '/staff/:staffId/edit',
         name: 'staff_edit',
         component: function (resolve) {
-            require(['./views/setting/staff_form.vue'], resolve)
+            require(['./views/users/staff/staff_form.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'users',
             auth: true,
             title: Vue.t('staff.update_staff')
         }
@@ -374,59 +374,59 @@ export default new Router({
         path: '/agent',
         name: 'agent',
         component: function (resolve) {
-            require(['./views/agent/agent.vue'], resolve)
+            require(['./views/users/agent/agent.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent'),
-            group: 'agent'
+            group: 'users'
         }
     },
     {
         path: '/agent/add',
         name: 'agent-add',
         component: function (resolve) {
-            require(['./views/agent/form.vue'], resolve)
+            require(['./views/users/agent/form.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent_add'),
-            group: 'agent'
+            group: 'users'
         }
     },
     {
         path: '/agent/applications',
         name: 'agent-applications',
         component: function (resolve) {
-            require(['./views/agent/applications.vue'], resolve)
+            require(['./views/users/agent/applications.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent_application'),
-            group: 'agent'
+            group: 'users'
         }
     },
     {
         path: '/agent/:agentId',
         name: 'agent-detail',
         component: function (resolve) {
-            require(['./views/agent/detail.vue'], resolve)
+            require(['./views/users/agent/detail.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent_detail'),
-            group: 'agent'
+            group: 'users'
         }
     },
     {
         path: '/agent/:agentId/edit',
         name: 'agent-edit',
         component: function (resolve) {
-            require(['./views/agent/form.vue'], resolve)
+            require(['./views/users/agent/form.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -439,7 +439,7 @@ export default new Router({
         path: '/agent_application/:agentId',
         name: 'ageapplication_detail',
         component: function (resolve) {
-            require(['./views/agent/application_detail.vue'], resolve)
+            require(['./views/users/agent/application_detail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -670,64 +670,77 @@ export default new Router({
         }
     },
     {
-        path: '/report/login',
+        path: '/login_record',
         name: 'report_login',
         component: function (resolve) {
-            require(['./views/report/login_record.vue'], resolve)
+            require(['./views/logging/login_record.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.login_record'),
-            group: 'report'
+            title: Vue.t('nav.login_logs'),
+            group: 'logging'
         }
     },
     {
-        path: '/report/actionrecord',
+        path: '/actionrecord',
         name: 'action_record',
         component: function (resolve) {
-            require(['./views/report/action_record.vue'], resolve)
+            require(['./views/logging/action_record.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.action_record'),
-            group: 'report'
+            title: Vue.t('nav.action_logs'),
+            group: 'logging'
+        }
+    },
+    {
+        path: '/errors',
+        name: 'errors',
+        component: function (resolve) {
+            require(['./views/logging/error.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.errors'),
+            group: 'logging'
         }
     },
     {
         path: '/report/betrecord',
         name: 'report_betrecord',
         component: function (resolve) {
-            require(['./views/report/bet_record.vue'], resolve)
+            require(['./views/betrecord/bet_record.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.bet_record'),
-            group: 'report'
+            group: 'betrecord'
         }
     },
     {
         path: '/report/betrecord/:betrecordId',
         name: 'betrecord_detail',
         component: function (resolve) {
-            require(['./views/report/betrecord_detail.vue'], resolve)
+            require(['./views/betrecord/betrecord_detail.vue'], resolve)
         },
         meta: {
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.bet_record_detail'),
-            group: 'report'
+            group: 'betrecord '
         }
     },
     {
         path: '/banner',
         component: function (resolve) {
-            require(['./views/manage/banner.vue'], resolve)
+            require(['./views/marketing/manage/banner.vue'], resolve)
         },
         meta: {
-            group: 'manage',
+            group: 'marketing',
             auth: true,
             title: Vue.t('manage.title_banner')
         }
@@ -735,10 +748,10 @@ export default new Router({
     {
         path: '/announcement',
         component: function (resolve) {
-            require(['./views/manage/announcement.vue'], resolve)
+            require(['./views/marketing/manage/announcement.vue'], resolve)
         },
         meta: {
-            group: 'manage',
+            group: 'marketing',
             auth: true,
             title: Vue.t('manage.title_announcement')
         }
@@ -746,22 +759,22 @@ export default new Router({
     {
         path: '/website',
         component: function (resolve) {
-            require(['./views/manage/website.vue'], resolve)
+            require(['./views/marketing/manage/website.vue'], resolve)
         },
         meta: {
-            group: 'manage',
+            group: 'marketing',
             auth: true,
             title: Vue.t('manage.title_website')
         }
     },
     {
         path: '/messages',
-        name: 'manage',
+        name: 'message',
         component: function (resolve) {
-            require(['./views/setting/messages.vue'], resolve)
+            require(['./views/marketing/message/messages.vue'], resolve)
         },
         meta: {
-            group: 'manage',
+            group: 'marketing',
             title: Vue.t('nav.message'),
             auth: true
         }
@@ -770,10 +783,10 @@ export default new Router({
         path: '/messages/add',
         name: 'messages_add',
         component: function (resolve) {
-            require(['./views/setting/messages_form.vue'], resolve)
+            require(['./views/marketing/message/messages_form.vue'], resolve)
         },
         meta: {
-            group: 'manage',
+            group: 'marketing',
             title: Vue.t('nav.add_message'),
             auth: true
         }
@@ -782,10 +795,10 @@ export default new Router({
         path: '/messages/:messagesId',
         name: 'messages_detail',
         component: function (resolve) {
-            require(['./views/setting/messages_detail.vue'], resolve)
+            require(['./views/marketing/message/messages_detail.vue'], resolve)
         },
         meta: {
-            group: 'manage',
+            group: 'marketing',
             title: Vue.t('nav.message_details'),
             auth: true
         }
@@ -794,10 +807,10 @@ export default new Router({
         path: '/promotion',
         name: 'promotion',
         component: function (resolve) {
-            require(['./views/setting/promotion.vue'], resolve)
+            require(['./views/marketing/promotion/promotion.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'marketing',
             auth: true,
             title: Vue.t('promotion.title')
         }
@@ -806,10 +819,10 @@ export default new Router({
         path: '/promotion/add',
         name: 'promotion_add',
         component: function (resolve) {
-            require(['./views/setting/promotion_form.vue'], resolve)
+            require(['./views/marketing/promotion/promotion_form.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'marketing',
             auth: true,
             title: Vue.t('promotion.add')
         }
@@ -818,10 +831,10 @@ export default new Router({
         path: '/promotion/:promotionId',
         name: 'promotion_detail',
         component: function (resolve) {
-            require(['./views/setting/promotion_detail.vue'], resolve)
+            require(['./views/marketing/promotion/promotion_detail.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'marketing',
             auth: true,
             title: Vue.t('promotion.detail')
         }
@@ -830,10 +843,10 @@ export default new Router({
         path: '/promotion/:promotionId/edit',
         name: 'promotion_edit',
         component: function (resolve) {
-            require(['./views/setting/promotion_form.vue'], resolve)
+            require(['./views/marketing/promotion/promotion_form.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'marketing',
             auth: true,
             title: Vue.t('promotion.update')
         }
@@ -849,6 +862,175 @@ export default new Router({
             auth: true,
             agentPermission: 'true',
             title: Vue.t('nav.change_password')
+        }
+    },
+    {
+        path: '/report/agent_report',
+        name: 'agent_report',
+        component: function (resolve) {
+            require(['./views/users/agent/agent.vue'], resolve)
+        },
+        meta: {
+            group: 'reporting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.agent_report')
+        }
+    },
+    {
+        path: '/report/member_report',
+        name: 'member_report',
+        component: function (resolve) {
+            require(['./views/users/member/member.vue'], resolve)
+        },
+        meta: {
+            group: 'reporting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.member_report')
+        }
+    },
+    {
+        path: '/report/online_member',
+        name: 'online_member_report',
+        component: function (resolve) {
+            require(['./views/users/member/member.vue'], resolve)
+        },
+        meta: {
+            group: 'reporting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.online_member_report')
+        }
+    },
+    {
+        path: '/betrecord/recent',
+        name: 'recent_bet_record',
+        component: function (resolve) {
+            require(['./views/betrecord/bet_record.vue'], resolve)
+        },
+        meta: {
+            group: 'betrecord',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.recent_bet_records')
+        }
+    },
+    {
+        path: '/betrecord/history',
+        name: 'bet_record_history',
+        component: function (resolve) {
+            require(['./views/betrecord/bet_record.vue'], resolve)
+        },
+        meta: {
+            group: 'betrecord',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.bet_record_history')
+        }
+    },
+    {
+        path: '/betrecord/instant_view',
+        name: 'instant_view',
+        component: function (resolve) {
+            require(['./views/betrecord/bet_record.vue'], resolve)
+        },
+        meta: {
+            group: 'betrecord',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.instant_view')
+        }
+    },
+    {
+        path: '/game_settings',
+        name: 'game_settings',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            group: 'game_manage',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.game_settings')
+        }
+    },
+    {
+        path: '/game_play',
+        name: 'game_plays',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            group: 'game_manage',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.game_play_configurations')
+        }
+    },
+    {
+        path: '/odds',
+        name: 'odds',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            group: 'game_manage',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.odds_management')
+        }
+    },
+    {
+        path: '/lottery_draw',
+        name: 'lottery_draw',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            group: 'game_history',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.lottery_draw_per_game')
+        }
+    },
+    {
+        path: '/permissions',
+        name: 'permissions',
+        // component: function (resolve) {
+        //     require(['./views/game_manage/list.vue'], resolve)
+        // },
+        meta: {
+            group: 'setting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.permissions')
+        }
+    },
+    {
+        path: '/roles',
+        name: 'roles',
+        // component: function (resolve) {
+        //     require(['./views/game_manage/list.vue'], resolve)
+        // },
+        meta: {
+            group: 'setting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.roles')
+        }
+    },
+    {
+        path: '/global_parameters',
+        name: 'global_parameters',
+        // component: function (resolve) {
+        //     require(['./views/game_manage/list.vue'], resolve)
+        // },
+        meta: {
+            group: 'setting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.global_parameters')
         }
     }
     ]

@@ -4,7 +4,7 @@ const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 const host = env.HOST
 const prefix = host + '/manage/'
-const managePrefix = host + '/api/v1.0/manage/'
+const managePrefix = host + '/v1/manage/'
 
 export default {
     my: prefix + 'my/',
@@ -51,5 +51,6 @@ export default {
     promotion: managePrefix + 'promotion/',
     changePassword: prefix + 'password/',
     metrics_count: managePrefix + 'metrics/count/',
-    manual_transaction: managePrefix + 'manual_transaction/'
+    manual_transaction: managePrefix + 'manual_transaction/',
+    returnreport: host + '/report/'
 }
