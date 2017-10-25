@@ -52,6 +52,7 @@ export default {
         title_banner: 'banner管理',
         title_website: '网站管理',
         game_manage: '游戏管理',
+        game_history: '历史开奖',
         game_list: '游戏列表',
         game_detail: '游戏详情',
         edit_game: '编辑游戏资料',
@@ -391,6 +392,11 @@ export default {
         code: '游戏号码',
         to_display: '是否显示',
         icon: '图标'
+    },
+    game_history: {
+        game: '游戏',
+        already_result: '已开期数',
+        notyet_result: '剩余期数'
     },
     agent: {
         number: '编号',

@@ -127,6 +127,15 @@
                                 <li><router-link to="/game_list"><span class="nav-text">{{$t("nav.game_list")}}</span></router-link></li>
                             </ul>
                         </li>
+                        <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
+                            <a>
+                                <span class="nav-icon"><i class="material-icons">&#xE889;</i></span>
+                                <span class="nav-text">{{$t("nav.game_history")}}</span>
+                            </a>
+                            <ul class="nav-sub">
+                                <li><router-link to="/game_history"><span class="nav-text">{{$t("nav.game_history")}}</span></router-link></li>
+                            </ul>
+                        </li>
                         <li :class="$route.meta.group == 'manage' ? 'active' : ''">
                             <a>
                                 <span class="nav-icon"><i class="material-icons">&#xE051;</i></span>

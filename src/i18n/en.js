@@ -126,6 +126,7 @@ export default {
         title_banner: 'Banner',
         title_website: 'Website',
         game_manage: 'Game Manage',
+        game_history: 'Game History',
         game_list: 'Game List',
         game_detail: 'Game Detail',
         edit_game: 'Edit Game',
@@ -393,6 +394,11 @@ export default {
         code: 'Game Code',
         to_display: 'Is Display',
         icon: 'Icon'
+    },
+    game_history: {
+        game: 'Game',
+        already_result: 'Drawed Period Amounts',
+        notyet_result: 'Remaining Period Amounts'
     },
     agent: {
         number: 'No.',

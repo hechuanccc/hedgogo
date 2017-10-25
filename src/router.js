@@ -310,6 +310,18 @@ export default new Router({
         }
     },
     {
+        path: '/game_history',
+        name: 'game_history',
+        component: function (resolve) {
+            require(['./views/game_history/overview.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.game_history'),
+            group: 'game_history'
+        }
+    },
+    {
         path: '/staff',
         name: 'staff',
         component: function (resolve) {
@@ -681,8 +693,6 @@ export default new Router({
             title: Vue.t('nav.action_record'),
             group: 'report'
         }
-<<<<<<< HEAD
-=======
     },
     {
         path: '/report/betrecord',
@@ -839,7 +849,6 @@ export default new Router({
             agentPermission: 'true',
             title: Vue.t('nav.change_password')
         }
->>>>>>> 0c767ae1ee3b8f0ace771cc8765f0e81a58ef60b
     }
     ]
 })
