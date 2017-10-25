@@ -322,6 +322,18 @@ export default new Router({
         }
     },
     {
+        path: '/game_history/:id',
+        name: 'history_detail',
+        component: function (resolve) {
+            require(['./views/game_history/detail_schedule.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.game_history'),
+            group: 'game_history'
+        }
+    },
+    {
         path: '/staff',
         name: 'staff',
         component: function (resolve) {

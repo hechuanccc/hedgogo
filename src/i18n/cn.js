@@ -395,8 +395,8 @@ export default {
     },
     game_history: {
         game: '游戏',
-        already_result: '已开期数',
-        notyet_result: '剩余期数'
+        already_result: '当日已开期数',
+        notyet_result: '当日剩余期数'
     },
     agent: {
         number: '编号',

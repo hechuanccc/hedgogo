@@ -10,12 +10,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for = "game in game_list"
+					<tr v-for = "game in game_list" 
 					    :keys = "game.id">
-						<td>{{game.display_name}}</td>
-						<td><span class="history-list__amount">testtest</span></td>
-						<td><span class="history-list__amount">testtest</span></td>
-					</tr>
+				        <router-link
+					        :to = "'/game_history/' + game.id"
+					        tag = "td"
+					        class = "href-hover">
+					        {{game.display_name}}
+					    </router-link>
+				    <td><span class="history-list__value">gaining...</span></td>
+				    <td><span class="history-list__value">gaining...</span></td>
+                    </tr>
 				</tbody>
 			</table>
 		</div>
@@ -35,7 +40,6 @@ export default{
             this.$http.get(api.game_list).then(
                 response => {
                     this.game_list = response.data
-                    console.log(this.game_list)
                 },
                 response => {
                     if (('' + response.status).indexOf('4') === 0) {
@@ -50,11 +54,16 @@ export default{
 }
 </script>
 <style lang="sass" scoped>
-.history-list__amount
+.history-list__value
   padding-right: 0.7em
   padding-left: 0.7em
   padding-top: 0.5em
   padding-bottom: 0.5em
   border-radius: 5px
   background-color: #E5E5E5
+.href-hover
+  cursor: pointer
+  &:hover
+    background-color: #E7E5E5
+    transition: background-color .2s
 </style>
