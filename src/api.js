@@ -49,5 +49,10 @@ export default {
     banner: managePrefix + 'banner/',
     announcement: managePrefix + 'announcement/',
     messages: managePrefix + 'message/',
-    website: managePrefix + 'website/home-page/'
+    website: managePrefix + 'website/home-page/',
+    onlinemembers: managePrefix + 'online_member/',
+    promotion: managePrefix + 'promotion/',
+    changePassword: prefix + 'password/',
+    metrics_count: managePrefix + 'metrics/count/',
+    manual_transaction: managePrefix + 'manual_transaction/'
 }

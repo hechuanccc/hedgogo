@@ -53,7 +53,6 @@
                                 <li><router-link to="/report/login?report_flag=True"><span class="nav-text">{{$t('nav.login_record')}}</span></router-link></li>
                                 <li><router-link to="/report/actionrecord"><span class="nav-text">{{$t('nav.action_record')}}</span></router-link></li>
                                 <li><router-link to="/report/betrecord?report_flag=True"><span class="nav-text">{{$t('nav.bet_record')}}</span></router-link></li>
-                                <li><router-link to="/report/transferrecord"><span class="nav-text">{{$t('nav.transfer_record')}}</span></router-link></li>
                             </ul>
                         </li>
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
@@ -74,11 +73,6 @@
                                         <span class="nav-text">{{$t("nav.member_add")}}</span>
                                     </router-link>
                                 </li>
-                                <!--<li>-->
-                                    <!--<router-link to="/member/applications">-->
-                                        <!--<span class="nav-text">{{$t("nav.member_application")}}</span>-->
-                                    <!--</router-link>-->
-                                <!--</li>-->
                             </ul>
                         </li>
 

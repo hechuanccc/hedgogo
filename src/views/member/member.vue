@@ -102,7 +102,7 @@
           <tr >
             <th>{{$t('member.list_no')}}</th>
             <th>{{$t('member.account')}}</th>
-            <th>{{$t('common.realname')}}</th>
+            <th>{{$t('common.real_name')}}</th>
             <th>{{$t('member.last_login')}}</th>
             <th>{{$t('member.loggedin_domain')}}</th>
             <th>{{$t('member.loggedin_ip')}}</th>

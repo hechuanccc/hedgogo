@@ -2,34 +2,34 @@
 
 export default {
     bill: {
-        remit_audit: 'Remit audit',
-        online_payment: 'Online payment history',
-        withdrawal_audit: 'Withdrawal request audit',
-        transcations_query: 'Transaction search',
-        return_report: 'Return report',
-        commission_report: 'Commission report',
+        remit_audit: 'Remit Audit',
+        online_payment: 'Online Payment History',
+        withdrawal_audit: 'Withdraw Request Audit',
+        transcations_query: 'Transaction Search',
+        return_report: 'Return Report',
+        commission_report: 'Commission Report',
         balance_after: 'Balance after transaction',
-        order_id: 'Order id',
-        order_detail: 'Order detail',
+        order_id: 'Order ID',
+        order_detail: 'Order Detail',
         created_at: 'Created at',
-        transaction_type: 'Transaction type',
+        transaction_type: 'Transaction Type',
         online_pay: 'Online Pay',
         remit: 'Remit',
         withdraw: 'Withdraw',
         discount: 'Discount',
-        manual_operation: 'Manual operation',
+        manual_operation: 'Manual Operation',
         operation: 'Manual adjust balance',
         return: 'Return',
         game_settlement: 'Game Settlement',
         remit_payee: 'Remit Payee',
-        view_detailed: 'View detail',
+        view_detailed: 'View Details',
         depositor: 'Depositor',
         deposited_at: 'Deposited at',
-        merchant_status: 'Merchant status',
-        manual_confirm: 'Manual confirm',
+        merchant_status: 'Merchant Status',
+        manual_confirm: 'Manual Confirm',
         audit: 'Pass',
         audit_deny: 'Deny',
-        audit_amount: 'Audit amount',
+        audit_amount: 'Audit Amount',
         confirm_declined: 'Are you sure?',
         cancel: 'Reject and return money',
         declined: 'Decline and confiscate',
@@ -42,7 +42,16 @@ export default {
         deposit_amount: 'Deposit Amount',
         audit_method: 'Audit Method',
         card_pay: 'Card Pay',
-        onlinepay: 'Online Pay'
+        onlinepay: 'Online Pay',
+        others: 'Others',
+        audit_type: 'Audit Type',
+        free_audit: 'Free',
+        deposit_audit: 'Deposit Audit',
+        preferential_audit: 'Preferential Audit',
+        suggested_balance: 'Include in Suggested Balance',
+        sug_balance_alert: 'If for lost amount, choose no.',
+        deposit_amount_alert: 'A negative value means chargeback.',
+        submit_alert: 'Note: Submitting the transaction will directly update the member account balance.'
     },
     envelope: {
         name: 'Name',
@@ -61,7 +70,10 @@ export default {
         and: 'And',
         or: 'Or',
         envelope_setting: 'Envelope Setting',
-        envelope: 'envelope'
+        envelope: 'Envelope',
+        add_setting: 'Add Setting',
+        edit_envelope: 'Edit Envelope',
+        edit_envelope_setting: 'Edit Envelope Setting'
     },
     nav: {
         overview: 'Overview',
@@ -132,7 +144,8 @@ export default {
         payment_type_setting_detail: 'Payment Type Setting Detail',
         bet_record_detail: 'Bet Record Detail',
         add_message: 'Add Message',
-        message_details: 'Message Detail'
+        message_details: 'Message Detail',
+        change_password: 'Change Password'
     },
     returnrate: {
         created_at: 'Created at',
@@ -250,7 +263,7 @@ export default {
         transfer: 'Transfer',
         game: 'Game',
         settledat: 'Settled at',
-        betamount: 'Bet amount',
+        betamount: 'Bet Amount',
         valid_bet_amount: 'Valid Bet Amount',
         betdate: 'Bet Date',
         settlementamount: 'Settlement Amount',
@@ -266,8 +279,8 @@ export default {
         last_month: 'Last month',
         gamecategory: 'Game Category',
         generate: 'Generate',
-        onlinemember: 'online member',
-        onlinemembers: 'online members',
+        onlinemember: 'Online Member',
+        onlinemembers: 'Online Members',
         search_member: 'Search member',
         submit: 'Submit',
         profit: 'Profit',
@@ -350,7 +363,8 @@ export default {
         withdraw_password_changed: 'The withdraw password has been modified to: ',
         add_level: 'Add Level',
         edit_level: 'Modify Level',
-        delete_level: 'Delete Level'
+        delete_level: 'Delete Level',
+        logout: 'Log Out'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -529,8 +543,8 @@ export default {
         second_name: 'Second Name',
         logo: 'Logo',
         description: 'Description',
-        link: 'Promotion address',
-        prev_password: 'Prev Password',
+        link: 'Promotion Address',
+        prev_password: 'Previous Password',
         new_password: 'New Password',
         repeat_password: 'Repeat Password',
         title_website: 'Website'
@@ -549,5 +563,25 @@ export default {
         transaction: 'Transaction',
         text: 'Message',
         time: 'Time Created'
+    },
+    promotion: {
+        title: 'Promotion',
+        add: 'Add Promotion',
+        update: 'Edit Promotion',
+        promotion_detail: 'Promotion Details',
+        banner: 'Banner',
+        mobileBanner: 'Mobile Banner',
+        desc: 'Description',
+        desc_mobile: 'Description Mobile',
+        level: 'Level',
+        rank: 'Rank',
+        availability: 'Availability',
+        detail: 'Promotion Detail',
+        start_date: 'Start Date',
+        end_date: 'End Date'
+    },
+    header: {
+        deposit: 'Deposit',
+        withdraw: 'Withdraw'
     }
 }
