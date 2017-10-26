@@ -121,12 +121,8 @@ export default {
         title_announcement: 'Announcement',
         title_banner: 'Banner',
         title_website: 'Website',
-<<<<<<< HEAD
-        game_manage: 'Game Manage',
         game_history: 'Game History',
-=======
         game_manage: 'Game Management',
->>>>>>> upstream/master
         game_list: 'Game List',
         game_detail: 'Game Detail',
         edit_game: 'Edit Game',
@@ -164,11 +160,9 @@ export default {
         action_logs: 'Action Logs',
         errors: 'Error Logs',
         marketing: 'Marketing',
-        game_history: 'Game History',
         game_settings: 'Game Settings',
         game_play_configurations: 'Game Play Configurations',
-        odds_management: 'Odds Management',
-        lottery_draw_per_game: 'Lottery Draw Per Game'
+        odds_management: 'Odds Management'
     },
     returnrate: {
         created_at: 'Created at',

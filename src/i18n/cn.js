@@ -89,11 +89,9 @@ export default {
         action_logs: '操作日誌',
         errors: '異常日誌',
         marketing: '運營管理',
-        game_history: '歷史開獎',
         game_settings: '遊戲設定',
         game_play_configurations: '交易設定',
-        odds_management: '盤口設定',
-        lottery_draw_per_game: '每個遊戲一個頁面'
+        odds_management: '盤口設定'
     },
     envelope: {
         name: '名称',

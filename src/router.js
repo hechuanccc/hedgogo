@@ -993,19 +993,6 @@ export default new Router({
         }
     },
     {
-        path: '/lottery_draw',
-        name: 'lottery_draw',
-        component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
-        },
-        meta: {
-            group: 'game_history',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.lottery_draw_per_game')
-        }
-    },
-    {
         path: '/permissions',
         name: 'permissions',
         // component: function (resolve) {

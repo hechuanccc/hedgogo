@@ -120,14 +120,12 @@
                                 <li><router-link to="/odds"><span class="nav-text">{{$t("nav.odds_management")}}</span></router-link></li>
                             </ul>
                         </li>
+                        
                         <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
-                            <a>
-                                <span class="nav-icon"><i class="material-icons">&#xe889;</i></span>
+                            <router-link to="/game_history">
+                                <span class="nav-icon"><i class="material-icons">&#xE889;</i></span>
                                 <span class="nav-text">{{$t("nav.game_history")}}</span>
-                            </a>
-                            <ul class="nav-sub">
-                                <li><router-link to="/lottery_draw"><span class="nav-text">{{$t("nav.lottery_draw_per_game")}}</span></router-link></li>
-                            </ul>
+                            </router-link>
                         </li>
 
                         <li><div class="b-b b m-t-sm m-b-sm"></div></li>
@@ -171,20 +169,7 @@
                                 <li v-if="$root.permissions.includes('calculate_commission')"><router-link to="/agent/commission?report_flag=True"><span class="nav-text">{{$t('nav.commission_report')}}</span></router-link></li>
                             </ul>
                         </li>
-<<<<<<< HEAD
-                        <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
-                            <a>
-                                <span class="nav-icon"><i class="material-icons">&#xE889;</i></span>
-                                <span class="nav-text">{{$t("nav.game_history")}}</span>
-                            </a>
-                            <ul class="nav-sub">
-                                <li><router-link to="/game_history"><span class="nav-text">{{$t("nav.game_history")}}</span></router-link></li>
-                            </ul>
-                        </li>
                         <li :class="$route.meta.group == 'manage' ? 'active' : ''">
-=======
-                        <li :class="$route.meta.group == 'marketing' ? 'active' : ''">
->>>>>>> upstream/master
                             <a>
                                 <span class="nav-icon"><i class="material-icons">&#xE051;</i></span>
                                 <span class="nav-text">{{$t("nav.marketing")}}</span>

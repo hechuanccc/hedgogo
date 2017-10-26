@@ -1,6 +1,7 @@
 <template>
 <div>
-    <label>日期：<input type="date" name="draw_date"></label>
+    <h3>{{game_test.display_name}}</h3>
+    <label><input type="date" name="draw_date"></label><label><input type="text" name="draw_search" placeholder="期數"></label>
     <div class="card col">
         <div class="card-body">
             <table class="table table-hover">
