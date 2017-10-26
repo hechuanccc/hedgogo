@@ -6,7 +6,31 @@
           <li class="active">{{game.display_name}}</li>
         </ol>
       </div>
-      <div class="box"></div>
+      <div class="box">
+        <div class="box-header b-b ">
+          <h3>{{$t('game_manage.transaction_setting')}}</h3>
+        </div>
+        <div class="box-body">
+          <table class="table table-striped b-t">
+            <thead>
+              <tr >
+                <th>{{$t('game_manage.play')}}</th>
+                <th>{{$t('game_manage.lowest_per_bet')}}</th>
+                <th>{{$t('game_manage.highest_per_bet')}}</th>
+                <th>{{$t('game_manage.highest_cur_sched')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
    </div>
 </template>
 <script>

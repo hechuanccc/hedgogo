@@ -418,7 +418,11 @@ export default {
         no_setting: '未设置',
         setting: '设置',
         handicap_setting: '盘口设定',
-        transaction_setting: '交易设定'
+        transaction_setting: '交易设定',
+        play: '玩法',
+        lowest_per_bet: '单注下注最低金额',
+        highest_per_bet: '单注下注最高金额',
+        highest_cur_sched: '当期下注最高金额'
     },
     agent: {
         number: '编号',

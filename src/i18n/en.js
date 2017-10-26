@@ -417,7 +417,11 @@ export default {
         openning: 'Openning',
         no_setting: 'No Setting',
         handicap_setting: 'Handicap Setting',
-        transaction_setting: 'Transaction Setting'
+        transaction_setting: 'Transaction Setting',
+        play: 'Play',
+        lowest_per_bet: 'Lowest Amount Per Bet',
+        highest_per_bet: 'highest Amount Per Bet',
+        highest_cur_sched: 'highest Amount Currently'
     },
     agent: {
         number: 'No.',
