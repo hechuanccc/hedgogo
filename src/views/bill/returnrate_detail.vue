@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/bill/returnrate">反水计算</router-link></li>
+                <li class="active"><router-link to="/bill/returnrate">{{$t('nav.returnreport')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
@@ -21,7 +21,7 @@
                         <th>{{$t('common.username')}}</th>
                         <th v-for="p in provider">{{p.code}}</th>
                         <th>{{$t('common.status')}}</th>
-                        <th>{{$t('returnrate.updatedby')}}</th>
+                        <th>{{$t('common.operator')}}</th>
                         <th>{{$t('returnrate.total_return')}}</th>
                     </tr>
                 </thead>

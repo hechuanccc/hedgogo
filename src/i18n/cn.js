@@ -3,9 +3,10 @@
 export default {
     nav: {
         overview: '总览',
-        bills: '财务',
-        transaction: '交易',
+        transaction: '交易記錄查詢',
+        financing: '財務管理',
         report: '报表',
+        users: '用戶管理',
         member: '会员',
         agent: '代理商',
         setting: '系统配置',
@@ -26,14 +27,13 @@ export default {
         edit_member: '编辑会员资料',
         agent_detail: '代理商详情',
         edit_agent: '编辑代理商',
-        remit_audit: '公司入款审核',
-        online_payment: '线上支付看板',
-        withdrawal_audit: '取款申请审核',
+        remit: '公司入款審核',
+        online_pay_orders: '線上支付看板',
+        withdraw_request: '取款申請審核',
         transcations_query: '交易记录查询',
-        return_report: '反水计算',
+        return_report: '反水計算',
         commission_report: '佣金计算',
         game_report: '统计报表',
-        login_record: '登录记录',
         returnrate: '反水',
         commission: '佣金',
         login: '登录',
@@ -41,7 +41,6 @@ export default {
         transfer_record: '娱乐场转账记录',
         promotion: '优惠活动',
         message: '站内信',
-        action_record: '操作记录',
         staff: '子账号管理',
         add_staff: '新增账号',
         staff_detail: '子账号详情',
@@ -69,7 +68,30 @@ export default {
         payment_type_setting_detail: '支付方式管理',
         bet_record_detail: '投注记录详情',
         add_message: '新增站内信',
-        message_details: '站内信详情'
+        message_details: '站内信详情',
+        change_password: '修改密码',
+        agent_report: '代理報表',
+        member_report: '會員報表',
+        online_member_report: '在線報表',
+        recent_bet_records: '今日注單',
+        bet_record_history: '歷史注單',
+        instant_view: '實時滾單',
+        general_agent_list: '總代理',
+        online_member_list: '在線會員',
+        system_configuration: '系統配置',
+        permissions: '權限管理',
+        roles: '角色管理',
+        global_parameters: '系統參數配置',
+        logging: '日誌管理',
+        login_logs: '登錄日誌',
+        action_logs: '操作日誌',
+        errors: '異常日誌',
+        marketing: '運營管理',
+        game_history: '歷史開獎',
+        game_settings: '遊戲設定',
+        game_play_configurations: '交易設定',
+        odds_management: '盤口設定',
+        lottery_draw_per_game: '每個遊戲一個頁面'
     },
     envelope: {
         name: '名称',
@@ -89,7 +111,10 @@ export default {
         and: '同时满足',
         or: '存款或下注',
         envelope_setting: '配置红包',
-        envelope: '红包'
+        envelope: '红包',
+        add_setting: '添加红包设置',
+        edit_envelope: '编辑红包',
+        edit_envelope_setting: '编辑红包组'
     },
     returnrate: {
         created_at: '反水生成时间',
@@ -153,11 +178,6 @@ export default {
         failed: '未通过'
     },
     bill: {
-        remit_audit: '公司入款审核',
-        online_payment: '线上支付看板',
-        withdrawal_audit: '取款申请审核',
-        transcations_query: '交易记录查询',
-        return_report: '反水计算',
         commission_report: '佣金计算',
         balance_after: '交易后账户余额',
         order_id: '订单号',
@@ -173,7 +193,6 @@ export default {
         game_settlement: '游戏结算',
         remit_payee: '入款账号',
         view_detailed: '查看详情',
-        operation: '手工存提',
         depositor: '存款人',
         deposited_at: '存款时间',
         merchant_status: '商户状态',
@@ -191,7 +210,20 @@ export default {
         deposit_declined: '入款已拒绝',
         withdraw_declined: '汇款已拒绝',
         onlinepay: '线上支付',
-        card_pay: '点卡支付'
+        card_pay: '点卡支付',
+        deposit_amount: '存款金额',
+        others: '其他',
+        audit_type: '稽核方式',
+        free_audit: '免稽核',
+        deposit_audit: '存款稽核',
+        preferential_audit: '优惠稽核',
+        suggested_balance: '是否记入审查记录',
+        sug_balance_alert: '用于补偿额度丢失，选否',
+        deposit_amount_alert: '输入负数即为扣款',
+        submit_alert: '注意：提交该交易将直接更新会员账户余额',
+        view_all_orders: '查看会员所有订单',
+        fee: '手续费',
+        discount_deduction: '优惠扣除'
     },
     common: {
         default_agent_password: '代理商登录密码预设',
@@ -283,7 +315,8 @@ export default {
         edit_bank_information: '编辑银行资讯',
         member_count: '会员数量',
         agent_count: '目前代理人数',
-        not_set: '未设定'
+        not_set: '未设定',
+        repeat: '重复'
     },
     bank: {
         bank_title: '银行资讯',
@@ -338,14 +371,14 @@ export default {
         add_promotion: '新增活动',
         view_promotions: '查看活动',
         update_promotion: '更新活动',
-        export: '输出',
         view_action_record: '查看操作记录',
         change_audit_status: '修改此会员稽核',
         login_password_changed: '登录密码已修改为：',
         withdraw_password_changed: '取款密码已修改为：',
         add_level: '新增会员等级',
         edit_level: '修改会员等级',
-        delete_level: '删除会员等级'
+        delete_level: '删除会员等级',
+        logout: '退出登录'
     },
     staff: {
         roles: '角色 / 权限',
@@ -555,7 +588,26 @@ export default {
         members: '群发',
         transaction: '相关交易',
         text: '发送内容',
-        time: '创建时间',
-        add_message: '新增站内信'
+        time: '创建时间'
+    },
+    promotion: {
+        title: '优惠活动管理',
+        add: '新增优惠活动',
+        update: '更新优惠活动',
+        promotion_detail: '优惠活动详情',
+        banner: '题图',
+        mobileBanner: '手机端题图',
+        desc: '电脑优惠活动详情',
+        desc_mobile: '手机优惠活动详情',
+        level: '适用的会员等级',
+        rank: '优惠活动排序',
+        availability: '有效期',
+        detail: '优惠活动详情',
+        start_date: '起始日期',
+        end_date: '结束日期'
+    },
+    header: {
+        deposit: '入款',
+        withdraw: '取款'
     }
 }

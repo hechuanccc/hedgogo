@@ -3,57 +3,57 @@
         <div class="box-body">
             <form v-on:submit.prevent="onSubmit">
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">存入账号</label>
+                    <label class="col-sm-2 form-control-label">{{$t('common.username')}}</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" v-model="transaction.member" required />
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">存款金额</label>
+                    <label class="col-sm-2 form-control-label">{{$t('bill.deposit_amount')}}</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" v-model="transaction.amount" required />
                     </div>
                     <div class="col-xs-2">
-                        <span class="t-red">输入负数即为扣款</span>
+                        <span class="t-red">{{$t('bill.deposit_amount_alert')}}</span>
                     </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-sm-2 form-control-label">是否记入审查记录</label>
+                  <label class="col-sm-2 form-control-label">{{$t('bill.suggested_balance')}}</label>
                   <div class="col-xs-5 form-control-label">
                     <label class="md-check m-r">
                       <input type="radio" value="1" name="compensation"  v-model="compensation"/>
                       <i class="blue"></i>
-                      是
+                      {{$t('common.yes')}}
                     </label>
 
                     <label class="md-check m-r">
                       <input type="radio" value="0" name="compensation" v-model="compensation" />
                       <i class="blue"></i>
-                      否
+                      {{$t('common.no')}}
                     </label>
-                    <span class="text-danger"> 用于补偿额度丢失，选否 </span>
+                    <span class="text-danger"> {{$t('bill.sug_balance_alert')}} </span>
                   </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">稽核方式</label>
+                    <label class="col-sm-2 form-control-label">{{$t('bill.audit_type')}}</label>
                     <div class="col-xs-5 form-control-label">
                         <label class="md-check m-r">
                             <input type="radio" value="0" name="check-type" v-model="transaction.audit.type" />
                             <i class="blue"></i>
-                            免稽核
+                            {{$t('bill.free_audit')}}
                         </label>
 
                         <label class="md-check m-r">
                             <input type="radio" value="1" name="check-type" v-model="transaction.audit.type" />
                             <i class="blue"></i>
-                            存款稽核
+                            {{$t('bill.deposit_audit')}}
                         </label>
 
                         <label class="md-check">
                             <input type="radio" value="2" name="check-type" v-model="transaction.audit.type" />
                             <i class="blue"></i>
-                            优惠稽核
+                            {{$t('bill.preferential_audit')}}
                         </label>
                     </div>
                 </div>
@@ -65,38 +65,38 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">交易类型</label>
+                    <label class="col-sm-2 form-control-label">{{$t('bill.transaction_type')}}</label>
                     <div class="col-xs-8 form-control-label">
                         <label class="md-check m-r">
                             <input type="radio" value="manual_operation" name="t-type" v-model="transaction.transaction_type" />
                             <i class="blue"></i>
-                            人工存提
+                            {{$t('bill.manual_operation')}}
                         </label>
                         <label class="md-check m-r">
                             <input type="radio" value="discount" name="t-type" v-model="transaction.transaction_type"  />
                             <i class="blue"></i>
-                            优惠
+                            {{$t('bill.discount')}}
                         </label>
                         <label class="md-check m-r">
                             <input type="radio" value="return" name="t-type" v-model="transaction.transaction_type" />
                             <i class="blue"></i>
-                            反水
+                            {{$t('bill.return')}}
                         </label>
                         <label class="md-check m-r">
                             <input type="radio" value="game_settlement" name="t-type" v-model="transaction.transaction_type" />
                             <i class="blue"></i>
-                            派彩
+                            {{$t('bill.game_settlement')}}
                         </label>
                         <label class="md-check">
                             <input type="radio" value="other" name="t-type" v-model="transaction.transaction_type" />
                             <i class="blue"></i>
-                            其他
+                            {{$t('bill.others')}}
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">备注</label>
+                    <label class="col-sm-2 form-control-label">{{$t('common.memo')}}</label>
                     <div class="col-sm-3">
                         <textarea class="form-control" v-model="transaction.memo"></textarea>
                     </div>
@@ -104,7 +104,7 @@
 
 
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">子账号密码</label>
+                    <label class="col-sm-2 form-control-label">{{$t('staff.password')}}</label>
                     <div class="col-sm-3">
                         <input type="password" class="form-control" placeholder="再次输入当前子账号密码" v-model="transaction.password" required />
                     </div>
@@ -114,8 +114,8 @@
                     <label class="col-sm-2 form-control-label"></label>
                     <div class="col-sm-5">
                         <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
-                        <button class="md-btn blue w-sm" type="submit">提交</button>
-                        <div class="m-t-sm text-sm t-red">注意：提交该交易将直接更新会员账户余额</div>
+                        <button class="md-btn blue w-sm" type="submit">{{$t('common.submit')}}</button>
+                        <div class="m-t-sm text-sm t-red">{{$t('bill.submit_alert')}}</div>
                     </div>
                 </div>
             </form>
