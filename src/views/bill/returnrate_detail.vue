@@ -21,7 +21,7 @@
                         <th>{{$t('common.username')}}</th>
                         <th v-for="p in provider">{{p.code}}</th>
                         <th>{{$t('common.status')}}</th>
-                        <th>{{$t('returnrate.updatedby')}}</th>
+                        <th>{{$t('common.operator')}}</th>
                         <th>{{$t('returnrate.total_return')}}</th>
                     </tr>
                 </thead>

@@ -54,5 +54,6 @@ export default {
     promotion: managePrefix + 'promotion/',
     changePassword: prefix + 'password/',
     metrics_count: managePrefix + 'metrics/count/',
-    manual_transaction: managePrefix + 'manual_transaction/'
+    manual_transaction: managePrefix + 'manual_transaction/',
+    returnreport: host + '/report/'
 }

@@ -69,7 +69,7 @@
 
                             <div class="grey-100 p-a clearfix" v-if="transaction.transaction_type.code === 'withdraw'">
                                 <div class="row">
-                                    <div class="col-xs-3 text-right text-muted">{{$t('member.realname')}}</div>
+                                    <div class="col-xs-3 text-right text-muted">{{$t('common.real_name')}}</div>
                                     <div class="col-xs-9 ">{{transaction.member.real_name}} &nbsp;</div>
                                 </div>
                                 <div class="row">
@@ -89,24 +89,24 @@
                                     <div class="col-xs-9 ">{{transaction.member.bank.account}} &nbsp;</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-3 text-right text-muted">手续费</div>
-                                    <div class="col-xs-9 "></div>
+                                    <div class="col-xs-3 text-right text-muted">{{$t('bill.fee')}}</div>
+                                    <div class="col-xs-9 ">{{transaction.withdraw_fee}} &nbsp;</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-3 text-right text-muted">优惠扣除</div>
+                                    <div class="col-xs-3 text-right text-muted">{{$t('bill.discount_deduction')}}</div>
                                     <div class="col-xs-9 "></div>
                                 </div>
 
                             </div>
                             <div class="grey-100 p-a clearfix" v-if="transaction.transaction_type.code === 'manual_operation'">
-                                <div class="col-xs-3 text-right text-muted">{{$t('member.realname')}}</div>
-                                <div class="col-xs-9 ">{{transaction.member.real_name}} &nbsp;</div>
+                                <div class="col-xs-3 text-right text-muted">{{$t('common.real_name')}}</div>
+                                <div class="col-xs-9 ">{{transaction.member.username}} &nbsp;</div>
 
 
                                 <div class="col-xs-3 text-right text-muted">{{$t('bill.audit_amount')}}</div>
                                 <div class="col-xs-9" v-if="transaction.audit_amount">{{transaction.audit_amount | currency('￥')}} &nbsp;</div>
                                 <div class="col-xs-9" v-else>
-                                    <span>免稽核</span>
+                                    <span>{{$t('bill.free_audit')}}</span>
                                 </div>
 
                                 <div class="col-xs-3 text-right text-muted">{{$t('bill.operator')}}</div>
@@ -126,7 +126,7 @@
                         <div class="col-xs-3 text-right">{{$t('common.member')}}</div>
                         <div class="col-xs-8">
                             <router-link :to="'/member/' + transaction.member.id">{{transaction.member.username}}</router-link>
-                            <router-link :to="'/bill/search?member=' + transaction.member.username" class="m-l text-blue">查看会员所有订单</router-link>
+                            <router-link :to="'/bill/search?member=' + transaction.member.username" class="m-l text-blue">{{$t('bill.view_all_orders')}}</router-link>
                         </div>
                     </div>
                     <div class="row m-t">

@@ -46,9 +46,9 @@
                             <span v-else class="label label-sm up">{{withdraw_count}}</span>
                         </a>
                     </router-link>
-                    <router-link tag="li" v-if="agent_application" class="nav-item dropdown pos-stc-xs pointer" to="/agent/applications?status=3">
+                    <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer" to="/agent/applications?status=3">
                         <a class="nav-link" >
-                            <label class="pointer label">代理申请</label>
+                            <label class="pointer label">{{$t('nav.agent_application')}}</label>
                             <span  class="label label-sm up warn">{{agent_application}}</span>
                         </a>
                     </router-link>

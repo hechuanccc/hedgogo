@@ -48,10 +48,11 @@ export default {
             this.$http.get(api.game_list + id).then(
                 response => {
                     this.game_test = response.data
-                    console.log(this.game_test)
                 },
                 response => {
-                    console.log('fuck u!')
+                    if (('' + response.status).indexOf('4') === 0) {
+                        this.$router.push('/login?next=' + this.$route.path)
+                    }
                 })
         }
     }
