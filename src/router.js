@@ -305,20 +305,8 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.game_detail'),
+            title: Vue.t('nav.game_manage'),
             agentPermission: 'true',
-            group: 'game_manage'
-        }
-    },
-    {
-        path: '/game_detail/:id/edit',
-        name: 'game_edit',
-        component: function (resolve) {
-            require(['./views/game_manage/form.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            title: Vue.t('nav.edit_game'),
             group: 'game_manage'
         }
     },

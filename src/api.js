@@ -18,7 +18,7 @@ export default {
     envelope: managePrefix + 'envelope/',
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
-    game_list: managePrefix + 'game/lottery/',
+    game_list: managePrefix + 'game/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',
