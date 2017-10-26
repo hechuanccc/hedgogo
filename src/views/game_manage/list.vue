@@ -21,8 +21,8 @@
             <td>
               <router-link :to="'/game_detail/' + game.id">{{game.display_name}}</router-link>
             </td>
-            <td>{{game.holidates.schedule_open || $t('game_manage.no_setting')}}</td>
-            <td>{{game.holidates.schedule_close || $t('game_manage.no_setting')}}</td>
+            <td>{{game.holidates.schedule_open | datetimeFilter}}</td>
+            <td>{{game.holidates.schedule_close | datetimeFilter}}</td>
             <td>
               <div :class="game.to_display ? 'text-success': 'text-danger'">
                 {{game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
@@ -93,7 +93,7 @@ import DatePicker from 'vue2-datepicker'
 import TimePicker from 'vue2-timepicker'
 
 import Vue from 'vue'
-const formatDateTime = 'YYYY-MM-DD HH:mm'
+const formatDate = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -127,14 +127,6 @@ export default {
         getGameList () {
             this.$http.get(api.game_list).then(response => {
                 this.queryset = response.data
-                this.queryset.forEach(game => {
-                    if (game.holidates.schedule_open) {
-                        game.holidates.schedule_open = Vue.moment(game.holidates.schedule_open).format(formatDateTime)
-                    }
-                    if (game.holidates.schedule_close) {
-                        game.holidates.schedule_close = Vue.moment(game.holidates.schedule_close).format(formatDateTime)
-                    }
-                })
             }, response => {
                 if (response.status === 401) {
                     this.$router.push('/login?next=' + this.$route.path)
@@ -149,68 +141,77 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(response => {
                 if (response.status === 200) {
-
+                    this.updateGame(response.data)
                 }
-            }, response => {
-
             })
         },
         toggleClose (game) {
             const params = {
                 display_name: game.display_name,
                 code: game.code,
-                status: !game.status
+                status: game.status === 0 ? 1 : 0
             }
             this.$http.put(api.game_list + game.id + '/', params).then(response => {
                 if (response.status === 200) {
-
+                    this.updateGame(response.data)
                 }
-            }, response => {
-
             })
         },
         showModal (game) {
             this.modal.id = game.id
             this.modal.display_name = game.display_name
-            this.modal.code = game.code
             this.modal.isShow = true
 
-            let openDatetime = game.holidates.schedule_open || Vue.moment().format(formatDateTime)
-            let closeDatetime = game.holidates.schedule_close || Vue.moment().format(formatDateTime)
+            let openDatetime = game.holidates.schedule_open
+            if (openDatetime) {
+                this.modal.start_date = openDatetime
+                this.modal.start_time.HH = Vue.moment(openDatetime).format('HH')
+                this.modal.start_time.mm = Vue.moment(openDatetime).format('mm')
+            } else {
+                this.modal.start_date = Vue.moment()
+                this.modal.start_time.HH = Vue.moment().format('HH')
+                this.modal.start_time.mm = Vue.moment().format('mm')
+            }
 
-            openDatetime = openDatetime.split(' ')
-            closeDatetime = closeDatetime.split(' ')
-
-            this.modal.start_date = openDatetime[0]
-            this.modal.end_date = closeDatetime[0]
-
-            let openTIme = openDatetime[1].split(':')
-            let closeTIme = closeDatetime[1].split(':')
-
-            this.modal.start_time.HH = openTIme[0]
-            this.modal.start_time.mm = openTIme[1]
-            this.modal.end_time.HH = closeTIme[0]
-            this.modal.end_time.mm = closeTIme[1]
+            let closeDatetime = game.holidates.schedule_close
+            if (closeDatetime) {
+                this.modal.end_date = closeDatetime
+                this.modal.end_time.HH = Vue.moment(closeDatetime).format('HH')
+                this.modal.end_time.mm = Vue.moment(closeDatetime).format('mm')
+            } else {
+                this.modal.end_date = Vue.moment()
+                this.modal.end_time.HH = Vue.moment().format('HH')
+                this.modal.end_time.mm = Vue.moment().format('mm')
+            }
         },
         updateTime () {
             this.$http.put(api.game_list + this.modal.id + '/', {
                 display_name: this.modal.display_name,
-                code: this.modal.code,
-                start_date: this.modal.start_date + ' ' + this.modal.start_time.HH + ':' + this.modal.start_time.mm,
-                end_date: this.modal.end_date + ' ' + this.modal.end_time.HH + ':' + this.modal.end_time.mm
+                start_date: Vue.moment(this.modal.start_date).format(formatDate) + ' ' + this.modal.start_time.HH + ':' + this.modal.start_time.mm,
+                end_date: Vue.moment(this.modal.end_date).format(formatDate) + ' ' + this.modal.end_time.HH + ':' + this.modal.end_time.mm
             }).then(response => {
                 if (response.status === 200) {
-                    for (let i = 0; i < this.queryset.length; i++) {
-                        if (this.queryset[i].id === response.data.id) {
-                            this.queryset.splice(i, 1, response.data)
-                            this.modal.isShow = false
-                            break
-                        }
-                    }
+                    this.updateGame(response.data)
                 }
-            }, response => {
-
             })
+        },
+        updateGame (data) {
+            for (let i = 0; i < this.queryset.length; i++) {
+                if (this.queryset[i].id === data.id) {
+                    this.queryset.splice(i, 1, data)
+                    this.modal.isShow = false
+                    break
+                }
+            }
+        }
+    },
+    filters: {
+        datetimeFilter (value) {
+            if (!value) {
+                return Vue.t('game_manage.no_setting')
+            } else {
+                return Vue.moment(value).format('YYYY-MM-DD HH:mm')
+            }
         }
     },
     components: {
