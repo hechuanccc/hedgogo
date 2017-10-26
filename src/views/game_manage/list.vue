@@ -15,7 +15,7 @@
           </tr>
           </thead>
           <tbody v-if="queryset.length > 0">
-          <tr v-for="game in queryset" :key="game.id">
+          <tr v-for="(game, index) in queryset" :key="game.id">
             <td>{{game.id}}</td>
             <td>{{game.rank}}</td>
             <td>
@@ -34,20 +34,20 @@
               </div>
             </td>
             <td>
-              <a class="p-l-xs" @click="toggleEnable(game)">{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}</a>
-              <a class="p-l-xs" @click="toggleClose(game)">{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}</a>
-              <a class="p-l-xs" @click="showModal(game)">{{$t('game_manage.setting')}}</a>
+              <a class="p-l-xs" @click="toggleEnable(index)">{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}</a>
+              <a class="p-l-xs" @click="toggleClose(index)">{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}</a>
+              <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
             </td>
           </tr>
           </tbody>
         </table>
     </div>
     <div class="modal" v-if="modal.isShow">
-        <div class="modal-backdrop fade in" @click="modal.isShow=!modal.isShow"></div>
+        <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modal.isShow=!modal.isShow">×
+                    <button type="button" class="close" aria-hidden="true" @click="hideModal">×
                     </button>
                 </div>
                 <div class="modal-body">
@@ -80,7 +80,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" @click="updateTime">{{$t('action.update')}}</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="modal.isShow=!modal.isShow">{{$t('staff.close')}}</button>
+                    <button type="button" class="btn btn-default" @click="hideModal">{{$t('staff.close')}}</button>
                 </div>
             </div>
         </div>
@@ -114,6 +114,7 @@ export default {
                     HH: '00',
                     mm: '00'
                 },
+                index: '',
                 id: '',
                 display_name: '',
                 code: ''
@@ -133,7 +134,8 @@ export default {
                 }
             })
         },
-        toggleEnable (game) {
+        toggleEnable (index) {
+            const game = this.queryset[index]
             const params = {
                 display_name: game.display_name,
                 code: game.code,
@@ -141,11 +143,12 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(response => {
                 if (response.status === 200) {
-                    this.updateGame(response.data)
+                    this.$set(this.queryset, index, response.data)
                 }
             })
         },
-        toggleClose (game) {
+        toggleClose (index) {
+            const game = this.queryset[index]
             const params = {
                 display_name: game.display_name,
                 code: game.code,
@@ -153,56 +156,61 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(response => {
                 if (response.status === 200) {
-                    this.updateGame(response.data)
+                    this.$set(this.queryset, index, response.data)
                 }
             })
         },
-        showModal (game) {
+        showModal (index) {
+            const game = this.queryset[index]
             this.modal.id = game.id
+            this.modal.index = index
             this.modal.display_name = game.display_name
             this.modal.isShow = true
 
             let openDatetime = game.holidates.schedule_open
+            let opentime
             if (openDatetime) {
                 this.modal.start_date = openDatetime
-                this.modal.start_time.HH = Vue.moment(openDatetime).format('HH')
-                this.modal.start_time.mm = Vue.moment(openDatetime).format('mm')
+                opentime = Vue.moment(openDatetime)
             } else {
-                this.modal.start_date = Vue.moment()
-                this.modal.start_time.HH = Vue.moment().format('HH')
-                this.modal.start_time.mm = Vue.moment().format('mm')
+                opentime = Vue.moment()
+                this.modal.start_date = opentime
+            }
+            this.modal.start_time = {
+                HH: opentime.format('HH'),
+                mm: opentime.format('mm')
             }
 
             let closeDatetime = game.holidates.schedule_close
+            let closeTime
             if (closeDatetime) {
                 this.modal.end_date = closeDatetime
-                this.modal.end_time.HH = Vue.moment(closeDatetime).format('HH')
-                this.modal.end_time.mm = Vue.moment(closeDatetime).format('mm')
+                closeTime = Vue.moment(closeDatetime)
             } else {
-                this.modal.end_date = Vue.moment()
-                this.modal.end_time.HH = Vue.moment().format('HH')
-                this.modal.end_time.mm = Vue.moment().format('mm')
+                closeTime = Vue.moment()
+                this.modal.end_date = closeTime
             }
+            this.modal.end_time = {
+                HH: closeTime.format('HH'),
+                mm: closeTime.format('mm')
+            }
+        },
+        hideModal () {
+            this.modal.isShow = false
         },
         updateTime () {
+            const startTime = this.modal.start_time
+            const endTime = this.modal.end_time
             this.$http.put(api.game_list + this.modal.id + '/', {
                 display_name: this.modal.display_name,
-                start_date: Vue.moment(this.modal.start_date).format(formatDate) + ' ' + this.modal.start_time.HH + ':' + this.modal.start_time.mm,
-                end_date: Vue.moment(this.modal.end_date).format(formatDate) + ' ' + this.modal.end_time.HH + ':' + this.modal.end_time.mm
+                start_date: `${Vue.moment(this.modal.start_date).format(formatDate)} ${startTime.HH}:${startTime.mm}`,
+                end_date: `${Vue.moment(this.modal.end_date).format(formatDate)} ${endTime.HH}:${endTime.mm}`
             }).then(response => {
                 if (response.status === 200) {
-                    this.updateGame(response.data)
+                    this.$set(this.queryset, this.modal.index, response.data)
+                    this.modal.isShow = false
                 }
             })
-        },
-        updateGame (data) {
-            for (let i = 0; i < this.queryset.length; i++) {
-                if (this.queryset[i].id === data.id) {
-                    this.queryset.splice(i, 1, data)
-                    this.modal.isShow = false
-                    break
-                }
-            }
         }
     },
     filters: {
@@ -221,7 +229,14 @@ export default {
 }
 </script>
 <style scoped>
-    .modal-backdrop, .modal{z-index: 1}
-    .modal-dialog{z-index: 10;top: 10%}
-        .modal{display: block;}
+.modal-backdrop, .modal{
+  z-index: 1;
+}
+.modal-dialog{
+  z-index: 10;
+  top: 10%;
+}
+.modal{
+  display: block;
+}
 </style>
