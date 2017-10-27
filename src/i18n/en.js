@@ -364,6 +364,8 @@ export default {
         create: 'Create',
         update: 'Update',
         delete: 'Delete',
+        setting: 'Setting',
+        confirm: 'Confirm',
         view_remit_payees: 'View remit payees',
         update_remit_payee: 'Update',
         add_remit_payee: 'Add Remit Payee',
@@ -419,9 +421,11 @@ export default {
         handicap_setting: 'Handicap Setting',
         transaction_setting: 'Transaction Setting',
         play: 'Play',
-        lowest_per_bet: 'Lowest Amount Per Bet',
-        highest_per_bet: 'highest Amount Per Bet',
-        highest_cur_sched: 'highest Amount Currently'
+        min_per_bet: 'Lowest Amount Per Bet',
+        max_per_bet: 'highest Amount Per Bet',
+        max_per_draw: 'highest Amount Currently',
+        return: 'Return',
+        odd: 'Odd'
     },
     agent: {
         number: 'No.',

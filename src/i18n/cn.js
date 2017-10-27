@@ -364,6 +364,8 @@ export default {
         create: '新增',
         update: '修改',
         delete: '删除',
+        setting: '设定',
+        confirm: '确定',
         view_remit_payees: '查看公司入款账号',
         update_remit_payee: '更新',
         add_remit_payee: '增加公司入款账户',
@@ -420,9 +422,11 @@ export default {
         handicap_setting: '盘口设定',
         transaction_setting: '交易设定',
         play: '玩法',
-        lowest_per_bet: '单注下注最低金额',
-        highest_per_bet: '单注下注最高金额',
-        highest_cur_sched: '当期下注最高金额'
+        min_per_bet: '单注下注最低金额',
+        max_per_bet: '单注下注最高金额',
+        max_per_draw: '当期下注最高金额',
+        return: '反水',
+        odd: '赔率'
     },
     agent: {
         number: '编号',

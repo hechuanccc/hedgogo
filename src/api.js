@@ -19,6 +19,7 @@ export default {
     member: managePrefix + 'member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/',
+    playset: managePrefix + 'game/playset/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',
