@@ -424,7 +424,8 @@ export default {
         notyet_result: 'Remaining Period Amounts',
         draw_period: 'Draw Period',
         refresh: 'Refresh',
-        overview: 'Overview'
+        overview: 'Overview',
+        is_latest: 'Already the latest'
     },
     agent: {
         number: 'No.',

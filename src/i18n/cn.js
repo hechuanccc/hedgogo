@@ -425,7 +425,8 @@ export default {
         notyet_result: '当日剩余期数',
         draw_period: '期数',
         refresh: '刷新数据',
-        overview: '总览'
+        overview: '总览',
+        is_latest: '已是最新数据'
     },
     agent: {
         number: '编号',

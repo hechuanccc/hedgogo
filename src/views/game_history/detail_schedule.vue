@@ -1,5 +1,6 @@
 <template>
 <div>
+    <h3>WIP</h3>
     <h3>{{game_test.display_name}}</h3>
     <label><input type="date" name="draw_date" v-model="test" :value = "20170606"></label><label><input type="text" name="draw_search" :placeholder="$t('game_history.draw_period')"></label>
     <div class="card col">
