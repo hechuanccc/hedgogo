@@ -54,7 +54,6 @@ export default {
         game_history: '历史开奖',
         game_list: '游戏列表',
         game_detail: '游戏详情',
-        edit_game: '编辑游戏资料',
         level_detail: '会员等级详细资料',
         member_level_edit: '修改会员等级',
         member_level_add: '增加会员等级',
@@ -353,7 +352,6 @@ export default {
         view_today_report: '查看今日报表',
         update_agent: '修改代理商资料',
         update_member: '修改会员资料',
-        edit_game: '编辑游戏資料',
         view_member_record: '查看所有会员交易记录',
         add_member: '新增会员',
         reset_password: '重设密码',
@@ -404,15 +402,30 @@ export default {
     game_manage: {
         id: ' 游戏ID',
         name: '游戏名称',
-        rank: '游戏排名',
+        rank: '排序',
         code: '游戏号码',
-        to_display: '是否显示',
-        icon: '图标'
+        enabled_status: '启用状态',
+        icon: '图标',
+        holiday_start_time: '公休开始时间',
+        holiday_end_time: '公休结束时间',
+        closed_status: '封盘状态',
+        operating: '操作',
+        enabled: '启用',
+        disabled: '停用',
+        closed: '封盘',
+        openning: '开盘',
+        no_setting: '未设置',
+        setting: '设置',
+        handicap_setting: '盘口设定',
+        transaction_setting: '交易设定'
     },
     game_history: {
         game: '游戏',
         already_result: '当日已开期数',
-        notyet_result: '当日剩余期数'
+        notyet_result: '当日剩余期数',
+        draw_period: '期数',
+        refresh: '刷新数据',
+        overview: '总览'
     },
     agent: {
         number: '编号',

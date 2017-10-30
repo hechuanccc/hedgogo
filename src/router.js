@@ -298,18 +298,6 @@ export default new Router({
         }
     },
     {
-        path: '/game_detail/:id/edit',
-        name: 'game_edit',
-        component: function (resolve) {
-            require(['./views/game_manage/form.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            title: Vue.t('nav.edit_game'),
-            group: 'game_manage'
-        }
-    },
-    {
         path: '/game_history',
         name: 'game_history',
         component: function (resolve) {
@@ -322,7 +310,7 @@ export default new Router({
         }
     },
     {
-        path: '/game_history/:id',
+        path: '/game_history/detail/:id',
         name: 'history_detail',
         component: function (resolve) {
             require(['./views/game_history/detail_schedule.vue'], resolve)

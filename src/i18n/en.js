@@ -125,7 +125,6 @@ export default {
         game_manage: 'Game Management',
         game_list: 'Game List',
         game_detail: 'Game Detail',
-        edit_game: 'Edit Game',
         level_detail: 'Member Level Detail',
         member_level_edit: 'Edit Member Level',
         member_level_add: 'Add Member Level',
@@ -353,7 +352,6 @@ export default {
         view_today_report: 'View today\'s Report',
         update_agent: 'Update agent\'s info',
         update_member: 'Update member\'s info',
-        edit_game: 'Edit game\'s info',
         view_member_record: 'View all members\' record',
         add_member: 'Add Member',
         reset_password: 'Reset password',
@@ -406,13 +404,27 @@ export default {
         name: 'Game Name',
         rank: 'Game Rank',
         code: 'Game Code',
-        to_display: 'Is Display',
-        icon: 'Icon'
+        enabled_status: 'Enabled Status',
+        icon: 'Icon',
+        holiday_start_time: 'Holiday Start',
+        holiday_end_time: 'Holiday End',
+        closed_status: 'Closed Status',
+        operating: 'Operating',
+        enabled: 'Enabled',
+        disabled: 'Disabled',
+        closed: 'Closed',
+        openning: 'Openning',
+        no_setting: 'No Setting',
+        handicap_setting: 'Handicap Setting',
+        transaction_setting: 'Transaction Setting'
     },
     game_history: {
         game: 'Game',
         already_result: 'Drawed Period Amounts',
-        notyet_result: 'Remaining Period Amounts'
+        notyet_result: 'Remaining Period Amounts',
+        draw_period: 'Draw Period',
+        refresh: 'Refresh',
+        overview: 'Overview'
     },
     agent: {
         number: 'No.',

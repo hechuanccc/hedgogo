@@ -20,7 +20,7 @@ export default {
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/',
     game_play: managePrefix + 'game/play/',
-    game_schedule: managePrefix + 'game/schedule/',
+    game_draw: managePrefix + 'draw/',
     gameplay_odds: managePrefix + '/game/odds/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
