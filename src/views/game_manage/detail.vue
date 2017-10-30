@@ -6,91 +6,28 @@
           <li class="active">{{game.display_name}}</li>
         </ol>
       </div>
-      <div class="box">
-        <div class="box-header b-b ">
-          <h3>{{$t('game_manage.transaction_setting')}}</h3>
-        </div>
-        <div class="box-body">
-          <table class="table table-striped b-t">
-            <thead>
-              <tr >
-                <th>{{$t('game_manage.play')}}</th>
-                <th>{{$t('game_manage.min_per_bet')}}</th>
-                <th>{{$t('game_manage.max_per_bet')}}</th>
-                <th>{{$t('game_manage.max_per_draw')}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+      <div v-if="playsets.length>100">
+        <ul class="nav nav-tabs nav-inline">
+          <li class="nav-link nav-item active">{{$t('game_manage.transaction_setting')}}</li>
+          <li class="nav-link nav-item">{{$t('game_manage.handicap_setting')}}</li>
+        </ul>
+        <div class="tab-content">
         </div>
       </div>
-      <div class="box">
-        <div class="box-header b-b ">
-          <h3>{{$t('game_manage.handicap_setting')}}</h3>
-        </div>
-        <div class="box-body">
-          <div class="box" v-for="key in combinationsKey" :key="key">
-            <div class="box-header text-center">
-              <h3>{{key === 'remains' ? '':key}}</h3>
-            </div>
-            <div class="box-body row">
-                <div class="col-md-6">
-                  <table class="table b-t">
-                    <thead>
-                      <tr>
-                        <th width="33%"></th>
-                        <th width="33%">{{$t('game_manage.odd')}}</th>
-                        <th width="33%">{{$t('game_manage.return')}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item,index) in arrayFormer(combinations[key])" :key="index">
-                        <td>{{item.display_name | nameFilter(key)}}</td>
-                        <td>{{item.odds}}</td>
-                        <td>{{item.return}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-md-6">
-                  <table class="table b-t">
-                    <thead>
-                      <tr >
-                        <th width="33%"></th>
-                        <th width="33%">{{$t('game_manage.odd')}}</th>
-                        <th width="33%">{{$t('game_manage.return')}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <tr v-for="(item,index) in arrayLatter(combinations[key])" :key="index">
-                        <td>{{item.display_name | nameFilter(key)}}</td>
-                        <td>{{item.odds}}</td>
-                        <td>{{item.return}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div class="box-footer text-center">
-            <button class="btn">{{$t('action.confirm')}}</button>
-        </div>
+      <div v-else>
+        <transaction :combinations="combinations" :combinationsKey="combinationsKey" @update="updatePlayset"></transaction>
+        <handicap :combinations="combinations" :combinationsKey="combinationsKey" @update="updatePlayset"></handicap>
       </div>
-   </div>
+    </div>
 </template>
 <script>
 import api from '../../api'
-
+import Vue from 'vue'
 export default {
+    components: {
+        Transaction: require('./transaction'),
+        Handicap: require('./handicap')
+    },
     filters: {
         nameFilter (value, key) {
             return value.replace(key + '-', '')
@@ -98,7 +35,6 @@ export default {
     },
     data () {
         return {
-            setting_mode: false,
             game: {
                 id: '',
                 display_name: '',
@@ -108,8 +44,18 @@ export default {
                 remarks: '',
                 icon: ''
             },
+            playsets: [],
             combinations: {},
-            combinationsKey: []
+            combinationsKey: [],
+            changePlaySetBuffer: {},
+            transaction: {
+                heads: [Vue.t('game_manage.min_per_bet'), Vue.t('game_manage.max_per_bet'), Vue.t('game_manage.max_per_draw')],
+                fields: ['min_per_bet', 'max_per_bet', 'max_per_draw']
+            },
+            handicap: {
+                heads: [Vue.t('game_manage.odd'), Vue.t('game_manage.return')],
+                fields: ['odds', 'return_rate']
+            }
         }
     },
     beforeRouteEnter (to, from, next) {
@@ -133,18 +79,24 @@ export default {
             this.$http.get(api.playset, {params: {game: id}}).then(
           response => {
               let remains = []
-              response.data.forEach(playset => {
+              this.playsets = response.data
+              this.playsets.forEach((playset, index) => {
                   let displayName = playset.display_name
-                  let idx = displayName.lastIndexOf('-')
+                  let idx = displayName.indexOf('-')
+
                   if (idx !== -1) {
                       let key = displayName.substring(0, idx)
-                      if (this.combinations[key]) {
-                          this.combinations[key].push(playset)
-                      } else {
-                          this.combinations[key] = [playset]
+                      playset.parent = key
+                      if (!this.combinations[key]) {
+                          this.combinations[key] = []
                           this.combinationsKey.push(key)
                       }
+                      let playsets = this.combinations[key]
+                      playset.index = playsets.length
+                      playsets.push(playset)
                   } else {
+                      playset.parent = 'remains'
+                      playset.index = remains.length
                       remains.push(playset)
                   }
               })
@@ -158,11 +110,36 @@ export default {
                 }
             })
         },
-        arrayFormer (arr) {
-            return arr.slice(0, Math.ceil(arr.length / 2))
+        changeField (config) {
+            const playset = config.playset
+            const id = playset.id
+            if (!this.changePlaySetBuffer[id]) {
+                this.changePlaySetBuffer[id] = {
+                    id: id,
+                    index: playset.index,
+                    parent: playset.parent
+                }
+            }
+            this.changePlaySetBuffer[id][config.key] = config.value
         },
-        arrayLatter (arr) {
-            return arr.slice(Math.ceil(arr.length / 2), arr.length)
+        updatePlayset () {
+            const playsetBuffer = this.$store.getters['gameManage/getPlaysetBuffer']
+            let ids = Object.keys(playsetBuffer)
+            if (ids.length > 0) {
+                const playsets = []
+                ids.forEach(id => {
+                    playsets.push(playsetBuffer[id])
+                })
+                this.$http.post(`${api.playset}?game=${this.game.id}`, playsets).then(response => {
+                    if (response.status === 200) {
+                        response.data.forEach(newPlayset => {
+                            let oldPlayset = playsetBuffer[newPlayset.id]
+                            this.combinations[oldPlayset.parent][oldPlayset.index] = newPlayset
+                        })
+                        this.$store.dispatch('gameManage/clearBuffer')
+                    }
+                })
+            }
         }
     }
 }
