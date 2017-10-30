@@ -4,7 +4,7 @@
         <div class="col-xs-2">
             <h3>{{$t('game_history.overview')}}</h3>
         </div>
-        <div class="col-xs-2 pull-right">
+        <div class="col-3 pull-right">
             <button class="md-btn w-sm blue" @click="getPeriods()">
                 <span v-show="!isLatest">{{$t('game_history.refresh')}}</span>
                 <span v-show="isLatest">{{$t('game_history.is_latest')}}</span>
@@ -68,6 +68,9 @@ export default{
     },
     created () {
         this.getPeriods()
+        setInterval(() => {
+            this.getPeriods()
+        }, 300000)
     }
 }
 </script>
