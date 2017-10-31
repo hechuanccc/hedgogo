@@ -480,9 +480,9 @@ export default {
         refresh: 'Refresh',
         overview: 'Overview',
         is_latest: 'Already the latest',
-        periods: '期数',
-        draw_date: '开奖日期',
-        draw_number: '开奖号码',
+        periods: 'Periods',
+        draw_date: 'Drawn Date',
+        draw_number: 'Drawm Numbers',
         date: 'Date'
     },
     agent: {
