@@ -11,7 +11,7 @@
             <div>
                 <nav class="nav-stacked nav-active-blue" >
                     <ul class="nav" ui-nav="">
-                        <template v-if="$root.permissions.includes('list_report_betrecord')">
+                        <!-- <template v-if="$root.permissions.includes('list_report_betrecord')">
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
 
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
@@ -21,7 +21,7 @@
                                 </router-link>
                             </li>
                             <li><div class="b-b b m-t-sm"></div></li>
-                        </template>
+                        </template> -->
                         <li :class="$route.meta.group == 'financing' ? 'active' : ''">
                             <a>
                                 <span class="nav-caret" ><i class="fa fa-caret-down"></i></span>

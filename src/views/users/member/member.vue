@@ -1,8 +1,10 @@
 <template>
     <div>
-      <div class="p-b m-b-sm"  v-if="$root.permissions.includes('add_change_staff')">
-            <router-link tag="button" class="md-btn w-sm blue"  to="/member/add">{{$t('action.add_member')}}</router-link>
+      <div class="p-b m-b-sm"  v-if="$root.permissions.includes('update_member_details')">
+        <router-link tag="button" class="md-btn w-sm blue"  to="/member/add">{{$t('action.add_member')}}</router-link>
       </div>
+      <div class="alert alert-danger" v-else>{{$t('common.errorPermission')}}</div>
+
       <form class="form" v-on:submit.prevent="submit">
         <div class="box">
           <div class="box-body clearfix form-inline form-input-sm">
@@ -103,7 +105,7 @@
         <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="logined">
           <thead>
           <tr >
-            <th>{{$t('member.list_no')}}</th>
+            <th>{{$t('member.account_type')}}</th>
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
             <th>{{$t('member.last_login')}}</th>
@@ -119,7 +121,10 @@
           </thead>
           <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset">
-            <td>{{member.id}}</td>
+            <td>
+              <div v-if="member.account_type==1">{{$t('member.real_account')}}</div>
+              <div v-else>{{$t('member.trial_account')}}</div>
+            </td>
             <td>
               <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
             </td>
@@ -161,7 +166,7 @@
         <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
           <thead>
           <tr>
-            <th>{{$t('member.list_no')}}</th>
+            <th>{{$t('common.login_status')}}</th>
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
             <th>{{$t('member.created_at')}}</th>
@@ -171,12 +176,18 @@
             <th>{{$t('member.agent')}}</th>
             <th>{{$t('member.level')}}</th>
             <th>{{$t('member.status')}}</th>
+            <th>{{$t('member.total_remit')}}</th>
+            <th>{{$t('member.total_online_pay')}}</th>
+            <th>{{$t('member.total_withdraw')}}</th>
             <th>{{$t('member.balance')}}</th>
           </tr>
           </thead>
           <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset">
-            <td>{{member.id}}</td>
+            <td>
+              <span class="label success" v-if="member.is_logged_in==true">{{$t('common.online')}}</span>
+              <span class="label error" v-else>{{$t('common.offline')}}</span>
+            </td>
             <td>
               <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
             </td>
@@ -269,7 +280,9 @@ export default {
                 logined: '',
                 register_ip: '',
                 level: '',
-                report_flag: true
+                report_flag: true,
+                is_logged_in: '',
+                account_type: ''
             },
             filter: {},
             href: '',

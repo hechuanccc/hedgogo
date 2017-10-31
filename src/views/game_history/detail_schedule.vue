@@ -1,16 +1,31 @@
 <template>
 <div>
     <h3>{{ game }}</h3>
-    <label><input type="date" name="draw_date" v-model="input.date"></label>
-    <label><input type="number" name="draw_search" v-model.number="input.period" placeholder="期數"></label>
+    <div class="box">
+          <div class="box-body clearfix form-inline form-input-sm">
+            <div class="row">
+              <div class="col-xs-2">
+                <label>{{$t('game_history.date')}}：</label>
+                <date-picker width='140' v-model="input.date"></date-picker>
+              </div>
+              <div class="col-xs-2">
+                <label>{{$t('game_history.periods')}}：</label>
+                <input type="number" 
+                       v-model.number="input.period" 
+                       :placeholder="$t('game_history.periods')" 
+                       class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
     <div class="card col">
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">期數</th>
-                        <th scope="col">開獎日期</th>
-                        <th scope="col">開獎號碼</th>
+                        <th scope="col">{{$t('game_history.periods')}}</th>
+                        <th scope="col">{{$t('game_history.draw_date')}}</th>
+                        <th scope="col">{{$t('game_history.draw_number')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,6 +44,22 @@
 </template>
 <script>
 import api from '../../api.js'
+import DatePicker from 'vue2-datepicker'
+
+const JSONtimeBreak = (value) => {
+    let rawDate = new Date(value)
+    let year = rawDate.getFullYear()
+    let month = rawDate.getMonth() + 1
+    let date = rawDate.getDate()
+
+    if (date < 10) {
+        date = `0${date}`
+    }
+    if (month < 10) {
+        month = `0${month}`
+    }
+    return `${year}-${month}-${date}`
+}
 
 export default {
     data () {
@@ -75,8 +106,7 @@ export default {
         },
         defaultToday () {
             const today = new Date()
-            const todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
-            this.input.date = todayDate
+            this.input.date = JSONtimeBreak(today)
         }
     },
     computed: {
@@ -94,13 +124,22 @@ export default {
     },
     filters: {
         showDate (value) {
-            return value.split('T')[0]
+            return JSONtimeBreak(value)
         }
+    },
+    components: {
+        DatePicker
     },
     created () {
         this.defaultToday()
+    },
+    watch: {
+        'input.date' () {
+            let rawTime = new Date(this.input.date)
+            let JSONtime = rawTime.toJSON()
+
+            this.input.date = JSONtimeBreak(JSONtime)
+        }
     }
 }
 </script>
-<style lang="sass" scoped>
-</style>
