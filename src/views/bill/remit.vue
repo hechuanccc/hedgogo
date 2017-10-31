@@ -2,7 +2,7 @@
     <div>
       <form class="form" v-on:submit.prevent="submit">
         <div class="box">
-            <div class="box-body clearfix form-inline form-input-sm" id="clearall">
+            <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
                     <div>
                         <div class="col-xs-4">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="row m-t">
                       <div class="col-xs-12">
-                        <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter()">
+                        <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter">
                             <option value="0">{{$t('common.applied_at')}}</option>
                             <option value="1">{{$t('common.status_updated_at')}}</option>
                         </select>
@@ -49,7 +49,7 @@
                             <button type="button" class="btn btn-sm" :class="dateRange === 0 ? 'blue-500' : 'grey-300'" @click="toggleDate(0, selected)">{{$t('common.today')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 1 ? 'blue-500' : 'grey-300'" @click="toggleDate(1, selected)">{{$t('common.yesterday')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 7 ? 'blue-500' : 'grey-300'" @click="toggleDate(7, selected)">{{$t('common.this_week')}}</button>
-                            <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</router-link></button>
+                            <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                         </div>
                         <button class="md-btn w-xs pull-right" type="button" @click="clearall()">{{$t('action.clear_all')}}</button>
@@ -65,7 +65,7 @@
         </div>
         <div class="pull-right">
           <a :href="href" class="grey-400" :getReport="getReport" :disabled="!queryset.length">
-            <span class="nav-icon" style="border:1px solid; color:grey; border-radius:4px"><i class="material-icons">&#xe2c4;</i></span>
+            <span class="nav-icon export-button"><i class="material-icons">&#xe2c4;</i></span>
           </a>
         </div>
         <div class="total-amount report-header">
@@ -305,7 +305,6 @@
                 })
             },
             clearall: function () {
-                console.log('try')
                 this.query = {}
                 this.status = '0'
                 this.remit_type = '0'
