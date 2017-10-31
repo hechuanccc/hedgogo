@@ -424,8 +424,8 @@ export default {
         min_per_bet: 'Lowest Amount Per Bet',
         max_per_bet: 'highest Amount Per Bet',
         max_per_draw: 'highest Amount Currently',
-        return: 'Return',
-        odd: 'Odd'
+        return_rate: 'Return Rate',
+        odds: 'Odds'
     },
     agent: {
         number: 'No.',

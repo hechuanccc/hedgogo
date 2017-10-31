@@ -425,8 +425,8 @@ export default {
         min_per_bet: '单注下注最低金额',
         max_per_bet: '单注下注最高金额',
         max_per_draw: '当期下注最高金额',
-        return: '反水',
-        odd: '赔率'
+        return_rate: '反水',
+        odds: '赔率'
     },
     agent: {
         number: '编号',
