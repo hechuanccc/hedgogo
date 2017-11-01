@@ -103,9 +103,11 @@ export default {
         },
         updatePlayset () {
             this.$http.post(`${api.playset}?game=${this.game.id}`, this.updatedPlaysets).then(response => {
-                this.playsets.forEach(playset => {
-                    this.$set(playset, 'updated', false)
-                })
+                if (response.status === 200) {
+                    this.playsets.forEach(playset => {
+                        this.$set(playset, 'updated', false)
+                    })
+                }
             }, response => {
                 if (('' + response.status).indexOf('4') === 0) {
                     this.$router.push('/login?next=' + this.$route.path)
