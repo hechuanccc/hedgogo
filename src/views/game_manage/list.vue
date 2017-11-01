@@ -128,6 +128,11 @@ export default {
         getGameList () {
             this.$http.get(api.game_list).then(response => {
                 this.queryset = response.data
+                const games = {}
+                response.data.forEach(game => {
+                    games[game.id] = game.display_name
+                })
+                this.$store.dispatch('setGame', games)
             }, response => {
                 if (response.status === 401) {
                     this.$router.push('/login?next=' + this.$route.path)

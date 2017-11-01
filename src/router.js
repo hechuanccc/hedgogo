@@ -931,45 +931,6 @@ export default new Router({
         }
     },
     {
-        path: '/game_settings',
-        name: 'game_settings',
-        component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
-        },
-        meta: {
-            group: 'game_manage',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.game_settings')
-        }
-    },
-    {
-        path: '/game_play',
-        name: 'game_plays',
-        component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
-        },
-        meta: {
-            group: 'game_manage',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.game_play_configurations')
-        }
-    },
-    {
-        path: '/odds',
-        name: 'odds',
-        component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
-        },
-        meta: {
-            group: 'game_manage',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.odds_management')
-        }
-    },
-    {
         path: '/lottery_draw',
         name: 'lottery_draw',
         component: function (resolve) {
