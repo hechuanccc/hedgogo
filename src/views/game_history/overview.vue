@@ -26,7 +26,7 @@
                     <router-link
                     :to = "'/game_history/' + game_period.game_id"
                     tag = "td"
-                    class = "period-link">
+                    class = "period-link v-m">
                     {{game_period.game}}
                     </router-link>
                     <td><span class="label label-lg ">{{game_period.drawn_periods}}</span></td>
