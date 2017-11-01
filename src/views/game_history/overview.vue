@@ -70,7 +70,7 @@ export default{
         this.getPeriods()
         setInterval(() => {
             this.getPeriods()
-        }, 300000)
+        }, 300000) // update data every 5 mins
     }
 }
 </script>
