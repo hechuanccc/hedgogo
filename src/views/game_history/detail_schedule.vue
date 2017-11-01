@@ -33,7 +33,7 @@
                         :key = "selected_result.game_id"
                     >
                         <td>{{selected_result.issue_number}}</td>
-                        <td>{{selected_result.created_at | showDate}}</td>
+                        <td>{{selected_result.created_at | moment("YYYY-MM-DD")}}</td>
                         <td>{{selected_result.result_str}}</td>
                     </tr>
                 </tbody>
@@ -47,7 +47,7 @@ import api from '../../api.js'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 
-const dataFormat = 'YYYY-MM-DD'
+const dateFormat = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -58,7 +58,7 @@ export default {
             },
             game_results: '',
             input: {
-                date: `${Vue.moment().format(dataFormat)}`,
+                date: Vue.moment().format(dateFormat),
                 period: ''
             }
         }
@@ -80,15 +80,6 @@ export default {
                     this.errorCallback(response)
                 })
         },
-        getGame (gameid) {
-            this.$http.get(api.game_list + gameid).then(
-                response => {
-                    this.game = response.data.display_name
-                },
-                response => {
-                    this.errorCallback(response)
-                })
-        },
         errorCallback (response) {
             if (('' + response.status).indexOf('4') === 0) {
                 this.$router.push('/login?next=' + this.$route.path)
@@ -100,18 +91,13 @@ export default {
             if (!this.game_results.length) {
                 return []
             }
-            const selectedDate = Vue.moment(this.input.date).format(dataFormat)
+            const selectedDate = Vue.moment(this.input.date).format(dateFormat)
             const filterdResults = this.game_results
             return filterdResults.filter(filterdResult => {
                 if (filterdResult['created_at'].indexOf(selectedDate) !== -1 && filterdResult['issue_number'].indexOf(this.input.period) !== -1) {
                     return true
                 }
             })
-        }
-    },
-    filters: {
-        showDate (value) {
-            return Vue.moment(value).format(dataFormat)
         }
     },
     components: {
