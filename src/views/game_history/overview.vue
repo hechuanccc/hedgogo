@@ -52,6 +52,12 @@ export default{
             this.$http.get(api.game_draw).then(
                 response => {
                     this.game_draw = response.data
+                    const games = {}
+                    response.data.forEach(game => {
+                        games[game.game_id] = game.game
+                    })
+                    this.$store.dispatch('setGame', games)
+
                     this.isLatest = true
                     setTimeout(() => { this.isLatest = false }, 1500)
                 },

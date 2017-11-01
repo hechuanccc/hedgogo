@@ -1,6 +1,6 @@
 <template>
 <div>
-    <h3>{{ game }}</h3>
+    <h3>{{ game.display_name }}</h3>
     <div class="box">
           <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
@@ -52,9 +52,11 @@ const dataFormat = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            game: '',
+            game: {
+                id: '',
+                display_name: ''
+            },
             game_results: '',
-            todayDate: '',
             input: {
                 date: `${Vue.moment().format(dataFormat)}`,
                 period: ''
@@ -64,6 +66,7 @@ export default {
     beforeRouteEnter (to, from, next) {
         next(app => {
             let gameid = to.params.id
+            app.game.display_name = app.$store.getters.getGame[gameid]
             app.getResult(gameid)
         })
     },
@@ -72,7 +75,6 @@ export default {
             this.$http.get(api.game_result + `?game=${gameid}`).then(
                 response => {
                     this.game_results = response.data
-                    this.getGame(gameid)
                 },
                 response => {
                     this.errorCallback(response)
