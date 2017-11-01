@@ -6,8 +6,8 @@
         </div>
         <div class="col-3 pull-right">
             <button class="md-btn w-sm blue" @click="getPeriods()">
-                <span v-show="!isLatest">{{$t('game_history.refresh')}}</span>
-                <span v-show="isLatest">{{$t('game_history.is_latest')}}</span>
+                <span v-if="!isLatest">{{$t('game_history.refresh')}}</span>
+                <span v-else>{{$t('game_history.is_latest')}}</span>
             </button>
         </div>
     </div>
@@ -21,16 +21,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for = "(game_period, index) in game_periods"
+                <tr v-for = "(game_period, index) in game_draw"
                     :key = "game_period.game_id">
                     <router-link
-                    :to = "'/game_history/detail/' + game_period.game_id"
+                    :to = "'/game_history/' + game_period.game_id"
                     tag = "td"
                     class = "href-hover">
                     {{game_period.game}}
                     </router-link>
-                    <td><span class="table__game">{{game_period.drawn_periods}}</span></td>
-                    <td><span class="table__game">{{game_period.total_periods - game_period.drawn_periods}}</span></td>
+                    <td><span class="draw-bg">{{game_period.drawn_periods}}</span></td>
+                    <td><span class="draw-bg">{{game_period.total_periods - game_period.drawn_periods}}</span></td>
                 </tr>
             </tbody>
         </table>
@@ -43,7 +43,7 @@ import api from '../../api.js'
 export default{
     data () {
         return {
-            game_periods: '',
+            game_draw: '',
             isLatest: false
         }
     },
@@ -51,7 +51,7 @@ export default{
         getPeriods () {
             this.$http.get(api.game_draw).then(
                 response => {
-                    this.game_periods = response.data
+                    this.game_draw = response.data
                     this.isLatest = true
                     setTimeout(() => { this.isLatest = false }, 1500)
                 },
@@ -70,20 +70,20 @@ export default{
         this.getPeriods()
         setInterval(() => {
             this.getPeriods()
-        }, 300000) // update data every 5 mins
+        }, 60000) // update data every min
     }
 }
 </script>
 <style lang="sass" scoped>
-.table__game
-  padding-right: 0.7em
-  padding-left: 0.7em
-  padding-top: 0.5em
-  padding-bottom: 0.5em
+.draw-bg 
+  padding-right: 5px
+  padding-left: 5px
+  padding-top: 3px
+  padding-bottom: 3px
   border-radius: 5px
   background-color: #E5E5E5
 
-.href-hover
+.td-hoverable
   cursor: pointer
   &:hover
     background-color: #E7E5E5
