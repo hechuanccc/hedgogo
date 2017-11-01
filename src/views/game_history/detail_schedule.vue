@@ -45,21 +45,9 @@
 <script>
 import api from '../../api.js'
 import DatePicker from 'vue2-datepicker'
+import Vue from 'vue'
 
-const JSONtimeBreak = (value) => {
-    let rawDate = new Date(value)
-    let year = rawDate.getFullYear()
-    let month = rawDate.getMonth() + 1
-    let date = rawDate.getDate()
-
-    if (date < 10) {
-        date = `0${date}`
-    }
-    if (month < 10) {
-        month = `0${month}`
-    }
-    return `${year}-${month}-${date}`
-}
+const dataFormat = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -68,7 +56,7 @@ export default {
             game_results: '',
             todayDate: '',
             input: {
-                date: '',
+                date: `${Vue.moment().format(dataFormat)}`,
                 period: ''
             }
         }
@@ -103,10 +91,6 @@ export default {
             if (('' + response.status).indexOf('4') === 0) {
                 this.$router.push('/login?next=' + this.$route.path)
             }
-        },
-        defaultToday () {
-            const today = new Date()
-            this.input.date = JSONtimeBreak(today)
         }
     },
     computed: {
@@ -114,9 +98,10 @@ export default {
             if (!this.game_results.length) {
                 return []
             }
+            const selectedDate = Vue.moment(this.input.date).format(dataFormat)
             const filterdResults = this.game_results
             return filterdResults.filter(filterdResult => {
-                if (filterdResult['created_at'].indexOf(this.input.date) !== -1 && filterdResult['issue_number'].indexOf(this.input.period) !== -1) {
+                if (filterdResult['created_at'].indexOf(selectedDate) !== -1 && filterdResult['issue_number'].indexOf(this.input.period) !== -1) {
                     return true
                 }
             })
@@ -124,22 +109,11 @@ export default {
     },
     filters: {
         showDate (value) {
-            return JSONtimeBreak(value)
+            return Vue.moment(value).format(dataFormat)
         }
     },
     components: {
         DatePicker
-    },
-    created () {
-        this.defaultToday()
-    },
-    watch: {
-        'input.date' () {
-            let rawTime = new Date(this.input.date)
-            let JSONtime = rawTime.toJSON()
-
-            this.input.date = JSONtimeBreak(JSONtime)
-        }
     }
 }
 </script>
