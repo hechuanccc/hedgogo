@@ -51,6 +51,7 @@ export default {
         title_banner: 'banner管理',
         title_website: '网站管理',
         game_manage: '游戏管理',
+        game_history: '历史开奖',
         game_list: '游戏列表',
         game_detail: '游戏详情',
         level_detail: '会员等级详细资料',
@@ -87,11 +88,9 @@ export default {
         action_logs: '操作日誌',
         errors: '異常日誌',
         marketing: '運營管理',
-        game_history: '歷史開獎',
         game_settings: '遊戲設定',
         game_play_configurations: '交易設定',
-        odds_management: '盤口設定',
-        lottery_draw_per_game: '每個遊戲一個頁面'
+        odds_management: '盤口設定'
     },
     envelope: {
         name: '名称',
@@ -434,6 +433,19 @@ export default {
         max_per_draw: '当期最高金额',
         return_rate: '反水',
         odds: '赔率'
+    },
+    game_history: {
+        game: '游戏',
+        already_result: '当日已开期数',
+        notyet_result: '当日剩余期数',
+        draw_period: '期数',
+        refresh: '刷新数据',
+        overview: '总览',
+        is_latest: '已是最新数据',
+        periods: '期数',
+        draw_date: '开奖日期',
+        draw_number: '开奖号码',
+        date: '日期'
     },
     agent: {
         number: '编号',

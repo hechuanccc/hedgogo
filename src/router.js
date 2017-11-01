@@ -298,16 +298,27 @@ export default new Router({
         }
     },
     {
-        path: '/game_detail/:id',
-        name: 'game_detail',
+        path: '/game_history',
+        name: 'game_history',
         component: function (resolve) {
-            require(['./views/game_manage/detail.vue'], resolve)
+            require(['./views/game_history/overview.vue'], resolve)
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.game_manage'),
-            agentPermission: 'true',
-            group: 'game_manage'
+            title: Vue.t('nav.game_history'),
+            group: 'game_history'
+        }
+    },
+    {
+        path: '/game_history/:id',
+        name: 'history_detail',
+        component: function (resolve) {
+            require(['./views/game_history/detail_schedule.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.game_history'),
+            group: 'game_history'
         }
     },
     {
@@ -937,10 +948,36 @@ export default new Router({
             require(['./views/game_manage/list.vue'], resolve)
         },
         meta: {
-            group: 'game_history',
+            group: 'game_manage',
             auth: true,
             agentPermission: 'true',
-            title: Vue.t('nav.lottery_draw_per_game')
+            title: Vue.t('nav.game_settings')
+        }
+    },
+    {
+        path: '/game_play',
+        name: 'game_plays',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            group: 'game_manage',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.game_play_configurations')
+        }
+    },
+    {
+        path: '/odds',
+        name: 'odds',
+        component: function (resolve) {
+            require(['./views/game_manage/list.vue'], resolve)
+        },
+        meta: {
+            group: 'game_manage',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.odds_management')
         }
     },
     {

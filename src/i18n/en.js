@@ -50,6 +50,7 @@ export default {
         title_announcement: 'Announcement',
         title_banner: 'Banner',
         title_website: 'Website',
+        game_history: 'Game History',
         game_manage: 'Game Management',
         game_list: 'Game List',
         game_detail: 'Game Detail',
@@ -87,11 +88,9 @@ export default {
         action_logs: 'Action Logs',
         errors: 'Error Logs',
         marketing: 'Marketing',
-        game_history: 'Game History',
         game_settings: 'Game Settings',
         game_play_configurations: 'Game Play Configurations',
-        odds_management: 'Odds Management',
-        lottery_draw_per_game: 'Lottery Draw Per Game'
+        odds_management: 'Odds Management'
     },
     envelope: {
         name: 'Name',
@@ -434,6 +433,19 @@ export default {
         max_per_draw: 'highest Amount Currently',
         return_rate: 'Return Rate',
         odds: 'Odds'
+    },
+    game_history: {
+        game: 'Game',
+        already_result: 'Drawn Period Amounts',
+        notyet_result: 'Remaining Period Amounts',
+        draw_period: 'Drawn Period',
+        refresh: 'Refresh',
+        overview: 'Overview',
+        is_latest: 'Already the latest',
+        periods: 'Periods',
+        draw_date: 'Drawn Date',
+        draw_number: 'Drawm Numbers',
+        date: 'Date'
     },
     agent: {
         number: 'No.',
