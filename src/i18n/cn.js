@@ -316,7 +316,12 @@ export default {
         member_count: '会员数量',
         agent_count: '目前代理人数',
         not_set: '未设定',
-        repeat: '重复'
+        repeat: '重复',
+        online: '在线',
+        offline: '离线',
+        total: '总计',
+        min_amount: '最低金额',
+        max_amount: '最高金额'
     },
     bank: {
         bank_title: '银行资讯',
@@ -380,7 +385,9 @@ export default {
         add_level: '新增会员等级',
         edit_level: '修改会员等级',
         delete_level: '删除会员等级',
-        logout: '退出登录'
+        logout: '退出登录',
+        clear_all: '全部清除',
+        filter_trial_account: '过滤测试用户'
     },
     staff: {
         roles: '角色 / 权限',
@@ -497,6 +504,7 @@ export default {
     setting: {
         sum_fund: '目前累计',
         payment_type: '支付方式',
+        remit_type: '汇款类型',
         payment_alipay: '支付宝',
         payment_wechat: '微信',
         payment_normal: '普通支付',

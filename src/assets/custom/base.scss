@@ -102,3 +102,21 @@ span.time-picker{
   box-shadow: none;
   border: 1px solid rgba(120, 130, 140, 0.2);
 }
+
+.total-amount{
+  padding-right: 50px;
+  text-align: right; 
+  font-weight: bold; 
+  color: #FF0000;
+}
+
+.report-header{
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.export-button{
+  border: 1px solid;
+  color: #808080;
+  border-radius: 4px;
+}
