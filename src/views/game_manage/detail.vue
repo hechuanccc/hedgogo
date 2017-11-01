@@ -90,9 +90,9 @@ export default {
     methods: {
         getPlaySet (id) {
             this.$http.get(api.playset, {params: {game: id}}).then(
-          response => {
-              this.playsets = response.data
-          }, response => {
+              response => {
+                  this.playsets = response.data
+              }, response => {
                 if (('' + response.status).indexOf('4') === 0) {
                     this.$router.push('/login?next=' + this.$route.path)
                 }
