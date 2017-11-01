@@ -115,9 +115,6 @@
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/game_list"><span class="nav-text">{{$t("nav.game_list")}}</span></router-link></li>
-                                <li><router-link to="/game_settings"><span class="nav-text">{{$t("nav.game_settings")}}</span></router-link></li>
-                                <li><router-link to="/game_play"><span class="nav-text">{{$t("nav.game_play_configurations")}}</span></router-link></li>
-                                <li><router-link to="/odds"><span class="nav-text">{{$t("nav.odds_management")}}</span></router-link></li>
                             </ul>
                         </li>
                         

@@ -23,6 +23,7 @@ export default {
     game_draw: managePrefix + 'draw/',
     game_result: managePrefix + 'result/',
     gameplay_odds: managePrefix + '/game/odds/',
+    playset: managePrefix + 'game/playset/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: prefix + 'bank/',

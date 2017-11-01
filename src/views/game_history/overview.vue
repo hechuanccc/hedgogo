@@ -83,7 +83,7 @@ export default{
   border-radius: 5px
   background-color: #E5E5E5
 
-.td-hoverable
+.td-hover
   cursor: pointer
   &:hover
     background-color: #E7E5E5

@@ -942,8 +942,8 @@ export default new Router({
         }
     },
     {
-        path: '/game_settings',
-        name: 'game_settings',
+        path: '/lottery_draw',
+        name: 'lottery_draw',
         component: function (resolve) {
             require(['./views/game_manage/list.vue'], resolve)
         },
