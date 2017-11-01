@@ -22,24 +22,24 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="playset in playsetOrderByName" :key="playset.id">
+                <tr v-for="(playset, index) in playsetOrderByName" :key="playset.id">
                   <td>
                     <strong>{{playset.display_name}}</strong>
                   </td>
                   <td>
-                    <input type="text" :value="playset.odds" @change="changeField($event, 'odds', playset.id)">
+                    <input type="text" v-model="playset.odds" @change="changeField(playset)">
                   </td>
                   <td>
-                    <input type="text" :value="playset.return_rate" @change="changeField($event, 'return_rate', playset.id)">
+                    <input type="text" v-model="playset.return_rate" @change="changeField(playset)">
                   </td>
                   <td>
-                    <input type="text" :value="playset.min_per_bet" @change="changeField($event, 'min_per_bet', playset.id)">
+                    <input type="text" v-model="playset.min_per_bet" @change="changeField(playset)">
                   </td>
                   <td>
-                    <input type="text" :value="playset.max_per_bet" @change="changeField($event, 'max_per_bet', playset.id)">
+                    <input type="text" v-model="playset.max_per_bet" @change="changeField(playset)">
                   </td>
                   <td>
-                    <input type="text" :value="playset.max_per_draw" @change="changeField($event, 'max_per_draw', playset.id)">
+                    <input type="text" v-model="playset.max_per_draw" @change="changeField(playset)">
                   </td>
                 </tr>
               </tbody>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="box-footer text-center">
-          <button class="btn btn-primary" @click="updatePlayset">{{$t('action.confirm')}}</button>
+          <button class="btn btn-primary" :disabled="updatedPlaysets.length === 0" @click="updatePlayset">{{$t('action.confirm')}}</button>
       </div>
     </div>
   </div>
@@ -61,12 +61,7 @@ export default {
         return {
             game: {
                 id: '',
-                display_name: '',
-                rank: '',
-                code: '',
-                to_display: '',
-                remarks: '',
-                icon: ''
+                display_name: ''
             },
             playsets: [],
             playsetBuffer: {}
@@ -77,25 +72,22 @@ export default {
             return this.playsets.sort((a, b) => {
                 return a.display_name.localeCompare(b.display_name)
             })
+        },
+        updatedPlaysets () {
+            return this.playsets.filter(playset => {
+                return playset.updated === true
+            })
         }
     },
     beforeRouteEnter (to, from, next) {
         next(vm => {
             let id = to.params.id
-            vm.getGame(id)
+            vm.game.id = id
+            vm.game.display_name = vm.$store.getters.getGame[id]
             vm.getPlaySet(id)
         })
     },
     methods: {
-        getGame (id) {
-            this.$http.get(`${api.game_list}${id}/`).then(response => {
-                this.game = response.data
-            }, response => {
-                if (('' + response.status).indexOf('4') === 0) {
-                    this.$router.push('/login?next=' + this.$route.path)
-                }
-            })
-        },
         getPlaySet (id) {
             this.$http.get(api.playset, {params: {game: id}}).then(
           response => {
@@ -106,27 +98,19 @@ export default {
                 }
             })
         },
-        changeField (e, field, id) {
-            if (!this.playsetBuffer[id]) {
-                this.playsetBuffer[id] = {
-                    id: id
-                }
-            }
-            this.playsetBuffer[id][field] = e.target.value
+        changeField (playset) {
+            this.$set(playset, 'updated', true)
         },
         updatePlayset () {
-            let ids = Object.keys(this.playsetBuffer)
-            if (ids.length > 0) {
-                const playsets = []
-                ids.forEach(id => {
-                    playsets.push(this.playsetBuffer[id])
+            this.$http.post(`${api.playset}?game=${this.game.id}`, this.updatedPlaysets).then(response => {
+                this.playsets.forEach(playset => {
+                    this.$set(playset, 'updated', false)
                 })
-                this.$http.post(`${api.playset}?game=${this.game.id}`, playsets).then(response => {
-                    if (response.status === 200) {
-                        this.playsetBuffer = {}
-                    }
-                })
-            }
+            }, response => {
+                if (('' + response.status).indexOf('4') === 0) {
+                    this.$router.push('/login?next=' + this.$route.path)
+                }
+            })
         }
     }
 }

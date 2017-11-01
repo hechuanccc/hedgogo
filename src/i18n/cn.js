@@ -422,9 +422,9 @@ export default {
         handicap_setting: '盘口设定',
         transaction_setting: '交易设定',
         play: '玩法',
-        min_per_bet: '单注下注最低金额',
-        max_per_bet: '单注下注最高金额',
-        max_per_draw: '当期下注最高金额',
+        min_per_bet: '单注最低金额',
+        max_per_bet: '单注最高金额',
+        max_per_draw: '当期最高金额',
         return_rate: '反水',
         odds: '赔率'
     },
