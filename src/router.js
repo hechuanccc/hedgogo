@@ -310,7 +310,7 @@ export default new Router({
         }
     },
     {
-        path: '/game_history/detail/:id',
+        path: '/game_history/:id',
         name: 'history_detail',
         component: function (resolve) {
             require(['./views/game_history/detail_schedule.vue'], resolve)
