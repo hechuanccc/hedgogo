@@ -6,7 +6,9 @@
             <div class="row">
               <div class="col-xs-2">
                 <label>{{$t('game_history.date')}}：</label>
-                <date-picker width='140' v-model="input.date"></date-picker>
+                <date-picker width='140' 
+                             v-model="input.date" 
+                            @input="getResult(game.id, input.date)"></date-picker>
               </div>
               <div class="col-xs-2">
                 <label>{{$t('game_history.periods')}}：</label>
@@ -18,6 +20,7 @@
             </div>
           </div>
         </div>
+        <div class="text-center" v-show="loading"><i class='fa fa-spinner '></i><b class="">{{$t('game_history.loading')}}</b></div>
     <div class="card col">
         <div class="card-body">
             <table class="table table-hover">
@@ -29,7 +32,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for = "selected_result in selectedResults"
+                    
+                    <tr v-for = "selected_result in filteredResults"
                         :key = "selected_result.game_id"
                     >
                         <td>{{selected_result.issue_number}}</td>
@@ -60,20 +64,25 @@ export default {
             input: {
                 date: Vue.moment().format(dateFormat),
                 period: ''
-            }
+            },
+            loading: false
         }
     },
     beforeRouteEnter (to, from, next) {
         next(app => {
             let gameid = to.params.id
+            app.game.id = gameid
             app.game.display_name = app.$store.getters.getGame[gameid]
-            app.getResult(gameid)
+            app.getResult(gameid, app.input.date)
         })
     },
     methods: {
-        getResult (gameid) {
-            this.$http.get(api.game_result + `?game=${gameid}`).then(
+        getResult (gameid, createdat) {
+            const formatedTime = Vue.moment(createdat).format(dateFormat)
+            this.loading = true
+            this.$http.get(api.game_result + `?game=${gameid}&date=${formatedTime}`).then(
                 response => {
+                    this.loading = false
                     this.game_results = response.data
                 },
                 response => {
@@ -87,14 +96,13 @@ export default {
         }
     },
     computed: {
-        selectedResults () {
+        filteredResults () {
             if (!this.game_results.length) {
                 return []
             }
-            const selectedDate = Vue.moment(this.input.date).format(dateFormat)
-            const filterdResults = this.game_results
-            return filterdResults.filter(filterdResult => {
-                if (filterdResult['created_at'].indexOf(selectedDate) !== -1 && filterdResult['issue_number'].indexOf(this.input.period) !== -1) {
+            const rawResults = this.game_results
+            return rawResults.filter(rawResult => {
+                if (rawResult['issue_number'].indexOf(this.input.period) !== -1) {
                     return true
                 }
             })

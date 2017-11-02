@@ -445,7 +445,8 @@ export default {
         periods: 'Periods',
         draw_date: 'Drawn Date',
         draw_number: 'Drawm Numbers',
-        date: 'Date'
+        date: 'Date',
+        loading: 'loading'
     },
     agent: {
         number: 'No.',

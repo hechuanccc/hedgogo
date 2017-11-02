@@ -445,7 +445,8 @@ export default {
         periods: '期数',
         draw_date: '开奖日期',
         draw_number: '开奖号码',
-        date: '日期'
+        date: '日期',
+        loading: '正在加载中...'
     },
     agent: {
         number: '编号',
