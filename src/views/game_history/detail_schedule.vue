@@ -72,6 +72,9 @@ export default {
         next(app => {
             let gameid = to.params.id
             app.game.id = gameid
+            if (!app.$store.state.game.display_name) {  // to avoid missing game name after refreshing
+                app.getGameName(gameid)
+            }
             app.game.display_name = app.$store.getters.getGame[gameid]
             app.getResult(gameid, app.input.date)
         })
@@ -84,6 +87,15 @@ export default {
                 response => {
                     this.loading = false
                     this.game_results = response.data
+                },
+                response => {
+                    this.errorCallback(response)
+                })
+        },
+        getGameName (gameid) {
+            this.$http.get(api.game_list + gameid).then(
+                response => {
+                    this.game.display_name = response.data.display_name
                 },
                 response => {
                     this.errorCallback(response)
