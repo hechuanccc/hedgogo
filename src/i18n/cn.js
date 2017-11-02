@@ -320,7 +320,9 @@ export default {
         offline: '离线',
         total: '总计',
         min_amount: '最低金额',
-        max_amount: '最高金额'
+        max_amount: '最高金额',
+        ip_info: 'IP 信息',
+        specify_date_range: '指定日期范围'
     },
     bank: {
         bank_title: '银行资讯',
@@ -432,7 +434,8 @@ export default {
         max_per_bet: '单注最高金额',
         max_per_draw: '当期最高金额',
         return_rate: '反水',
-        odds: '赔率'
+        odds: '赔率',
+        issue_number: '发行数量'
     },
     game_history: {
         game: '游戏',

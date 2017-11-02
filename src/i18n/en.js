@@ -320,7 +320,9 @@ export default {
         offline: 'Offline',
         total: 'Total',
         min_amount: 'Min Amount',
-        max_amount: 'Max Amount'
+        max_amount: 'Max Amount',
+        ip_info: 'IP Information',
+        specify_date_range: 'Specify Date Range'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -338,7 +340,7 @@ export default {
         rejected: 'Rejected',
         declined: 'Declined',
         success: 'Success',
-        cancelled: 'Canceled',
+        cancelled: 'Cancelled',
         failed: 'Failed',
         disabled: 'Disabled'
     },
@@ -432,7 +434,8 @@ export default {
         max_per_bet: 'highest Amount Per Bet',
         max_per_draw: 'highest Amount Currently',
         return_rate: 'Return Rate',
-        odds: 'Odds'
+        odds: 'Odds',
+        issue_number: 'Issue Number'
     },
     game_history: {
         game: 'Game',

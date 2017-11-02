@@ -4,34 +4,30 @@
         <div class="box">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
-                    <div>
-                        <div class="col-xs-4">
-                          <!-- Remit Type: Remove v-if once api is okay -->
-                            <select class="form-control w-sm c-select" v-model="remit_type" v-if="!query.remit_type">
-                                <option value="0" hidden>{{$t('setting.remit_type')}}</option>
-                                <option value="1">{{$t('setting.payment_normal')}}</option>
-                                <option value="2">{{$t('setting.payment_alipay')}}</option>
-                                <option value="3">{{$t('setting.payment_wechat')}}</option>
-                            </select>
-                            <select class="form-control w-sm c-select" v-model="status">
-                                <option value="0" hidden>{{$t('common.status')}}</option>
-                                <option value="1">{{$t('status.success')}}</option>
-                                <option value="2">{{$t('status.failed')}}</option>
-                                <option value="3">{{$t('status.ongoing')}}</option>
-                                <option value="4">{{$t('status.cancelled')}}</option>
-                                <option value="5">{{$t('status.declined')}}</option>
-                            </select>
-                            <level class="inline" :level="query.member_level" @level-select="changeFromLevel"></level>
-                        </div>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
-                            <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
-                            <input type="text" v-model="query.updated_by" class="form-control inline w-sm" v-bind:placeholder="$t('common.operator')" />
-                            <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
-                            <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
-                            <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
-                            <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
-                        </div>
+                    <div class="col-xs-12">
+                      <!-- Remit Type: Remove v-if once api is okay -->
+                        <select class="form-control w-sm c-select" v-model="remit_type" v-if="!query.remit_type">
+                            <option value="0" hidden>{{$t('setting.remit_type')}}</option>
+                            <option value="1">{{$t('setting.payment_normal')}}</option>
+                            <option value="2">{{$t('setting.payment_alipay')}}</option>
+                            <option value="3">{{$t('setting.payment_wechat')}}</option>
+                        </select>
+                        <select class="form-control w-sm c-select" v-model="status">
+                            <option value="0" hidden>{{$t('common.status')}}</option>
+                            <option value="1">{{$t('status.success')}}</option>
+                            <option value="2">{{$t('status.failed')}}</option>
+                            <option value="3">{{$t('status.ongoing')}}</option>
+                            <option value="4">{{$t('status.cancelled')}}</option>
+                            <option value="5">{{$t('status.declined')}}</option>
+                        </select>
+                        <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
+                        <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                        <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
+                        <input type="text" v-model="query.updated_by" class="form-control inline w-sm" v-bind:placeholder="$t('common.operator')" />
+                        <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
+                        <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
+                        <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
+                        <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                     </div>
                 </div>
                 <div class="row m-t">
@@ -188,6 +184,7 @@
                     updated_at_1: '',
                     report_flag: true
                 },
+                member_level: '0',
                 selected: '0',
                 status: '0',
                 remit_type: '0',
