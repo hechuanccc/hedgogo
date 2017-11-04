@@ -42,22 +42,26 @@
                           <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                           <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                       </div>
-                      <button class="md-btn w-xs pull-right" type="button" @click="clearall()">{{$t('action.clear_all')}}</button>
+                      <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
             </div>
           </div>
       </form>
-      <div class="report-header pull-left">
-          <input type="checkbox" value="1" name="account_type" v-model="account_type">
-          <i class="blue"></i>{{$t('action.filter_trial_account')}}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="pull-left">
+            <input type="checkbox" value="1" name="account_type" v-model="account_type">
+            <i class="blue"></i>{{$t('action.filter_trial_account')}}
+          </div>
+          <div class="pull-right total-amount">
+            <span>{{$t('common.total')}} {{$t('nav.withdraw_request')}}: </span>
+            <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
+            <span v-else>{{0 | currency('￥')}}</span>
+          </div>
+        </div>
       </div>
-      <div class="total-amount report-header">
-          <span>{{$t('common.total')}} {{$t('nav.withdraw_request')}}: </span>
-          <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
-          <span v-else>{{0 | currency('￥')}}</span>
-      </div>
-      <div class="box">
+      <div class="box m-t-sm">
           <table class="table table-striped">
               <thead>
                   <tr>
@@ -285,6 +289,7 @@
                 this.query.created_at_1 = ''
                 this.query.updated_at_0 = ''
                 this.query.updated_at_1 = ''
+                this.member_level = 0
                 this.selected = '0'
                 this.$router.push({
                     path: this.$route.path + '?report_flag=true'

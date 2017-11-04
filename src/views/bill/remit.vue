@@ -1,7 +1,14 @@
 <template>
     <div>
+      <div class=row>
+        <div class="pull-right"  v-if="queryset.length">
+          <a :href="href" class="grey-400" :getReport="getReport">
+            <span class="nav-icon export-button w-32"><i class="material-icons">&#xe2c4;</i></span>
+          </a>
+        </div>
+      </div>
       <form class="form" v-on:submit.prevent="submit">
-        <div class="box">
+        <div class="box m-t-sm">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
                     <div class="col-xs-12">
@@ -48,29 +55,26 @@
                             <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                         </div>
-                        <button class="md-btn w-xs pull-right" type="button" @click="clearall()">{{$t('action.clear_all')}}</button>
+                        <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                       </div>
                 </div>
             </div>
         </div>
     </form>
-      <div>
-        <div class="report-header pull-left ">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="pull-left">
             <input type="checkbox" value="1" name="account_type" v-model="account_type">
             <i class="blue"></i>{{$t('action.filter_trial_account')}}
-        </div>
-        <div class="pull-right">
-          <a :href="href" class="grey-400" :getReport="getReport" :disabled="!queryset.length">
-            <span class="nav-icon export-button"><i class="material-icons">&#xe2c4;</i></span>
-          </a>
-        </div>
-        <div class="total-amount report-header">
+          </div>
+          <div class="pull-right total-amount">
             <span>{{$t('common.total')}} {{$t('nav.remit')}}: </span>
             <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
             <span v-else>{{0 | currency('￥')}}</span>
+          </div>
         </div>
       </div>
-      <div class="box">
+      <div class="box m-t-sm">
           <table class="table table-striped">
               <thead>
                   <tr>
@@ -310,6 +314,7 @@
                 this.query.created_at_1 = ''
                 this.query.updated_at_0 = ''
                 this.query.updated_at_1 = ''
+                this.member_level = 0
                 this.selected = '0'
                 this.$router.push({
                     path: this.$route.path + '?report_flag=true'

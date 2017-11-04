@@ -174,7 +174,10 @@ export default {
         trial_account: '试用账户',
         real_account: '真实账户',
         pass: '通过',
-        failed: '未通过'
+        failed: '未通过',
+        total_remit: '总汇款',
+        total_online_pay: '在线支付总额',
+        total_withdraw: '总撤回'
     },
     bill: {
         commission_report: '佣金计算',
@@ -322,7 +325,10 @@ export default {
         min_amount: '最低金额',
         max_amount: '最高金额',
         ip_info: 'IP 信息',
-        specify_date_range: '指定日期范围'
+        specify_date_range: '指定日期范围',
+        input: '键入',
+        refresh: '刷新数据',
+        show_all: '显示所有'
     },
     bank: {
         bank_title: '银行资讯',

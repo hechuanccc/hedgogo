@@ -174,7 +174,10 @@ export default {
         trial_account: 'Trial',
         real_account: 'Real',
         pass: 'Pass',
-        failed: 'Failed'
+        failed: 'Failed',
+        total_remit: 'Total Remit',
+        total_online_pay: 'Total Online Pay',
+        total_withdraw: 'Total Withdraw'
     },
     bill: {
         commission_report: 'Commission Report',
@@ -322,7 +325,10 @@ export default {
         min_amount: 'Min Amount',
         max_amount: 'Max Amount',
         ip_info: 'IP Information',
-        specify_date_range: 'Specify Date Range'
+        specify_date_range: 'Specify Date Range',
+        input: 'Input',
+        refresh: 'Refresh',
+        show_all: 'Show All'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -566,7 +572,7 @@ export default {
     },
     report: {
         number_login: 'No.',
-        no_record_found: 'No Record Found',
+        no_record_found: 'No Record Found, Specify a New Query',
         bet_record_number: 'Bet Record ID',
         no_bet_details: 'No Bet Details'
     },
