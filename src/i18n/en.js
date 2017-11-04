@@ -174,7 +174,10 @@ export default {
         trial_account: 'Trial',
         real_account: 'Real',
         pass: 'Pass',
-        failed: 'Failed'
+        failed: 'Failed',
+        total_remit: 'Total Remit',
+        total_online_pay: 'Total Online Pay',
+        total_withdraw: 'Total Withdraw'
     },
     bill: {
         commission_report: 'Commission Report',
@@ -320,7 +323,12 @@ export default {
         offline: 'Offline',
         total: 'Total',
         min_amount: 'Min Amount',
-        max_amount: 'Max Amount'
+        max_amount: 'Max Amount',
+        ip_info: 'IP Information',
+        specify_date_range: 'Specify Date Range',
+        input: 'Input',
+        refresh: 'Refresh',
+        show_all: 'Show All'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -338,7 +346,7 @@ export default {
         rejected: 'Rejected',
         declined: 'Declined',
         success: 'Success',
-        cancelled: 'Canceled',
+        cancelled: 'Cancelled',
         failed: 'Failed',
         disabled: 'Disabled'
     },
@@ -432,7 +440,8 @@ export default {
         max_per_bet: 'highest Amount Per Bet',
         max_per_draw: 'highest Amount Currently',
         return_rate: 'Return Rate',
-        odds: 'Odds'
+        odds: 'Odds',
+        issue_number: 'Issue Number'
     },
     game_history: {
         game: 'Game',
@@ -563,7 +572,7 @@ export default {
     },
     report: {
         number_login: 'No.',
-        no_record_found: 'No Record Found',
+        no_record_found: 'No Record Found, Specify a New Query',
         bet_record_number: 'Bet Record ID',
         no_bet_details: 'No Bet Details'
     },

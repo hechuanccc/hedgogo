@@ -1,6 +1,6 @@
 <template>
     <select class="form-control w-sm c-select" v-model="myLevel" v-if="mode==='select'" :required="req" :disabled="!disabled">
-        <option value="">{{$t('common.please_select')}}</option>
+        <option value="0" hidden>{{$t('member.level')}}</option>
         <option class="form-control" :value="l.id" v-for="l in levels">{{l.name}}</option>
     </select>
     <div v-else>

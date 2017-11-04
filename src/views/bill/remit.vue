@@ -1,37 +1,40 @@
 <template>
     <div>
+      <div class=row>
+        <div class="pull-right"  v-if="queryset.length">
+          <a :href="href" class="grey-400" :getReport="getReport">
+            <span class="nav-icon export-button w-32"><i class="material-icons">&#xe2c4;</i></span>
+          </a>
+        </div>
+      </div>
       <form class="form" v-on:submit.prevent="submit">
-        <div class="box">
+        <div class="box m-t-sm">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
-                    <div>
-                        <div class="col-xs-4">
-                          <!-- Remit Type: Remove v-if once api is okay -->
-                            <select class="form-control w-sm c-select" v-model="remit_type" v-if="!query.remit_type">
-                                <option value="0" hidden>{{$t('setting.remit_type')}}</option>
-                                <option value="1">{{$t('setting.payment_normal')}}</option>
-                                <option value="2">{{$t('setting.payment_alipay')}}</option>
-                                <option value="3">{{$t('setting.payment_wechat')}}</option>
-                            </select>
-                            <select class="form-control w-sm c-select" v-model="status">
-                                <option value="0" hidden>{{$t('common.status')}}</option>
-                                <option value="1">{{$t('status.success')}}</option>
-                                <option value="2">{{$t('status.failed')}}</option>
-                                <option value="3">{{$t('status.ongoing')}}</option>
-                                <option value="4">{{$t('status.cancelled')}}</option>
-                                <option value="5">{{$t('status.declined')}}</option>
-                            </select>
-                            <level class="inline" :level="query.member_level" @level-select="changeFromLevel"></level>
-                        </div>
-                        <div class="col-xs-8">
-                            <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
-                            <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
-                            <input type="text" v-model="query.updated_by" class="form-control inline w-sm" v-bind:placeholder="$t('common.operator')" />
-                            <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
-                            <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
-                            <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
-                            <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
-                        </div>
+                    <div class="col-xs-12">
+                      <!-- Remit Type: Remove v-if once api is okay -->
+                        <select class="form-control w-sm c-select" v-model="remit_type" v-if="!query.remit_type">
+                            <option value="0" hidden>{{$t('setting.remit_type')}}</option>
+                            <option value="1">{{$t('setting.payment_normal')}}</option>
+                            <option value="2">{{$t('setting.payment_alipay')}}</option>
+                            <option value="3">{{$t('setting.payment_wechat')}}</option>
+                        </select>
+                        <select class="form-control w-sm c-select" v-model="status">
+                            <option value="0" hidden>{{$t('common.status')}}</option>
+                            <option value="1">{{$t('status.success')}}</option>
+                            <option value="2">{{$t('status.failed')}}</option>
+                            <option value="3">{{$t('status.ongoing')}}</option>
+                            <option value="4">{{$t('status.cancelled')}}</option>
+                            <option value="5">{{$t('status.declined')}}</option>
+                        </select>
+                        <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
+                        <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                        <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
+                        <input type="text" v-model="query.updated_by" class="form-control inline w-sm" v-bind:placeholder="$t('common.operator')" />
+                        <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
+                        <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
+                        <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
+                        <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                     </div>
                 </div>
                 <div class="row m-t">
@@ -52,29 +55,26 @@
                             <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                         </div>
-                        <button class="md-btn w-xs pull-right" type="button" @click="clearall()">{{$t('action.clear_all')}}</button>
+                        <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                       </div>
                 </div>
             </div>
         </div>
     </form>
-      <div>
-        <div class="report-header pull-left ">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="pull-left">
             <input type="checkbox" value="1" name="account_type" v-model="account_type">
             <i class="blue"></i>{{$t('action.filter_trial_account')}}
-        </div>
-        <div class="pull-right">
-          <a :href="href" class="grey-400" :getReport="getReport" :disabled="!queryset.length">
-            <span class="nav-icon export-button"><i class="material-icons">&#xe2c4;</i></span>
-          </a>
-        </div>
-        <div class="total-amount report-header">
+          </div>
+          <div class="pull-right total-amount">
             <span>{{$t('common.total')}} {{$t('nav.remit')}}: </span>
             <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
             <span v-else>{{0 | currency('￥')}}</span>
+          </div>
         </div>
       </div>
-      <div class="box">
+      <div class="box m-t-sm">
           <table class="table table-striped">
               <thead>
                   <tr>
@@ -188,6 +188,7 @@
                     updated_at_1: '',
                     report_flag: true
                 },
+                member_level: '0',
                 selected: '0',
                 status: '0',
                 remit_type: '0',
@@ -313,6 +314,7 @@
                 this.query.created_at_1 = ''
                 this.query.updated_at_0 = ''
                 this.query.updated_at_1 = ''
+                this.member_level = 0
                 this.selected = '0'
                 this.$router.push({
                     path: this.$route.path + '?report_flag=true'
