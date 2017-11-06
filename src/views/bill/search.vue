@@ -4,60 +4,49 @@
         <div class="box">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
-                    <div class="col-xs-2">
-                        <label class="text-sm">{{$t('bill.order_id')}}</label>
-                        <input type="text" v-model="order_id" @keyup="removeSpace" class="form-control w-sm" />
-                    </div>
-                    <div class="col-xs-2">
-                        <label class="text-sm">{{$t('common.member')}}</label>
-                        <input type="text" v-model="query.member_q" class="form-control w-sm" />
-                    </div>
-
-                    <div class="col-xs-2">
-                        <label class="text-sm">{{$t('common.agent')}}</label>
-                        <input type="text" v-model="query.agent_q" class="form-control w-sm" />
-                    </div>
-
-                    <div class="col-xs-4">
-                        <label class="text-sm">{{$t('common.amount')}}</label>
-                        <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" /> <span>~</span>
-                        <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" />
-                    </div>
-
-                    <div class="col-xs-2">
-                        <button class="md-btn w-sm blue pull-right" type="submit">{{$t('common.search')}}</button>
+                    <div class="col-xs-12">
+                        <select class="w c-select" v-model="selected" @change="getData">
+                            <option value="0" hidden>{{$t('common.date')}}</option>
+                            <option value="1">{{$t('common.today')}}</option>
+                            <option value="2">{{$t('common.yesterday')}}</option>
+                            <option value="3">{{$t('common.specify_date_range')}}</option>
+                        </select>
+                        <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
+                        <select class="form-control w-sm c-select" v-model="transaction_type">
+                            <option value="0" hidden>{{$t('bill.transaction_type')}}</option>
+                            <option name="transaction_type" v-for="t in trans_type" :value="t.code">
+                                <i class="blue">{{t.display_name}}</i>
+                            </option>
+                        </select>
+                        <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                        <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
+                        <input type="text" v-model="query.agent_q" class="form-control w-sm" v-bind:placeholder="$t('common.agent')"/>
+                        <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
+                        <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
+                        <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                     </div>
                 </div>
                 <div class="row m-t">
-                    <div class="col-xs-2">
-                        <label class="text-sm">{{$t('member.level')}}</label>
-                        <level
-                          :level="query.member_level"
-                          @level-select="changeFromLevel">
-                        </level>
-                    </div>
-
-                    <div class="col-xs-4">
-                        <label class="text-sm">{{$t('bill.created_at')}}</label>
-                        <date-picker width='140' v-model="created_at_0"></date-picker>
-                        <span>~</span>
-                        <date-picker width='140' v-model="created_at_1"></date-picker>
-
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="text-sm">{{$t('bill.transaction_type')}}</label>
-                        <label class="md-check m-r pull-right" v-for="t in trans_type">
-                            <input name="transaction_type" type="checkbox" :value="t.code" v-model="transaction_type" >
-                            <i class="blue"></i>
-                            {{t.display_name}}
-                        </label>
+                    <div class="col-xs-12">
+                        <div v-if="selected == '3'" class="pull-left">
+                            <date-picker width='140' v-model="query.created_at_0"></date-picker>
+                            <span>~</span>
+                            <date-picker width='140' v-model="query.created_at_1"></date-picker>
+                        </div>
+                    <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-
-    <div class="box">
+    <input  type="checkbox" value="1" name="account_type" v-model="account_type" >
+    <i class="blue"></i>{{$t('action.filter_trial_account')}}
+    <div v-if="queryset.length" class="pull-right">
+      <a :href="href" class="grey-400" :getReport="getReport">
+        <span class="nav-icon export-button" ><i class="material-icons">&#xe2c4;</i></span>
+      </a>
+    </div>
+    <div class="box m-t-sm">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -70,6 +59,11 @@
                     <th>{{$t('common.balance_before')}}</th>
                     <th>{{$t('common.balance_after')}}</th>
                     <th>{{$t('common.amount')}}</th>
+                    <th>{{$t('game_manage.issue_number')}}</th>
+                    <th>{{$t('game_manage.name')}}</th>
+                    <th>{{$t('game_manage.play')}}</th>
+                    <th>{{$t('common.operator')}}</th>
+                    <th>{{$t('common.memo')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,17 +91,18 @@
                       <span v-else>-</span>
                     </td>
                     <td>{{t.amount | currency('￥')}} <label v-if="t.withdraw_fee"> - 手续费：{{t.withdraw_fee}}</label></td>
+                    <td v-if="t.issue_number">{{t.issue_number}}</td> <td v-else>-</td>
+                    <td v-if="t.game">{{t.game}}</td> <td v-else>-</td>
+                    <td v-if="t.play">{{t.play}</td> <td v-else>-</td>
+                    <td v-if="t.updated_by">{{t.updated_by.username}}</td> <td v-else>-</td>
+                    <td v-if="t.memo">{{t.memo}}</td> <td v-else>-</td>
                 </tr>
             </tbody>
         </table>
-        <div class="report-button" v-if="queryset.length">
-            <div class="col-xs-2 pull-right">
-                <a :href="href" class="grey-400 md-btn w-sm" :getReport="getReport">{{$t('returnrate.export')}}</a>
-            </div>
-        </div>
     </div>
     <div class="row m-b-lg">
-      <pulling
+      <div v-show="!queryset.length" class="col-xs-12 text-center">{{$t('report.no_record_found')}}</div>
+      <pulling v-show="queryset.length"
         :queryset="queryset"
         :query="query"
         :export_query="export_query"
@@ -126,6 +121,10 @@
     import transactionStatus from '../../components/transaction_status'
     import pulling from '../../components/pulling'
     import VueCookie from 'vue-cookie'
+    import date from '../../utils/date'
+    import Vue from 'vue'
+
+    const format = 'YYYY-MM-DD'
     export default {
         data () {
             return {
@@ -135,6 +134,7 @@
                 billApi: api.bill,
                 order_id: '',
                 query: {
+                    account_type: '',
                     id: '',
                     member_q: '',
                     created_at_0: '',
@@ -147,14 +147,21 @@
                     transaction_type: [],
                     report_flag: true
                 },
+                member_level: '0',
+                selected: '0',
+                account_type: 'true',
                 // use selectd transaction types
-                transaction_type: [],
+                transaction_type: '0',
                 // all of the transaction types
                 trans_type: [],
                 showAgent: false,
                 href: '',
                 export_query: '',
-                filter: {}
+                filter: {
+                    created_at_0: Vue.moment().subtract(7, 'days').format(format),
+                    created_at_1: Vue.moment().subtract(1, 'days').format(format),
+                    report_flag: 'True'
+                }
             }
         },
         watch: {
@@ -182,10 +189,6 @@
             if (transactionType) {
                 this.transaction_type = transactionType.split(',')
             }
-            this.$nextTick(() => {
-                this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
-            })
         },
         computed: {
             src () {
@@ -232,6 +235,54 @@
             },
             removeSpace () {
                 this.order_id = this.order_id.replace(/[^\d]+/g, '')
+            },
+            clearall: function () {
+                this.query = {}
+                this.dateRange = -1
+                this.query.created_at_0 = ''
+                this.query.created_at_1 = ''
+                this.member_level = 0
+                this.transaction_type = '0'
+                this.selected = '0'
+                this.$router.push({
+                    path: this.$route.path + '?report_flag=true'
+                })
+            },
+            getData: function () {
+                this.created_at_0 = ''
+                this.created_at_1 = ''
+                this.toggleDate(this.selected)
+            },
+            clearDateFilter () {
+                this.created_at_0 = ''
+                this.created_at_1 = ''
+                this.query.created_at_0 = ''
+                this.query.created_at_1 = ''
+                this.$router.push({
+                    path: this.$route.path + '?report_flag=true',
+                    query: this.query
+                })
+            },
+            toggleDate (flag) {
+                switch (flag) {
+                case '1':
+                    this.filter.created_at_0 = date.today[0]
+                    this.filter.created_at_1 = date.today[1]
+                    break
+                case '2':
+                    this.filter.created_at_0 = date.yesterday[0]
+                    this.filter.created_at_1 = date.yesterday[1]
+                    break
+                }
+                this.quick_select()
+            },
+            quick_select () {
+                this.$refs.pulling.submit()
+                let query = this.filter
+                this.$router.push({
+                    path: this.$route.path,
+                    query: query
+                })
             }
         },
         components: {
