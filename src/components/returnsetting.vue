@@ -1,7 +1,7 @@
 <template>
     <div>
       <select class="form-control w-sm c-select" v-model="myReturnsetting">
-        <option value="">{{$t('common.please_select')}}</option>
+        <option value="0" hidden>{{$t('member.return_setting')}}</option>
         <option class="form-control" :value="r.id" v-for="r in returnsettings">{{r.name}}</option>
       </select>
     </div>

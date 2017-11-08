@@ -1,110 +1,80 @@
 <template>
     <div>
-      <div class="p-b m-b-sm"  v-if="$root.permissions.includes('update_member_details')">
-        <router-link tag="button" class="md-btn w-sm blue"  to="/member/add">{{$t('action.add_member')}}</router-link>
+      <div class="row" v-if="!logined">
+          <div class="h6 col-xs-2 inline">{{$t('nav.member')}}</div>
+          <div class="pull-right inline" v-if="queryset.length && logined !== 1 ">
+            <a :href="href" class="grey-400" :getReport="getReport"><span class="nav-icon export-button w-32"><i class="material-icons">&#xe2c4;</i></span></a>
+          </div>
+          <div class="pull-right inline m-r" v-if="$root.permissions.includes('update_member_details')">
+            <router-link tag="button" class="md-btn w-sm blue pull-right"  to="/member/add">{{$t('action.add_member')}}</router-link>
+          </div>
+          <div class="alert alert-danger" v-else>{{$t('common.errorPermission')}}</div>
       </div>
-      <div class="alert alert-danger" v-else>{{$t('common.errorPermission')}}</div>
-
-      <form class="form" v-on:submit.prevent="submit">
-        <div class="box">
+      <div class="row" v-else>
+        <div class="h6 col-xs-2 inline">{{$t('nav.online_member_list')}}</div>
+        <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>   </div>
+        <button class="md-btn blue w-xs pull-right m-r" type="button" @click="refresh">{{$t('common.refresh')}}</button>
+      </div>
+      <form class="form" v-on:submit.prevent="submit" v-show="!logined">
+        <div class="box m-t-sm">
           <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
-              <div class="col-xs-2">
-                <label class="text-sm" >{{$t('member.account')}}</label>
-                <input type="text" v-model="query.username_q" class="form-control" />
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm" >{{$t('member.level')}}</label>
-                <level :level="query.level" @level-select="levelSelect"></level>
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('member.agent')}}</label>
-                <input type="text" v-model="query.agent_q" class="form-control" />
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.real_name')}}</label>
-                <input type="text" v-model="query.real_name_q" class="form-control" />
-              </div>
-              <div class="col-xs-3">
+              <div class="col-xs-12">
+                <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('member.account')"/>
+                <level :level="level" @level-select="levelSelect" v-bind:placeholder="$t('member.level')"></level>
+                <input type="text" v-model="query.agent_q" class="form-control" v-bind:placeholder="$t('member.agent')"/>
+                <input type="text" v-model="query.real_name_q" class="form-control" v-bind:placeholder="$t('common.real_name')"/>
+                <select class="form-control c-select w-sm" v-model="status">
+                  <option value="" hidden>{{$t('common.status')}}</option>
+                  <option value="1">{{$t('status.active')}}</option>
+                  <option value="0">{{$t('status.inactive')}}</option>
+                </select>
+                <select class="form-control w-sm c-select" v-model="member_logged_in">
+                  <option value="" hidden>{{$t('common.login_status')}}</option>
+                  <option value="1">{{$t('common.logged_in')}}</option>
+                  <option value="0">{{$t('common.all')}}</option>
+                </select>
                 <div class="pull-right">
                   <button class="md-btn grey-100 m-r" type="button" @click="showAll=!showAll">
                     <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
                     <span v-else>{{$t('member.collapse_options')}} <i class="fa fa-angle-double-up"></i></span>
                   </button>
-
-                  <button type="submit" class="md-btn w-sm blue">{{$t('common.search')}}</button>
+                  <button type="submit" class="md-btn w-xs blue">{{$t('common.search')}}</button>
                 </div>
               </div>
             </div>
             <div class="row m-t" v-show="showAll">
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.phone')}}</label>
-                <input type="text" v-model="query.phone_q" class="form-control w-sm" />
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.email')}}</label>
-                <input type="text" v-model="query.email_q" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.qq')}}</label>
-                <input type="text" v-model="query.qq_q" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('member.return_setting')}}</label>
-                <returnsetting :returnsetting="query.return_settings" @myReturn="returnData"></returnsetting>
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.wechat')}}</label>
-                <input type="text" v-model="query.wechat_q" class="form-control w-sm " />
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('member.created_ip')}}</label>
-                <input type="text" v-model="query.register_ip" class="form-control w-sm " />
-              </div>
-            </div>
-            <div class="row m-t" v-show="showAll">
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.login_status')}}</label>
-                <select class="form-control c-select" v-model="query.logined">
-                  <option value="">{{$t('common.please_select')}}</option>
-                  <option value="1">{{$t('common.logged_in')}}</option>
-                  <option value="0">{{$t('common.all')}}</option>
+              <div class="col-xs-12">
+                <select class="form-control w-sm c-select inline" v-model="selected">
+                  <option value="0" hidden>{{$t('common.please_select')}}</option>
+                  <option value="1">{{$t('common.phone')}}</option>
+                  <option value="2">{{$t('common.email')}}</option>
+                  <option value="3">{{$t('common.qq')}}</option>
+                  <option value="4">{{$t('common.wechat')}}</option>
                 </select>
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.status')}}</label>
-                <select class="form-control c-select w-sm" v-model="query.status">
-                  <option value="">{{$t('common.please_select')}}</option>
-                  <option value="1">{{$t('status.active')}}</option>
-                  <option value="0">{{$t('status.inactive')}}</option>
-                </select>
-              </div>
-
-              <div class="col-xs-4">
-                <label class="text-sm">{{$t('member.balance')}}</label>
-                <input type="text" v-model="query.balance_gte" class="form-control inline w-sm" /> <span>~</span>
-                <input type="text" v-model="query.balance_lte" class="form-control inline w-sm" />
-              </div>
-              <div class="col-xs-4">
-                <label class="text-sm">{{$t('member.created_at')}}</label>
-                <date-picker width='140' v-model="created_at_0"></date-picker>
+                <input v-show="selected == '0'" type="text" class="form-control inline" :disabled="selected == '0'"/>
+                <input v-if="selected == '1'" type="text" v-model="query.phone_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.phone')"/>
+                <input v-if="selected == '2'" type="text" v-model="query.email_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.email')"/>
+                <input v-if="selected == '3'" type="text" v-model="query.qq_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')"/>
+                <input v-if="selected == '4'" type="text" v-model="query.wechat_q" class="form-control w-sm " v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')"/>
+                <returnsetting :returnsetting="return_settings" @myReturn="returnData" class="inline"></returnsetting>
+                <input type="text" v-model="query.register_ip" class="form-control w-sm " v-bind:placeholder="$t('member.created_ip')"/>
+                <input type="text" v-model="query.balance_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
+                <input type="text" v-model="query.balance_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
+                <date-picker width='140' v-model="created_at_0" v-bind:placeholder="$t('member.created_at')"></date-picker>
                 <span>~</span>
-                <date-picker width='140' v-model="created_at_1"></date-picker>
+                <date-picker width='140' v-model="created_at_1" v-bind:placeholder="$t('member.created_at')"></date-picker>
+                <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
               </div>
             </div>
           </div>
         </div>
       </form>
-      <div class="box"  v-if="queryset.length > 0">
+      <div class="box m-t-sm"  v-if="queryset.length > 0">
         <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="logined">
           <thead>
           <tr >
+            <th class="text-center">{{$t('common.login_status')}}</th>
             <th>{{$t('member.account_type')}}</th>
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
@@ -112,6 +82,7 @@
             <th>{{$t('member.loggedin_domain')}}</th>
             <th>{{$t('member.loggedin_ip')}}</th>
             <th>{{$t('member.login_platform')}}</th>
+            <th>{{$t('member.area')}}</th>
             <th>{{$t('member.agent')}}</th>
             <th>{{$t('member.level')}}</th>
             <th>{{$t('member.status')}}</th>
@@ -121,6 +92,10 @@
           </thead>
           <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset">
+            <td>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</div>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
+            </td>
             <td>
               <div v-if="member.account_type==1">{{$t('member.real_account')}}</div>
               <div v-else>{{$t('member.trial_account')}}</div>
@@ -148,7 +123,9 @@
               <span v-if="member.last_login">{{member.last_login.platform}}</span>
               <span v-else>-</span>
             </td>
-
+            <td>
+              <div>{{member.address || '-'}}</div>
+            </td>
             <td v-if="member.agent.name">
               <span>{{member.agent.name}}</span>
             </td>
@@ -166,7 +143,7 @@
         <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
           <thead>
           <tr>
-            <th>{{$t('common.login_status')}}</th>
+            <th class="text-center">{{$t('common.login_status')}}</th>
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
             <th>{{$t('member.created_at')}}</th>
@@ -180,13 +157,14 @@
             <th>{{$t('member.total_online_pay')}}</th>
             <th>{{$t('member.total_withdraw')}}</th>
             <th>{{$t('member.balance')}}</th>
+            <th>{{$t('common.memo')}}</th>
           </tr>
           </thead>
           <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset">
             <td>
-              <span class="label success" v-if="member.is_logged_in==true">{{$t('common.online')}}</span>
-              <span class="label error" v-else>{{$t('common.offline')}}</span>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</div>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td>
               <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
@@ -224,18 +202,17 @@
               <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
+            <td><span v-if="member.total_remit">{{member.total_remit | currency('￥')}}</span><span v-else>-</span></td>
+            <td><span v-if="member.total_online_pay">{{member.total_online_pay | currency('￥')}}</span><span v-else>-</span></td>
+            <td><span v-if="member.total_withdraw">{{member.total_withdraw | currency('￥')}}</span><span v-else>-</span></td>
             <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
+            <td><span v-if="member.memo">{{member.memo}}</span><span v-else>-</span></td>
           </tr>
           </tbody>
         </table>
-        <div class="report-button" v-if="queryset.length && logined !== 1 ">
-          <div class="col-xs-2 pull-right">
-            <a :href="href" class="md-btn w-sm grey-400" :getReport="getReport">{{$t('common.export')}}</a>
-          </div>
-        </div>
       </div>
       <div class="row m-b-lg">
-        <pulling
+        <pulling v-show="!expand"
           :queryset="queryset"
           :query="query"
           @query-data="queryData"
@@ -277,16 +254,24 @@ export default {
                 email_q: '',
                 qq_q: '',
                 wechat_q: '',
-                logined: '',
+                logined: '2',
                 register_ip: '',
                 level: '',
                 report_flag: true,
                 is_logged_in: '',
-                account_type: ''
+                account_type: '',
+                memo: ''
             },
+            status: '',
+            return_settings: '0',
+            level: '0',
+            selected: '0',
             filter: {},
             href: '',
+            member_logged_in: '',
             logined: false,
+            loading: false,
+            expand: false,
             export_query: []
         }
     },
@@ -296,8 +281,15 @@ export default {
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
+        console.log(this.expand)
     },
     watch: {
+        status: function (old, newObj) {
+            this.query.status = old
+        },
+        member_logged_in: function (old, newObj) {
+            this.query.logined = old
+        },
         '$route': 'nextTickFetch',
         created_at_0 (newObj, old) {
             this.query.created_at_0 = newObj
@@ -349,6 +341,29 @@ export default {
         submit () {
             this.$refs.pulling.submit()
             this.$refs.pulling.getExportQuery()
+        },
+        clearall: function () {
+            this.query = {}
+            this.return_settings = 0
+            this.status = ''
+            this.member_logged_in = ''
+            this.created_at_0 = ''
+            this.created_at_1 = ''
+            this.level = 0
+            this.selected = '0'
+            this.$router.push({
+                path: this.$route.path + '?report_flag=true'
+            })
+        },
+        refresh: function () {
+            this.loading = true
+            this.$router.push({
+                path: this.$route.path + '?report_flag=true'
+            })
+            this.$router.push({
+                path: this.$route.path + '?logined=1'
+            })
+            this.loading = false
         }
     },
     components: {
