@@ -1,89 +1,58 @@
 <template>
     <div>
-      <div class="p-b m-b-sm"  v-if="$root.permissions.includes('add_change_staff')">
-        <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
+      <div class="row">
+        <div class="pull-right m-r"  v-if="$root.permissions.includes('add_change_staff')">
+          <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
+        </div>
       </div>
       <form class="form" v-on:submit.prevent="submit('agent')">
-        <div class="box">
+        <div class="box m-t-sm">
           <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('agent.account')}}</label>
-                <input type="text" v-model="query.username_q" class="form-control" />
-              </div>
-              <div class="col-xs-2">
-                <label class="m-r">{{$t('agent.promo_code')}}</label>
-                <input type="text" v-model="query.promo_code" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="m-r">{{$t('common.real_name')}}</label>
-                <input type="text" v-model="query.real_name_q" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="m-r">{{$t('agent.commission_setting')}}</label>
-                <commissionsetting :commissionsetting="query.commission_settings" @myCommission="myCommission"></commissionsetting>
-              </div>
-              <div class="col-3">
-                <button class="md-btn w-sm blue pull-right" type="submit">{{$t('common.search')}}</button>
-                <button class="md-btn grey-100 pull-right m-r"  @click="showAll=!showAll">
-                  <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
-                  <span v-else>{{$t('member.collapse_options')}} <i class="fa fa-angle-double-up"></i></span>
-                </button>
-              </div>
-
-            </div>
-            <div class="row m-t" v-show="showAll">
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('agent.parent_agent')}}</label>
-                <input type="text" v-model="query.parent_agent" class="form-control w-sm" />
-              </div>
-
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.phone')}}</label>
-                <input type="text" v-model="query.phone" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.email')}}</label>
-                <input type="text" v-model="query.email" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.qq')}}</label>
-                <input type="text" v-model="query.qq" class="form-control w-sm" />
-              </div>
-            </div>
-            <div class="row m-t" v-show="showAll">
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('agent.level')}}</label>
-                <select class="form-control c-select w-sm" v-model="query.level" >
-                  <option value="">不限</option>
+              <div class="col-xs-12">
+                <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
+                <input type="text" v-model="query.promo_code" class="form-control w-sm"  v-bind:placeholder="$t('agent.promo_code')"/>
+                <input type="text" v-model="query.real_name_q" class="form-control w-sm" v-bind:placeholder="$t('common.real_name')" />
+                <input type="text" v-model="query.parent_agent" class="form-control w-sm" v-bind:placeholder="$t('agent.parent_agent')" />
+                <select class="form-control c-select w-sm" v-model="level" >
+                  <option value="0" hidden>{{$t('agent.level')}}</option>
                   <option value="1">大股东</option>
                   <option value="2">股东</option>
                   <option value="3">总代理</option>
                   <option value="4">代理</option>
                 </select>
+                <commissionsetting :commissionsetting="commission_settings" @myCommission="myCommission"></commissionsetting>
+                <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
+                <button class="md-btn grey-100 pull-right m-r"  @click="showAll=!showAll">
+                  <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
+                  <span v-else>{{$t('member.collapse_options')}} <i class="fa fa-angle-double-up"></i></span>
+                </button>
               </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.status')}}</label>
-                <select class="form-control c-select w-sm" v-model="query.status">
-                  <option value="">不限</option>
+            </div>
+            <div class="row m-t" v-show="showAll">
+              <div class="col-xs-12">
+                <select class="form-control w-sm c-select inline" v-model="selected" @change="filterUserContactInfo">
+                  <option value="0" hidden>{{$t('common.please_select')}}</option>
+                  <option value="1">{{$t('common.phone')}}</option>
+                  <option value="2">{{$t('common.email')}}</option>
+                  <option value="3">{{$t('common.qq')}}</option>
+                  <option value="4">{{$t('common.wechat')}}</option>
+                </select>
+                <input v-show="selected == '0'" type="text" class="form-control inline" :disabled="selected == '0'"/>
+                <input v-if="selected == 1" type="text" v-model="query.phone" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.phone')" />
+                <input v-if="selected == 2" type="text" v-model="query.email" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.email')" />
+                <input v-if="selected == 3" type="text" v-model="query.qq" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')" />
+                <input v-if="selected == 4" type="text" v-model="query.wechat" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')" />
+                <select class="form-control c-select w-sm" v-model="status">
+                  <option value="" hidden>{{$t('common.status')}}</option>
                   <option value="1">{{$t('status.active')}}</option>
                   <option value="0">{{$t('status.inactive')}}</option>
                 </select>
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('common.wechat')}}</label>
-                <input type="text" v-model="query.wechat" class="form-control w-sm" />
-              </div>
-              <div class="col-xs-2">
-                <label class="text-sm">{{$t('agent.bank_account')}}</label>
-                <input type="text" v-model="query.bank" class="form-control w-sm" />
-              </div>
-
-              <div class="col-xs-4">
-                <label>{{$t('agent.joined_at')}}</label>
-                <date-picker width='140' v-model="created_at_0"></date-picker>
+                <input type="text" v-model="query.bank" class="form-control w-sm" v-bind:placeholder="$t('agent.bank_account')"/>
+                <date-picker width='140' v-model="created_at_0" v-bind:placeholder="$t('agent.joined_at')"></date-picker>
                 <span>~</span>
-                <date-picker width='140' v-model="created_at_1"></date-picker>
+                <date-picker width='140' v-model="created_at_1" v-bind:placeholder="$t('agent.joined_at')"></date-picker>
+                <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
               </div>
             </div>
           </div>
@@ -94,20 +63,25 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>{{$t("agent.number")}}</th>
+            <th>{{$t("common.login_status")}}</th>
+            <th>{{$t("agent.parent_agent")}}</th>
             <th>{{$t("agent.account")}}</th>
             <th>{{$t('common.real_name')}}</th>
+            <th>{{$t("agent.member_count")}}</th>
             <th>{{$t("agent.joined_at")}}</th>
             <th width="240">{{$t("agent.domain")}}</th>
             <th>{{$t("agent.level")}}</th>
             <th>{{$t("common.status")}}</th>
+            <th>{{$t("common.memo")}}</th>
           </tr>
           </thead>
           <tbody v-if="queryset.length">
           <tr v-for="agent in queryset">
             <td>{{agent.id}}</td>
+            <td v-if="agent.parent_agent">{{agent.parent_agent}}</td><td v-else>-</td>
             <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
-            <td>{{agent.real_name}}</td>
+            <td><span v-if="agent.real_name">{{agent.real_name}}</span><span v-else>-</span></td>
+            <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
             <td>
               <span v-if="agent.created_at">{{agent.created_at | moment("YYYY-MM-DD HH:mm")}}</span>
               <span v-else>-</span>
@@ -127,6 +101,7 @@
               <span class="label success" v-if="agent.status==1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
+            <td v-if="agent.memo">{{agent.memo}}</td><td v-else>-</td>
           </tr>
           </tbody>
         </table>
@@ -174,13 +149,25 @@ export default {
                 email: '',
                 qq: '',
                 wechat: '',
-                bank: ''
+                bank: '',
+                member_count: '',
+                memo: ''
             },
+            status: '',
+            level: '0',
+            commission_settings: '0',
+            selected: '0',
             filter: {}
         }
     },
     watch: {
         '$route': 'nextTickFetch',
+        status: function (old, newObj) {
+            this.query.status = old
+        },
+        level: function (old, newObj) {
+            this.query.level = old
+        },
         created_at_0 (newObj, old) {
             this.query.created_at_0 = newObj
         },
@@ -222,6 +209,38 @@ export default {
         },
         isArray (o) {
             return Object.prototype.toString.call(o) === '[object Array]'
+        },
+        filterUserContactInfo () {
+            this.query.phone = ''
+            this.query.email = ''
+            this.query.wechat = ''
+            this.query.qq = ''
+            switch (this.selected) {
+            case '1':
+                this.query.phone = this.query.phone
+                break
+            case '2':
+                this.query.email = this.query.email
+                break
+            case '3':
+                this.query.qq = this.query.qq
+                break
+            case '4':
+                this.query.wechat = this.query.wechat
+                break
+            }
+            this.$refs.pulling.submit()
+        },
+        clearall: function () {
+            this.query = {}
+            this.status = ''
+            this.created_at_0 = ''
+            this.created_at_1 = ''
+            this.level = 0
+            this.selected = '0'
+            this.$router.push({
+                path: this.$route.path
+            })
         }
 
     },
