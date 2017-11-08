@@ -122,7 +122,7 @@
                   <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=1'">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
                 <div class="col-md-5">
-                  <span class="text-muted">{{$t('betrecord.bet')}}</span>
+                  <span class="text-muted">{{$t('betrecord.lose')}}</span>
                   <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=0'">{{member.total_loss | currency('￥')}}</router-link></div>
                 </div>
               </div>
