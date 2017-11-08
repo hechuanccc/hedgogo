@@ -1,6 +1,6 @@
 <template>
     <select class="form-control w-sm c-select" v-model="myCommission">
-        <option value="">{{$t('common.please_select')}}</option>
+        <option value="0" hidden>{{$t('agent.commission_setting')}}</option>
         <option class="form-control" :value="r.id" v-for="r in commissionsettings">{{r.name}}</option>
     </select>
 </template>
