@@ -212,7 +212,7 @@
         </table>
       </div>
       <div class="row m-b-lg">
-        <pulling v-show="!expand"
+        <pulling
           :queryset="queryset"
           :query="query"
           @query-data="queryData"
@@ -271,7 +271,6 @@ export default {
             member_logged_in: '',
             logined: false,
             loading: false,
-            expand: false,
             export_query: []
         }
     },
@@ -281,7 +280,6 @@ export default {
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
-        console.log(this.expand)
     },
     watch: {
         status: function (old, newObj) {

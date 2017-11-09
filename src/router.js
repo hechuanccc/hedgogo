@@ -903,32 +903,6 @@ export default new Router({
         }
     },
     {
-        path: '/betrecord/recent',
-        name: 'recent_bet_record',
-        component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
-        },
-        meta: {
-            group: 'betrecord',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.recent_bet_records')
-        }
-    },
-    {
-        path: '/betrecord/history',
-        name: 'bet_record_history',
-        component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
-        },
-        meta: {
-            group: 'betrecord',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.bet_record_history')
-        }
-    },
-    {
         path: '/betrecord/instant_view',
         name: 'instant_view',
         component: function (resolve) {
