@@ -1,28 +1,35 @@
 <template>
     <div>
-        <div class="p-b m-b-sm"  v-if="$root.permissions.includes('add_change_staff')">
+      <div class="row">
+        <div class="pull-right m-r"  v-if="$root.permissions.includes('add_change_staff')">
             <router-link tag="button" class="md-btn w-sm blue"  to="/staff/add">{{$t('action.add_staff')}}</router-link>
         </div>
-        <div class="box">
+      </div>
+        <div class="box m-t-sm">
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>{{$t('staff.account')}}</th>
-                        <th>{{$t('common.status')}}</th>
-                        <th>{{$t('staff.permission')}}</th>
-                        <th>{{$t('common.memo')}}</th>
+                      <th class="text-center">{{$t('common.login_status')}}</th>
+                      <th>{{$t('staff.account')}}</th>
+                      <th>{{$t('common.status')}}</th>
+                      <th>{{$t('staff.permission')}}</th>
+                      <th>{{$t('staff.created_at')}}</th>
+                      <th>{{$t('common.memo')}}</th>
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length > 0">
                     <tr v-for="staff in queryset" >
-                        <td>{{staff.id}}</td>
+                        <td>
+                          <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="staff.is_logged_in==true">&#x25CF;</div>
+                          <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
+                        </td>
                         <td><router-link :to="'/staff/' + staff.id">{{staff.username}}</router-link></td>
                         <td>
                             <span class="label success" v-if="staff.status==1">{{$t('status.active')}}</span>
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
                         </td>
                         <td>{{staff.group.name}}</td>
+                        <td>{{staff.created_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.memo}}</td>
                     </tr>
                 </tbody>
