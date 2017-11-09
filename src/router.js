@@ -298,6 +298,19 @@ export default new Router({
         }
     },
     {
+        path: '/game_detail/:id',
+        name: 'game_detail',
+        component: function (resolve) {
+            require(['./views/game_manage/detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.game_manage'),
+            agentPermission: 'true',
+            group: 'game_manage'
+        }
+    },
+    {
         path: '/game_history',
         name: 'game_history',
         component: function (resolve) {
