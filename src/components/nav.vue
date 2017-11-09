@@ -65,9 +65,9 @@
                                 <span class="nav-text">{{$t("nav.bet_record")}}</span>
                             </a>
                             <ul class="nav-sub">
-                                <li><router-link to="/betrecord/recent"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
-                                <li><router-link to="/betrecord/history"><span class="nav-text">{{$t('nav.bet_record_history')}}</span></router-link></li>
-                                <li><router-link to="/betrecord/instant_view"><span class="nav-text">{{$t('nav.instant_view')}}</span></router-link></li>
+                                <li><router-link :to="'/report/betrecord?report_flag=true&created_at_0=' + today + '&created_at_1=' + today"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
+                                <li><router-link :to="'/report/betrecord?report_flag=true&created_at_1=' + yesterday"><span class="nav-text">{{$t('nav.bet_record_history')}}</span></router-link></li>
+                                <li><router-link :to="'/report/betrecord?report_flag=true&created_at_1=' + today"><span class="nav-text">{{$t('nav.instant_view')}}</span></router-link></li>
                             </ul>
                         </li>
 
@@ -187,11 +187,20 @@
     </div>
 </template>
 <script>
-    export default {
-        props: {
-            showNav: {
-                default: true
-            }
+import Vue from 'vue'
+const format = 'YYYY-MM-DD'
+
+export default {
+    props: {
+        showNav: {
+            default: true
+        }
+    },
+    data () {
+        return {
+            today: Vue.moment().format(format),
+            yesterday: Vue.moment().subtract(1, 'days').format(format)
         }
     }
+}
 </script>
