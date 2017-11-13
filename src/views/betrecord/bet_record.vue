@@ -301,7 +301,7 @@
                 this.query.category = old
             },
             filter_game: function (newObj, old) {
-                if (this.filter_game === []) {
+                if (this.filter_game !== []) {
                     this.query.filter_game_q = newObj
                     this.submit()
                 }
@@ -327,13 +327,12 @@
         },
         methods: {
             nextTickFetch () {
-                let _this = this
                 this.queryset = []
                 setTimeout(() => {
-                    _this.created_at_0 = _this.$route.query.created_at_0
-                    _this.created_at_1 = _this.$route.query.created_at_1
+                    this.created_at_0 = this.$route.query.created_at_0
+                    this.created_at_1 = this.$route.query.created_at_1
                     this.getPageAccessed()
-                    _this.$refs.pulling.rebase()
+                    this.$refs.pulling.rebase()
                 }, 100)
             },
             queryData (queryset) {
@@ -399,9 +398,7 @@
             },
             selectall () {
                 this.filter_game = []
-                for (let game in this.gamelist) {
-                    this.filter_game.push(this.gamelist[game].id)
-                }
+                this.filter_game = this.gamelist.map(game => game.id)
             },
             getGameCategory (game) {
                 this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(response => {
