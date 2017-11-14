@@ -132,7 +132,6 @@
             next(vm => {
                 let id = to.params.betrecordId
                 vm.getBetRecord(id)
-                vm.getPageAccessed()
             })
         },
         methods: {
