@@ -10,7 +10,7 @@ import { sync } from 'vuex-router-sync'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
 
-import App from './views/app'
+import App from './views/App'
 
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
