@@ -177,7 +177,8 @@ export default {
         failed: '未通过',
         total_remit: '总汇款',
         total_online_pay: '在线支付总额',
-        total_withdraw: '总撤回'
+        total_withdraw: '总撤回',
+        logout_at: '注销时间'
     },
     bill: {
         commission_report: '佣金计算',
@@ -328,7 +329,11 @@ export default {
         specify_date_range: '指定日期范围',
         input: '键入',
         refresh: '刷新数据',
-        show_all: '显示所有'
+        show_all: '显示所有',
+        select_all: '全选',
+        deselect_all: '清空',
+        new_window: '新窗口打开',
+        updated_at: '状态更新于'
     },
     bank: {
         bank_title: '银行资讯',
@@ -352,14 +357,21 @@ export default {
     },
     betrecord: {
         win: '赢',
-        bet: '输',
+        lose: '输',
         refund: '退款',
         tie: '和局',
         void: '非法',
         reject: '未投注',
         waiting: '待确认',
         game: '游戏',
-        ongoing: '待确认'
+        ongoing: '待确认',
+        total_profit: '总计 损益',
+        total_bet_amount: '总计 投注金额',
+        game_selection: '游戏选择',
+        five_seconds: '5 秒',
+        ten_seconds: '10 秒',
+        thirty_seconds: '30 秒',
+        sixty_seconds: '60 秒'
     },
     action: {
         view_today_report: '查看今日报表',
@@ -414,7 +426,8 @@ export default {
         customer_service: '客服',
         technical_customer_service: '技术客服',
         close: '关闭',
-        status: '目前状态'
+        status: '目前状态',
+        created_at: '注册日期'
     },
     game_manage: {
         id: ' 游戏ID',
@@ -626,7 +639,8 @@ export default {
         members: '群发',
         transaction: '相关交易',
         text: '发送内容',
-        time: '创建时间'
+        time: '创建时间',
+        sender: '寄件人'
     },
     promotion: {
         title: '优惠活动管理',

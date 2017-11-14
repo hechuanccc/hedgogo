@@ -67,16 +67,16 @@ export default {
         online_payee_detail: 'Online Payee Detail',
         online_payee_detail_edit: 'Edit Online Payee Detail',
         payment_type_setting_detail: 'Payment Type Setting Detail',
-        bet_record_detail: 'Bet Record Detail',
+        bet_record_detail: 'Bet Record Details',
         add_message: 'Add Message',
         message_details: 'Message Detail',
         change_password: 'Change Password',
         agent_report: 'Agent Report',
         member_report: 'Member Report',
         online_member_report: 'Online Member Report',
-        recent_bet_records: 'Recent Bet Records',
+        recent_bet_records: 'Today\'s Bet Records',
         bet_record_history: 'Bet Record History',
-        instant_view: 'Instant View',
+        instant_view: 'Real Time Bet Record',
         general_agent_list: 'General Agent',
         online_member_list: 'Online Member',
         system_configuration: 'System Configuration',
@@ -177,7 +177,8 @@ export default {
         failed: 'Failed',
         total_remit: 'Total Remit',
         total_online_pay: 'Total Online Pay',
-        total_withdraw: 'Total Withdraw'
+        total_withdraw: 'Total Withdraw',
+        logout_at: 'Log Out At'
     },
     bill: {
         commission_report: 'Commission Report',
@@ -278,7 +279,7 @@ export default {
         qr_code: 'QR Code',
         transfer: 'Transfer',
         game: 'Game',
-        settledat: 'Settled at',
+        settledat: 'Created at',
         betamount: 'Bet Amount',
         valid_bet_amount: 'Valid Bet Amount',
         betdate: 'Bet Date',
@@ -328,7 +329,11 @@ export default {
         specify_date_range: 'Specify Date Range',
         input: 'Input',
         refresh: 'Refresh',
-        show_all: 'Show All'
+        show_all: 'Show All',
+        select_all: 'Select All',
+        deselect_all: 'Deselect All',
+        new_window: 'New Window',
+        updated_at: 'Updated at'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -352,14 +357,21 @@ export default {
     },
     betrecord: {
         win: 'Win',
-        bet: 'Lose',
+        lose: 'Lose',
         refund: 'Refund',
         tie: 'Tie',
         void: 'Void',
         reject: 'Reject',
         waiting: 'Waiting',
         game: 'Game',
-        ongoing: 'Ongoing'
+        ongoing: 'Ongoing',
+        total_profit: 'Total Profit',
+        total_bet_amount: 'Total Bet Amount',
+        game_selection: 'Game Selection',
+        five_seconds: '5 seconds',
+        ten_seconds: '10 seconds',
+        thirty_seconds: '30 seconds',
+        sixty_seconds: '60 seconds'
     },
     action: {
         view_today_report: 'View today\'s Report',
@@ -414,7 +426,8 @@ export default {
         customer_service: 'Customer Service',
         technical_customer_service: 'Technical Customer Service',
         close: 'Close',
-        status: 'Status'
+        status: 'Status',
+        created_at: 'Created at'
     },
     game_manage: {
         id: 'Game ID',
@@ -626,7 +639,8 @@ export default {
         members: 'Members',
         transaction: 'Transaction',
         text: 'Message',
-        time: 'Time Created'
+        time: 'Time Created',
+        sender: 'Sender'
     },
     promotion: {
         title: 'Promotion',
