@@ -2,7 +2,8 @@
   <div>
     <div class="m-b">
       <ol class="breadcrumb">
-        <li class="active"><router-link to="/report/betrecord">{{$t('nav.bet_record')}}</router-link></li>
+        <li class="active">
+          <router-link :to="'/report/betrecord?report_flag=true&created_at_0=' + today + '&created_at_1=' + today">{{$t('nav.recent_bet_records')}}</router-link></li>
         <li class="active">{{$route.meta.title}}</li>
       </ol>
     </div>
@@ -13,7 +14,7 @@
 
             <h2 class="v-m m-t-sm">
               {{$t('report.bet_record_number')}}：
-              <span>{{betrecords.betrecord_id}}</span>
+              <span>{{betrecords.id}}</span>
             </h2>
           </div>
         </div>
@@ -30,12 +31,17 @@
 
             <div class="row m-t" v-if="betrecords.game">
               <div class="col-xs-3 text-right">{{$t('common.game')}}</div>
-              <div class="col-xs-8"><span class="text-muted"> {{betrecords.game.name}}</span></div>
+              <div class="col-xs-8"><span class="text-muted"> {{betrecords.game.display_name}}</span></div>
             </div>
 
             <div class="row m-t">
               <div class="col-xs-3 text-right">{{$t('common.settledat')}}</div>
               <div class="col-xs-8"><span class="text-muted">{{betrecords.created_at | moment("YYYY-MM-DD HH:mm")}}</span></div>
+            </div>
+
+            <div class="row m-t">
+              <div class="col-xs-3 text-right">{{$t('common.updated_at')}}</div>
+              <div class="col-xs-8"><span class="text-muted">{{betrecords.updated_at | moment("YYYY-MM-DD HH:mm")}}</span></div>
             </div>
 
 
@@ -61,13 +67,15 @@
             <div class="row m-t">
               <div class="col-xs-3 text-right">{{$t('common.status')}}</div>
               <div class="col-xs-8">
-                            <span class="text-muted">
-                                <div class="flex-value status">
-                                    <span class="label danger" v-if="betrecords.result === 0">{{$t('betrecord.bet')}}</span>
-                                    <span class="label success" v-if="betrecords.result === 1">{{$t('betrecord.win')}}</span>
-                                    <span class="label ongoing" v-if="betrecords.result === 2">{{$t('betrecord.ongoing')}}</span>
-                                </div>
-                            </span>
+                <span class="text-muted">
+                    <div class="flex-value status">
+                        <span class="label danger" v-if="betrecords.status === 'lose'">{{$t('betrecord.lose')}}</span>
+                        <span class="label success" v-if="betrecords.status === 'win'">{{$t('betrecord.win')}}</span>
+                        <span class="label ongoing" v-if="betrecords.status === 'ongoing'">{{$t('betrecord.ongoing')}}</span>
+                        <span class="label ongoing" v-if="betrecords.status === 'tie'">{{$t('betrecord.tie')}}</span>
+                        <span class="label ongoing" v-if="betrecords.status === 'void'">{{$t('betrecord.void')}}</span>
+                    </div>
+                </span>
               </div>
             </div>
           </div>
@@ -75,10 +83,12 @@
         <div class="row ">
           <div class="col-xs-8">
             <div class="text m-b">{{$t('nav.bet_record_detail')}}</div>
-            <div v-if="betrecords.details" class="details-box">
+            <div class="details-box">
               <table class="table b-a m-t-sm" >
                 <tbody >
-                <tr v-for="(betrecord, index) in betrecords.details">
+                <th class="grey-50" width="200">{{$t('game_manage.play')}}</th>
+                <td v-if="betrecords.play">{{betrecords.play.display_name}}</td>
+                <tr v-for="(betrecord, index) in betrecords.bet_options">
                   <th class="grey-50" width="200" >{{$t(`details.${index}`)}}</th>
                   <td v-if='isArray(betrecord)'>
                     <div v-for="card in betrecord" :class="isArray(card)?'':'img-box'">
@@ -91,7 +101,6 @@
                 </tbody>
               </table>
             </div>
-            <div v-else >{{$t('report.no_bet_details')}}</div>
           </div>
         </div>
       </div>
@@ -108,11 +117,15 @@
 
 <script>
     import api from '../../api'
+    import Vue from 'vue'
+
+    const format = 'YYYY-MM-DD'
     export default {
         data () {
             return {
                 betrecords: [],
-                errorMsg: ''
+                errorMsg: '',
+                today: Vue.moment().format(format)
             }
         },
         beforeRouteEnter (to, from, next) {

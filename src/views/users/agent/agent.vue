@@ -1,13 +1,19 @@
 <template>
     <div>
-      <div class="row">
-        <div class="pull-right m-r"  v-if="$root.permissions.includes('add_change_staff')">
-          <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
+      <div class="m-b-sm">
+        <div class="row">
+          <div class="col-xs-12">
+            <div v-show="pageSelected == 'general'" class="h6 inline">{{$t('nav.general_agent_list')}}</div>
+            <div v-show="pageSelected == 'agent'" class="h6 inline">{{$t('nav.agent')}}</div>
+            <div class="pull-right inline"  v-if="$root.permissions.includes('add_change_staff')">
+              <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
+            </div>
+          </div>
         </div>
       </div>
       <form class="form" v-on:submit.prevent="submit('agent')">
-        <div class="box m-t-sm">
-          <div class="box-body clearfix form-inline form-input-sm">
+        <div class="box">
+          <div class="box-body clearfix form-inline form-input-sm" v-if="pageSelected == 'agent'">
             <div class="row">
               <div class="col-xs-12">
                 <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
@@ -56,14 +62,24 @@
               </div>
             </div>
           </div>
+          <!-- General -->
+          <div class="box-body clearfix form-inline form-input-sm" v-else>
+            <div class="row">
+              <div class="col-xs-12">
+                <input type="text" v-model="query.id" class="form-control" v-bind:placeholder="$t('agent.number')"/>
+                <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
+                <button class="md-btn w-xs blue pull-right m-r-xs" type="submit">{{$t('common.search')}}</button>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
 
       <div class="box">
-        <table class="table table-striped">
+        <table class="table table-striped" v-if="pageSelected == 'agent'">
           <thead>
           <tr>
-            <th>{{$t("common.login_status")}}</th>
+            <th class="text-center">{{$t("common.login_status")}}</th>
             <th>{{$t("agent.parent_agent")}}</th>
             <th>{{$t("agent.account")}}</th>
             <th>{{$t('common.real_name')}}</th>
@@ -77,7 +93,10 @@
           </thead>
           <tbody v-if="queryset.length">
           <tr v-for="agent in queryset">
-            <td>{{agent.id}}</td>
+            <td>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="agent.is_logged_in==true">&#x25CF;</div>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
+            </td>
             <td v-if="agent.parent_agent">{{agent.parent_agent}}</td><td v-else>-</td>
             <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
             <td><span v-if="agent.real_name">{{agent.real_name}}</span><span v-else>-</span></td>
@@ -102,6 +121,39 @@
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
             <td v-if="agent.memo">{{agent.memo}}</td><td v-else>-</td>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table table-striped" v-else>
+          <thead>
+          <tr>
+            <th class="text-center">{{$t("common.login_status")}}</th>
+            <th>{{$t("agent.account")}}</th>
+            <th>{{$t('common.agent_count')}}</th>
+            <th>{{$t("agent.member_count")}}</th>
+            <th>{{$t("common.status")}}</th>
+            <th>{{$t("agent.joined_at")}}</th>
+            <th>{{$t("member.logout_at")}}</th>
+          </tr>
+          </thead>
+          <tbody v-if="queryset.length">
+          <tr v-for="agent in queryset">
+            <td>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="agent.is_logged_in==true">&#x25CF;</div>
+              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
+            </td>
+            <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
+            <td><router-link :to="'/agent/?parent_agent=' + agent.parent_agent" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
+            <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
+            <td>
+              <span class="label success" v-if="agent.status==1">{{$t('status.active')}}</span>
+              <span class="label" v-else>{{$t('status.inactive')}}</span>
+            </td>
+            <td>
+              <span v-if="agent.created_at">{{agent.created_at | moment("YYYY-MM-DD HH:mm")}}</span>
+              <span v-else>-</span>
+            </td>
+            <td v-if="agent.logout_at">{{agent.logout_at}}</td><td v-else>-</td>
           </tr>
           </tbody>
         </table>
@@ -136,6 +188,7 @@ export default {
             agentApi: api.agent,
             queryset: [],
             query: {
+                id: '',
                 username_q: '',
                 created_at_0: '',
                 created_at_1: '',
@@ -151,8 +204,10 @@ export default {
                 wechat: '',
                 bank: '',
                 member_count: '',
+                agent_count: '',
                 memo: ''
             },
+            pageSelected: '',
             status: '',
             level: '0',
             commission_settings: '0',
@@ -165,8 +220,8 @@ export default {
         status: function (old, newObj) {
             this.query.status = old
         },
-        level: function (old, newObj) {
-            this.query.level = old
+        level: function (newObj, old) {
+            this.query.level = newObj
         },
         created_at_0 (newObj, old) {
             this.query.created_at_0 = newObj
@@ -177,15 +232,18 @@ export default {
     },
     created () {
         this.$nextTick(() => {
+            this.level = this.$route.query.level
+            this.getPageAccessed()
             this.$refs.pulling.rebase()
         })
     },
     methods: {
         nextTickFetch () {
-            let _this = this
             this.queryset = []
             setTimeout(() => {
-                _this.$refs.pulling.rebase()
+                this.level = this.$route.query.level
+                this.getPageAccessed()
+                this.$refs.pulling.rebase()
             }, 100)
         },
         queryData (queryset) {
@@ -241,8 +299,17 @@ export default {
             this.$router.push({
                 path: this.$route.path
             })
+        },
+        getPageAccessed () {
+            if (this.level !== '1') {
+                this.pageSelected = 'agent'
+                if (!this.level) {
+                    this.level = 0
+                }
+            } else {
+                this.pageSelected = 'general'
+            }
         }
-
     },
     components: {
         DatePicker,
