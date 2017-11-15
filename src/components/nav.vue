@@ -9,24 +9,20 @@
             </div>
 
             <div>
-                <nav class="nav-stacked nav-active-blue" >
-                    <ul class="nav" ui-nav="">
-                        <!-- <template v-if="$root.permissions.includes('list_report_betrecord')">
+                <nav class="nav-active-blue" >
+                    <ul class="nav m-l-sm" ui-nav="">
+                        <template v-if="$root.permissions.includes('list_report_betrecord')">
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
-
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
                                 <router-link to="/" >
-                                  <span class="nav-icon"><i class="material-icons">&#xe3fc;</i></span>
-                                  <span class="nav-text">{{$t("nav.overview")}}</span>
+                                  <span class="nav-icon"><i class="material-icons m-r-xs">&#xe3fc;</i>总览</span>
                                 </router-link>
                             </li>
                             <li><div class="b-b b m-t-sm"></div></li>
-                        </template> -->
+                        </template>
                         <li :class="$route.meta.group == 'financing' ? 'active' : ''">
                             <a>
-                                <span class="nav-caret" ><i class="fa fa-caret-down"></i></span>
-                                <span class="nav-icon" ><i class="material-icons">&#xE227;</i></span>
-                                <span class="nav-text">{{$t("nav.financing")}}</span>
+                                <span class="nav-icon" ><i class="material-icons m-r-xs">&#xE227;</i>財務管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li v-if="$root.permissions.includes('list_remit_online_withdraw_page')"><router-link to="/bill/remit?report_flag=True"><span class="nav-text">{{$t('nav.remit')}}</span></router-link></li>
@@ -36,16 +32,9 @@
                                 <li><router-link to="/bill/returnrate"><span class="nav-text">{{$t('nav.returnrate')}}</span></router-link></li>
                             </ul>
                         </li>
-
                         <li :class="$route.meta.group == 'reporting' ? 'active' : ''">
                             <a>
-                                <span class="nav-caret">
-                                  <i class="fa fa-caret-down"></i>
-                                </span>
-                                <span class="nav-icon">
-                                  <i class="material-icons">&#xe24b;</i>
-                                </span>
-                                <span class="nav-text">{{$t("nav.report")}}</span>
+                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xe24b;</i>報表管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/report/agent_report"><span class="nav-text">{{$t('nav.agent_report')}}</span></router-link></li>
@@ -56,13 +45,7 @@
 
                         <li :class="$route.meta.group == 'betrecord' ? 'active' : ''">
                             <a>
-                                <span class="nav-caret">
-                                  <i class="fa fa-caret-down"></i>
-                                </span>
-                                <span class="nav-icon">
-                                  <i class="material-icons">&#xe1b8;</i>
-                                </span>
-                                <span class="nav-text">{{$t("nav.bet_record")}}</span>
+                              <span class="nav-icon"> <i class="material-icons m-r-xs">&#xe1b8;</i>投注記錄</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link :to="'/report/betrecord?report_flag=true&created_at_0=' + today + '&created_at_1=' + today"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
@@ -74,9 +57,7 @@
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'users' ? 'active' : ''">
                             <a>
-                                <span class="nav-caret"><i class="fa fa-caret-down"></i></span>
-                                <span class="nav-icon"><i class="material-icons">&#xE7FC;</i></span>
-                                <span class="nav-text">{{$t("nav.users")}}</span>
+                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FC;</i>用戶管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li>
@@ -110,8 +91,7 @@
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'game_manage' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon"><i class="material-icons">&#xE021;</i></span>
-                                <span class="nav-text">{{$t("nav.game_manage")}}</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>遊戲管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/game_list"><span class="nav-text">{{$t("nav.game_list")}}</span></router-link></li>
@@ -120,17 +100,14 @@
                         
                         <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
                             <router-link to="/game_history">
-                                <span class="nav-icon"><i class="material-icons">&#xE889;</i></span>
-                                <span class="nav-text">{{$t("nav.game_history")}}</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE889;</i>歷史開獎</span>
                             </router-link>
                         </li>
 
                         <li><div class="b-b b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'setting' ? 'active' : ''">
                             <a>
-                                <span class="nav-caret"><i class="fa fa-caret-down"></i></span>
-                                <span class="nav-icon"><i class="material-icons">&#xE8B8;</i></span>
-                                <span class="nav-text">{{$t("nav.system_configuration")}}</span>
+                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xE8B8;</i>系統配置</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/permissions"><span class="nav-text">{{$t("nav.permissions")}}</span></router-link></li>
@@ -148,8 +125,7 @@
 
                         <li :class="$route.meta.group == 'logging' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon"><i class="material-icons">&#xe873;</i></span>
-                                <span class="nav-text">{{$t("nav.logging")}}</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xe873;</i>日誌管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/login_record"><span class="nav-text">{{$t("nav.login_logs")}}</span></router-link></li>
@@ -159,8 +135,7 @@
                         </li>
                         <li :class="$route.meta.group == 'agent' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon"><i class="material-icons">&#xE7FB;</i></span>
-                                <span class="nav-text">{{$t("nav.agent")}}</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FB;</i>代理結算</span>
                             </a>
                             <ul class="nav-sub">
                                 <li v-if="$root.permissions.includes('calculate_commission')"><router-link to="/agent/commission?report_flag=True"><span class="nav-text">{{$t('nav.commission_report')}}</span></router-link></li>
@@ -168,8 +143,7 @@
                         </li>
                         <li :class="$route.meta.group == 'manage' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon"><i class="material-icons">&#xE051;</i></span>
-                                <span class="nav-text">{{$t("nav.marketing")}}</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE051;</i>運營管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/envelope"><span class="nav-text">{{$t("nav.envelope")}}</span></router-link></li>
