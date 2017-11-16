@@ -1,6 +1,6 @@
 <template>
     <div id="aside" class="app-aside modal fade folded md show-text nav-dropdown" v-if="showNav">
-        <div class="left navside grey dk">
+        <div class="left navside grey dk w-sm">
             <div class="navbar no-radius">
                 <a class="navbar-brand" href="/">
                   <img src="../../static/images/logo.png" />

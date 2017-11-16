@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <aside-menu :show-nav="showNav"></aside-menu>
-        <div class="content app-content box-shadow-z2 box-radius-1x">
+        <div id="content" class="content app-content box-shadow-z2 box-radius-1x">
             <page-header :show-nav="showNav"></page-header>
             <div class="app-body">
                 <div class="padding">
@@ -270,5 +270,8 @@ export default {
         100% {
             background-color:rgb(255,255,255);
         }
+    }
+    #content{
+        margin-left: 7rem;
     }
 </style>
