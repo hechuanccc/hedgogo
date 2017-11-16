@@ -45,7 +45,7 @@
 
                         <li :class="$route.meta.group == 'betrecord' ? 'active' : ''">
                             <a>
-                              <span class="nav-icon"> <i class="material-icons m-r-xs">&#xe1b8;</i>投注記錄</span>
+                              <span class="nav-icon"> <i class="material-icons m-r-xs">&#xe1b8;</i>投注记录</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link :to="'/report/betrecord?report_flag=true&created_at_0=' + today + '&created_at_1=' + today"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
