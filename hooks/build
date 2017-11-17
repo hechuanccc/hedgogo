@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+echo "------ HOOK START - BUILD -------"
+printenv
+
+docker build --build-arg AZURE_STORAGE_ACCOUNT=$AZURE_STORAGE_ACCOUNT --build-arg AZURE_STORAGE_ACCESS_KEY=$AZURE_STORAGE_ACCESS_KEY --build-arg CDN_ENDPOINT=$CDN_ENDPOINT --build-arg CDN_PROFILE=$CDN_PROFILE --build-arg BACKEND=$BACKEND -t $IMAGE_NAME .
+
+echo "------ HOOK END - BUILD -------"
