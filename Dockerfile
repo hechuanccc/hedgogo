@@ -15,6 +15,7 @@ ARG AZURE_STORAGE_ACCESS_KEY
 ARG CDN_PROFILE
 ARG CDN_ENDPOINT
 # ARG BACKEND
-RUN chmod u+x deploy.sh && ./deploy.sh
+RUN chmod u+x deploy.sh
+RUN ./deploy.sh
 EXPOSE 8888
 CMD npm run dev
