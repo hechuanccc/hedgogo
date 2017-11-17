@@ -10,11 +10,6 @@ COPY --from=hedwig / /
 # To include everything
 COPY . .
 
-ARG AZURE_STORAGE_ACCOUNT
-ARG AZURE_STORAGE_ACCESS_KEY
-ARG CDN_PROFILE
-ARG CDN_ENDPOINT
-ARG BACKEND
 RUN chmod u+x deploy.sh && ./deploy.sh
 EXPOSE 8888
 CMD npm run dev
