@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# THIS IS REQUIRED to put environment variables as stated here https://forums.docker.com/t/docker-cloud-build-environment-variables-not-being-passed-to-the-auto-build/24010
+# THIS IS REQUIRED to put environment variables in DockerCloud as stated here https://forums.docker.com/t/docker-cloud-build-environment-variables-not-being-passed-to-the-auto-build/24010
 
 echo "------ HOOK START - BUILD -------"
 printenv
