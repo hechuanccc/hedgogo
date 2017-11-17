@@ -1,8 +1,8 @@
 #!/bin/bash
 # NPM commands and Azure cli scripts to deploy our static VueJS
 
-# npm install
-# npm run build
+npm install
+npm run build
 
 export root_container=\$root  # is '\' is to escape the special character
 export audio_container=audio
@@ -17,13 +17,13 @@ export static_container=static
 
 
 # Upload the changes
-# /root/bin/az storage blob upload --file dist/index.html --container-name $root_container  --name index.html
-# /root/bin/az storage blob upload-batch --destination $audio_container --source dist/audio
-# /root/bin/az storage blob upload-batch --destination $langs_container --source dist/langs
-# /root/bin/az storage blob upload-batch --destination $static_container --source dist/static
+/root/bin/az storage blob upload --file dist/index.html --container-name $root_container  --name index.html
+/root/bin/az storage blob upload-batch --destination $audio_container --source dist/audio
+/root/bin/az storage blob upload-batch --destination $langs_container --source dist/langs
+/root/bin/az storage blob upload-batch --destination $static_container --source dist/static
 
 
 # To start purging the CDN
 # CDN is cached and will not reflect any change until purged
 # '/*' value in the content path indicates a 'Purge all'
-# /root/bin/az cdn endpoint purge --resource-group dockercloud-bd6da6d7 --name $CDN_ENDPOINT --profile-name $CDN_PROFILE --content-paths '/*'
+/root/bin/az cdn endpoint purge --resource-group dockercloud-bd6da6d7 --name $CDN_ENDPOINT --profile-name $CDN_PROFILE --content-paths '/*'
