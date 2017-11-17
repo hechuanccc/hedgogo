@@ -18,7 +18,7 @@ ARG CDN_ENDPOINT
 # ARG BACKEND  # Currently not used yet, as properly defining it in the webpack config is still unknown and will currently throw an error in the browser
 
 # Cannot be made into one line as it has a possibility that it will return a 'text file busy' making the shell script unexecutable
-RUN chmod u+x deploy.sh
+RUN chmod u+x cloud_deploy.sh
 RUN ./cloud_deploy.sh
 
 EXPOSE 8888
