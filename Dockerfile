@@ -1,4 +1,5 @@
-FROM unnotechlottery/hedwig:latest as hedwig  # Take note that the image itself is already logged-in in the cloud CLI
+# Take note that the image itself is already logged-in in the cloud CLI
+FROM unnotechlottery/hedwig:latest as hedwig
 
 FROM node:9.1
 
@@ -18,7 +19,7 @@ ARG CDN_ENDPOINT
 
 # Cannot be made into one line as it has a possibility that it will return a 'text file busy' making the shell script unexecutable
 RUN chmod u+x deploy.sh
-RUN ./deploy.sh  # scripts for building and sending it in cloud
+RUN ./cloud_deploy.sh
 
 EXPOSE 8888
 CMD npm run dev
