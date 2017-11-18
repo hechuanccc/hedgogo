@@ -9,7 +9,7 @@
         <div class="alert alert-danger" v-if="!$root.permissions.includes('change_remitpayee')">{{$t('common.errorPermission')}}</div>
         <div class="box">
             <div class="box-body">
-                <form class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
+                <form name="myform" class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data" novalidate>
                     <div class="row">
                         <div class="col-md-12 b-b m-b">
                             <div class="form-group">

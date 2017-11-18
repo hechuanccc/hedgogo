@@ -51,7 +51,7 @@ export default {
         title_banner: 'Banner',
         title_website: 'Website',
         game_history: 'Game History',
-        game_manage: 'Game Management',
+        game_manage: 'Manage Game',
         game_list: 'Game List',
         game_detail: 'Game Detail',
         level_detail: 'Member Level Detail',
@@ -79,7 +79,7 @@ export default {
         instant_view: 'Real Time Bet Record',
         general_agent_list: 'General Agent',
         online_member_list: 'Online Member',
-        system_configuration: 'System Configuration',
+        system_configuration: 'Settings',
         permissions: 'Permissions',
         roles: 'Roles',
         global_parameters: 'Global Parameters',
@@ -587,7 +587,8 @@ export default {
         number_login: 'No.',
         no_record_found: 'No Record Found, Specify a New Query',
         bet_record_number: 'Bet Record ID',
-        no_bet_details: 'No Bet Details'
+        no_bet_details: 'No Bet Details',
+        select_remit_type: 'Select Remit Type'
     },
     actionrecord: {
         id: 'ID',

@@ -587,7 +587,8 @@ export default {
         number_login: '序号',
         no_record_found: '查无记录，请更换条件再查询',
         bet_record_number: '注单号',
-        no_bet_details: '无投注详细信息'
+        no_bet_details: '无投注详细信息',
+        select_remit_type: '选择汇款类型'
     },
     actionrecord: {
         id: '序号',
