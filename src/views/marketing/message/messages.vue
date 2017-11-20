@@ -8,20 +8,22 @@
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>{{$t('messages.number')}}</th>
+                    <!-- <th>{{$t('messages.number')}}</th> -->
                     <th>{{$t('messages.title')}}</th>
+                    <th>{{$t('messages.text')}}</th>
                     <th>{{$t('messages.receiver')}}</th>
                     <th>{{$t('messages.time')}}</th>
-                    <th>{{$t('messages.text')}}</th>
+                    <th>{{$t('messages.sender')}}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="message in messages" >
-                    <td>{{message.id}}</td>
+                    <!-- <td>{{message.id}}</td> -->
                     <td><router-link :to="'/messages/'+ message.id">{{message.title}}</router-link></td>
+                    <td class="word-break">{{message.content}}</td>
                     <td>{{message.receiver}}</td>
                     <td>{{message.sent_at | moment("YYYY-MM-DD HH:mm")}}</td>
-                    <td class="word-break">{{message.content}}</td>
+                    <td>{{message.sender_displayname}}</td>
                 </tr>
                 </tbody>
             </table>

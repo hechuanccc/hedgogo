@@ -18,12 +18,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width">{{$t('messages.transaction')}}</label>
-                                <div class="inline-form-control">
-                                    <input  type="text" class="form-control" placeholder="" v-model="message.transaction" >
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label  class="label-width">{{$t('messages.receiver')}}</label>
                                 <div class="inline-form-control">
                                     <input  type="text" class="form-control" @blur='checkMember' v-model="message.receiver" :disabled="!(!message.member_level)">
@@ -68,7 +62,6 @@
                     receiver: '',
                     sent_at: '',
                     title: '',
-                    transaction: '',
                     member_level: ''
                 },
                 responseError: '',
