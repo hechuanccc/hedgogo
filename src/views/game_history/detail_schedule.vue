@@ -133,7 +133,6 @@ export default {
                 response => {
                     this.loading = false
                     this.game_results = response.data
-                    console.log(response.data.length)
                 },
                 response => {
                     this.errorCallback(response)
