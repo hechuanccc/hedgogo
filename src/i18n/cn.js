@@ -416,7 +416,7 @@ export default {
         technical_customer_service: '技术客服',
         close: '关闭',
         status: '目前状态',
-        created_at: '添加时间'
+        created_at: '注册日期'
     },
     game_manage: {
         id: ' 游戏ID',

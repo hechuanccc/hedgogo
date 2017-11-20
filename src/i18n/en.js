@@ -415,7 +415,7 @@ export default {
         technical_customer_service: 'Technical Customer Service',
         close: 'Close',
         status: 'Status',
-        created_at: 'Created At'
+        created_at: 'Created at'
     },
     game_manage: {
         id: 'Game ID',
@@ -657,7 +657,7 @@ export default {
         name: 'Permission Name',
         description: 'Description',
         group_id: 'Group',
-        created_at: 'Created At',
+        created_at: 'Created at',
         operating: 'Operating',
         modify: 'Modify',
         delete: 'Delete',
@@ -676,7 +676,7 @@ export default {
     role_manage: {
         id: 'Role ID',
         name: 'Role Name',
-        created_at: 'Created At',
+        created_at: 'Created at',
         type: 'Type',
         role_add_btn: 'Add Role',
         operating: 'Operating',
