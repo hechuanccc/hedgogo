@@ -11,19 +11,19 @@
             <th>{{$t('permission_manage.name')}}</th>
             <th>{{$t('permission_manage.description')}}</th>
             <th>{{$t('permission_manage.group_id')}}</th>
+            <th>{{$t('permission_manage.created_at')}}</th>
             <th>{{$t('permission_manage.operating')}}</th>
           </tr>
           </thead>
           <tbody v-if="permissionsListAll.length > 0">
-              <template v-for="(list, index) in permissionsListAll">
-                  <tr v-for="permission in list.permissions" :key="permission.id">
-                      <td>{{ permission.id }}</td>
-                      <td>{{ permission.display_name }}</td>
-                      <td>{{ permission.description }}</td>
-                      <td>{{ list.display_name }}</td>
-                      <td><a class="p-l-xs" @click="showModal(list.id, permission.id)">{{$t('permission_manage.modify')}}</a></td>
-                  </tr>
-              </template>
+            <tr v-for="permission in permissionsListAll" :key="permission.id">
+                <td>{{ permission.id }}</td>
+                <td>{{ permission.display_name }}</td>
+                <td>{{ permission.description }}</td>
+                <td>{{ permission.group }}</td>
+                <td>{{ permission.updated_at | datetimeFilter }}</td>
+                <td><a class="p-l-xs" @click="showModal(list.id, permission.id)">{{$t('permission_manage.modify')}}</a></td>
+            </tr>
           </tbody>
         </table>
     </div>
@@ -69,6 +69,7 @@
 </template>
 <script>
 import api from '../../api'
+import Vue from 'vue'
 
 export default {
     data () {
@@ -89,8 +90,9 @@ export default {
     },
     methods: {
         getPermissionsListAll () {
-            this.$http.get(api.permissions + '?opt_expand=permissions').then((response) => {
+            this.$http.get(api.advpermissions).then((response) => {
                 this.permissionsListAll = response.data
+                console.table(response.data)
             })
         },
         getPermissions () {
@@ -107,7 +109,6 @@ export default {
             this.modal.id = id
             this.modal.group = group
             this.getPermission(id)
-
             this.modal.isShow = true
         },
         hideModal () {
@@ -123,6 +124,15 @@ export default {
                     }
                 })
                 this.hideModal()
+            }
+        }
+    },
+    filters: {
+        datetimeFilter (value) {
+            if (!value) {
+                return Vue.t('game_manage.no_setting')
+            } else {
+                return Vue.moment(value).format('YYYY-MM-DD HH:mm')
             }
         }
     }
