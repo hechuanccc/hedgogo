@@ -68,11 +68,9 @@
             getPermissions () {
                 this.$http.get(api.permissions).then((response) => {
                     this.permissions = response.data
-                    console.table(response.data)
                 })
             },
             onSubmit (e) {
-                console.table(this.permissionsetting)
                 this.$http.post(api.advpermissions, this.returnsetting).then(response => {
                     if (response.status === 201) {
                         this.$router.push('/permissions/')

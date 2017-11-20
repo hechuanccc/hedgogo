@@ -123,14 +123,8 @@ export default {
     },
     created () {
         this.getGameList()
-        this.getPermissionList()
     },
     methods: {
-        getPermissionList () {
-            this.$http.get(api.permissions + '1' + '/?opt_expand=permissions').then((response) => {
-                console.table(response.data)
-            })
-        },
         getGameList () {
             this.$http.get(api.game_list).then(response => {
                 this.queryset = response.data

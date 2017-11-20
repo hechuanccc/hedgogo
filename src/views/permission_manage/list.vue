@@ -115,13 +115,11 @@ export default {
         },
         updateGroup () {
             if (this.modal.group === this.modal.permission.group) {
-                console.log('no change')
                 this.hideModal()
             } else {
-                console.log('waiting for api...')
                 this.$http.put(api.advpermissions + this.modal.id + '/', this.modal.permission).then(response => {
                     if (response.status === 200) {
-                        location.reload()
+                        this.getPermissionsListAll()
                     }
                 })
                 this.hideModal()
