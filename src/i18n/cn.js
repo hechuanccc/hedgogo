@@ -81,6 +81,7 @@ export default {
         online_member_list: '在線會員',
         system_configuration: '系統配置',
         permissions: '權限管理',
+        permission_add: '添加权限',
         roles: '角色管理',
         global_parameters: '系統參數配置',
         logging: '日誌管理',
@@ -414,7 +415,8 @@ export default {
         customer_service: '客服',
         technical_customer_service: '技术客服',
         close: '关闭',
-        status: '目前状态'
+        status: '目前状态',
+        created_at: '添加时间'
     },
     game_manage: {
         id: ' 游戏ID',
@@ -455,7 +457,10 @@ export default {
         draw_date: '开奖日期',
         draw_number: '开奖号码',
         date: '日期',
-        loading: '正在加载中...'
+        loading: '正在加载中...',
+        auto_draw: '自动开奖',
+        manual_draw: '手动开奖',
+        memo: '备注'
     },
     agent: {
         number: '编号',
@@ -647,5 +652,36 @@ export default {
     header: {
         deposit: '入款',
         withdraw: '取款'
+    },
+    permission_manage: {
+        id: '权限ID',
+        name: '权限名称',
+        description: '权限描述',
+        group_id: '权限分组',
+        created_at: '添加时间',
+        operating: '操作',
+        modify: '修改',
+        delete: '删除',
+        no_setting: '未设置',
+        permission_add_btn: '添加权限',
+        select_group: '选择分组'
+    },
+    global_parameters: {
+        name: '参数说明',
+        value: '参数值',
+        operating: '操作',
+        modify: '修改',
+        delete: '删除',
+        parameter_add_btn: '添加参数'
+    },
+    role_manage: {
+        id: '角色ID',
+        name: '角色名称',
+        created_at: '添加时间',
+        type: '类型',
+        role_add_btn: '添加角色',
+        operating: '操作',
+        modify: '修改',
+        delete: '删除'
     }
 }
