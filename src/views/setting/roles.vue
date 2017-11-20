@@ -92,7 +92,7 @@ export default {
                 this.$http.put(api.managerole + this.modal.id + '/', this.modal.role)
                 .then((response) => {
                     if (response.status === 200) {
-                        location.reload()
+                        this.getRolesList()
                     }
                 })
             } else {
@@ -100,7 +100,7 @@ export default {
                 this.$http.post(api.managerole, this.modal.role)
                 .then((response) => {
                     if (response.status === 201) {
-                        location.reload()
+                        this.getRolesList()
                     }
                 })
             }
@@ -131,7 +131,7 @@ export default {
                 this.$http.delete(api.managerole + id + '/')
                 .then(response => {
                     if (response.status === 204) {
-                        location.reload()
+                        this.getRolesList()
                     }
                 })
             }
