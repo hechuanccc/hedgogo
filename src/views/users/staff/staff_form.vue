@@ -214,7 +214,6 @@
             },
             getRole () {
                 this.$http.get(api.managerole).then((response) => {
-                    console.table(response.data)
                     this.roles = response.data
                 })
             },
