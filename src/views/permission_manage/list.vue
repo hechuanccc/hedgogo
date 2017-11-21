@@ -89,19 +89,15 @@ export default {
     created () {
         this.getPermissionsListAll()
         this.getPermissions()
-        this.$nextTick()
     },
     methods: {
         getPermissionsListAll () {
             this.$http.get(api.advpermissions)
-            .then((response) => {
+            .then(response => {
                 this.permissionsListAll = response.data
-                // console.table(response.data)
             })
             .then(response => {
-                this.permissionsListAll.sort(function (a, b) {
-                    return a.id - b.id
-                })
+                this.permissionsListAll.sort((a, b) => a.id - b.id)
             })
         },
         getPermissions () {
@@ -146,7 +142,7 @@ export default {
     filters: {
         datetimeFilter (value) {
             if (!value) {
-                return Vue.t('game_manage.no_setting')
+                return Vue.t('permission_manage.no_setting')
             } else {
                 return Vue.moment(value).format('YYYY-MM-DD HH:mm')
             }
