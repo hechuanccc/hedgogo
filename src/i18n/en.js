@@ -468,7 +468,10 @@ export default {
         draw_date: 'Drawn Date',
         draw_number: 'Drawm Numbers',
         date: 'Date',
-        loading: 'loading'
+        loading: 'loading',
+        auto_draw: 'Auto Draw',
+        manual_draw: 'Manual Draw',
+        memo: 'Memo'
     },
     agent: {
         number: 'No.',
@@ -662,5 +665,36 @@ export default {
     header: {
         deposit: 'Deposit',
         withdraw: 'Withdraw'
+    },
+    permission_manage: {
+        id: 'Permission ID',
+        name: 'Permission Name',
+        description: 'Description',
+        group_id: 'Group',
+        created_at: 'Created at',
+        operating: 'Operating',
+        modify: 'Modify',
+        delete: 'Delete',
+        no_setting: 'No Setting',
+        permission_add_btn: 'Add Permission',
+        select_group: 'Select Group'
+    },
+    global_parameters: {
+        name: 'Parameter Name',
+        value: 'Value',
+        operating: 'Operating',
+        modify: 'Modify',
+        delete: 'Delete',
+        parameter_add_btn: 'Add Parameter'
+    },
+    role_manage: {
+        id: 'Role ID',
+        name: 'Role Name',
+        created_at: 'Created at',
+        type: 'Type',
+        role_add_btn: 'Add Role',
+        operating: 'Operating',
+        modify: 'Modify',
+        delete: 'Delete'
     }
 }

@@ -39,6 +39,7 @@ export default {
     permissionsUser: managePrefix + 'permissions/user/',
     passwordstaff: prefix + 'password/staff/',
     permissions: managePrefix + 'permissions/',
+    advpermissions: managePrefix + 'advpermissions/',
     staffPermissions: managePrefix + 'staff/permissions/',
     agentapplication: managePrefix + 'agentapplication/',
     onlinepayee: managePrefix + 'onlinepayee/',

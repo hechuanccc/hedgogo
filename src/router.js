@@ -970,22 +970,33 @@ export default new Router({
     {
         path: '/permissions',
         name: 'permissions',
-        // component: function (resolve) {
-        //     require(['./views/game_manage/list.vue'], resolve)
-        // },
+        component: function (resolve) {
+            require(['./views/permission_manage/list.vue'], resolve)
+        },
         meta: {
-            group: 'setting',
+            group: 'permission_manage',
             auth: true,
             agentPermission: 'true',
             title: Vue.t('nav.permissions')
         }
     },
     {
+        path: '/permission/add',
+        component: function (resolve) {
+            require(['./views/permission_manage/permission_form.vue'], resolve)
+        },
+        meta: {
+            group: 'permission_manage',
+            auth: true,
+            title: Vue.t('nav.permission_add')
+        }
+    },
+    {
         path: '/roles',
         name: 'roles',
-        // component: function (resolve) {
-        //     require(['./views/game_manage/list.vue'], resolve)
-        // },
+        component: function (resolve) {
+            require(['./views/setting/roles.vue'], resolve)
+        },
         meta: {
             group: 'setting',
             auth: true,
@@ -996,9 +1007,9 @@ export default new Router({
     {
         path: '/global_parameters',
         name: 'global_parameters',
-        // component: function (resolve) {
-        //     require(['./views/game_manage/list.vue'], resolve)
-        // },
+        component: function (resolve) {
+            require(['./views/setting/global_parameters.vue'], resolve)
+        },
         meta: {
             group: 'setting',
             auth: true,
