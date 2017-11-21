@@ -20,9 +20,11 @@
                 <td>{{ permission.id }}</td>
                 <td>{{ permission.display_name }}</td>
                 <td>{{ permission.description }}</td>
-                <td>{{ permission.group }}</td>
+                <td>{{ getPermission(permission.group) }}</td>
                 <td>{{ permission.updated_at | datetimeFilter }}</td>
-                <td><a class="p-l-xs" @click="showModal(list.id, permission.id)">{{$t('permission_manage.modify')}}</a></td>
+                <td>
+                    <a class="p-l-xs" @click="showModal(permission.group, permission.id)">{{ $t('permission_manage.modify') }}</a>
+                </td>
             </tr>
           </tbody>
         </table>
@@ -87,12 +89,19 @@ export default {
     created () {
         this.getPermissionsListAll()
         this.getPermissions()
+        this.$nextTick()
     },
     methods: {
         getPermissionsListAll () {
-            this.$http.get(api.advpermissions).then((response) => {
+            this.$http.get(api.advpermissions)
+            .then((response) => {
                 this.permissionsListAll = response.data
-                console.table(response.data)
+                // console.table(response.data)
+            })
+            .then(response => {
+                this.permissionsListAll.sort(function (a, b) {
+                    return a.id - b.id
+                })
             })
         },
         getPermissions () {
@@ -101,6 +110,13 @@ export default {
             })
         },
         getPermission (id) {
+            for (let index in this.permissions) {
+                if (this.permissions[index].id === id) {
+                    return this.permissions[index].display_name
+                }
+            }
+        },
+        getPermissionResult (id) {
             this.$http.get(api.advpermissions + id + '/').then((response) => {
                 this.modal.permission = response.data
             })
@@ -108,7 +124,7 @@ export default {
         showModal (group, id) {
             this.modal.id = id
             this.modal.group = group
-            this.getPermission(id)
+            this.getPermissionResult(id)
             this.modal.isShow = true
         },
         hideModal () {
