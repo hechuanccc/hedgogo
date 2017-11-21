@@ -1,6 +1,3 @@
-feat/implement-docker-build
-
-
 # Take note that the image itself is already logged-in in the cloud CLI
 FROM unnotechlottery/hedwig:latest as hedwig
 
