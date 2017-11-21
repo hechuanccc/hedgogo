@@ -6,7 +6,8 @@ FROM node:9.1
 WORKDIR /usr/src/app
 
 # using multiple copies to continously keep the environment and avoid the maximum image layer error
-COPY --from=hedwig / /
+COPY --from=hedwig /root /root
+COPY --from=hedwig /usr/src/app/. .
 
 # To include everything
 COPY . .

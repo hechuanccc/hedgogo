@@ -1,5 +1,5 @@
 #!/bin/bash
-# NPM commands and Azure cli scripts to deploy our static VueJS
+# NPM commands and Azure cli scripts to deploy our static VueJS in a CDN
 
 npm install
 npm run build
