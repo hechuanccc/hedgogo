@@ -28,6 +28,7 @@
                     <option value="ongoing">{{$t('betrecord.ongoing')}}</option>
                     <option value="win">{{$t('betrecord.win')}}</option>
                     <option value="lose">{{$t('betrecord.lose')}}</option>
+                    <option value="cancelled">{{$t('status.cancelled')}}</option>
                     <option value="tie">{{$t('betrecord.tie')}}</option>
                     <option value="void">{{$t('betrecord.void')}}</option>
                   </select>
@@ -125,6 +126,7 @@
             <th>{{$t('game_manage.odds')}}</th>
             <th>{{$t('common.profit')}}</th>
             <th>{{$t('common.status')}}</th>
+            <th>{{$t('betrecord.cancel_bet')}}</th>
           </tr>
           </thead>
           <tbody>
@@ -164,7 +166,17 @@
                 <span class="label ongoing" v-if="t.status === 'ongoing'">{{$t('betrecord.ongoing')}}</span>
                 <span class="label ongoing" v-if="t.status === 'tie'">{{$t('betrecord.tie')}}</span>
                 <span class="label ongoing" v-if="t.status === 'void'">{{$t('betrecord.void')}}</span>
+                <span class="label ongoing" v-if="t.status === 'cancelled'">{{$t('status.cancelled')}}</span>
               </div>
+            </td>
+            <td>
+              <span v-if="t.status === 'ongoing'">
+              <button type="button" class="btn btn-xs blue-300 sm-btn m-b-sm f-b" @click="cancelBet(t, 'cancelled', true, $event)">{{$t('betrecord.cancel_bet')}}</button> <br>
+              </span>
+              <span v-else-if="t.status === 'cancelled'">{{$t('betrecord.cancelled_bet')}}
+              </span>
+              <span v-else>-
+              </span>
             </td>
           </tr>
           </tbody>
@@ -236,6 +248,7 @@
     import DatePicker from 'vue2-datepicker'
     import Vue from 'vue'
     import VueCookie from 'vue-cookie'
+    import { handleError } from '../../utils/handleError'
 
     const format = 'YYYY-MM-DD'
     export default {
@@ -434,6 +447,27 @@
                         this.created_at_1 = this.$route.query.created_at_1
                         this.$refs.pulling.rebase()
                     }
+                }
+            },
+            cancelBet (betrecord, status, confirm, event) {
+                if (confirm) {
+                    if (!window.confirm(this.$t('bill.confirm_declined', {
+                        action: event.target.innerText
+                    }))) {
+                        return
+                    }
+                }
+                if (betrecord.id) {
+                    this.$http.put(api.cancel_bet + betrecord.id + '/', {
+                        status: status
+                    }).then(response => {
+                        betrecord.status = response.data.status
+                    }, response => {
+                        this.errorMsg = ''
+                        for (let field in this.field_locales) {
+                            this.errorMsg += handleError(response, field, this.field_locales)
+                        }
+                    })
                 }
             }
         },

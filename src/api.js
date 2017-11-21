@@ -57,5 +57,6 @@ export default {
     metrics_count: managePrefix + 'metrics/count/',
     manual_transaction: managePrefix + 'manual_transaction/',
     returnreport: host + '/report/',
-    gamecategory: managePrefix + 'game/category/'
+    gamecategory: managePrefix + 'game/category/',
+    cancel_bet: managePrefix + 'betretreat/'
 }
