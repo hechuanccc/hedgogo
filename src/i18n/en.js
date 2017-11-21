@@ -371,7 +371,9 @@ export default {
         five_seconds: '5 seconds',
         ten_seconds: '10 seconds',
         thirty_seconds: '30 seconds',
-        sixty_seconds: '60 seconds'
+        sixty_seconds: '60 seconds',
+        cancel_bet: 'Cancel Bet',
+        cancelled_bet: 'Cancelled Bet'
     },
     action: {
         view_today_report: 'View today\'s Report',

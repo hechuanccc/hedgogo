@@ -372,7 +372,9 @@ export default {
         five_seconds: '5 秒',
         ten_seconds: '10 秒',
         thirty_seconds: '30 秒',
-        sixty_seconds: '60 秒'
+        sixty_seconds: '60 秒',
+        cancel_bet: '取消押注',
+        cancelled_bets: '赌注被取消了'
     },
     action: {
         view_today_report: '查看今日报表',
