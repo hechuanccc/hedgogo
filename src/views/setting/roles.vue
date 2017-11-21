@@ -113,13 +113,11 @@ export default {
                 // edit mode
                 this.modal.id = role.id
                 this.modal.role = role
-
                 this.modal.isShow = true
             } else {
                 // add mode
                 this.modal.id = undefined
                 this.modal.role = {}
-
                 this.modal.isShow = true
             }
         },
