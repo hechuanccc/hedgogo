@@ -17,7 +17,8 @@
                         </tr>
                         <tr>
                             <th class="grey-50" width="200">{{$t('messages.transaction')}}</th>
-                            <td class="word-break">{{message.transaction}}</td>
+                            <td class="word-break" v-if="message.transaction">{{message.transaction}}</td>
+                            <td v-else>-</td>
                         </tr>
                         <tr>
                             <th class="grey-50" width="200">{{$t('messages.receiver')}}</th>

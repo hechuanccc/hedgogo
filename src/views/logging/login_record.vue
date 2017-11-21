@@ -5,24 +5,14 @@
       <div class="box">
         <div class="box-body clearfix form-inline form-input-sm">
           <div class="row ">
-            <div class="col-xs-2">
-              <label class="m-r">{{$t('member.account')}}</label>
-              <input type="text" v-model="query.member_q" class="form-control w-sm" />
-            </div>
-
-            <div class="col-xs-2">
-              <label class="m-r">IP</label>
-              <input type="text" v-model="query.ipaddr_q" @keyup="removeSpace" class="form-control w-sm" />
-            </div>
-            <div class="col-xs-5">
-              <label class="m-r">{{$t('common.login_at')}}</label>
+            <div class="col-xs-12">
               <date-picker width='140' v-model="query.logindate_0"></date-picker>
               <span>~</span>
               <date-picker width='140' v-model="query.logindate_1"></date-picker>
-
-            </div>
-            <div class="col-xs-3">
-              <button class="pull-right md-btn blue-500 w-sm" type="submit">{{$t('common.search')}}</button>
+              <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('member.account')"/>
+              <input type="text" v-model="query.ipaddr_q" @keyup="removeSpace" class="form-control w-sm" v-bind:placeholder="$t('member.ip')"/>
+              <input type="text" v-model="query.domain" @keyup="removeSpace" class="form-control w-sm" v-bind:placeholder="$t('member.loggedin_domain')"/>
+              <button class="pull-right md-btn blue-500 w-xs" type="submit">{{$t('common.search')}}</button>
             </div>
           </div>
         </div>
@@ -32,29 +22,31 @@
       <table class="table table-striped b-t">
         <thead>
         <tr>
-          <th>{{$t('report.number_login')}}</th>
           <th>{{$t('member.account')}}</th>
           <th>{{$t('common.login_at')}}</th>
           <th>{{$t('member.ip')}}</th>
+          <th width="240">{{$t('member.area')}}</th>
           <th>{{$t('member.login_platform')}}</th>
-          <th>{{$t('member.area')}}</th>
+          <th>{{$t('member.loggedin_domain')}}</th>
+          <th>{{$t('member.logout_at')}}</th>
         </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
         <tr v-for="report in queryset" >
-          <td>{{report.id}}</td>
           <td><router-link :to="'/report/login?member_q=' + report.member.username">{{report.member.username}}</router-link></td>
           <td>{{report.logindate | moment("YYYY-MM-DD HH:mm:ss")}}</td>
           <td><router-link :to="'/report/login?ipaddr_q=' + report.ipaddr">{{report.ipaddr}} {{report.isp}}</router-link></td>
+          <td>{{report.address.country}} {{report.address.city}} {{report.isp}}</td>
           <td>
             <span v-if="report.platform">{{report.platform}}</span>
             <span v-else>-</span>
           </td>
-          <td>{{report.address.country}} {{report.address.city}} {{report.isp}}</td>
+          <td>{{report.domain}}</td>
+          <td>{{report.logout_at}}</td>
         </tr>
         </tbody>
         <tbody v-else>
-        <tr><td colspan="5">{{$t('report.no_record_found')}}</td></tr>
+        <tr><td colspan="7">{{$t('report.no_record_found')}}</td></tr>
         </tbody>
       </table>
     </div>
@@ -79,6 +71,7 @@ export default {
                 logindate_0: '',
                 logindate_1: '',
                 ipaddr_q: '',
+                domain: '',
                 report_flag: true
             },
             queryset: [],
