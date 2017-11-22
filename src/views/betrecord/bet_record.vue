@@ -23,26 +23,28 @@
                 <div class="col-xs-12">
                   <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')"/>
                   <input type="text" v-model="query.id" class="form-control w-sm" v-bind:placeholder="$t('report.bet_record_number')"/>
-                  <select class="form-control w-sm c-select inline" v-model="status">
-                    <option value="0" hidden>{{$t('common.status')}}</option>
-                    <option value="ongoing">{{$t('betrecord.ongoing')}}</option>
-                    <option value="win">{{$t('betrecord.win')}}</option>
-                    <option value="lose">{{$t('betrecord.lose')}}</option>
-                    <option value="cancelled">{{$t('status.cancelled')}}</option>
-                    <option value="tie">{{$t('betrecord.tie')}}</option>
-                    <option value="void">{{$t('betrecord.void')}}</option>
-                  </select>
-                  <date-picker width='140' v-model="created_at_0" class="inline"></date-picker>
-                  <span>~</span>
-                  <date-picker width='140' v-model="created_at_1" class="inline w-sm"></date-picker>
+                    <select class="form-control c-select" v-model="status" type="search">
+                      <option value="0" hidden>{{$t('common.status')}} </option>
+                      <option value="-1">{{$t('common.reset')}} </option>
+                      <option value="ongoing">{{$t('betrecord.ongoing')}}</option>
+                      <option value="win">{{$t('betrecord.win')}}</option>
+                      <option value="lose">{{$t('betrecord.lose')}}</option>
+                      <option value="cancelled">{{$t('status.cancelled')}}</option>
+                      <option value="tie">{{$t('betrecord.tie')}}</option>
+                      <option value="void">{{$t('betrecord.void')}}</option>
+                    </select>
                   <input type="text" v-model="query.bet_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/>
                   <span>~</span>
                   <input type="text" v-model="query.bet_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
+                  <date-picker width='140' v-model="created_at_0" class="inline"></date-picker>
+                  <span>~</span>
+                  <date-picker width='140' v-model="created_at_1" class="inline w-sm"></date-picker>
                   <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                 </div>
                 <div class="col-xs-12 m-t-sm">
                     <select class="col-xs-2 w-md c-select m-r-xs" v-model="game">
                     <option value="0" hidden>{{$t('common.game')}}</option>
+                    <option value="-1">{{$t('common.reset')}} </option>
                     <option name="game" :value="game.id" v-for="(game, index) in gamelist" :key="game.id">
                         <i class="blue">{{game.display_name}}</i>
                     </option>
@@ -158,7 +160,9 @@
             <td>
               {{t.odds}}
             </td>
-            <td v-if="t.profit">{{t.profit | currency('￥')}}</td><td v-else>-</td>
+            <td v-if="t.profit">{{t.profit | currency('￥')}}</td>
+            <td v-else-if="t.profit == 0">{{0 | currency('￥')}}</td>
+            <td v-else>-</td>
             <td>
               <div class="flex-value status">
                 <span class="label danger" v-if="t.status === 'lose'">{{$t('betrecord.lose')}}</span>
@@ -235,7 +239,6 @@
           @query-param="queryParam"
           @amount="totalAmount"
           @profit="totalProfit"
-          @totalBet="totalBet"
           :api="betApi"
           ref="pulling">
         </pulling>
@@ -262,7 +265,6 @@
                     betrecord_id: '',
                     member_q: '',
                     game_q: [],
-                    filter_game_q: '',
                     bet_gte: '',
                     bet_lte: '',
                     created_at_0: '',
@@ -295,27 +297,35 @@
             this.getBetRecord()
             this.interval = setInterval(this.getBetRecord, parseInt(this.period))
             this.$nextTick(() => {
-                this.created_at_0 = this.$route.query.created_at_0
-                this.created_at_1 = this.$route.query.created_at_1
                 this.getPageAccessed()
                 this.$refs.pulling.rebase()
             })
         },
         watch: {
-            status: function (old, newObj) {
-                this.query.status = old
+            status: function (newObj, old) {
+                if (this.status === '-1') {
+                    this.status = '0'
+                    this.query.status = ''
+                } else if (this.status !== '0') {
+                    this.query.status = newObj
+                }
             },
             game: function (newObj, old) {
-                this.query.game_q = newObj
-                this.game_category = '0'
-                this.getGameCategory()
+                if (this.game === '-1') {
+                    this.game = '0'
+                    this.query.game_q = ''
+                } else if (this.game !== '0') {
+                    this.query.game_q = newObj
+                    this.game_category = '0'
+                    this.getGameCategory()
+                }
             },
-            game_category: function (old, newObj) {
-                this.query.category = old
+            game_category: function (newObj, old) {
+                this.query.category = newObj
             },
             filter_game: function (newObj, old) {
                 if (this.filter_game !== []) {
-                    this.query.filter_game_q = newObj
+                    this.query.game_q = newObj
                     this.submit()
                 }
             },
@@ -342,9 +352,11 @@
             nextTickFetch () {
                 this.queryset = []
                 setTimeout(() => {
-                    this.created_at_0 = this.$route.query.created_at_0
-                    this.created_at_1 = this.$route.query.created_at_1
                     this.getPageAccessed()
+                    this.$router.push({
+                        path: this.$route.path + '?report_flag=true',
+                        query: this.query
+                    })
                     this.$refs.pulling.rebase()
                 }, 100)
             },
@@ -366,9 +378,6 @@
             },
             totalProfit (profit) {
                 this.total_profit = profit
-            },
-            totalBet (val) {
-                this.total_bet_amount = val
             },
             submit () {
                 this.$refs.pulling.submit()
@@ -394,13 +403,18 @@
                 })
             },
             getPageAccessed () {
-                this.created_at_0 = this.$route.query.created_at_0
-                this.created_at_1 = this.$route.query.created_at_1
-                if (this.created_at_0 === this.today && this.created_at_1 === this.today) {
+                this.router_path = this.$route.path
+                if (this.router_path === '/report/betrecord/today') {
+                    this.created_at_0 = this.today
+                    this.created_at_1 = this.today
                     this.pageSelected = 'today'
-                } else if (this.created_at_1 === this.yesterday) {
+                } else if (this.router_path === '/report/betrecord/history') {
+                    this.created_at_0 = ''
+                    this.created_at_1 = this.yesterday
                     this.pageSelected = 'history'
-                } else {
+                } else if (this.router_path === '/report/betrecord/realtime') {
+                    this.created_at_0 = this.today
+                    this.created_at_1 === this.today
                     this.pageSelected = 'realtime'
                 }
             },
