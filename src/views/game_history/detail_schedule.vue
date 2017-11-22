@@ -145,7 +145,7 @@ export default {
             app.game.id = to.params.id
             app.getGameName(gameid)
             app.game.display_name = app.$store.getters.getGame[gameid]
-            app.extra = 'game=' + gameid + '&date=' + Vue.moment(app.input.date).format(dateFormat)
+            app.extra = `game=${gameid}&date=${Vue.moment(app.input.date).format(dateFormat)}`
             app.$nextTick(() => {
                 app.$refs.pulling.rebase()
                 app.getNewestResult(gameid, Vue.moment(app.input.date).format(dateFormat))
@@ -160,9 +160,11 @@ export default {
     },
     methods: {
         setDate () {
-            this.extra = 'game=' + this.game.id + '&date=' + Vue.moment(this.input.date).format(dateFormat)
-            this.$refs.pulling.rebase()
-            this.getNewestResult(this.game.id, Vue.moment(this.input.date).format(dateFormat))
+            this.extra = `game=${this.game.id}&date=${Vue.moment(this.input.date).format(dateFormat)}`
+            this.$nextTick(() => {
+                this.$refs.pulling.rebase()
+                this.getNewestResult(this.game.id, Vue.moment(this.input.date).format(dateFormat))
+            })
         },
         getNewestResult (gameid, time) {
             this.$http.get(api.game_result + '?game=' + gameid + '&date=' + time + '&limit=1')
