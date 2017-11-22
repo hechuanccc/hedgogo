@@ -1,6 +1,7 @@
 <template>
     <select class="form-control w-sm c-select" v-model="myLevel" v-if="mode==='select'" :required="req" :disabled="!disabled">
         <option value="0" hidden>{{$t('member.level')}}</option>
+        <option value="-1">{{$t('common.reset')}}</option>
         <option class="form-control" :value="l.id" v-for="l in levels">{{l.name}}</option>
     </select>
     <div v-else>
@@ -41,9 +42,13 @@ export default {
             this.myLevel = this.level
         },
         myLevel (newObj, old) {
-            if (newObj !== undefined) {
-                this.$emit('level-select', newObj)
-                this.$emit('level-choose', this.myLevel, this.index)
+            if (this.myLevel === '-1') {
+                this.myLevel = '0'
+            } else if (this.myLevel !== '0') {
+                if (newObj !== undefined) {
+                    this.$emit('level-select', newObj)
+                    this.$emit('level-choose', this.myLevel, this.index)
+                }
             }
         }
     },

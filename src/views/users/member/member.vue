@@ -26,11 +26,13 @@
                 <input type="text" v-model="query.real_name_q" class="form-control" v-bind:placeholder="$t('common.real_name')"/>
                 <select class="form-control c-select w-sm" v-model="status">
                   <option value="" hidden>{{$t('common.status')}}</option>
+                  <option value="-1">{{$t('common.reset')}}</option>
                   <option value="1">{{$t('status.active')}}</option>
                   <option value="0">{{$t('status.inactive')}}</option>
                 </select>
                 <select class="form-control w-sm c-select" v-model="member_logged_in">
                   <option value="" hidden>{{$t('common.login_status')}}</option>
+                  <option value="-1">{{$t('common.reset')}}</option>
                   <option value="1">{{$t('common.logged_in')}}</option>
                   <option value="0">{{$t('common.all')}}</option>
                 </select>
@@ -45,14 +47,15 @@
             </div>
             <div class="row m-t" v-show="showAll">
               <div class="col-xs-12">
-                <select class="form-control w-sm c-select inline" v-model="selected">
+                <select class="form-control w-sm c-select inline" v-model="selected" @change="filterUserContactInfo">
                   <option value="0" hidden>{{$t('common.please_select')}}</option>
+                  <option value="-1">{{$t('common.reset')}}</option>
                   <option value="1">{{$t('common.phone')}}</option>
                   <option value="2">{{$t('common.email')}}</option>
                   <option value="3">{{$t('common.qq')}}</option>
                   <option value="4">{{$t('common.wechat')}}</option>
                 </select>
-                <input v-show="selected == '0'" type="text" class="form-control inline" :disabled="selected == '0'"/>
+                <input v-show="selected == '0' || selected == '-1'" type="text" class="form-control inline" :disabled="selected == '0'"/>
                 <input v-if="selected == '1'" type="text" v-model="query.phone_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.phone')"/>
                 <input v-if="selected == '2'" type="text" v-model="query.email_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.email')"/>
                 <input v-if="selected == '3'" type="text" v-model="query.qq_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')"/>
@@ -282,11 +285,19 @@ export default {
         })
     },
     watch: {
-        status: function (old, newObj) {
-            this.query.status = old
+        status: function (newObj, old) {
+            if (this.status === '-1') {
+                this.status = ''
+            } else if (this.status !== '') {
+                this.query.status = newObj
+            }
         },
-        member_logged_in: function (old, newObj) {
-            this.query.logined = old
+        member_logged_in: function (newObj, old) {
+            if (this.member_logged_in === '-1') {
+                this.member_logged_in = ''
+            } else if (this.member_logged_in !== '') {
+                this.query.logined = newObj
+            }
         },
         '$route': 'nextTickFetch',
         created_at_0 (newObj, old) {
@@ -362,6 +373,30 @@ export default {
                 path: this.$route.path + '?logined=1'
             })
             this.loading = false
+        },
+        filterUserContactInfo () {
+            this.query.phone_q = ''
+            this.query.email_q = ''
+            this.query.wechat_q = ''
+            this.query.qq_q = ''
+            switch (this.selected) {
+            case '-1':
+                this.selected = '0'
+                break
+            case '1':
+                this.query.phone_q = this.query.phone_q
+                break
+            case '2':
+                this.query.email_q = this.query.email_q
+                break
+            case '3':
+                this.query.qq_q = this.query.qq_q
+                break
+            case '4':
+                this.query.wechat_q = this.query.wechat_q
+                break
+            }
+            this.$refs.pulling.submit()
         }
     },
     components: {

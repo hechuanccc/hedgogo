@@ -7,6 +7,7 @@
                     <div class="col-xs-12">
                         <select class="w c-select" v-model="selected" @change="getData">
                             <option value="0" hidden>{{$t('common.date')}}</option>
+                            <option value="-1">{{$t('common.reset')}}</option>
                             <option value="1">{{$t('common.today')}}</option>
                             <option value="2">{{$t('common.yesterday')}}</option>
                             <option value="3">{{$t('common.specify_date_range')}}</option>
@@ -14,6 +15,7 @@
                         <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
                         <select class="form-control w-sm c-select" v-model="transaction_type">
                             <option value="0" hidden>{{$t('bill.transaction_type')}}</option>
+                            <option value="-1">{{$t('common.reset')}}</option>
                             <option name="transaction_type" v-for="t in trans_type" :value="t.code">
                                 <i class="blue">{{t.display_name}}</i>
                             </option>
@@ -166,7 +168,12 @@
         },
         watch: {
             transaction_type: function (newObj, old) {
-                this.query.transaction_type = newObj
+                if (this.transaction_type === '-1') {
+                    this.transaction_type = '0'
+                    this.query.transaction_type = ''
+                } else if (this.transaction_type !== '0') {
+                    this.query.transaction_type = newObj
+                }
             },
             '$route' (to, from) {
                 this.queryset = []
@@ -249,9 +256,18 @@
                 })
             },
             getData: function () {
-                this.created_at_0 = ''
-                this.created_at_1 = ''
-                this.toggleDate(this.selected)
+                if (this.selected === '-1') {
+                    this.selected = '0'
+                    this.query.created_at_0 = ''
+                    this.query.created_at_1 = ''
+                    this.$router.push({
+                        path: this.$route.path + '?report_flag=true'
+                    })
+                } else {
+                    this.created_at_0 = ''
+                    this.created_at_1 = ''
+                    this.toggleDate(this.selected)
+                }
             },
             clearDateFilter () {
                 this.created_at_0 = ''
