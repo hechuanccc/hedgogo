@@ -49,15 +49,6 @@
                                 <tr>
                                     <th class="grey-50">{{$t('staff.permission')}}</th>
                                     <td>
-                                        <!-- <ul class="ul-padding-vertical-05 permissions-list" id="">
-                                            <li v-for="permission in permissions" class="ng-binding ng-scope">
-                                                <i class="fa text-danger">x</i>
-                                                {{permission.display_name}}
-                                                <span class="text-muted ng-binding">
-                                                    - {{permission.description}}
-                                                </span>
-                                            </li>
-                                        </ul> -->
                                         <template v-for="(list, index) in permissionsList">
                                             <div class="row" :key="list.id">
                                                 <div class="col-sm-12 p-b"> 

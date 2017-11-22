@@ -142,20 +142,21 @@ export default {
     beforeRouteEnter (to, from, next) {
         next(app => {
             let gameid = to.params.id
+            let time = Vue.moment(app.input.date).format(dateFormat)
             app.game.id = to.params.id
             app.getGameName(gameid)
             app.game.display_name = app.$store.getters.getGame[gameid]
-            app.extra = `game=${gameid}&date=${Vue.moment(app.input.date).format(dateFormat)}`
+            app.extra = `game=${gameid}&date=${time}`
             app.$nextTick(() => {
                 app.$refs.pulling.rebase()
-                app.getNewestResult(gameid, Vue.moment(app.input.date).format(dateFormat))
+                app.getNewestResult(gameid, time)
             })
         })
     },
     created () {
         this.timing = setInterval(() => {
             this.$refs.pulling.rebase()
-            this.getNewestResult(this.game.id, Vue.moment(this.input.date).format(dateFormat))
+            this.getNewestResult(this.game.id, Vue.moment().format(dateFormat))
         }, 30000)
     },
     methods: {
@@ -163,7 +164,7 @@ export default {
             this.extra = `game=${this.game.id}&date=${Vue.moment(this.input.date).format(dateFormat)}`
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
-                this.getNewestResult(this.game.id, Vue.moment(this.input.date).format(dateFormat))
+                this.getNewestResult(this.game.id, Vue.moment().format(dateFormat))
             })
         },
         getNewestResult (gameid, time) {
