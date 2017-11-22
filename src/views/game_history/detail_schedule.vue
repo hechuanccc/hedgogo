@@ -1,6 +1,11 @@
 <template>
 <div>
-    <h3>{{ game.display_name }}</h3>
+    <div class="row m-b">
+        <div class="col-xs-3 text-left"><h3>{{ game.display_name }}</h3></div>
+        <div class="col-xs-9 text-right">
+            <button class="md-btn w-sm blue" @click="showModal">{{ $t('game_history.manual_draw') }}</button>
+        </div>
+    </div>
     <div class="box">
         <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
@@ -8,7 +13,7 @@
                     <label>{{$t('game_history.date')}}：</label>
                     <date-picker width='140' 
                     v-model="input.date" 
-                    @input="getResult(game.id, input.date)"></date-picker>
+                    @input="setDate"></date-picker>
                 </div>
                 <div class="col-xs-2">
                     <label>{{$t('game_history.periods')}}：</label>
@@ -19,9 +24,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="text-right m-b">
-        <button class="md-btn w-sm blue" @click="showModal">{{ $t('game_history.manual_draw') }}</button>
     </div>
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
@@ -55,10 +57,9 @@
             </div>
         </div>
     </div>
-    <div class="text-center" v-show="loading"><i class='fa fa-spinner '></i><b>{{$t('game_history.loading')}}</b></div>
-    <div v-if="!loading" class="card col">
+    <div class="card col">
         <div class="card-body">
-            <table class="table table-hover" v-if="game_results.length > 0">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
@@ -68,19 +69,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-if="newest_result">
+                    <tr v-if="newest_result && queryset.length > 0">
                         <td>{{ parseInt(newest_result.issue_number) + 1 }}</td>
-                        <td>{{ newest_result.created_at | moment("YYYY-MM-DD") }}</td>
-                        <td>{{ $t('game_history.no_draw') }}
-                            <a class="p-l-xs" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</a>
-                        </td>
+                        <td>{{ newest_result.created_at | moment("YYYY-MM-DD HH:MM") }}</td>
+                        <td>{{ $t('game_history.no_draw') }}<a class="p-l-xs" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</a></td>
                         <td></td>
                     </tr>
-                    <tr v-for = "selected_result in filteredResults"
-                        :key = "selected_result.game_id"
-                    >
+                    <tr v-for = "selected_result in filteredResults" :key = "selected_result.game_id">
                         <td>{{selected_result.issue_number}}</td>
-                        <td>{{selected_result.created_at | moment("YYYY-MM-DD")}}</td>
+                        <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:MM")}}</td>
                         <td class="result-balls">
                             <span v-for="result in selected_result.result_str.split(',')" :key="result" :class="getResultClass(result)">
                                 <b> {{result}} </b>
@@ -90,15 +87,25 @@
                     </tr>
                 </tbody>
             </table>
-            <div v-else class="m-t m-b text-center">
-                <strong>{{ $t('game_history.no_draw') }}</strong>
-            </div>
         </div>
+    </div>
+    <div class="row m-b-lg">
+        <pulling 
+        :queryset="queryset"
+        :query="query"
+        :api="gameResultApi"
+        :extra="extra"
+        ref="pulling"
+        @query-data="queryData"
+        @query-param="queryParam"
+        >
+        </pulling>
     </div>
 </div>
 </template>
 <script>
 import api from '../../api.js'
+import pulling from '../../components/pulling'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 
@@ -113,13 +120,11 @@ export default {
                 display_name: '',
                 game_code: ''
             },
-            game_results: [],
             newest_result: undefined,
             input: {
                 date: Vue.moment().format(dateFormat),
                 period: ''
             },
-            loading: false,
             modal: {
                 isShow: false,
                 gameResult: {
@@ -127,64 +132,57 @@ export default {
                     issue_number: '',
                     result_str: ''
                 }
-            }
+            },
+            gameResultApi: api.game_result,
+            queryset: [],
+            query: {},
+            extra: ''
         }
     },
     beforeRouteEnter (to, from, next) {
         next(app => {
             let gameid = to.params.id
-            app.game.id = gameid
-            if (!app.$store.state.game.display_name) {  // to avoid missing game name after refreshing
-                app.getGameName(gameid)
-            }
+            app.game.id = to.params.id
+            app.getGameName(gameid)
             app.game.display_name = app.$store.getters.getGame[gameid]
-            app.getResult(gameid, app.input.date)
-            app.timing = setInterval(() => {
-                app.getResult(gameid, app.input.date)
-            }, 30000)
+            app.extra = 'game=' + gameid + '&date=' + Vue.moment(app.input.date).format(dateFormat)
+            app.$nextTick(() => {
+                app.$refs.pulling.rebase()
+                app.getNewestResult(gameid, Vue.moment(app.input.date).format(dateFormat))
+            })
         })
     },
+    created () {
+        this.timing = setInterval(() => {
+            this.$refs.pulling.rebase()
+            this.getNewestResult(this.game.id, Vue.moment(this.input.date).format(dateFormat))
+        }, 30000)
+    },
     methods: {
-        getResult (gameid, createdat) {
-            const formatedTime = Vue.moment(createdat).format(dateFormat)
-            if (this.game_results.length === 0) {
-                this.loading = true
-            }
-            this.$http.get(api.game_result + `?game=${gameid}&date=${formatedTime}`)
+        setDate () {
+            this.extra = 'game=' + this.game.id + '&date=' + Vue.moment(this.input.date).format(dateFormat)
+            this.$refs.pulling.rebase()
+            this.getNewestResult(this.game.id, Vue.moment(this.input.date).format(dateFormat))
+        },
+        getNewestResult (gameid, time) {
+            this.$http.get(api.game_result + '?game=' + gameid + '&date=' + time + '&limit=1')
             .then(response => {
-                if (response.data.length !== this.game_results.length) {
-                    this.loading = true
-                    this.game_results = response.data
-                    this.newest_result = Object.assign({}, this.newest_result, response.data[0])
-                }
-            }, response => {
-                this.errorCallback(response)
-            })
-            .then(response => {
-                this.loading = false
+                this.newest_result = Object.assign({}, this.newest_result, response.data.results[0])
             })
         },
         getGameName (gameid) {
-            this.$http.get(api.game_list + gameid).then(
-                response => {
-                    this.game.display_name = response.data.display_name
-                    this.game.game_code = response.data.code
-                    this.modal.gameResult.game_code = response.data.code
-                },
-                response => {
-                    this.errorCallback(response)
-                })
-        },
-        errorCallback (response) {
-            if (('' + response.status).indexOf('4') === 0) {
-                this.$router.push('/login?next=' + this.$route.path)
-            }
+            this.$http.get(api.game_list + gameid)
+            .then(response => {
+                this.game.display_name = response.data.display_name
+                this.game.game_code = response.data.code
+                this.modal.gameResult.game_code = response.data.code
+            })
         },
         showModal () {
-            if (this.game_results === undefined || this.game_results[0] === undefined) {
+            if (this.queryset.length === 0) {
                 this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
             } else {
-                this.modal.gameResult.issue_number = parseInt(this.game_results[0].issue_number) + 1
+                this.modal.gameResult.issue_number = parseInt(this.newest_result.issue_number) + 1
             }
             this.modal.isShow = true
         },
@@ -196,7 +194,7 @@ export default {
             .then((response) => {
                 if (response.status === 201) {
                     this.hideModal()
-                    location.reload()
+                    this.$refs.pulling.rebase()
                 }
             })
         },
@@ -205,7 +203,7 @@ export default {
             let resultClass
             if (this.game.game_code === 'jsssc') {
                 resultClass = 'resultnum-' + parseInt(resultNum)
-            } else if (this.game.game_code === 'mlaft') {
+            } else if (this.game.game_code === 'mlaft' || this.game.game_code === 'jspk10') {
                 if (parseInt(resultNum) < 10) {
                     resultClass = 'resultnum-0' + parseInt(resultNum)
                 } else {
@@ -220,14 +218,23 @@ export default {
             if (window.confirm('确定撤单？')) {
                 console.log('delete Sheet no api QAQ')
             }
+        },
+        submit () {
+            this.$refs.pulling.submit()
+        },
+        queryData (queryset) {
+            this.queryset = queryset
+        },
+        queryParam (query) {
+            this.query = query
         }
     },
     computed: {
         filteredResults () {
-            if (!this.game_results.length) {
+            if (!this.queryset.length) {
                 return []
             }
-            const rawResults = this.game_results
+            const rawResults = this.queryset
             return rawResults.filter(rawResult => {
                 if (rawResult['issue_number'].indexOf(this.input.period) !== -1) {
                     return true
@@ -236,7 +243,8 @@ export default {
         }
     },
     components: {
-        DatePicker
+        DatePicker,
+        pulling
     },
     beforeDestroy () {
         clearInterval(this.timing)
@@ -245,7 +253,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../assets/resultsball.sass';
-
 .modal-backdrop, .modal{
   z-index: 1;
 }
