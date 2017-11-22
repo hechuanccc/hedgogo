@@ -3,7 +3,7 @@
       <div class="m-b-sm">
         <div class="row">
           <div class="col-xs-12">
-            <div v-show="pageSelected == 'general'" class="h6 inline">{{$t('nav.general_agent_list')}}</div>
+            <div v-show="pageSelected == 'gagent'" class="h6 inline">{{$t('nav.general_agent_list')}}</div>
             <div v-show="pageSelected == 'agent'" class="h6 inline">{{$t('nav.agent')}}</div>
             <div class="pull-right inline"  v-if="$root.permissions.includes('add_change_staff')">
               <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
@@ -143,7 +143,7 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
-            <td><router-link :to="'/agent/?parent_agent=' + agent.parent_agent" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
+            <td><router-link :to="'/agent/?parent_agent=gagent'" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
             <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
             <td>
               <span class="label success" v-if="agent.status==1">{{$t('status.active')}}</span>
@@ -301,13 +301,13 @@ export default {
             })
         },
         getPageAccessed () {
-            if (this.level !== '1') {
+            if (this.level !== '3') {
                 this.pageSelected = 'agent'
                 if (!this.level) {
                     this.level = 0
                 }
             } else {
-                this.pageSelected = 'general'
+                this.pageSelected = 'gagent'
             }
         }
     },
