@@ -58,7 +58,7 @@
     <div class="text-center" v-show="loading"><i class='fa fa-spinner '></i><b>{{$t('game_history.loading')}}</b></div>
     <div v-if="!loading" class="card col">
         <div class="card-body">
-            <table class="table table-hover">
+            <table class="table table-hover" v-if="game_results.length > 0">
                 <thead>
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
@@ -68,17 +68,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <tr v-if="newest_result">
+                        <td>{{ parseInt(newest_result.issue_number) + 1 }}</td>
+                        <td>{{ newest_result.created_at | moment("YYYY-MM-DD") }}</td>
+                        <td>{{ $t('game_history.no_draw') }}
+                            <a class="p-l-xs" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</a>
+                        </td>
+                        <td></td>
+                    </tr>
                     <tr v-for = "selected_result in filteredResults"
                         :key = "selected_result.game_id"
                     >
                         <td>{{selected_result.issue_number}}</td>
                         <td>{{selected_result.created_at | moment("YYYY-MM-DD")}}</td>
-                        <td>{{selected_result.result_str}}</td>
+                        <td class="result-balls">
+                            <span v-for="result in selected_result.result_str.split(',')" :key="result" :class="getResultClass(result)">
+                                <b> {{result}} </b>
+                            </span>
+                        </td>
                         <td>{{selected_result.created_by === null ? '' : $t('game_history.manual_draw')}}</td>
                     </tr>
                 </tbody>
             </table>
+            <div v-else class="m-t m-b text-center">
+                <strong>{{ $t('game_history.no_draw') }}</strong>
+            </div>
         </div>
     </div>
 </div>
@@ -96,9 +110,11 @@ export default {
         return {
             game: {
                 id: '',
-                display_name: ''
+                display_name: '',
+                game_code: ''
             },
-            game_results: '',
+            game_results: [],
+            newest_result: undefined,
             input: {
                 date: Vue.moment().format(dateFormat),
                 period: ''
@@ -111,10 +127,6 @@ export default {
                     issue_number: '',
                     result_str: ''
                 }
-            },
-            map: {
-                tjssc: 'T_SSC'
-
             }
         }
     },
@@ -127,27 +139,37 @@ export default {
             }
             app.game.display_name = app.$store.getters.getGame[gameid]
             app.getResult(gameid, app.input.date)
+            app.timing = setInterval(() => {
+                app.getResult(gameid, app.input.date)
+            }, 30000)
         })
     },
     methods: {
         getResult (gameid, createdat) {
             const formatedTime = Vue.moment(createdat).format(dateFormat)
-            this.loading = true
-            this.$http.get(api.game_result + `?game=${gameid}&date=${formatedTime}`).then(
-                response => {
-                    this.loading = false
+            if (this.game_results.length === 0) {
+                this.loading = true
+            }
+            this.$http.get(api.game_result + `?game=${gameid}&date=${formatedTime}`)
+            .then(response => {
+                if (response.data.length !== this.game_results.length) {
+                    this.loading = true
                     this.game_results = response.data
-                },
-                response => {
-                    this.errorCallback(response)
-                })
+                    this.newest_result = Object.assign({}, this.newest_result, response.data[0])
+                }
+            }, response => {
+                this.errorCallback(response)
+            })
+            .then(response => {
+                this.loading = false
+            })
         },
         getGameName (gameid) {
             this.$http.get(api.game_list + gameid).then(
                 response => {
                     this.game.display_name = response.data.display_name
+                    this.game.game_code = response.data.code
                     this.modal.gameResult.game_code = response.data.code
-                    console.table(response.data)
                 },
                 response => {
                     this.errorCallback(response)
@@ -177,6 +199,27 @@ export default {
                     location.reload()
                 }
             })
+        },
+        getResultClass (resultNum) {
+            let gameClass = 'result-' + this.game.game_code
+            let resultClass
+            if (this.game.game_code === 'jsssc') {
+                resultClass = 'resultnum-' + parseInt(resultNum)
+            } else if (this.game.game_code === 'mlaft') {
+                if (parseInt(resultNum) < 10) {
+                    resultClass = 'resultnum-0' + parseInt(resultNum)
+                } else {
+                    resultClass = 'resultnum-' + resultNum
+                }
+            } else {
+                resultClass = 'resultnum-' + resultNum
+            }
+            return [gameClass, resultClass]
+        },
+        deleteSheet () {
+            if (window.confirm('确定撤单？')) {
+                console.log('delete Sheet no api QAQ')
+            }
         }
     },
     computed: {
@@ -194,10 +237,15 @@ export default {
     },
     components: {
         DatePicker
+    },
+    beforeDestroy () {
+        clearInterval(this.timing)
     }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '../../assets/resultsball.sass';
+
 .modal-backdrop, .modal{
   z-index: 1;
 }
@@ -207,5 +255,11 @@ export default {
 }
 .modal{
   display: block;
+}
+
+.result-balls span{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
 }
 </style>

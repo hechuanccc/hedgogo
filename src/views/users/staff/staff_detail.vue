@@ -38,18 +38,41 @@
                                     <td>{{staff.username}}</td>
                                 </tr>
                                 <tr>
+                                    <th class="grey-50" width="130">{{$t('staff.role')}}</th>
+                                    <td>{{staff.group.name}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="grey-50" width="130">{{$t('staff.email')}}</th>
+                                    <td v-if="staff.email!==null">{{staff.email}}</td>
+                                    <td v-else>{{$t('staff.no_setting')}}</td>
+                                </tr>
+                                <tr>
                                     <th class="grey-50">{{$t('staff.permission')}}</th>
                                     <td>
-                                        <ul class="ul-padding-vertical-05 permissions-list" id="">
-                                            <li v-if="staff.group"><strong>{{staff.group.name}}</strong></li>
+                                        <!-- <ul class="ul-padding-vertical-05 permissions-list" id="">
                                             <li v-for="permission in permissions" class="ng-binding ng-scope">
-                                                <i class="fa fa-check text-success"></i>
+                                                <i class="fa text-danger">x</i>
                                                 {{permission.display_name}}
                                                 <span class="text-muted ng-binding">
                                                     - {{permission.description}}
                                                 </span>
                                             </li>
-                                        </ul>
+                                        </ul> -->
+                                        <template v-for="(list, index) in permissionsList">
+                                            <div class="row" :key="list.id">
+                                                <div class="col-sm-12 p-b"> 
+                                                    <strong>{{ list.display_name }}</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row" :key="list.id">
+                                                <div class="col-sm-offset-1 col-sm-11 p-b" v-for="permission in list.permissions" :key="permission.id">
+                                                    <i v-if="permission.checked" class="fa fa-check text-success"></i>   
+                                                    <i v-else class="fa fa-times text-danger"></i>
+                                                    <span>{{ permission.display_name }}</span>
+                                                    <span class="text-muted ">- {{ permission.description }}</span>
+                                                </div>
+                                            </div>
+                                        </template>
                                     </td>
                                 </tr>
                                 <tr>
@@ -92,6 +115,7 @@
                 statusUpdated: false,
                 passwordSuccess: false,
                 permissions: [],
+                permissionsList: [],
                 passwordError: '',
                 permissionsId: []
             }
@@ -102,6 +126,7 @@
                 if (id) {
                     vm.getStaff(id)
                     vm.getPermissions(id)
+                    vm.getStaffPermissionsList(id)
                 }
             })
         },
@@ -115,6 +140,11 @@
                 this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then((response) => {
                     this.permissions = response.data.permissions
                     this.getSelect()
+                })
+            },
+            getStaffPermissionsList (id) {
+                this.$http.get(api.staffPermissions + id + '/?opt_expand=permissions').then((response) => {
+                    this.permissionsList = response.data.permissions
                 })
             },
             getSelect () {
