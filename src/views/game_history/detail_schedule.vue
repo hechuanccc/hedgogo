@@ -71,13 +71,13 @@
                 <tbody>
                     <tr v-if="newest_result && queryset.length > 0">
                         <td>{{ parseInt(newest_result.issue_number) + 1 }}</td>
-                        <td>{{ newest_result.created_at | moment("YYYY-MM-DD HH:MM") }}</td>
+                        <td>{{ newest_result.created_at | moment("YYYY-MM-DD HH:MM:SS") }}</td>
                         <td>{{ $t('game_history.no_draw') }}<a class="p-l-xs" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</a></td>
                         <td></td>
                     </tr>
                     <tr v-for = "selected_result in filteredResults" :key = "selected_result.game_id">
                         <td>{{selected_result.issue_number}}</td>
-                        <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:MM")}}</td>
+                        <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:MM:SS")}}</td>
                         <td class="result-balls">
                             <span v-for="result in selected_result.result_str.split(',')" :key="result" :class="getResultClass(result)">
                                 <b> {{result}} </b>

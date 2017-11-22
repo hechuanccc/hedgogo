@@ -463,7 +463,7 @@ export default {
         auto_draw: 'Auto Draw',
         manual_draw: 'Manual Draw',
         memo: 'Memo',
-        no_draw: 'No draw yet!',
+        no_draw: 'No draw number yet!',
         del_sheet: 'Delete sheet'
     },
     agent: {
