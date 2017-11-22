@@ -79,7 +79,7 @@
                         <td>{{selected_result.issue_number}}</td>
                         <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:MM:SS")}}</td>
                         <td class="result-balls">
-                            <span v-for="result in selected_result.result_str.split(',')" :key="result" :class="getResultClass(result)">
+                            <span v-for="result in selected_result.result_str.split(',')" :class="getResultClass(result)">
                                 <b> {{result}} </b>
                             </span>
                         </td>
