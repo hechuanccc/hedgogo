@@ -29,8 +29,15 @@
                                 <label for="permission" class="label-width">{{$t('staff.role')}}</label>
                                 <div class="inline-form-control">
                                     <select class="form-control w-sm c-select" name="permission" v-model="staff.group" :disabled="!$root.permissions.includes('add_change_staff')">
-                                        <option class="form-control" :value="r.id" v-for="r in roles">{{r.name}}</option>
+                                        <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{r.name}}</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="label-width">{{$t('staff.email')}}</label>
+                                <div class="inline-form-control">
+                                    <input type="email" class="form-control" name="email" :placeholder="$t('staff.email')" v-model="staff.email">
                                 </div>
                             </div>
 
@@ -43,7 +50,7 @@
                                             <div class="col-sm-12">
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input type="checkbox" v-model="list.checked" :checked="selectMax"  :disabled="!$root.permissions.includes('add_change_staff')" @click="toggleSelect(list)" >
+                                                        <input type="checkbox" v-model="list.checked" :checked="selectMax"  :disabled="!$root.permissions.includes('add_change_staff')" @click="toggleSelect(list, list.checked^1)" >
                                                         <strong class=""> {{list.display_name}} </strong>
                                                     </label>
                                                 </div>
@@ -123,13 +130,15 @@
                     username: '',
                     password: '',
                     group: '',
+                    email: '',
                     permissions: []
                 },
                 permissionsList: [],
                 staffPermissions: [],
                 field_locales: {
                     'username': '用户名错误：',
-                    'permission': '权限错误：'
+                    'permission': '权限错误：',
+                    'email': '邮箱错误：'
                 },
                 roles: '',
                 creating: false,
@@ -207,9 +216,10 @@
                     this.permissionsList = response.data.permissions
                 })
             },
-            toggleSelect (list) {
+            toggleSelect (list, inValue) {
+                list.checked = inValue
                 list.permissions.forEach(function (permission) {
-                    permission.checked = list.checked
+                    permission.checked = inValue
                 })
             },
             getRole () {

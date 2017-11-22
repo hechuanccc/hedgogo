@@ -429,7 +429,10 @@ export default {
         technical_customer_service: 'Technical Customer Service',
         close: 'Close',
         status: 'Status',
-        created_at: 'Created at'
+        created_at: 'Created at',
+        updated_at: 'Updated at',
+        email: 'Email',
+        no_setting: 'No Setting'
     },
     game_manage: {
         id: 'Game ID',
@@ -473,7 +476,9 @@ export default {
         loading: 'loading',
         auto_draw: 'Auto Draw',
         manual_draw: 'Manual Draw',
-        memo: 'Memo'
+        memo: 'Memo',
+        no_draw: 'No draw number yet!',
+        del_sheet: 'Delete sheet'
     },
     agent: {
         number: 'No.',

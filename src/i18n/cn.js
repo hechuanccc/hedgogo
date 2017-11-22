@@ -430,7 +430,10 @@ export default {
         technical_customer_service: '技术客服',
         close: '关闭',
         status: '目前状态',
-        created_at: '注册日期'
+        created_at: '注册日期',
+        updated_at: '最后修改日期',
+        email: '邮箱',
+        no_setting: '未设置'
     },
     game_manage: {
         id: ' 游戏ID',
@@ -474,7 +477,9 @@ export default {
         loading: '正在加载中...',
         auto_draw: '自动开奖',
         manual_draw: '手动开奖',
-        memo: '备注'
+        memo: '备注',
+        no_draw: '未开奖',
+        del_sheet: '撤单'
     },
     agent: {
         number: '编号',
