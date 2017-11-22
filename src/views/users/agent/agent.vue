@@ -3,7 +3,7 @@
       <div class="m-b-sm">
         <div class="row">
           <div class="col-xs-12">
-            <div v-show="pageSelected == 'general'" class="h6 inline">{{$t('nav.general_agent_list')}}</div>
+            <div v-show="pageSelected == 'gagent'" class="h6 inline">{{$t('nav.general_agent_list')}}</div>
             <div v-show="pageSelected == 'agent'" class="h6 inline">{{$t('nav.agent')}}</div>
             <div class="pull-right inline"  v-if="$root.permissions.includes('add_change_staff')">
               <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
@@ -22,6 +22,7 @@
                 <input type="text" v-model="query.parent_agent" class="form-control w-sm" v-bind:placeholder="$t('agent.parent_agent')" />
                 <select class="form-control c-select w-sm" v-model="level" >
                   <option value="0" hidden>{{$t('agent.level')}}</option>
+                  <option value="-1">{{$t('common.reset')}}</option>
                   <option value="1">大股东</option>
                   <option value="2">股东</option>
                   <option value="3">总代理</option>
@@ -39,6 +40,7 @@
               <div class="col-xs-12">
                 <select class="form-control w-sm c-select inline" v-model="selected" @change="filterUserContactInfo">
                   <option value="0" hidden>{{$t('common.please_select')}}</option>
+                  <option value="-1">{{$t('common.reset')}}</option>
                   <option value="1">{{$t('common.phone')}}</option>
                   <option value="2">{{$t('common.email')}}</option>
                   <option value="3">{{$t('common.qq')}}</option>
@@ -51,6 +53,7 @@
                 <input v-if="selected == 4" type="text" v-model="query.wechat" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')" />
                 <select class="form-control c-select w-sm" v-model="status">
                   <option value="" hidden>{{$t('common.status')}}</option>
+                  <option value="-1">{{$t('common.reset')}}</option>
                   <option value="1">{{$t('status.active')}}</option>
                   <option value="0">{{$t('status.inactive')}}</option>
                 </select>
@@ -143,7 +146,7 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
-            <td><router-link :to="'/agent/?parent_agent=' + agent.parent_agent" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
+            <td><router-link :to="'/agent/?parent_agent=gagent'" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
             <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
             <td>
               <span class="label success" v-if="agent.status==1">{{$t('status.active')}}</span>
@@ -218,10 +221,18 @@ export default {
     watch: {
         '$route': 'nextTickFetch',
         status: function (old, newObj) {
-            this.query.status = old
+            if (this.status === '-1') {
+                this.status = ''
+            } else if (this.status !== '') {
+                this.query.status = old
+            }
         },
         level: function (newObj, old) {
-            this.query.level = newObj
+            if (this.level === '-1') {
+                this.level = '0'
+            } else if (this.level !== '0') {
+                this.query.level = newObj
+            }
         },
         created_at_0 (newObj, old) {
             this.query.created_at_0 = newObj
@@ -274,6 +285,9 @@ export default {
             this.query.wechat = ''
             this.query.qq = ''
             switch (this.selected) {
+            case '-1':
+                this.selected = '0'
+                break
             case '1':
                 this.query.phone = this.query.phone
                 break
@@ -301,13 +315,13 @@ export default {
             })
         },
         getPageAccessed () {
-            if (this.level !== '1') {
+            if (this.level !== '3') {
                 this.pageSelected = 'agent'
                 if (!this.level) {
                     this.level = 0
                 }
             } else {
-                this.pageSelected = 'general'
+                this.pageSelected = 'gagent'
             }
         }
     },
