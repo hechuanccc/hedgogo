@@ -287,7 +287,7 @@
                 if (this.member.id) {
                     this.$http.put(api.member + this.member.id + '/', this.initMember).then(response => {
                         if (response.status === 200) {
-                            this.$router.push('/member/' + response.data.id)
+                            this.$router.push('/member/' + response.data.data.id)
                         }
                     }, response => {
                         this.errorMsg = ''
@@ -297,8 +297,8 @@
                     })
                 } else {
                     this.$http.post(api.member, this.initMember).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/member/' + response.data.id)
+                        if (response.status === 200) {
+                            this.$router.push('/member/' + response.data.data.id)
                         }
                     }, response => {
                         this.errorMsg = ''
@@ -310,7 +310,7 @@
             },
             getMember (id) {
                 this.$http.get(api.member + id + '/?opt_expand=1').then((response) => {
-                    let data = response.data
+                    let data = response.data.data
                     if (!data.bank) {
                         data.bank = {bank: '', province: ''}
                     }

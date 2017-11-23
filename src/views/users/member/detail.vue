@@ -375,7 +375,7 @@
                     status: this.member.status === 1 ? 0 : 1
                 }).then((response) => {
                     if (response.status === 200) {
-                        this.member.status = response.data.status
+                        this.member.status = response.data.data.status
                         this.statusUpdated = true
                         setTimeout(() => {
                             this.statusUpdated = false
@@ -404,9 +404,9 @@
             },
             getMember (id) {
                 this.$http.get(api.member + id + '/?opt_expand=bank&action').then((response) => {
-                    this.member = response.data
+                    this.member = response.data.data
                     // this.gameAccounts = response.data.sum_balance - response.data.balance.balance
-                    this.member_id = {'account_id': response.data.id}
+                    this.member_id = {'account_id': response.data.data.id}
                 }, response => {
                     if (('' + response.status).indexOf('4') === 0) {
                         this.$router.push('/login?next=' + this.$route.path)
@@ -424,8 +424,8 @@
                     }
                 }
                 this.$http.put(api.member + id + '/?audit=' + id).then((response) => {
-                    this.member.balance.bet_amount = response.data.balance.bet_amount
-                    this.member.balance.audit_amount = response.data.balance.audit_amount
+                    this.member.balance.bet_amount = response.data.data.balance.bet_amount
+                    this.member.balance.audit_amount = response.data.data.balance.audit_amount
                 })
             }
         }
