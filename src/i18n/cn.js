@@ -179,7 +179,8 @@ export default {
         total_remit: '总汇款',
         total_online_pay: '在线支付总额',
         total_withdraw: '总撤回',
-        logout_at: '注销时间'
+        logout_at: '注销时间',
+        isp: 'ISP'
     },
     bill: {
         commission_report: '佣金计算',
@@ -471,7 +472,7 @@ export default {
         overview: '总览',
         is_latest: '已是最新数据',
         periods: '期数',
-        draw_date: '开奖日期',
+        draw_date: '开奖时间',
         draw_number: '开奖号码',
         date: '日期',
         loading: '正在加载中...',

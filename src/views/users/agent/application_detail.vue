@@ -212,7 +212,7 @@
               <span class="text-muted" v-if="agent.created_by">{{ agent.created_by }} 加盟</span>
             </div>
             <div class="col-xs-8 col-md-offset-1 text-right" v-if="agent.level.id > 3">
-              <input v-show="false" v-model="today" :value="new Date() | moment('YYYY-MM-DD')">
+              <input v-show="false" v-model="today">
               <router-link class="md-btn md-flat m-r-sm" :to="'/report/game?agent=' + agent.username +'&category=&date_0='+ today +'&date_1='+ today">{{$t('action.view_today_report')}}</router-link>
               <router-link class="md-btn md-flat m-r-sm" :to="'/bill/search?agent=' + agent.id">{{$t('action.view_member_record')}}</router-link>
               <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)">{{$t('action.reset_password')}}</a>

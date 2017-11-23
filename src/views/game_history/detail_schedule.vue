@@ -9,13 +9,13 @@
     <div class="box">
         <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
-                <div class="col-xs-2">
+                <div class="col-xs-3">
                     <label>{{$t('game_history.date')}}：</label>
                     <date-picker width='140' 
                     v-model="input.date" 
                     @input="setDate"></date-picker>
                 </div>
-                <div class="col-xs-2">
+                <div class="col-xs-3">
                     <label>{{$t('game_history.periods')}}：</label>
                     <input type="number" 
                     v-model.number="input.period" 
@@ -68,16 +68,16 @@
                         <th scope="col">{{$t('game_history.memo')}}</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr v-if="newest_result && queryset.length > 0">
+                <tbody class="v-m">
+                    <tr v-if="isPageOne">
                         <td>{{ parseInt(newest_result.issue_number) + 1 }}</td>
-                        <td>{{ newest_result.created_at | moment("YYYY-MM-DD HH:MM:SS") }}</td>
-                        <td>{{ $t('game_history.no_draw') }}<a class="p-l-xs" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</a></td>
+                        <td>{{ $t('game_history.no_draw') }}</td>
+                        <td><button class="md-btn blue w-s" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</button></td>
                         <td></td>
                     </tr>
                     <tr v-for = "selected_result in filteredResults" :key = "selected_result.game_id">
                         <td>{{selected_result.issue_number}}</td>
-                        <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:MM:SS")}}</td>
+                        <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:mm:ss")}}</td>
                         <td class="result-balls">
                             <span v-for="result in selected_result.result_str.split(',')" :class="getResultClass(result)">
                                 <b> {{result}} </b>
@@ -89,7 +89,7 @@
             </table>
         </div>
     </div>
-    <div class="row m-b-lg">
+    <div class="row m-b-lg m-t">
         <pulling 
         :queryset="queryset"
         :query="query"
@@ -243,6 +243,13 @@ export default {
                     return true
                 }
             })
+        },
+        isPageOne () {
+            if (this.queryset.length > 0 && this.queryset[0].issue_number === this.newest_result.issue_number) {
+                return true
+            } else {
+                return false
+            }
         }
     },
     components: {
@@ -271,5 +278,9 @@ export default {
     display: inline-block;
     vertical-align: middle;
     margin-right: 5px;
+}
+
+.v-m td{
+    vertical-align: middle;
 }
 </style>

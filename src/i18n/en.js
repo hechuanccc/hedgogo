@@ -178,7 +178,8 @@ export default {
         total_remit: 'Total Remit',
         total_online_pay: 'Total Online Pay',
         total_withdraw: 'Total Withdraw',
-        logout_at: 'Log Out At'
+        logout_at: 'Log Out At',
+        isp: 'ISP'
     },
     bill: {
         commission_report: 'Commission Report',
