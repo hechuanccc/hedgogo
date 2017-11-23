@@ -10,7 +10,7 @@
 
             <div>
                 <nav class="nav-active-blue" >
-                    <ul class="nav m-l-sm" ui-nav="">
+                    <ul class="nav" ui-nav="">
                         <template v-if="$root.permissions.includes('list_report_betrecord')">
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
