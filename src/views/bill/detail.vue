@@ -70,7 +70,8 @@
                             <div class="grey-100 p-a clearfix" v-if="transaction.transaction_type.code === 'withdraw'">
                                 <div class="row">
                                     <div class="col-xs-3 text-right text-muted">{{$t('common.real_name')}}</div>
-                                    <div class="col-xs-9 ">{{transaction.member.real_name}} &nbsp;</div>
+                                    <div class="col-xs-9 " v-if="transaction.member.real_name">{{transaction.member.real_name}} &nbsp;</div>
+                                    <div class="col-xs-9 " v-else> - &nbsp;</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-3 text-right text-muted">{{$t('bank.name')}}</div>

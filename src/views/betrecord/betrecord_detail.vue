@@ -60,7 +60,8 @@
             <div class="row m-t">
               <div class="col-xs-3 text-right v-m">{{$t('common.profit')}}</div>
               <div class="col-xs-8">
-                <span class="text-muted">{{betrecords.profit | currency('￥')}}</span>
+                <span class="text-muted" v-if="betrecords.profit">{{betrecords.profit | currency('￥')}}</span>
+                <span class="text-muted" v-else>-</span>
               </div>
             </div>
 

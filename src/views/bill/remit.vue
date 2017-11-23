@@ -12,15 +12,14 @@
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
                     <div class="col-xs-12">
-                      <!-- Remit Type: Remove v-if once api is okay -->
-                        <select class="form-control w-sm c-select" v-model="remit_type" v-if="!query.remit_type">
-                            <option value="0" hidden>{{$t('setting.remit_type')}}</option>
+                        <select class="form-control w-sm c-select" v-model="remit_type">
+                            <option value="0">{{$t('setting.remit_type')}}</option>
                             <option value="1">{{$t('setting.payment_normal')}}</option>
                             <option value="2">{{$t('setting.payment_alipay')}}</option>
                             <option value="3">{{$t('setting.payment_wechat')}}</option>
                         </select>
                         <select class="form-control w-sm c-select" v-model="status">
-                            <option value="0" hidden>{{$t('common.status')}}</option>
+                            <option value="0">{{$t('common.status')}}</option>
                             <option value="1">{{$t('status.success')}}</option>
                             <option value="2">{{$t('status.failed')}}</option>
                             <option value="3">{{$t('status.ongoing')}}</option>
@@ -211,8 +210,19 @@
             account_type: function (old, newObj) {
                 this.query.account_type = old
             },
-            status: function (old, newObj) {
-                this.query.status = old
+            remit_type: function (newObj, old) {
+                if (newObj === '0') {
+                    this.query.remit_type = ''
+                } else {
+                    this.query.remit_type = newObj
+                }
+            },
+            status: function (newObj, old) {
+                if (newObj === '0') {
+                    this.query.status = ''
+                } else {
+                    this.query.status = newObj
+                }
             },
             '$root.remit_count' (newObj, old) {
                 this.$refs.pulling.rebase()
@@ -314,7 +324,7 @@
                 this.query.created_at_1 = ''
                 this.query.updated_at_0 = ''
                 this.query.updated_at_1 = ''
-                this.member_level = 0
+                this.member_level = '0'
                 this.selected = '0'
                 this.$router.push({
                     path: this.$route.path + '?report_flag=true'
