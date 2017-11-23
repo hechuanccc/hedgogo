@@ -334,7 +334,8 @@ export default {
         select_all: 'Select All',
         deselect_all: 'Deselect All',
         new_window: 'New Window',
-        updated_at: 'Updated at'
+        updated_at: 'Updated at',
+        no_permission: 'User has no permission to access this page'
     },
     bank: {
         bank_title: 'Bank Information',
