@@ -17,7 +17,7 @@ export default {
     },
     watch: {
         myCommission: function (old, newObj) {
-            if (this.myCommission === '0') {
+            if (this.myCommission !== '0') {
                 this.$emit('myCommission', old)
             }
         }
