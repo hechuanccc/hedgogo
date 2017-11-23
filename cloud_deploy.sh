@@ -2,7 +2,6 @@
 # NPM commands and Azure cli scripts to deploy our static VueJS in a CDN
 
 # Needed to avoid piling up of data in image and Azure file storage
-
 rm -rf dist
 /root/bin/az storage blob delete-batch --source static
 
