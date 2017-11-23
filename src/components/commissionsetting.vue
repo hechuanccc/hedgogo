@@ -19,7 +19,7 @@ export default {
         myCommission: function (old, newObj) {
             if (this.myCommission === '0') {
                 this.myCommission = '0'
-            } else if (this.myCommission !== '0') {
+            } else {
                 this.$emit('myCommission', old)
             }
         }
