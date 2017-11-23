@@ -57,7 +57,7 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="pull-left">
-                <input type="checkbox" value="1" name="account_type" v-model="account_type">
+                <input type="checkbox" name="account_type" v-model="account_type">
                 <i class="blue"></i>{{$t('action.filter_trial_account')}}
               </div>
               <div class="pull-right total-amount">
@@ -67,7 +67,7 @@
               </div>
             </div>
           </div>
-      <div class="box m-t-sm">
+      <div class="box">
           <table class="table table-striped">
               <thead>
                   <tr>
@@ -185,6 +185,14 @@
             }
         },
         watch: {
+            account_type: function (newObj, old) {
+                if (newObj === true) {
+                    this.query.account_type = '1'
+                } else {
+                    this.query.account_type = '0'
+                }
+                this.submit()
+            },
             status: function (newObj, old) {
                 if (newObj === '0') {
                     this.query.status = ''
@@ -254,9 +262,6 @@
                 if (this.query.id) {
                     this.query.id = this.query.id
                 }
-                if (this.query.account_type) {
-                    this.account_type = this.account_type
-                }
                 if (this.query.transaction_id) {
                     this.order_id = this.query.transaction_id
                 }
@@ -293,8 +298,9 @@
                 this.query.updated_at_1 = ''
                 this.member_level = 0
                 this.selected = '0'
+                this.account_type = true
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true'
+                    path: this.$route.path + '?report_flag=true&account_type=1'
                 })
             },
             updateDateFilter: function () {
@@ -314,7 +320,7 @@
                     this.query.created_at_1 = ''
                 }
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true',
+                    path: this.$route.path + '?report_flag=true&account_type=1',
                     query: this.query
                 })
             },

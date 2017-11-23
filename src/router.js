@@ -1055,6 +1055,17 @@ export default new Router({
             agentPermission: 'true',
             title: Vue.t('nav.global_parameters')
         }
+    },
+    {
+        path: '/ban',
+        name: 'ban',
+        component: function (resolve) {
+            require(['./views/ban.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true
+        }
     }
     ]
 })

@@ -39,14 +39,14 @@
             </div>
         </div>
     </form>
-    <input  type="checkbox" value="1" name="account_type" v-model="account_type" >
+    <input type="checkbox" name="account_type" v-model="account_type" >
     <i class="blue"></i>{{$t('action.filter_trial_account')}}
     <div v-if="queryset.length" class="pull-right">
       <a :href="href" class="grey-400" :getReport="getReport">
         <span class="nav-icon export-button" ><i class="material-icons">&#xe2c4;</i></span>
       </a>
     </div>
-    <div class="box m-t-sm">
+    <div class="box">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -165,6 +165,14 @@
             }
         },
         watch: {
+            account_type: function (newObj, old) {
+                if (newObj === true) {
+                    this.query.account_type = '1'
+                } else {
+                    this.query.account_type = '0'
+                }
+                this.submit()
+            },
             transaction_type: function (newObj, old) {
                 if (newObj === '0') {
                     this.query.transaction_type = ''
@@ -248,8 +256,9 @@
                 this.member_level = 0
                 this.transaction_type = '0'
                 this.selected = '0'
+                this.account_type = true
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true'
+                    path: this.$route.path + '?report_flag=true&account_type=1'
                 })
             },
             getData: function () {
@@ -257,7 +266,7 @@
                     this.query.created_at_0 = ''
                     this.query.created_at_1 = ''
                     this.$router.push({
-                        path: this.$route.path + '?report_flag=true'
+                        path: this.$route.path + '?report_flag=true&account_type=1'
                     })
                 } else {
                     this.created_at_0 = ''
@@ -271,7 +280,7 @@
                 this.query.created_at_0 = ''
                 this.query.created_at_1 = ''
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true',
+                    path: this.$route.path + '?report_flag=true&account_type=1',
                     query: this.query
                 })
             },
