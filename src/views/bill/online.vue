@@ -13,8 +13,7 @@
                   <div class="row">
                         <div class="col-xs-12">
                             <select class="form-control w-sm c-select" v-model="status">
-                              <option value="0" hidden>{{$t('common.status')}}</option>
-                              <option value="-1">{{$t('common.reset')}}</option>
+                              <option value="0">{{$t('common.status')}}</option>
                               <option value="1">{{$t('status.success')}}</option>
                               <option value="2">{{$t('status.failed')}}</option>
                               <option value="3">{{$t('status.ongoing')}}</option>
@@ -187,10 +186,9 @@
         },
         watch: {
             status: function (newObj, old) {
-                if (this.status === '-1') {
-                    this.status = '0'
+                if (newObj === '0') {
                     this.query.status = ''
-                } else if (this.status !== '0') {
+                } else {
                     this.query.status = newObj
                 }
             },

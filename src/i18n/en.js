@@ -334,8 +334,7 @@ export default {
         select_all: 'Select All',
         deselect_all: 'Deselect All',
         new_window: 'New Window',
-        updated_at: 'Updated at',
-        reset: 'Reset'
+        updated_at: 'Updated at'
     },
     bank: {
         bank_title: 'Bank Information',

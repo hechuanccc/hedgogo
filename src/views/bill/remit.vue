@@ -13,15 +13,13 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <select class="form-control w-sm c-select" v-model="remit_type">
-                            <option value="0" hidden>{{$t('setting.remit_type')}}</option>
-                            <option value="-1">{{$t('common.reset')}}</option>
+                            <option value="0">{{$t('setting.remit_type')}}</option>
                             <option value="1">{{$t('setting.payment_normal')}}</option>
                             <option value="2">{{$t('setting.payment_alipay')}}</option>
                             <option value="3">{{$t('setting.payment_wechat')}}</option>
                         </select>
                         <select class="form-control w-sm c-select" v-model="status">
-                            <option value="0" hidden>{{$t('common.status')}}</option>
-                            <option value="-1">{{$t('common.reset')}}</option>
+                            <option value="0">{{$t('common.status')}}</option>
                             <option value="1">{{$t('status.success')}}</option>
                             <option value="2">{{$t('status.failed')}}</option>
                             <option value="3">{{$t('status.ongoing')}}</option>
@@ -213,17 +211,16 @@
                 this.query.account_type = old
             },
             remit_type: function (newObj, old) {
-                if (this.remit_type === '-1') {
-                    this.remit_type = '0'
-                } else if (this.remit_type !== '0') {
+                if (newObj === '0') {
+                    this.query.remit_type = ''
+                } else {
                     this.query.remit_type = newObj
                 }
             },
             status: function (newObj, old) {
-                if (this.status === '-1') {
-                    this.status = '0'
+                if (newObj === '0') {
                     this.query.status = ''
-                } else if (this.status !== '0') {
+                } else {
                     this.query.status = newObj
                 }
             },

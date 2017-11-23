@@ -25,14 +25,12 @@
                 <input type="text" v-model="query.agent_q" class="form-control" v-bind:placeholder="$t('member.agent')"/>
                 <input type="text" v-model="query.real_name_q" class="form-control" v-bind:placeholder="$t('common.real_name')"/>
                 <select class="form-control c-select w-sm" v-model="status">
-                  <option value="" hidden>{{$t('common.status')}}</option>
-                  <option value="-1">{{$t('common.reset')}}</option>
+                  <option value="">{{$t('common.status')}}</option>
                   <option value="1">{{$t('status.active')}}</option>
                   <option value="0">{{$t('status.inactive')}}</option>
                 </select>
                 <select class="form-control w-sm c-select" v-model="member_logged_in">
-                  <option value="" hidden>{{$t('common.login_status')}}</option>
-                  <option value="-1">{{$t('common.reset')}}</option>
+                  <option value="">{{$t('common.login_status')}}</option>
                   <option value="1">{{$t('common.logged_in')}}</option>
                   <option value="0">{{$t('common.all')}}</option>
                 </select>
@@ -48,8 +46,7 @@
             <div class="row m-t" v-show="showAll">
               <div class="col-xs-12">
                 <select class="form-control w-sm c-select inline" v-model="selected" @change="filterUserContactInfo">
-                  <option value="0" hidden>{{$t('common.please_select')}}</option>
-                  <option value="-1">{{$t('common.reset')}}</option>
+                  <option value="0">{{$t('common.please_select')}}</option>
                   <option value="1">{{$t('common.phone')}}</option>
                   <option value="2">{{$t('common.email')}}</option>
                   <option value="3">{{$t('common.qq')}}</option>
@@ -286,16 +283,16 @@ export default {
     },
     watch: {
         status: function (newObj, old) {
-            if (this.status === '-1') {
-                this.status = ''
-            } else if (this.status !== '') {
+            if (newObj === '0') {
+                this.query.status = ''
+            } else {
                 this.query.status = newObj
             }
         },
         member_logged_in: function (newObj, old) {
-            if (this.member_logged_in === '-1') {
-                this.member_logged_in = ''
-            } else if (this.member_logged_in !== '') {
+            if (newObj === '') {
+                this.query.logined = ''
+            } else {
                 this.query.logined = newObj
             }
         },
@@ -380,9 +377,6 @@ export default {
             this.query.wechat_q = ''
             this.query.qq_q = ''
             switch (this.selected) {
-            case '-1':
-                this.selected = '0'
-                break
             case '1':
                 this.query.phone_q = this.query.phone_q
                 break

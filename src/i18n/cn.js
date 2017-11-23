@@ -335,8 +335,7 @@ export default {
         select_all: '全选',
         deselect_all: '清空',
         new_window: '新窗口打开',
-        updated_at: '状态更新于',
-        reset: '重置值'
+        updated_at: '状态更新于'
     },
     bank: {
         bank_title: '银行资讯',

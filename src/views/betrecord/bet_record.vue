@@ -24,8 +24,7 @@
                   <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')"/>
                   <input type="text" v-model="query.id" class="form-control w-sm" v-bind:placeholder="$t('report.bet_record_number')"/>
                     <select class="form-control c-select" v-model="status" type="search">
-                      <option value="0" hidden>{{$t('common.status')}} </option>
-                      <option value="-1">{{$t('common.reset')}} </option>
+                      <option value="0">{{$t('common.status')}} </option>
                       <option value="ongoing">{{$t('betrecord.ongoing')}}</option>
                       <option value="win">{{$t('betrecord.win')}}</option>
                       <option value="lose">{{$t('betrecord.lose')}}</option>
@@ -43,8 +42,7 @@
                 </div>
                 <div class="col-xs-12 m-t-sm">
                     <select class="col-xs-2 w-md c-select m-r-xs" v-model="game">
-                    <option value="0" hidden>{{$t('common.game')}}</option>
-                    <option value="-1">{{$t('common.reset')}} </option>
+                    <option value="0">{{$t('common.game')}}</option>
                     <option name="game" :value="game.id" v-for="(game, index) in gamelist" :key="game.id">
                         <i class="blue">{{game.display_name}}</i>
                     </option>
@@ -303,18 +301,16 @@
         },
         watch: {
             status: function (newObj, old) {
-                if (this.status === '-1') {
-                    this.status = '0'
+                if (this.status === '0') {
                     this.query.status = ''
-                } else if (this.status !== '0') {
+                } else {
                     this.query.status = newObj
                 }
             },
             game: function (newObj, old) {
-                if (this.game === '-1') {
-                    this.game = '0'
+                if (this.game === '0') {
                     this.query.game_q = ''
-                } else if (this.game !== '0') {
+                } else {
                     this.query.game_q = newObj
                     this.game_category = '0'
                     this.getGameCategory()

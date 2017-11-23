@@ -1,7 +1,6 @@
 <template>
     <select class="form-control w-sm c-select" v-model="myCommission">
-        <option value="0" hidden>{{$t('agent.commission_setting')}}</option>
-        <option value="-1">{{$t('common.reset')}}</option>
+        <option value="0">{{$t('agent.commission_setting')}}</option>
         <option class="form-control" :value="r.id" v-for="r in commissionsettings">{{r.name}}</option>
     </select>
 </template>
@@ -18,7 +17,7 @@ export default {
     },
     watch: {
         myCommission: function (old, newObj) {
-            if (this.myCommission === '-1') {
+            if (this.myCommission === '0') {
                 this.myCommission = '0'
             } else if (this.myCommission !== '0') {
                 this.$emit('myCommission', old)
