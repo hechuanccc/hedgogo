@@ -10,7 +10,7 @@
 
             <div>
                 <nav class="nav-active-blue" >
-                    <ul class="nav m-l-sm" ui-nav="">
+                    <ul class="nav" ui-nav="">
                         <template v-if="$root.permissions.includes('list_report_betrecord')">
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
@@ -48,9 +48,9 @@
                               <span class="nav-icon"> <i class="material-icons m-r-xs">&#xe1b8;</i>投注记录</span>
                             </a>
                             <ul class="nav-sub">
-                                <li><router-link :to="'/report/betrecord?report_flag=true&created_at_0=' + today + '&created_at_1=' + today"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
-                                <li><router-link :to="'/report/betrecord?report_flag=true&created_at_1=' + yesterday"><span class="nav-text">{{$t('nav.bet_record_history')}}</span></router-link></li>
-                                <li><router-link :to="'/report/betrecord?report_flag=true&created_at_1=' + today"><span class="nav-text">{{$t('nav.instant_view')}}</span></router-link></li>
+                                <li><router-link to="/report/betrecord/today"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
+                                <li><router-link to="/report/betrecord/history"><span class="nav-text">{{$t('nav.bet_record_history')}}</span></router-link></li>
+                                <li><router-link to="/report/betrecord/realtime"><span class="nav-text">{{$t('nav.instant_view')}}</span></router-link></li>
                             </ul>
                         </li>
 
@@ -161,19 +161,11 @@
     </div>
 </template>
 <script>
-import Vue from 'vue'
-const format = 'YYYY-MM-DD'
 
 export default {
     props: {
         showNav: {
             default: true
-        }
-    },
-    data () {
-        return {
-            today: Vue.moment().format(format),
-            yesterday: Vue.moment().subtract(1, 'days').format(format)
         }
     }
 }

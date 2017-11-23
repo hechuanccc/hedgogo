@@ -1,6 +1,6 @@
 <template>
     <select class="form-control w-sm c-select" v-model="myCommission">
-        <option value="0" hidden>{{$t('agent.commission_setting')}}</option>
+        <option value="0">{{$t('agent.commission_setting')}}</option>
         <option class="form-control" :value="r.id" v-for="r in commissionsettings">{{r.name}}</option>
     </select>
 </template>
@@ -17,7 +17,9 @@ export default {
     },
     watch: {
         myCommission: function (old, newObj) {
-            this.$emit('myCommission', old)
+            if (this.myCommission !== '0') {
+                this.$emit('myCommission', old)
+            }
         }
     },
     created () {

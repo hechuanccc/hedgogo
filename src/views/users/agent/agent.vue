@@ -21,7 +21,7 @@
                 <input type="text" v-model="query.real_name_q" class="form-control w-sm" v-bind:placeholder="$t('common.real_name')" />
                 <input type="text" v-model="query.parent_agent" class="form-control w-sm" v-bind:placeholder="$t('agent.parent_agent')" />
                 <select class="form-control c-select w-sm" v-model="level" >
-                  <option value="0" hidden>{{$t('agent.level')}}</option>
+                  <option value="0">{{$t('agent.level')}}</option>
                   <option value="1">大股东</option>
                   <option value="2">股东</option>
                   <option value="3">总代理</option>
@@ -38,7 +38,7 @@
             <div class="row m-t" v-show="showAll">
               <div class="col-xs-12">
                 <select class="form-control w-sm c-select inline" v-model="selected" @change="filterUserContactInfo">
-                  <option value="0" hidden>{{$t('common.please_select')}}</option>
+                  <option value="0">{{$t('common.please_select')}}</option>
                   <option value="1">{{$t('common.phone')}}</option>
                   <option value="2">{{$t('common.email')}}</option>
                   <option value="3">{{$t('common.qq')}}</option>
@@ -50,7 +50,7 @@
                 <input v-if="selected == 3" type="text" v-model="query.qq" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')" />
                 <input v-if="selected == 4" type="text" v-model="query.wechat" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')" />
                 <select class="form-control c-select w-sm" v-model="status">
-                  <option value="" hidden>{{$t('common.status')}}</option>
+                  <option value="">{{$t('common.status')}}</option>
                   <option value="1">{{$t('status.active')}}</option>
                   <option value="0">{{$t('status.inactive')}}</option>
                 </select>
@@ -217,11 +217,19 @@ export default {
     },
     watch: {
         '$route': 'nextTickFetch',
-        status: function (old, newObj) {
-            this.query.status = old
+        status: function (newObj, old) {
+            if (newObj === '') {
+                this.query.status = ''
+            } else {
+                this.query.status = newObj
+            }
         },
         level: function (newObj, old) {
-            this.query.level = newObj
+            if (newObj === '0') {
+                this.query.level = ''
+            } else {
+                this.query.level = newObj
+            }
         },
         created_at_0 (newObj, old) {
             this.query.created_at_0 = newObj
@@ -274,6 +282,9 @@ export default {
             this.query.wechat = ''
             this.query.qq = ''
             switch (this.selected) {
+            case '-1':
+                this.selected = '0'
+                break
             case '1':
                 this.query.phone = this.query.phone
                 break
