@@ -61,7 +61,7 @@
                             </a>
                             <ul class="nav-sub">
                                 <li>
-                                    <router-link to="/agent?level=1">
+                                    <router-link to="/agent?level=3">
                                         <span class="nav-text">{{$t("nav.general_agent_list")}}</span>
                                     </router-link>
                                 </li>
