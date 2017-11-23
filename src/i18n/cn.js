@@ -179,7 +179,8 @@ export default {
         total_remit: '总汇款',
         total_online_pay: '在线支付总额',
         total_withdraw: '总撤回',
-        logout_at: '注销时间'
+        logout_at: '注销时间',
+        isp: 'ISP'
     },
     bill: {
         commission_report: '佣金计算',
@@ -431,7 +432,10 @@ export default {
         technical_customer_service: '技术客服',
         close: '关闭',
         status: '目前状态',
-        created_at: '注册日期'
+        created_at: '注册日期',
+        updated_at: '最后修改日期',
+        email: '邮箱',
+        no_setting: '未设置'
     },
     game_manage: {
         id: ' 游戏ID',
@@ -469,13 +473,15 @@ export default {
         overview: '总览',
         is_latest: '已是最新数据',
         periods: '期数',
-        draw_date: '开奖日期',
+        draw_date: '开奖时间',
         draw_number: '开奖号码',
         date: '日期',
         loading: '正在加载中...',
         auto_draw: '自动开奖',
         manual_draw: '手动开奖',
-        memo: '备注'
+        memo: '备注',
+        no_draw: '未开奖',
+        del_sheet: '撤单'
     },
     agent: {
         number: '编号',

@@ -25,6 +25,7 @@
           <th>{{$t('member.account')}}</th>
           <th>{{$t('common.login_at')}}</th>
           <th>{{$t('member.ip')}}</th>
+          <th>{{$t('member.isp')}}</th>
           <th width="240">{{$t('member.area')}}</th>
           <th>{{$t('member.login_platform')}}</th>
           <th>{{$t('member.loggedin_domain')}}</th>
@@ -35,8 +36,9 @@
         <tr v-for="report in queryset" >
           <td><router-link :to="'/report/login?member_q=' + report.member.username">{{report.member.username}}</router-link></td>
           <td>{{report.logindate | moment("YYYY-MM-DD HH:mm:ss")}}</td>
-          <td><router-link :to="'/report/login?ipaddr_q=' + report.ipaddr">{{report.ipaddr}} {{report.isp}}</router-link></td>
-          <td>{{report.address.country}} {{report.address.city}} {{report.isp}}</td>
+          <td><router-link :to="'/report/login?ipaddr_q=' + report.ipaddr">{{report.ipaddr}}</router-link></td>
+          <td>{{report.isp}}</td>
+          <td>{{report.address.country}} {{report.address.region}} {{report.address.city}}</td>
           <td>
             <span v-if="report.platform">{{report.platform}}</span>
             <span v-else>-</span>

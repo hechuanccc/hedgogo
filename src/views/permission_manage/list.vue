@@ -97,7 +97,7 @@ export default {
                 this.permissionsListAll = response.data
             })
             .then(response => {
-                this.permissionsListAll.sort((a, b) => a.id - b.id)
+                this.permissionsListAll.sort((a, b) => a.group - b.group)
             })
         },
         getPermissions () {

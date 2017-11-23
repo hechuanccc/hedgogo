@@ -2,7 +2,7 @@
     <div>
       <div class="row">
         <div class="pull-right m-r"  v-if="$root.permissions.includes('add_change_staff')">
-            <router-link tag="button" class="md-btn w-sm blue"  to="/staff/add">{{$t('action.add_staff')}}</router-link>
+            <router-link tag="button" class="md-btn w-sm blue m-b"  to="/staff/add">{{$t('action.add_staff')}}</router-link>
         </div>
       </div>
         <div class="box m-t-sm">
@@ -14,6 +14,7 @@
                       <th>{{$t('common.status')}}</th>
                       <th>{{$t('staff.permission')}}</th>
                       <th>{{$t('staff.created_at')}}</th>
+                      <th>{{$t('staff.updated_at')}}</th>
                       <th>{{$t('common.memo')}}</th>
                     </tr>
                 </thead>
@@ -30,6 +31,7 @@
                         </td>
                         <td>{{staff.group.name}}</td>
                         <td>{{staff.created_at | moment("YYYY-MM-DD HH:mm")}}</td>
+                        <td>{{staff.updated_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.memo}}</td>
                     </tr>
                 </tbody>

@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="m-b" v-if="!$root.permissions.includes('change_global_parameters')" >
-      <router-link tag="button" class="md-btn w-sm blue" to="/permission/add">{{$t('global_parameters.parameter_add_btn')}}</router-link>
+      <div tag="button" class="md-btn w-sm blue" @click="showModal">{{$t('global_parameters.parameter_add_btn')}}</div>
     </div>
     <div class="box" v-if="globalParametersList.length > 0">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t">
+      <table st-table="rowCollectionBasic" class="table table-striped b-t gbp">
           <thead>
           <tr>
             <th width="20%" class="text-center align-middle">{{ $t('global_parameters.name') }}</th>
@@ -21,6 +21,36 @@
           </tbody>
         </table>
     </div>
+    <div class="modal" v-if="modal.isShow">
+        <div class="modal-backdrop fade in" @click="hideModal"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" @click="hideModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <table st-table="rowCollectionBasic" class="table b-t">
+                    <thead>
+                        <tr>
+                            <th>{{ $t('global_parameters.name') }}</th>
+                            <th>{{ $t('global_parameters.value') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input class="form-control" v-model="modal.globalParameterResult.name"></td>
+                            <td><input class="form-control" v-model="modal.globalParameterResult.value"></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" @click="addGlobalParameter">{{ $t('action.create') }}</button>
+                    <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 <script>
@@ -32,50 +62,57 @@ export default {
         return {
             globalParametersList: [],
             testData: [{
-                id: '1',
+                id: 1,
                 name: '试玩帐号默认金额',
                 value: '2000'
             },
             {
-                id: '2',
+                id: 2,
                 name: '注册黑名单',
                 value: '王小明;'
             },
             {
-                id: '3',
+                id: 3,
                 name: '六合彩金',
                 value: '01,06,46,23,34,42,35,04,13,33'
             },
             {
-                id: '3',
+                id: 4,
                 name: '六合彩木',
                 value: '01,06,46,23,34,42,35,04,13,37'
             },
             {
-                id: '4',
+                id: 5,
                 name: '六合彩水',
                 value: '21,16,36,13,14,32,35,04,19,22'
             },
             {
-                id: '5',
+                id: 6,
                 name: '六合彩火',
                 value: '31,06,46,43,34,42,35,04,18,01'
             },
             {
-                id: '6',
+                id: 7,
                 name: '六合彩土',
                 value: '01,06,46,03,34,32,35,04,17,13'
             },
             {
-                id: '7',
+                id: 8,
                 name: '在线客服',
                 value: ''
             },
             {
-                id: '8',
+                id: 9,
                 name: '一天一个ip可以注册多少用户',
                 value: ''
-            }]
+            }],
+            modal: {
+                isShow: false,
+                globalParameterResult: {
+                    name: '',
+                    value: ''
+                }
+            }
         }
     },
     created () {
@@ -87,7 +124,17 @@ export default {
             this.globalParametersList = this.testData
         },
         modifyGlobalParameter (id) {
-
+            console.log(`modify: ${id}`)
+        },
+        addGlobalParameter () {
+            console.log('add')
+            this.hideModal()
+        },
+        showModal () {
+            this.modal.isShow = true
+        },
+        hideModal () {
+            this.modal.isShow = false
         }
     }
 }
@@ -102,5 +149,8 @@ export default {
 }
 .modal{
   display: block;
+}
+.gbp td{
+    vertical-align:middle;
 }
 </style>
