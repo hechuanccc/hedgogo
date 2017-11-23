@@ -260,9 +260,9 @@
                 if (this.query !== '') {
                     this.$http.get(api.agent + '?opt_fields=username,id,&username=' + this.query + '&level=4')
                     .then((response) => {
-                        if (response.data.length === 1) {
+                        if (response.data.data.length === 1) {
                             this.agentValid = true
-                            this.member.agent = response.data[0].id
+                            this.member.agent = response.data.data[0].id
                         } else {
                             this.agentValid = false
                             this.member.agent = ''

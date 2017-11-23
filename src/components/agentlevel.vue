@@ -24,7 +24,7 @@ export default {
         this.$nextTick(() => {
             this.$http.get(api.agentlevel)
             .then(response => {
-                this.levels = response.data
+                this.levels = response.data.data
                 if (this.default) {
                     this.agentLevel = this.default
                 }

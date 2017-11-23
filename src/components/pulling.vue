@@ -160,14 +160,31 @@ export default {
                 this.$emit('profit', profit)
                 this.$emit('totalBet', totalBet)
                 this.busy = false
-                this.count = response.data.count
+                // [VAN] If condition will be removed once all apis are updated
+                if (response.data.data) {
+                    this.count = response.data.data.count
+                } else {
+                    this.count = response.data.count
+                }
                 this.getPage()
                 this.myQueryset = []
                 // this.queryset = this.queryset.concat(response.data.results)
-                this.myQueryset = this.myQueryset.concat(response.data.results)
+                // [VAN] If condition will be removed once all apis are updated
+                if (response.data.data) {
+                    this.myQueryset = this.myQueryset.concat(response.data.data.results)
+                } else {
+                    this.myQueryset = this.myQueryset.concat(response.data.results)
+                }
+                // this.myQueryset = this.myQueryset.concat(response.data.results)
                 this.$emit('query-data', this.myQueryset)
                 this.loading = false
-                this.next = response.data.next
+                // [VAN] If condition will be removed once all apis are updated
+                if (response.data.data) {
+                    this.next = response.data.data.next
+                } else {
+                    this.next = response.data.next
+                }
+                // this.next = response.data.next
             }, response => {
                 if (response.status === 401) {
                     this.$router.push('/login?next=' + this.$route.path)

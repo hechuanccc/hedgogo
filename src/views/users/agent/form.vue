@@ -337,7 +337,7 @@
                         if (response.status === 200) {
                             this.statusUpdated = true
                             setTimeout(() => {
-                                this.$router.push('/agent/' + response.data.id)
+                                this.$router.push('/agent/' + response.data.data.id)
                             }, 2000)
                         }
                     }, response => {
@@ -348,10 +348,10 @@
                     })
                 } else {
                     this.$http.post(api.agent, this.initAgent).then(response => {
-                        if (response.status === 201) {
+                        if (response.status === 200) {
                             this.statusUpdated = true
                             setTimeout(() => {
-                                this.$router.push('/agent/' + response.data.id)
+                                this.$router.push('/agent/' + response.data.data.id)
                             }, 2000)
                         }
                     }, response => {
@@ -365,9 +365,9 @@
             checkAgent () {
                 if (this.query !== '') {
                     this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then((response) => {
-                        if (response.data.length === 1) {
+                        if (response.data.data.length === 1) {
                             this.agentValid = true
-                            this.agent.parent_agent = response.data[0].id
+                            this.agent.parent_agent = response.data.data[0].id
                         } else {
                             this.agentValid = false
                             this.agent.parent_agent = ''
@@ -380,7 +380,7 @@
             },
             getAgent (id) {
                 this.$http.get(api.agent + id + '/?opt_expand=parent_agent').then((response) => {
-                    let data = response.data
+                    let data = response.data.data
                     if (!data.bank) {
                         data.bank = {bank: '', province: ''}
                     }
