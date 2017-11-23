@@ -2,6 +2,7 @@
 # NPM commands and Azure cli scripts to deploy our static VueJS in a CDN
 
 # Needed to avoid piling up of data in image and Azure file storage
+
 rm -rf dist
 /root/bin/az storage blob delete-batch --source static
 
@@ -21,8 +22,8 @@ export static_container=static
 
 # Upload the changes
 /root/bin/az storage blob upload --file dist/index.html --container-name $root_container  --name index.html
-/root/bin/az storage blob upload-batch --content-cache-control --destination $audio_container --source dist/audio
-/root/bin/az storage blob upload-batch --content-cache-control --destination $langs_container --source dist/langs
+/root/bin/az storage blob upload-batch --destination $audio_container --source dist/audio
+/root/bin/az storage blob upload-batch --destination $langs_container --source dist/langs
 /root/bin/az storage blob upload-batch --content-cache-control "public, max-age=$MAX_AGE" --destination $static_container --source dist/static
 
 
