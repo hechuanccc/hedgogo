@@ -260,9 +260,9 @@
                 if (this.query !== '') {
                     this.$http.get(api.agent + '?opt_fields=username,id,&username=' + this.query + '&level=4')
                     .then((response) => {
-                        if (response.data.length === 1) {
+                        if (response.data.data.length === 1) {
                             this.agentValid = true
-                            this.member.agent = response.data[0].id
+                            this.member.agent = response.data.data[0].id
                         } else {
                             this.agentValid = false
                             this.member.agent = ''
@@ -287,7 +287,7 @@
                 if (this.member.id) {
                     this.$http.put(api.member + this.member.id + '/', this.initMember).then(response => {
                         if (response.status === 200) {
-                            this.$router.push('/member/' + response.data.id)
+                            this.$router.push('/member/' + response.data.data.id)
                         }
                     }, response => {
                         this.errorMsg = ''
@@ -297,8 +297,8 @@
                     })
                 } else {
                     this.$http.post(api.member, this.initMember).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/member/' + response.data.id)
+                        if (response.status === 200) {
+                            this.$router.push('/member/' + response.data.data.id)
                         }
                     }, response => {
                         this.errorMsg = ''
@@ -310,7 +310,7 @@
             },
             getMember (id) {
                 this.$http.get(api.member + id + '/?opt_expand=1').then((response) => {
-                    let data = response.data
+                    let data = response.data.data
                     if (!data.bank) {
                         data.bank = {bank: '', province: ''}
                     }

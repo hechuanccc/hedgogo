@@ -25,7 +25,7 @@ export default {
     playset: managePrefix + 'game/playset/',
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
-    bank: prefix + 'bank/',
+    bank: managePrefix + 'bank/',
     agentlevel: managePrefix + 'agentlevel/',
     commission: managePrefix + 'commissionsetting/',
     login: prefix + 'login/',

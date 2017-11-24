@@ -476,7 +476,7 @@
             },
             getLevels () {
                 this.$http.get(api.level).then(response => {
-                    this.levels = response.data
+                    this.levels = response.data.data
                 })
             },
             onSubmit (e) {
@@ -524,9 +524,9 @@
             checkAgent () {
                 if (this.query !== '') {
                     this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then((response) => {
-                        if (response.data.length === 1) {
+                        if (response.data.data.length === 1) {
                             this.agentValid = true
-                            this.agent.parent_agent = response.data[0].id
+                            this.agent.parent_agent = response.data.data[0].id
                         } else {
                             this.agentValid = false
                             this.agent.parent_agent = ''
@@ -539,7 +539,7 @@
             },
             getAgent (id) {
                 this.$http.get(api.agentapplication + id + '/?opt_expand=detail').then((response) => {
-                    let data = response.data
+                    let data = response.data.data
                     if (!data.bank) {
                         data.bank = {}
                     }

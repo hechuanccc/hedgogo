@@ -277,7 +277,7 @@
                     status: this.agent.status === 1 ? 0 : 1
                 }).then((response) => {
                     if (response.status === 200) {
-                        this.agent.status = response.data.status
+                        this.agent.status = response.data.data.status
                         this.statusUpdated = true
                         setTimeout(() => {
                             this.statusUpdated = false
@@ -312,8 +312,8 @@
             getAgent (id) {
                 let fields = 'level,default_return_settings,commission_settings,default_member_lv,parent_agent,bank'
                 this.$http.get(api.agent + id + '/?opt_expand=' + fields).then((response) => {
-                    this.agent = response.data
-                    this.account_id = {'account_id': response.data.id}
+                    this.agent = response.data.data
+                    this.account_id = {'account_id': response.data.data.id}
                 })
             },
             getAgentPermission (levelId) {
