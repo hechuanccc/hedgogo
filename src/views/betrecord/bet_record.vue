@@ -292,8 +292,6 @@
         },
         created () {
             this.getGameList()
-            this.getBetRecord()
-            this.interval = setInterval(this.getBetRecord, parseInt(this.period))
             this.$nextTick(() => {
                 this.getPageAccessed()
                 this.$refs.pulling.rebase()
@@ -410,7 +408,7 @@
                     this.pageSelected = 'history'
                 } else if (this.router_path === '/report/betrecord/realtime') {
                     this.created_at_0 = this.today
-                    this.created_at_1 === this.today
+                    this.created_at_1 = this.today
                     this.pageSelected = 'realtime'
                 }
             },

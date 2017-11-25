@@ -34,9 +34,9 @@
         </thead>
         <tbody v-if="queryset.length > 0">
         <tr v-for="report in queryset" >
-          <td><router-link :to="'/report/login?member_q=' + report.member.username">{{report.member.username}}</router-link></td>
+          <td><router-link :to="'/login_record?member_q=' + report.member.username">{{report.member.username}}</router-link></td>
           <td>{{report.logindate | moment("YYYY-MM-DD HH:mm:ss")}}</td>
-          <td><router-link :to="'/report/login?ipaddr_q=' + report.ipaddr">{{report.ipaddr}}</router-link></td>
+          <td><router-link :to="'/login_record?ipaddr_q=' + report.ipaddr">{{report.ipaddr}}</router-link></td>
           <td>{{report.isp}}</td>
           <td>{{report.address.country}} {{report.address.region}} {{report.address.city}}</td>
           <td>

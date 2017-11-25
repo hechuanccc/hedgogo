@@ -214,6 +214,7 @@
         methods: {
             changeFromLevel (val) {
                 this.query.member_level = val
+                this.member_level = val
             },
             queryData (queryset) {
                 this.query = Object.assign({}, this.filter)
