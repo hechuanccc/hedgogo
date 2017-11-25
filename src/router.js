@@ -444,7 +444,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.edit_agent'),
-            group: 'agent'
+            group: 'users'
         }
     },
     {
@@ -457,7 +457,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent_application'),
-            group: 'agent'
+            group: 'users'
         }
     },
     {

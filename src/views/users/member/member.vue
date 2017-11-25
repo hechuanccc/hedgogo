@@ -322,9 +322,11 @@ export default {
         },
         levelSelect (val) {
             this.query.level = val
+            this.level = val
         },
         returnData (data) {
             this.query.return_settings = data
+            this.return_settings = data
         },
         queryData (queryset) {
             this.query = Object.assign({}, this.filter)

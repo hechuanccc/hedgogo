@@ -269,6 +269,7 @@ export default {
         },
         myCommission (val) {
             this.query.commission_settings = val
+            this.commission_settings = val
         },
         submit () {
             this.$refs.pulling.submit()
@@ -305,7 +306,8 @@ export default {
             this.status = ''
             this.created_at_0 = ''
             this.created_at_1 = ''
-            this.level = 0
+            this.level = '0'
+            this.commission_settings = '0'
             this.selected = '0'
             this.$router.push({
                 path: this.$route.path
