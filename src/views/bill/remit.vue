@@ -47,7 +47,7 @@
                             <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                         </div>
-                        <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                        <button class="md-btn w-xs pull-right grey-400" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                       </div>
                 </div>
             </div>
@@ -188,7 +188,7 @@
                 },
                 member_level: '0',
                 selected: '0',
-                status: '0',
+                status: '',
                 remit_type: '0',
                 dateRange: -1,
                 memo: '',
@@ -249,10 +249,7 @@
             }
         },
         created () {
-            let status = this.$route.query.status
-            if (status) {
-                this.status = status.split(',')
-            }
+            this.setStatus()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
@@ -266,11 +263,11 @@
         },
         methods: {
             nextTickFetch () {
-                let _this = this
+                this.setStatus()
                 this.queryset = []
                 setTimeout(() => {
-                    _this.$refs.pulling.rebase()
-                    _this.$refs.pulling.getExportQuery()
+                    this.$refs.pulling.rebase()
+                    this.$refs.pulling.getExportQuery()
                 }, 100)
             },
             changeFromLevel (val) {
@@ -437,6 +434,14 @@
                             this.errorMsg += handleError(response, field, this.field_locales)
                         }
                     })
+                }
+            },
+            setStatus () {
+                let status = this.$route.query.status
+                if (status) {
+                    this.status = status
+                } else {
+                    this.status = '0'
                 }
             }
         },

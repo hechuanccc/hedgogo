@@ -231,21 +231,18 @@
             })
         },
         created () {
-            let results = this.$route.query.status
-            if (results) {
-                this.status = results.split(',')
-            }
+            this.setStatus()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
             })
         },
         methods: {
             nextTickFetch () {
-                let _this = this
+                this.setStatus()
                 this.queryset = []
                 setTimeout(() => {
-                    _this.$refs.pulling.rebase()
-                    _this.$refs.pulling.getExportQuery()
+                    this.$refs.pulling.rebase()
+                    this.$refs.pulling.getExportQuery()
                 }, 100)
             },
             changeFromLevel (val) {
@@ -385,6 +382,14 @@
                     this.filter.updated_at_1 = this.endDate
                 }
                 this.quick_select()
+            },
+            setStatus () {
+                let status = this.$route.query.status
+                if (status) {
+                    this.status = status
+                } else {
+                    this.status = '0'
+                }
             }
         },
         components: {

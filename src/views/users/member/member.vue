@@ -267,7 +267,6 @@ export default {
         }
     },
     created () {
-        this.getPageAccessed()
         this.$nextTick(() => {
             this.getPageAccessed()
             this.$router.push({
