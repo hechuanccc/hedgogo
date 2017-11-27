@@ -42,7 +42,7 @@
                           <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                           <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                       </div>
-                      <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                      <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
             </div>
