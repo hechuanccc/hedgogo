@@ -191,7 +191,6 @@
               <span v-if="member.last_login">{{member.last_login.platform}}</span>
               <span v-else>-</span>
             </td>
-
             <td v-if="member.agent.name">
               <span>{{member.agent.name}}</span>
             </td>
