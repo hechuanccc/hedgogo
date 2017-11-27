@@ -1,8 +1,7 @@
 <template>
     <div>
-      <div class="row" v-if="!logined">
-          <div class="h6 col-xs-2 inline">{{$t('nav.member')}}</div>
-          <div class="pull-right inline" v-if="queryset.length && logined !== 1 ">
+      <div class="row" v-if="pageSelected == 'all_members'">
+          <div class="pull-right inline" v-if="queryset.length">
             <a :href="href" class="grey-400" :getReport="getReport"><span class="nav-icon export-button w-32"><i class="material-icons">&#xe2c4;</i></span></a>
           </div>
           <div class="pull-right inline m-r" v-if="$root.permissions.includes('update_member_details')">
@@ -11,11 +10,10 @@
           <div class="alert alert-danger" v-else>{{$t('common.errorPermission')}}</div>
       </div>
       <div class="row" v-else>
-        <div class="h6 col-xs-2 inline">{{$t('nav.online_member_list')}}</div>
         <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>   </div>
         <button class="md-btn blue w-xs pull-right m-r" type="button" @click="refresh">{{$t('common.refresh')}}</button>
       </div>
-      <form class="form" v-on:submit.prevent="submit" v-show="!logined">
+      <form class="form" v-on:submit.prevent="submit" v-show="pageSelected == 'all_members'">
         <div class="box m-t-sm">
           <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
@@ -71,7 +69,7 @@
         </div>
       </form>
       <div class="box m-t-sm"  v-if="queryset.length > 0">
-        <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="logined">
+        <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'online_member'">
           <thead>
           <tr >
             <th class="text-center">{{$t('common.login_status')}}</th>
@@ -124,8 +122,10 @@
               <span v-else>-</span>
             </td>
             <td>
-              <div>{{member.address || '-'}}</div>
+              <div v-if="member.last_login">{{member.last_login.address.country}} {{member.last_login.address.region}} {{member.last_login.address.city}}</div>
+              <div v-else>-</div>
             </td>
+
             <td v-if="member.agent.name">
               <span>{{member.agent.name}}</span>
             </td>
@@ -153,9 +153,6 @@
             <th>{{$t('member.agent')}}</th>
             <th>{{$t('member.level')}}</th>
             <th>{{$t('member.status')}}</th>
-            <th>{{$t('member.total_remit')}}</th>
-            <th>{{$t('member.total_online_pay')}}</th>
-            <th>{{$t('member.total_withdraw')}}</th>
             <th>{{$t('member.balance')}}</th>
             <th>{{$t('common.memo')}}</th>
           </tr>
@@ -191,7 +188,6 @@
               <span v-if="member.last_login">{{member.last_login.platform}}</span>
               <span v-else>-</span>
             </td>
-
             <td v-if="member.agent.name">
               <span>{{member.agent.name}}</span>
             </td>
@@ -202,9 +198,6 @@
               <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
-            <td><span v-if="member.total_remit">{{member.total_remit | currency('￥')}}</span><span v-else>-</span></td>
-            <td><span v-if="member.total_online_pay">{{member.total_online_pay | currency('￥')}}</span><span v-else>-</span></td>
-            <td><span v-if="member.total_withdraw">{{member.total_withdraw | currency('￥')}}</span><span v-else>-</span></td>
             <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
             <td><span v-if="member.memo">{{member.memo}}</span><span v-else>-</span></td>
           </tr>
@@ -254,7 +247,7 @@ export default {
                 email_q: '',
                 qq_q: '',
                 wechat_q: '',
-                logined: '2',
+                logined: '',
                 register_ip: '',
                 level: '',
                 report_flag: true,
@@ -269,14 +262,18 @@ export default {
             filter: {},
             href: '',
             member_logged_in: '',
-            logined: false,
             loading: false,
             export_query: []
         }
     },
     created () {
+        this.getPageAccessed()
         this.$nextTick(() => {
-            this.logined = this.$route.query.logined
+            this.getPageAccessed()
+            this.$router.push({
+                path: this.$route.path + '?report_flag=true',
+                query: this.query
+            })
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
@@ -312,12 +309,15 @@ export default {
     },
     methods: {
         nextTickFetch () {
-            let _this = this
             this.queryset = []
             setTimeout(() => {
-                _this.logined = _this.$route.query.logined
-                _this.$refs.pulling.rebase()
-                _this.$refs.pulling.getExportQuery()
+                this.getPageAccessed()
+                this.$router.push({
+                    path: this.$route.path + '?report_flag=true',
+                    query: this.query
+                })
+                this.$refs.pulling.rebase()
+                this.$refs.pulling.getExportQuery()
             }, 100)
         },
         levelSelect (val) {
@@ -393,6 +393,15 @@ export default {
                 break
             }
             this.$refs.pulling.submit()
+        },
+        getPageAccessed () {
+            this.router_path = this.$route.path
+            if (this.router_path === '/online_member') {
+                this.query.logined = 1
+                this.pageSelected = 'online_member'
+            } else {
+                this.pageSelected = 'all_members'
+            }
         }
     },
     components: {

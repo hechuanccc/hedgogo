@@ -175,9 +175,6 @@ export default {
         real_account: 'Real',
         pass: 'Pass',
         failed: 'Failed',
-        total_remit: 'Total Remit',
-        total_online_pay: 'Total Online Pay',
-        total_withdraw: 'Total Withdraw',
         logout_at: 'Log Out At',
         isp: 'ISP'
     },
@@ -450,7 +447,7 @@ export default {
         enabled: 'Enabled',
         disabled: 'Disabled',
         closed: 'Closed',
-        openning: 'Openning',
+        openning: 'Opening',
         no_setting: 'No Setting',
         setting: 'Setting',
         handicap_setting: 'Handicap Setting',

@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-t">
+                <div class="row m-t-sm">
                     <div class="col-xs-12">
                       <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter">
                           <option value="0">{{$t('common.applied_at')}}</option>
@@ -350,7 +350,6 @@
                 }
             },
             toggleDate (flag, filterDateType) {
-                this.clearDateFilter()
                 this.dateRange = flag
                 switch (flag) {
                 case 0:
