@@ -53,7 +53,7 @@
                         <i class="blue">{{category.display_name}}</i>
                     </option>
                   </select>
-                    <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                    <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                 </div>
               </div>
             </div>
