@@ -153,9 +153,6 @@
             <th>{{$t('member.agent')}}</th>
             <th>{{$t('member.level')}}</th>
             <th>{{$t('member.status')}}</th>
-            <th>{{$t('member.total_remit')}}</th>
-            <th>{{$t('member.total_online_pay')}}</th>
-            <th>{{$t('member.total_withdraw')}}</th>
             <th>{{$t('member.balance')}}</th>
             <th>{{$t('common.memo')}}</th>
           </tr>
@@ -201,9 +198,6 @@
               <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
-            <td><span v-if="member.total_remit">{{member.total_remit | currency('￥')}}</span><span v-else>-</span></td>
-            <td><span v-if="member.total_online_pay">{{member.total_online_pay | currency('￥')}}</span><span v-else>-</span></td>
-            <td><span v-if="member.total_withdraw">{{member.total_withdraw | currency('￥')}}</span><span v-else>-</span></td>
             <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
             <td><span v-if="member.memo">{{member.memo}}</span><span v-else>-</span></td>
           </tr>

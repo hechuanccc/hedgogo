@@ -176,9 +176,6 @@ export default {
         real_account: '真实账户',
         pass: '通过',
         failed: '未通过',
-        total_remit: '总汇款',
-        total_online_pay: '在线支付总额',
-        total_withdraw: '总撤回',
         logout_at: '注销时间',
         isp: 'ISP'
     },

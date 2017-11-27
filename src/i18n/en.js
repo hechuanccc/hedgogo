@@ -175,9 +175,6 @@ export default {
         real_account: 'Real',
         pass: 'Pass',
         failed: 'Failed',
-        total_remit: 'Total Remit',
-        total_online_pay: 'Total Online Pay',
-        total_withdraw: 'Total Withdraw',
         logout_at: 'Log Out At',
         isp: 'ISP'
     },
