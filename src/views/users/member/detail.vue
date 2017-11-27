@@ -241,7 +241,7 @@
           <div class="row m-b b-b p-b">
             <div class="col-xs-12">
               <span class="text-muted">{{$t('member.recent_action')}}</span>
-              <table class="table table-striped b-t m-t" v-if="member.action.detail.length">
+              <table class="table table-striped b-t m-t" v-if="member.action">
                 <thead>
                 <tr>
                   <th>{{$t('actionrecord.action_time')}}</th>
@@ -255,7 +255,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="action in member.action.detail" >
+                <tr v-for="action in member.action.detail" v-if="member.action">
                   <td>{{action.action_time | moment("YYYY-MM-DD HH:mm:ss")}}</td>
                   <td>{{action.action_username || '-'}}</td>
                   <td><router-link :to="'/report/actionrecord?username=' + action.username">{{action.username}}</router-link></td>
