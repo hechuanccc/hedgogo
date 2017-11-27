@@ -58,7 +58,7 @@
                 <date-picker width='140' v-model="created_at_0" v-bind:placeholder="$t('agent.joined_at')"></date-picker>
                 <span>~</span>
                 <date-picker width='140' v-model="created_at_1" v-bind:placeholder="$t('agent.joined_at')"></date-picker>
-                <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
               </div>
             </div>
           </div>
