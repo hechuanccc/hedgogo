@@ -450,7 +450,7 @@ export default {
         enabled: 'Enabled',
         disabled: 'Disabled',
         closed: 'Closed',
-        openning: 'Openning',
+        openning: 'Opening',
         no_setting: 'No Setting',
         setting: 'Setting',
         handicap_setting: 'Handicap Setting',
