@@ -122,8 +122,10 @@
               <span v-else>-</span>
             </td>
             <td>
-              <div>{{member.address || '-'}}</div>
+              <div v-if="member.last_login">{{member.last_login.address.country}} {{member.last_login.address.region}} {{member.last_login.address.city}}</div>
+              <div v-else>-</div>
             </td>
+
             <td v-if="member.agent.name">
               <span>{{member.agent.name}}</span>
             </td>
