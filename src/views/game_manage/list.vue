@@ -36,8 +36,7 @@
             <td>
               <a class="p-l-xs" @click="toggleEnable(index)">{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}</a>
               <a class="p-l-xs" @click="toggleClose(index)">{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}</a>
-              <a class="p-l-xs" @click="showModal(0, index)">{{$t('game_manage.setting')}}</a>
-              <a class="p-l-xs" @click="showModal(1, index)">{{$t('game_manage.icon')}}</a>
+              <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
             </td>
           </tr>
           </tbody>
@@ -48,50 +47,49 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span>{{ modal.display_name }}</span>
+                    <span>{{ modal.display_name }}- {{ $t('game_manage.setting') }}</span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal">×
                     </button>
                 </div>
-                <div class="modal-body" v-if="modal.mode === 0">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="text-center">
-                        {{$t('game_manage.holiday_start_time')}}
-                      </div>
+                <div class="modal-body m-r m-l">
+                    <div class="row m-b">
+                        <span>{{ $t('game_manage.setting_holiday') }}</span>
                     </div>
-                    <div class="col-md-6">
-                      <div class="text-center">
-                        {{$t('game_manage.holiday_end_time')}}
-                      </div>
+                    <div class="row m-b m-l">
+                        <div class="col-xs-8">
+                            <date-picker v-model="modal.value" type="datetime" format="yyyy-MM-dd HH:mm" :minute-step="1" range></date-picker>
+                        </div>
+                        <div class="col-xs-2 col-xs-offset-2 text-right">
+                            <button type="button" class="btn btn-sm btn-default" @click="updateTime">{{$t('action.update')}}</button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3 p-x-xs">
-                      <date-picker width='140' v-model="modal.start_date"></date-picker>
+                    <div class="row"></div>
+                    <div class="row m-t m-b">
+                        <span>{{ $t('game_manage.setting_icon') }}</span>
                     </div>
-                    <div class="col-md-3 p-x-xs">
-                      <time-picker v-model="modal.start_time" format="HH:mm"></time-picker>
+                    <div class="row m-b m-l">
+                        <div class="col-xs-3" v-if="modal.image">
+                            <img :src="modal.image" width="108" height="108">
+                        </div>
+                        <div class="col-xs-3 text-center" v-else>
+                            <div id="circle">
+                                <span>{{ $t('game_manage.no_setting_icon') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-5 inline-form-control m-t-75">
+                            <input type="file" class="form-control" accept="image/*" @change="syncImg" required>
+                        </div>
+                        <div class="col-xs-2 col-xs-offset-2 text-right m-t-75">
+                            <button type="button" class="btn btn-sm btn-default" @click="updateImage">{{$t('action.update')}}</button>
+                        </div>
                     </div>
-                    <div class="col-md-3 p-x-xs">
-                      <date-picker width='140' v-model="modal.end_date"></date-picker>
-                    </div>
-                    <div class="col-md-3 p-x-xs">
-                      <time-picker v-model="modal.end_time" format="HH:mm"></time-picker>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-body" v-else>
-                    <label class="label-width">{{ $t('game_manage.icon') }}</label>
-                    <div class="inline-form-control" v-if="modal.hasImage">
-                        <img :src="modal.image" width="120">
-                    </div>
-                    <div class="inline-form-control m-l">
-                        <input type="file" class="form-control" accept="image/*" @change="syncImg" required>
+                    <div class="row m-l m-r">
+                        <transition name="fade">
+                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
+                        </transition>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button v-if="modal.mode===0" type="button" class="btn btn-default" @click="updateTime">{{$t('action.update')}}</button>
-                    <button v-if="modal.mode===1" type="button" class="btn btn-default" @click="updateImage">{{$t('action.update')}}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{$t('staff.close')}}</button>
                 </div>
             </div>
@@ -102,10 +100,9 @@
 <script>
 import api from '../../api'
 import DatePicker from 'vue2-datepicker'
-import TimePicker from 'vue2-timepicker'
 
 import Vue from 'vue'
-const formatDate = 'YYYY-MM-DD'
+// const formatDate = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -115,9 +112,8 @@ export default {
             queryset: [],
             optexpand: 'group',
             modal: {
-                mode: 0,
-                // 0 = set; 1 = modify;
                 isShow: false,
+                value: [],
                 start_date: '',
                 end_date: '',
                 start_time: {
@@ -132,13 +128,24 @@ export default {
                 id: '',
                 display_name: '',
                 code: '',
-                hasImage: false,
                 image: '',
                 iconResult: {
                     display_name: '',
                     code: '',
                     icon: '',
                     to_display: true
+                },
+                msg: '',
+                showMsg: false,
+                classObject: {
+                    'alert-success': false,
+                    'alert-warning': false,
+                    'alert-danger': false
+                },
+                iconObject: {
+                    'fa-check': false,
+                    'fa-warning': false,
+                    'fa-close': false
                 }
             }
         }
@@ -187,68 +194,74 @@ export default {
                 }
             })
         },
-        showModal (mode, index) {
-            this.modal.mode = mode
+        showModal (index) {
             const game = this.queryset[index]
             this.modal.display_name = game.display_name
-            if (mode === 0) {
-                this.modal.id = game.id
-                this.modal.index = index
-                this.modal.isShow = true
-
-                let openDatetime = game.holidates.schedule_open
-                let opentime
-                if (openDatetime) {
-                    this.modal.start_date = openDatetime
-                    opentime = Vue.moment(openDatetime)
-                } else {
-                    opentime = Vue.moment()
-                    this.modal.start_date = opentime
-                }
-                this.modal.start_time = {
-                    HH: opentime.format('HH'),
-                    mm: opentime.format('mm')
-                }
-
-                let closeDatetime = game.holidates.schedule_close
-                let closeTime
-                if (closeDatetime) {
-                    this.modal.end_date = closeDatetime
-                    closeTime = Vue.moment(closeDatetime)
-                } else {
-                    closeTime = Vue.moment()
-                    this.modal.end_date = closeTime
-                }
-                this.modal.end_time = {
-                    HH: closeTime.format('HH'),
-                    mm: closeTime.format('mm')
-                }
-            } else {
-                this.modal.id = game.id
-                this.modal.iconResult.display_name = game.display_name
-                this.modal.iconResult.code = game.code
-                this.modal.iconResult.icon = undefined
-                this.modal.image = ''
-                this.modal.hasImage = false
-                this.modal.isShow = true
-            }
+            this.modal.id = game.id
+            this.modal.index = index
+            this.modal.value = []
+            this.modal.iconResult.display_name = game.display_name
+            this.modal.iconResult.code = game.code
+            this.modal.iconResult.icon = undefined
+            this.modal.image = game.icon
+            this.modal.isShow = true
+        },
+        showSuccessMsg () {
+            this.modal.showMsg = true
+            this.modal.msg = this.$t('game_manage.modify_success')
+            this.modal.classObject['alert-success'] = true
+            this.modal.iconObject['fa-check'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-success'] = false
+                this.modal.iconObject['fa-check'] = false
+            }, 3000)
+        },
+        showWarningMsg (flag) {
+            this.modal.showMsg = true
+            this.modal.msg = this.$t('game_manage.no_setting_' + flag)
+            this.modal.classObject['alert-warning'] = true
+            this.modal.iconObject['fa-warning'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-warning'] = false
+                this.modal.iconObject['fa-warning'] = false
+            }, 3000)
+        },
+        showErrorMsg () {
+            this.modal.showMsg = true
+            this.modal.msg = this.$t('game_manage.modify_fail')
+            this.modal.classObject['alert-danger'] = true
+            this.modal.iconObject['fa-clear'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-danger'] = false
+                this.modal.iconObject['fa-clear'] = false
+            }, 3000)
         },
         hideModal () {
             this.modal.isShow = false
         },
         updateTime () {
-            const startTime = this.modal.start_time
-            const endTime = this.modal.end_time
-            this.$http.put(api.game_list + this.modal.id + '/', {
-                display_name: this.modal.display_name,
-                start_date: `${Vue.moment(this.modal.start_date).format(formatDate)} ${startTime.HH}:${startTime.mm}`,
-                end_date: `${Vue.moment(this.modal.end_date).format(formatDate)} ${endTime.HH}:${endTime.mm}`
-            }).then(response => {
-                if (response.status === 200) {
-                    this.$set(this.queryset, this.modal.index, response.data)
-                    this.modal.isShow = false
-                }
-            })
+            if (this.modal.value.length > 0) {
+                this.$http.put(api.game_list + this.modal.id + '/', {
+                    display_name: this.modal.display_name,
+                    start_date: Vue.moment(this.modal.value[0]).format('YYYY-MM-DD HH:mm'),
+                    end_date: Vue.moment(this.modal.value[1]).format('YYYY-MM-DD HH:mm')
+                }).then(response => {
+                    if (response.status === 200) {
+                        this.$set(this.queryset, this.modal.index, response.data)
+                        this.showSuccessMsg()
+                    }
+                }, response => {
+                    this.showErrorMsg()
+                })
+            } else {
+                this.showWarningMsg('holiday')
+            }
         },
         syncImg (e) {
             var reader = new FileReader()
@@ -261,18 +274,24 @@ export default {
             this.modal.hasImage = true
         },
         updateImage () {
-            let formData = new window.FormData()
-            formData.append('display_name', this.modal.iconResult.display_name)
-            formData.append('code', this.modal.iconResult.code)
-            formData.append('icon', this.modal.iconResult.icon)
-            formData.append('to_display', this.modal.iconResult.to_display)
-            this.$http.put(api.game_list + this.modal.id + '/', formData)
-            .then(response => {
-                if (response.status === 200) {
-                    this.getGameList()
-                    this.modal.isShow = false
-                }
-            })
+            if (this.modal.iconResult.icon) {
+                let formData = new window.FormData()
+                formData.append('display_name', this.modal.iconResult.display_name)
+                formData.append('code', this.modal.iconResult.code)
+                formData.append('icon', this.modal.iconResult.icon)
+                formData.append('to_display', this.modal.iconResult.to_display)
+                this.$http.put(api.game_list + this.modal.id + '/', formData)
+                .then(response => {
+                    if (response.status === 200) {
+                        this.getGameList()
+                        this.showSuccessMsg()
+                    }
+                }, response => {
+                    this.showErrorMsg()
+                })
+            } else {
+                this.showWarningMsg('icon')
+            }
         }
     },
     filters: {
@@ -285,8 +304,7 @@ export default {
         }
     },
     components: {
-        DatePicker,
-        TimePicker
+        DatePicker
     }
 }
 </script>
@@ -300,5 +318,23 @@ export default {
 }
 .modal{
   display: block;
+}
+.m-t-75{
+    margin-top: 75px;
+}
+#circle {
+	width: 108px;
+	height: 108px;
+    line-height: 108px;
+	background: lightgray;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity 1s
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0
 }
 </style>

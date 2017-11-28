@@ -462,7 +462,13 @@ export default {
         max_per_draw: '当期最高金额',
         return_rate: '反水',
         odds: '赔率',
-        issue_number: '发行数量'
+        issue_number: '发行数量',
+        setting_holiday: '设置公休开始结束时间',
+        setting_icon: '设置图标',
+        no_setting_icon: '未设置图标档案',
+        no_setting_holiday: '未设置公休开始结束时间',
+        modify_success: '修改成功！',
+        modify_fail: '修改失败！'
     },
     game_history: {
         game: '游戏',
@@ -481,7 +487,11 @@ export default {
         manual_draw: '手动开奖',
         memo: '备注',
         no_draw: '未开奖',
-        del_sheet: '撤单'
+        retreat_sched: '撤单',
+        created: '',
+        open: '',
+        cancelled: '已撤单',
+        operating: '操作'
     },
     agent: {
         number: '编号',

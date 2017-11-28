@@ -3,7 +3,7 @@
     <div class="row m-b">
         <div class="col-xs-3 text-left"><h3>{{ game.display_name }}</h3></div>
         <div class="col-xs-9 text-right">
-            <button class="md-btn w-sm blue" @click="showModal">{{ $t('game_history.manual_draw') }}</button>
+            <button class="md-btn w-sm blue" @click="showModal(0)">{{ $t('game_history.manual_draw') }}</button>
         </div>
     </div>
     <div class="box">
@@ -28,9 +28,10 @@
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" v-if="modal.mode===0">
                 <div class="modal-header">
-                    <button type="button" class="close" aria-hidden="true" @click="hideModal">×</button>
+                    <span>{{ game.display_name }} - {{ $t('game_history.manual_draw') }}</span>
+                    <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="modal-body">
                     <table st-table="rowCollectionBasic" class="table b-t">
@@ -38,20 +39,56 @@
                     <tr>
                         <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_history.draw_date') }}</th>
-                        <th>{{ $t('game_history.draw_number') }}</th>
+                        <th>{{ $t('game_history.draw_number') }}
+                            <span class="n-strong">{{'请输入'+amountOfValues+'个数字('+rangeOfValue.join('~')+')使用逗号(,)分隔'}}</span></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{ modal.gameResult.issue_number }}</td>
-                        <td>{{ input.date | moment("YYYY-MM-DD") }}</td>
+                        <td>{{ today }}</td>
                         <td><input class="form-control" v-model="modal.gameResult.result_str"></td>
                     </tr>
                     </tbody>
                     </table>
+                    <div class="m-r m-l alert alert-danger" v-for="(msg, index) in modal.errorMsgs" :key="index">{{msg}}</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" @click="updateGameResult">{{ $t('action.create') }}</button>
+                    <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                </div>
+            </div>
+            <div class="modal-content" v-if="modal.mode===1">
+                <div class="modal-header">
+                    {{ game.display_name }} - {{ $t('game_history.retreat_sched') }}
+                    <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div><span>{{ '确定将期数：' + modal.retreat_sched.issue_number + '撤单？'}}</span></div>
+                    <table st-table="rowCollectionBasic" class="table b-t m-t">
+                    <thead>
+                    <tr>
+                        <th>{{ $t('game_history.periods') }}</th>
+                        <th>{{ $t('game_history.draw_date') }}</th>
+                        <th>{{ $t('game_history.operating') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ modal.retreat_sched.issue_number }}</td>
+                        <td>{{ modal.retreat_sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td>{{ $t('game_history.retreat_sched') }}</td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    <div class="m-l m-r">
+                        <transition name="fade">
+                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
+                        </transition>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" @click="retreatSchedule">{{ $t('action.confirm') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
@@ -59,7 +96,7 @@
     </div>
     <div class="card col">
         <div class="card-body">
-            <table class="table table-hover">
+            <table class="table table-hover" v-show="queryset.length>0">
                 <thead>
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
@@ -69,17 +106,21 @@
                     </tr>
                 </thead>
                 <tbody class="v-m">
-                    <tr v-if="isPageOne">
-                        <td>{{ parseInt(newest_result.issue_number) + 1 }}</td>
-                        <td>{{ $t('game_history.no_draw') }}</td>
-                        <td><button class="md-btn blue w-s" @click="deleteSheet">{{ $t('game_history.del_sheet') }}</button></td>
-                        <td></td>
+                    <tr v-if="isPageOne" v-for="sched in retreat_scheds" :key="sched.id">
+                        <td>{{ sched.issue_number }}</td>
+                        <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td>
+                            <button class="md-btn blue w-s" @click="showModal(1, sched)" v-show="sched.status!=='cancelled'">{{ $t('game_history.retreat_sched') }}</button>
+                        </td>
+                        <td>
+                            <span v-if="sched.status==='cancelled'">{{ $t('game_history.cancelled') }}</span>
+                        </td>
                     </tr>
                     <tr v-for = "selected_result in filteredResults" :key = "selected_result.game_id">
                         <td>{{selected_result.issue_number}}</td>
                         <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:mm:ss")}}</td>
                         <td class="result-balls">
-                            <span v-for="result in selected_result.result_str.split(',')" :class="getResultClass(result)">
+                            <span v-for="(result, index) in selected_result.result_str.split(',')" :class="getResultClass(result)" :key="index">
                                 <b> {{result}} </b>
                             </span>
                         </td>
@@ -121,56 +162,97 @@ export default {
                 game_code: ''
             },
             newest_result: undefined,
+            retreat_scheds: [],
             input: {
                 date: Vue.moment().format(dateFormat),
                 period: ''
             },
             modal: {
+                mode: 0,
+                // 0-> manual draw; 1-> retreat schedule
                 isShow: false,
                 gameResult: {
                     game_code: '',
                     issue_number: '',
                     result_str: ''
+                },
+                retreat_sched: {},
+                msg: '',
+                showMsg: false,
+                classObject: {
+                    'alert-success': false,
+                    'alert-warning': false,
+                    'alert-danger': false
+                },
+                iconObject: {
+                    'fa-check': false,
+                    'fa-warning': false,
+                    'fa-close': false
                 }
             },
             gameResultApi: api.game_result,
             queryset: [],
             query: {},
-            extra: ''
+            extra: '',
+            today: Vue.moment().format(dateFormat),
+            field_locales: {
+                'status': '用户名错误：',
+                'permission': '权限错误：',
+                'email': '邮箱错误：'
+            }
         }
     },
-    beforeRouteEnter (to, from, next) {
-        next(app => {
-            let gameid = to.params.id
-            let time = Vue.moment(app.input.date).format(dateFormat)
-            app.game.id = to.params.id
-            app.getGameName(gameid)
-            app.game.display_name = app.$store.getters.getGame[gameid]
-            app.extra = `game=${gameid}&date=${time}`
-            app.$nextTick(() => {
-                app.$refs.pulling.rebase()
-                app.getNewestResult(gameid, time)
-            })
+    created () {
+        const gameid = this.$route.params.id
+        this.game.id = gameid
+        this.extra = `game=${gameid}&date=${this.today}`
+        this.getGameName(gameid)
+        this.getNewestResult(gameid)
+        this.getRetreatSchedules(gameid)
+
+        this.$nextTick(() => {
+            this.$refs.pulling.rebase()
         })
     },
-    created () {
+    beforeMount () {
         this.timing = setInterval(() => {
             this.$refs.pulling.rebase()
-            this.getNewestResult(this.game.id, Vue.moment().format(dateFormat))
+            this.getNewestResult()
+            this.getRetreatSchedules()
         }, 30000)
+        this.timing2 = setInterval(() => {
+            this.getRetreatSchedules()
+        }, 10000)
     },
     methods: {
         setDate () {
-            this.extra = `game=${this.game.id}&date=${Vue.moment(this.input.date).format(dateFormat)}`
+            const date = Vue.moment(this.input.date).format(dateFormat)
+            this.extra = `game=${this.game.id}&date=${date}`
+            if (date !== this.today) {
+                clearInterval(this.timing)
+            } else {
+                this.timing = setInterval(() => {
+                    this.$refs.pulling.rebase()
+                    this.getNewestResult()
+                    this.getRetreatSchedules()
+                }, 20000)
+            }
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
-                this.getNewestResult(this.game.id, Vue.moment().format(dateFormat))
             })
         },
-        getNewestResult (gameid, time) {
-            this.$http.get(api.game_result + '?game=' + gameid + '&date=' + time + '&limit=1')
+        getRetreatSchedules (gameid) {
+            gameid = gameid || this.game.id
+            this.$http.get(api.game_schedule + `?game=${gameid}&ongoing=True`)
             .then(response => {
-                this.newest_result = Object.assign({}, this.newest_result, response.data.results[0])
+                this.retreat_scheds = response.data
+            })
+        },
+        getNewestResult (gameid) {
+            gameid = gameid || this.game.id
+            this.$http.get(api.game_result + `?game=${gameid}&date=${this.today}&limit=1`)
+            .then(response => {
+                this.newest_result = Object.assign({}, this.newest_result, response.data.data.results[0])
             })
         },
         getGameName (gameid) {
@@ -181,11 +263,17 @@ export default {
                 this.modal.gameResult.game_code = response.data.code
             })
         },
-        showModal () {
-            if (this.queryset.length === 0) {
-                this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
+        showModal (mode, sched) {
+            this.modal.mode = mode
+            this.modal.errorMsgs = []
+            if (mode === 0) {
+                if (this.queryset.length === 0) {
+                    this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
+                } else {
+                    this.modal.gameResult.issue_number = parseInt(this.newest_result.issue_number) + 1
+                }
             } else {
-                this.modal.gameResult.issue_number = parseInt(this.newest_result.issue_number) + 1
+                this.modal.retreat_sched = Object.assign({}, this.modal.retreat_sched, sched)
             }
             this.modal.isShow = true
         },
@@ -193,34 +281,28 @@ export default {
             this.modal.isShow = false
         },
         updateGameResult () {
+            this.modal.errorMsgs = []
             this.$http.post(api.game_result, this.modal.gameResult)
             .then((response) => {
-                if (response.status === 201) {
+                if (response.status === 2000) {
                     this.hideModal()
                     this.$refs.pulling.rebase()
+                } else {
+                    this.modal.errorMsgs = response.data.msg
                 }
             })
         },
         getResultClass (resultNum) {
             let gameClass = 'result-' + this.game.game_code
             let resultClass
-            if (this.game.game_code === 'jsssc') {
-                resultClass = 'resultnum-' + parseInt(resultNum)
-            } else if (this.game.game_code === 'mlaft' || this.game.game_code === 'jspk10') {
-                if (parseInt(resultNum) < 10) {
-                    resultClass = 'resultnum-0' + parseInt(resultNum)
-                } else {
-                    resultClass = 'resultnum-' + resultNum
-                }
-            } else {
-                resultClass = 'resultnum-' + resultNum
-            }
+            resultClass = 'resultnum-' + parseInt(resultNum)
             return [gameClass, resultClass]
         },
-        deleteSheet () {
-            if (window.confirm('确定撤单？')) {
-                console.log('delete Sheet no api QAQ')
-            }
+        retreatSchedule () {
+            this.$http.put(api.game_schedretreat + `${this.modal.retreat_sched.id}/`, { 'status': 'cancelled' })
+            .then(response => {
+                this.getRetreatSchedules()
+            })
         },
         submit () {
             this.$refs.pulling.submit()
@@ -245,10 +327,60 @@ export default {
             })
         },
         isPageOne () {
-            if (this.queryset.length > 0 && this.queryset[0].issue_number === this.newest_result.issue_number) {
-                return true
-            } else {
-                return false
+            return this.queryset.length > 0 && this.newest_result && this.queryset[0].issue_number === this.newest_result.issue_number
+        },
+        amountOfValues () {
+            switch (parseInt(this.game.id)) {
+            case 155:
+            case 162:
+            case 163:
+                return 10
+            case 157:
+            case 158:
+            case 161:
+            case 164:
+            case 167:
+                return 5
+            case 156:
+            case 169:
+                return 8
+            case 160:
+            case 166:
+                return 3
+            case 170:
+                return 21
+            case 159:
+                return 6
+            default:
+                return undefined
+            }
+        },
+        rangeOfValue () {
+            switch (parseInt(this.game.id)) {
+            case 155:
+            case 162:
+            case 163:
+                return [1, 10]
+            case 157:
+            case 161:
+            case 164:
+            case 166:
+            case 167:
+                return [0, 9]
+            case 156:
+                return [1, 20]
+            case 158:
+                return [1, 11]
+            case 160:
+                return [1, 6]
+            case 169:
+                return [1, 11]
+            case 170:
+                return [1, 80]
+            case 159:
+                return [1, 45]
+            default:
+                return undefined
             }
         }
     },
@@ -258,6 +390,7 @@ export default {
     },
     beforeDestroy () {
         clearInterval(this.timing)
+        clearInterval(this.timing2)
     }
 }
 </script>
@@ -277,10 +410,13 @@ export default {
 .result-balls span{
     display: inline-block;
     vertical-align: middle;
-    margin-right: 5px;
+    margin-right: 2px;
 }
 
 .v-m td{
     vertical-align: middle;
+}
+.n-strong{
+    font-weight: normal;
 }
 </style>
