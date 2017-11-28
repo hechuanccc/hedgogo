@@ -53,7 +53,7 @@
                         </a>
                     </router-link>
                     <li class="nav-item dropdown pos-stc-xs pointer" >
-                        <router-link class="nav-link" to="/member?logined=1">
+                        <router-link class="nav-link" to="/online_member">
                             <label class=" label pointer" >{{$t('common.onlinemembers')}}</label>
                             <span v-if="online_member" class="label label-sm up warn">{{online_member}} </span>
                             <span v-else class="label label-sm up">{{online_member}} </span>

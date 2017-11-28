@@ -26,14 +26,14 @@
                         <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                     </div>
                 </div>
-                <div class="row m-t">
+                <div class="row m-t-sm">
                     <div class="col-xs-12">
                         <div v-if="selected == '3'" class="pull-left">
                             <date-picker width='140' v-model="query.created_at_0"></date-picker>
                             <span>~</span>
                             <date-picker width='140' v-model="query.created_at_1"></date-picker>
                         </div>
-                    <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                    <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
             </div>
@@ -41,10 +41,11 @@
     </form>
     <input type="checkbox" name="account_type" v-model="account_type" >
     <i class="blue"></i>{{$t('action.filter_trial_account')}}
-    <div v-if="queryset.length" class="pull-right">
-      <a :href="href" class="grey-400" :getReport="getReport">
-        <span class="nav-icon export-button" ><i class="material-icons">&#xe2c4;</i></span>
+    <div class="pull-right">
+      <a :href="href" :getReport="getReport" v-if="queryset.length">
+        <span><i class="material-icons">&#xe2c4;</i></span>
       </a>
+      <span disabled v-else><i class="material-icons">&#xe2c4;</i></span>
     </div>
     <div class="box">
         <table class="table table-striped">

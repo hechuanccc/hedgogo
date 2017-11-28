@@ -246,6 +246,20 @@ export default new Router({
         }
     },
     {
+        path: '/online_member',
+        name: 'online_member',
+        component: function (resolve) {
+            require(['./views/users/member/member.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            title: Vue.t('nav.online_member_list'),
+            agentPermission: 'true',
+            group: 'users'
+        }
+    },
+    {
         path: '/member/add',
         name: 'member-add',
         component: function (resolve) {

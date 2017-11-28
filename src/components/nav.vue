@@ -76,7 +76,7 @@
                                     </router-link>
                                 </li>
                                 <li v-if="$root.permissions.includes('update_member_details')">
-                                    <router-link  to="/member?logined=1">
+                                    <router-link  to="/online_member">
                                         <span class="nav-text">{{$t("nav.online_member_list")}}</span>
                                     </router-link>
                                 </li>

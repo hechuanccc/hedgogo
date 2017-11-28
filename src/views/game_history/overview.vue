@@ -65,8 +65,11 @@
                     </tr>
                     </tbody>
                     </table>
-                    <div class="m-r m-l alert alert-danger" v-for="(msg, index) in modal.errorMsgs" :key="index">{{msg}}</div>
-                </div>
+                    <div class="m-l m-r">
+                        <transition name="fade">
+                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
+                        </transition>
+                    </div>                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" @click="updateGameResult">{{ $t('action.create') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
@@ -98,7 +101,19 @@ export default{
                     result_str: ''
                 },
                 newest_result: undefined,
-                errorMsgs: []
+                errorMsgs: [],
+                msg: '',
+                showMsg: false,
+                classObject: {
+                    'alert-success': false,
+                    'alert-warning': false,
+                    'alert-danger': false
+                },
+                iconObject: {
+                    'fa-check': false,
+                    'fa-warning': false,
+                    'fa-close': false
+                }
             },
             today: Vue.moment().format(dateFormat)
         }
@@ -163,17 +178,41 @@ export default{
                 }
             }, 100)
         },
+        showSuccessMsg (msg) {
+            this.modal.showMsg = true
+            this.modal.msg = msg
+            this.modal.classObject['alert-success'] = true
+            this.modal.iconObject['fa-check'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-success'] = false
+                this.modal.iconObject['fa-check'] = false
+                this.modal.isShow = false
+            }, 1000)
+        },
+        showErrorMsg (msg) {
+            this.modal.showMsg = true
+            this.modal.msg = msg
+            this.modal.classObject['alert-danger'] = true
+            this.modal.iconObject['fa-close'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-danger'] = false
+                this.modal.iconObject['fa-close'] = false
+            }, 3000)
+        },
         hideModal () {
             this.modal.isShow = false
         },
         updateGameResult () {
-            this.modal.errorMsgs = []
             this.$http.post(api.game_result, this.modal.gameResult)
             .then((response) => {
                 if (response.data.code === 2000) {
-                    this.hideModal()
+                    this.showSuccessMsg(this.$t('game_history.manual_draw_success'))
                 } else {
-                    this.modal.errorMsgs = response.data.msg
+                    this.showErrorMsg(this.$t('game_manage.modify_fail') + ` (${response.data.msg.join(' ')})`)
                 }
             })
         }
@@ -261,5 +300,11 @@ export default{
 }
 .n-strong{
     font-weight: normal;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0
 }
 </style>

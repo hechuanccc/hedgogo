@@ -51,7 +51,11 @@
                     </tr>
                     </tbody>
                     </table>
-                    <div class="m-r m-l alert alert-danger" v-for="(msg, index) in modal.errorMsgs" :key="index">{{msg}}</div>
+                    <div class="m-l m-r">
+                        <transition name="fade">
+                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
+                        </transition>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" @click="updateGameResult">{{ $t('action.create') }}</button>
@@ -60,24 +64,22 @@
             </div>
             <div class="modal-content" v-if="modal.mode===1">
                 <div class="modal-header">
-                    {{ game.display_name }} - {{ $t('game_history.retreat_sched') }}
+                    <span><strong>{{ game.display_name }} - {{ '确定撤单吗？'}}</strong></span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="modal-body">
-                    <div><span>{{ '确定将期数：' + modal.retreat_sched.issue_number + '撤单？'}}</span></div>
-                    <table st-table="rowCollectionBasic" class="table b-t m-t">
+                    <div class="m-l"></span></div>
+                    <table st-table="rowCollectionBasic" class="table b-t m-t text-center">
                     <thead>
                     <tr>
-                        <th>{{ $t('game_history.periods') }}</th>
-                        <th>{{ $t('game_history.draw_date') }}</th>
-                        <th>{{ $t('game_history.operating') }}</th>
+                        <th class="text-center">{{ $t('game_history.periods') }}</th>
+                        <th class="text-center">{{ $t('game_history.draw_date') }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{ modal.retreat_sched.issue_number }}</td>
                         <td>{{ modal.retreat_sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                        <td>{{ $t('game_history.retreat_sched') }}</td>
                     </tr>
                     </tbody>
                     </table>
@@ -265,7 +267,6 @@ export default {
         },
         showModal (mode, sched) {
             this.modal.mode = mode
-            this.modal.errorMsgs = []
             if (mode === 0) {
                 if (this.queryset.length === 0) {
                     this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
@@ -277,6 +278,31 @@ export default {
             }
             this.modal.isShow = true
         },
+        showSuccessMsg (msg) {
+            this.modal.showMsg = true
+            this.modal.msg = msg
+            this.modal.classObject['alert-success'] = true
+            this.modal.iconObject['fa-check'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-success'] = false
+                this.modal.iconObject['fa-check'] = false
+                this.modal.isShow = false
+            }, 1000)
+        },
+        showErrorMsg (msg) {
+            this.modal.showMsg = true
+            this.modal.msg = msg
+            this.modal.classObject['alert-danger'] = true
+            this.modal.iconObject['fa-close'] = true
+            setTimeout(() => {
+                this.modal.showMsg = false
+                this.modal.msg = ''
+                this.modal.classObject['alert-danger'] = false
+                this.modal.iconObject['fa-close'] = false
+            }, 3000)
+        },
         hideModal () {
             this.modal.isShow = false
         },
@@ -284,11 +310,11 @@ export default {
             this.modal.errorMsgs = []
             this.$http.post(api.game_result, this.modal.gameResult)
             .then((response) => {
-                if (response.status === 2000) {
-                    this.hideModal()
+                if (response.data.code === 2000) {
+                    this.showSuccessMsg(this.$t('game_history.manual_draw_success'))
                     this.$refs.pulling.rebase()
                 } else {
-                    this.modal.errorMsgs = response.data.msg
+                    this.showErrorMsg(this.$t('game_manage.modify_fail') + ` (${response.data.msg.join(' ')})`)
                 }
             })
         },
@@ -299,9 +325,24 @@ export default {
             return [gameClass, resultClass]
         },
         retreatSchedule () {
+            let errMsg = ''
             this.$http.put(api.game_schedretreat + `${this.modal.retreat_sched.id}/`, { 'status': 'cancelled' })
             .then(response => {
+                this.showSuccessMsg(this.$t('game_history.cancelled'))
                 this.getRetreatSchedules()
+            }, response => {
+                if (response.status === 400) {
+                    for (let index in response.data.error) {
+                        for (let property in response.data.error[index]) {
+                            errMsg += `${property} : ${response.data.error[index][property]}`
+                        }
+                    }
+                }
+            })
+            .then(() => {
+                if (errMsg) {
+                    this.showErrorMsg(this.$t('game_history.retreat_sched_fail') + this.$t('game_history.later_try') + ` (${errMsg})`)
+                }
             })
         },
         submit () {
@@ -412,7 +453,12 @@ export default {
     vertical-align: middle;
     margin-right: 2px;
 }
-
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0
+}
 .v-m td{
     vertical-align: middle;
 }

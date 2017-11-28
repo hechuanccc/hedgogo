@@ -1,14 +1,7 @@
 <template>
     <div>
-      <div class=row>
-        <div class="pull-right"  v-if="queryset.length">
-          <a :href="href" class="grey-400" :getReport="getReport">
-            <span class="nav-icon export-button w-32"><i class="material-icons">&#xe2c4;</i></span>
-          </a>
-        </div>
-      </div>
       <form class="form" v-on:submit.prevent="submit">
-        <div class="box m-t-sm">
+        <div class="box">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
                     <div class="col-xs-12">
@@ -36,7 +29,7 @@
                         <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                     </div>
                 </div>
-                <div class="row m-t">
+                <div class="row m-t-sm">
                       <div class="col-xs-12">
                         <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter">
                             <option value="0">{{$t('common.applied_at')}}</option>
@@ -54,7 +47,7 @@
                             <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                         </div>
-                        <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                        <button class="md-btn w-xs pull-right grey-400" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                       </div>
                 </div>
             </div>
@@ -66,7 +59,13 @@
             <input type="checkbox" name="account_type" v-model="account_type">
             <i class="blue"></i>{{$t('action.filter_trial_account')}}
           </div>
-          <div class="pull-right total-amount">
+          <div class="pull-right">
+          <a :href="href" :getReport="getReport" v-if="queryset.length">
+            <span ><i class="material-icons">&#xe2c4;</i></span>
+          </a>
+          <span disabled v-else><i class="material-icons">&#xe2c4;</i></span>
+          </div>
+          <div class="pull-right total-amount m-r">
             <span>{{$t('common.total')}} {{$t('nav.remit')}}: </span>
             <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
             <span v-else>{{0 | currency('￥')}}</span>
@@ -189,7 +188,7 @@
                 },
                 member_level: '0',
                 selected: '0',
-                status: '0',
+                status: '',
                 remit_type: '0',
                 dateRange: -1,
                 memo: '',
@@ -250,10 +249,7 @@
             }
         },
         created () {
-            let status = this.$route.query.status
-            if (status) {
-                this.status = status.split(',')
-            }
+            this.setStatus()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
@@ -267,11 +263,11 @@
         },
         methods: {
             nextTickFetch () {
-                let _this = this
+                this.setStatus()
                 this.queryset = []
                 setTimeout(() => {
-                    _this.$refs.pulling.rebase()
-                    _this.$refs.pulling.getExportQuery()
+                    this.$refs.pulling.rebase()
+                    this.$refs.pulling.getExportQuery()
                 }, 100)
             },
             changeFromLevel (val) {
@@ -381,7 +377,6 @@
                 }
             },
             toggleDate (flag, filterDateType) {
-                this.clearDateFilter()
                 this.dateRange = flag
                 switch (flag) {
                 case 0:
@@ -439,6 +434,14 @@
                             this.errorMsg += handleError(response, field, this.field_locales)
                         }
                     })
+                }
+            },
+            setStatus () {
+                let status = this.$route.query.status
+                if (status) {
+                    this.status = status
+                } else {
+                    this.status = '0'
                 }
             }
         },

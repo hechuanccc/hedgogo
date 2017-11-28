@@ -4,8 +4,6 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
           <thead>
           <tr>
-            <th>{{$t('game_manage.id')}}</th>
-            <th>{{$t('game_manage.rank')}}</th>
             <th>{{$t('game_manage.name')}}</th>
             <th>{{$t('game_manage.holiday_start_time')}}</th>
             <th>{{$t('game_manage.holiday_end_time')}}</th>
@@ -16,8 +14,6 @@
           </thead>
           <tbody v-if="queryset.length > 0">
           <tr v-for="(game, index) in queryset" :key="game.id">
-            <td>{{game.id}}</td>
-            <td>{{game.rank}}</td>
             <td>
               <router-link :to="'/game_detail/' + game.id">{{game.display_name}}</router-link>
             </td>
@@ -234,12 +230,12 @@ export default {
             this.modal.showMsg = true
             this.modal.msg = this.$t('game_manage.modify_fail')
             this.modal.classObject['alert-danger'] = true
-            this.modal.iconObject['fa-clear'] = true
+            this.modal.iconObject['fa-close'] = true
             setTimeout(() => {
                 this.modal.showMsg = false
                 this.modal.msg = ''
                 this.modal.classObject['alert-danger'] = false
-                this.modal.iconObject['fa-clear'] = false
+                this.modal.iconObject['fa-close'] = false
             }, 3000)
         },
         hideModal () {
@@ -332,7 +328,7 @@ export default {
 	border-radius: 50%;
 }
 .fade-enter-active, .fade-leave-active{
-  transition: opacity 1s
+  transition: opacity .5s
 }
 .fade-enter, .fade-leave-to{
   opacity: 0

@@ -1,14 +1,7 @@
 <template>
     <div>
       <form class="form" v-on:submit.prevent="submit">
-          <div class=row>
-            <div class="pull-right"  v-if="queryset.length">
-              <a :href="href" class="grey-400" :getReport="getReport">
-                <span class="nav-icon export-button w-32"><i class="material-icons">&#xe2c4;</i></span>
-              </a>
-            </div>
-          </div>
-          <div class="box m-t-sm">
+          <div class="box">
               <div class="box-body clearfix form-inline form-input-sm">
                   <div class="row">
                         <div class="col-xs-12">
@@ -30,7 +23,7 @@
                           <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                         </div>
                   </div>
-                  <div class="row m-t">
+                  <div class="row m-t-sm">
                       <div class="col-xs-12">
                           <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter">
                               <option value="0">{{$t('common.applied_at')}}</option>
@@ -48,25 +41,31 @@
                               <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                               <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                           </div>
-                          <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                          <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
               </div>
           </div>
       </form>
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="pull-left">
-                <input type="checkbox" name="account_type" v-model="account_type">
-                <i class="blue"></i>{{$t('action.filter_trial_account')}}
-              </div>
-              <div class="pull-right total-amount">
-                <span>{{$t('common.total')}} {{$t('nav.online_pay_orders')}}: </span>
-                <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
-                <span v-else>{{0 | currency('￥')}}</span>
-              </div>
+      <div class="row">
+        <div class="col-xs-12">
+            <div class="pull-left">
+              <input type="checkbox" name="account_type" v-model="account_type">
+              <i class="blue"></i>{{$t('action.filter_trial_account')}}
             </div>
+          <div class="pull-right">
+            <a :href="href" :getReport="getReport" v-if="queryset.length">
+              <span><i class="material-icons">&#xe2c4;</i></span>
+            </a>
+            <span disabled v-else><i class="material-icons">&#xe2c4;</i></span>
           </div>
+          <div class="pull-right total-amount m-r-sm">
+            <span>{{$t('common.total')}} {{$t('nav.online_pay_orders')}}: </span>
+            <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
+            <span v-else>{{0 | currency('￥')}}</span>
+          </div>
+        </div>
+      </div>
       <div class="box">
           <table class="table table-striped">
               <thead>
@@ -351,7 +350,6 @@
                 }
             },
             toggleDate (flag, filterDateType) {
-                this.clearDateFilter()
                 this.dateRange = flag
                 switch (flag) {
                 case 0:

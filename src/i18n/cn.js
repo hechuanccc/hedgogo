@@ -176,9 +176,6 @@ export default {
         real_account: '真实账户',
         pass: '通过',
         failed: '未通过',
-        total_remit: '总汇款',
-        total_online_pay: '在线支付总额',
-        total_withdraw: '总撤回',
         logout_at: '注销时间',
         isp: 'ISP'
     },
@@ -485,13 +482,16 @@ export default {
         loading: '正在加载中...',
         auto_draw: '自动开奖',
         manual_draw: '手动开奖',
+        manual_draw_success: '手动开奖成功！',
         memo: '备注',
         no_draw: '未开奖',
         retreat_sched: '撤单',
-        created: '',
-        open: '',
+        retreat_sched_fail: '撤单失败！',
+        created: '已创建',
+        open: '已开放',
         cancelled: '已撤单',
-        operating: '操作'
+        operating: '操作',
+        later_try: '请稍后再试'
     },
     agent: {
         number: '编号',

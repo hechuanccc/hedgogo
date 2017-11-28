@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-t">
+                <div class="row m-t-sm">
                     <div class="col-xs-12">
                       <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter">
                           <option value="0">{{$t('common.applied_at')}}</option>
@@ -42,7 +42,7 @@
                           <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                           <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                       </div>
-                      <button class="md-btn w-xs pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                      <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
             </div>
@@ -231,21 +231,18 @@
             })
         },
         created () {
-            let results = this.$route.query.status
-            if (results) {
-                this.status = results.split(',')
-            }
+            this.setStatus()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
             })
         },
         methods: {
             nextTickFetch () {
-                let _this = this
+                this.setStatus()
                 this.queryset = []
                 setTimeout(() => {
-                    _this.$refs.pulling.rebase()
-                    _this.$refs.pulling.getExportQuery()
+                    this.$refs.pulling.rebase()
+                    this.$refs.pulling.getExportQuery()
                 }, 100)
             },
             changeFromLevel (val) {
@@ -350,7 +347,6 @@
                 }
             },
             toggleDate (flag, filterDateType) {
-                this.clearDateFilter()
                 this.dateRange = flag
                 switch (flag) {
                 case 0:
@@ -386,6 +382,14 @@
                     this.filter.updated_at_1 = this.endDate
                 }
                 this.quick_select()
+            },
+            setStatus () {
+                let status = this.$route.query.status
+                if (status) {
+                    this.status = status
+                } else {
+                    this.status = '0'
+                }
             }
         },
         components: {

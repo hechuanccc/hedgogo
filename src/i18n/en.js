@@ -175,9 +175,6 @@ export default {
         real_account: 'Real',
         pass: 'Pass',
         failed: 'Failed',
-        total_remit: 'Total Remit',
-        total_online_pay: 'Total Online Pay',
-        total_withdraw: 'Total Withdraw',
         logout_at: 'Log Out At',
         isp: 'ISP'
     },
@@ -450,7 +447,7 @@ export default {
         enabled: 'Enabled',
         disabled: 'Disabled',
         closed: 'Closed',
-        openning: 'Openning',
+        openning: 'Opening',
         no_setting: 'No Setting',
         setting: 'Setting',
         handicap_setting: 'Handicap Setting',
@@ -484,13 +481,16 @@ export default {
         loading: 'loading',
         auto_draw: 'Auto Draw',
         manual_draw: 'Manual Draw',
+        manual_draw_success: 'Successfully manual draw!',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
         retreat_sched: 'Retreat Schedule',
-        created: '',
-        open: '',
+        retreat_sched_fail: 'Fail to retreat schedule!',
+        created: 'Created',
+        open: 'Open',
         cancelled: 'Cancelled',
-        operating: 'Operating'
+        operating: 'Operating',
+        later_try: 'Please try later'
     },
     agent: {
         number: 'No.',
