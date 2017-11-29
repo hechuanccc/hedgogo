@@ -56,7 +56,7 @@
                             <date-picker v-model="modal.value" type="datetime" format="yyyy-MM-dd HH:mm" :minute-step="1" range></date-picker>
                         </div>
                         <div class="col-xs-2 col-xs-offset-2 text-right">
-                            <button type="button" class="btn btn-sm btn-default" @click="updateTime">{{$t('action.update')}}</button>
+                            <button type="button" class="btn btn-sm btn-primary" @click="updateTime">{{$t('action.update')}}</button>
                         </div>
                     </div>
                     <div class="row"></div>
@@ -72,17 +72,15 @@
                                 <span>{{ $t('game_manage.no_setting_icon') }}</span>
                             </div>
                         </div>
-                        <div class="col-xs-5 inline-form-control m-t-75">
+                        <div class="col-xs-5 inline-form-control m-t-lg">
                             <input type="file" class="form-control" accept="image/*" @change="syncImg" required>
                         </div>
-                        <div class="col-xs-2 col-xs-offset-2 text-right m-t-75">
-                            <button type="button" class="btn btn-sm btn-default" @click="updateImage">{{$t('action.update')}}</button>
+                        <div class="col-xs-2 col-xs-offset-2 text-right m-t-lg">
+                            <button type="button" class="btn btn-sm btn-primary" @click="updateImage">{{$t('action.update')}}</button>
                         </div>
                     </div>
                     <div class="row m-l m-r">
-                        <transition name="fade">
-                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
-                        </transition>
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -95,6 +93,7 @@
 </template>
 <script>
 import api from '../../api'
+import alertMsg from '../../components/alertMsg'
 import DatePicker from 'vue2-datepicker'
 
 import Vue from 'vue'
@@ -110,16 +109,6 @@ export default {
             modal: {
                 isShow: false,
                 value: [],
-                start_date: '',
-                end_date: '',
-                start_time: {
-                    HH: '00',
-                    mm: '00'
-                },
-                end_time: {
-                    HH: '00',
-                    mm: '00'
-                },
                 index: '',
                 id: '',
                 display_name: '',
@@ -131,18 +120,7 @@ export default {
                     icon: '',
                     to_display: true
                 },
-                msg: '',
-                showMsg: false,
-                classObject: {
-                    'alert-success': false,
-                    'alert-warning': false,
-                    'alert-danger': false
-                },
-                iconObject: {
-                    'fa-check': false,
-                    'fa-warning': false,
-                    'fa-close': false
-                }
+                msg: ''
             }
         }
     },
@@ -202,42 +180,6 @@ export default {
             this.modal.image = game.icon
             this.modal.isShow = true
         },
-        showSuccessMsg () {
-            this.modal.showMsg = true
-            this.modal.msg = this.$t('game_manage.modify_success')
-            this.modal.classObject['alert-success'] = true
-            this.modal.iconObject['fa-check'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-success'] = false
-                this.modal.iconObject['fa-check'] = false
-            }, 3000)
-        },
-        showWarningMsg (flag) {
-            this.modal.showMsg = true
-            this.modal.msg = this.$t('game_manage.no_setting_' + flag)
-            this.modal.classObject['alert-warning'] = true
-            this.modal.iconObject['fa-warning'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-warning'] = false
-                this.modal.iconObject['fa-warning'] = false
-            }, 3000)
-        },
-        showErrorMsg () {
-            this.modal.showMsg = true
-            this.modal.msg = this.$t('game_manage.modify_fail')
-            this.modal.classObject['alert-danger'] = true
-            this.modal.iconObject['fa-close'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-danger'] = false
-                this.modal.iconObject['fa-close'] = false
-            }, 3000)
-        },
         hideModal () {
             this.modal.isShow = false
         },
@@ -250,13 +192,16 @@ export default {
                 }).then(response => {
                     if (response.status === 200) {
                         this.$set(this.queryset, this.modal.index, response.data)
-                        this.showSuccessMsg()
+                        this.modal.msg = this.$t('game_manage.modify_success')
+                        this.$refs.alertMsg.trigger('success', 3)
                     }
                 }, response => {
-                    this.showErrorMsg()
+                    this.modal.msg = this.$t('game_manage.modify_fail')
+                    this.$refs.alertMsg.trigger('danger')
                 })
             } else {
-                this.showWarningMsg('holiday')
+                this.modal.msg = this.$t('game_manage.no_setting_holiday')
+                this.$refs.alertMsg.trigger('warning', 3)
             }
         },
         syncImg (e) {
@@ -280,13 +225,16 @@ export default {
                 .then(response => {
                     if (response.status === 200) {
                         this.getGameList()
-                        this.showSuccessMsg()
+                        this.modal.msg = this.$t('game_manage.modify_success')
+                        this.$refs.alertMsg.trigger('success', 3)
                     }
                 }, response => {
-                    this.showErrorMsg()
+                    this.modal.msg = this.$t('game_manage.modify_fail')
+                    this.$refs.alertMsg.trigger('danger')
                 })
             } else {
-                this.showWarningMsg('icon')
+                this.modal.msg = this.$t('game_manage.no_setting_icon')
+                this.$refs.alertMsg.trigger('warning', 3)
             }
         }
     },
@@ -300,7 +248,8 @@ export default {
         }
     },
     components: {
-        DatePicker
+        DatePicker,
+        alertMsg
     }
 }
 </script>
@@ -315,9 +264,6 @@ export default {
 .modal{
   display: block;
 }
-.m-t-75{
-    margin-top: 75px;
-}
 #circle {
 	width: 108px;
 	height: 108px;
@@ -326,11 +272,5 @@ export default {
 	-moz-border-radius: 50%;
 	-webkit-border-radius: 50%;
 	border-radius: 50%;
-}
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0
 }
 </style>

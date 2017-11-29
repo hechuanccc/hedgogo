@@ -137,14 +137,10 @@ export default {
             this.next = this.buildUrl(this.api, this.extra + '&opt_expand=' + this.optexpand + '&offset=' + this.offset + '&limit=' + this.limit)
             // this.queryset = []
             this.myQueryset = []
-            this.pull(this.setLoadingBusy)
-        },
-        setLoadingBusy (value) {
-            this.loading = value
-            this.busy = value
+            this.pull()
         },
         // pull queryset form back-end
-        pull (cb) {
+        pull () {
             let amount = ''
             let profit = ''
             let totalBet = ''
@@ -163,6 +159,7 @@ export default {
                 this.$emit('amount', amount)
                 this.$emit('profit', profit)
                 this.$emit('totalBet', totalBet)
+                this.busy = false
                 // [VAN] If condition will be removed once all apis are updated
                 if (response.data.data) {
                     this.count = response.data.data.count
@@ -180,6 +177,7 @@ export default {
                 }
                 // this.myQueryset = this.myQueryset.concat(response.data.results)
                 this.$emit('query-data', this.myQueryset)
+                this.loading = false
                 // [VAN] If condition will be removed once all apis are updated
                 if (response.data.data) {
                     this.next = response.data.data.next
@@ -187,7 +185,6 @@ export default {
                     this.next = response.data.next
                 }
                 // this.next = response.data.next
-                cb(false)
             }, response => {
                 if (response.status === 401) {
                     this.$router.push('/login?next=' + this.$route.path)

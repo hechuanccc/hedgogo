@@ -35,30 +35,29 @@
                 </div>
                 <div class="modal-body">
                     <table st-table="rowCollectionBasic" class="table b-t">
-                    <thead>
-                    <tr>
-                        <th>{{ $t('game_history.periods') }}</th>
-                        <th>{{ $t('game_history.draw_date') }}</th>
-                        <th>{{ $t('game_history.draw_number') }}
-                            <span class="n-strong">{{'请输入'+amountOfValues+'个数字('+rangeOfValue.join('~')+')使用逗号(,)分隔'}}</span></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{{ modal.gameResult.issue_number }}</td>
-                        <td>{{ today }}</td>
-                        <td><input class="form-control" v-model="modal.gameResult.result_str"></td>
-                    </tr>
-                    </tbody>
+                        <thead>
+                            <tr>
+                                <th>{{ $t('game_history.periods') }}</th>
+                                <th>{{ $t('game_history.draw_date') }}</th>
+                                <th>{{ $t('game_history.draw_number') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ modal.gameResult.issue_number }}</td>
+                                <td>{{ today }}</td>
+                                <td>
+                                    <input class="form-control" v-model="modal.gameResult.result_str">
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div class="m-l m-r">
-                        <transition name="fade">
-                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
-                        </transition>
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="updateGameResult">{{ $t('action.create') }}</button>
+                    <button type="button" class="btn btn-primary" @click="updateGameResult">{{ $t('action.create') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
@@ -68,29 +67,26 @@
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="modal-body">
-                    <div class="m-l"></span></div>
                     <table st-table="rowCollectionBasic" class="table b-t m-t text-center">
-                    <thead>
-                    <tr>
-                        <th class="text-center">{{ $t('game_history.periods') }}</th>
-                        <th class="text-center">{{ $t('game_history.draw_date') }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{{ modal.retreat_sched.issue_number }}</td>
-                        <td>{{ modal.retreat_sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                    </tr>
-                    </tbody>
+                        <thead>
+                            <tr>
+                                <th class="text-center">{{ $t('game_history.periods') }}</th>
+                                <th class="text-center">{{ $t('game_history.draw_date') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ modal.retreat_sched.issue_number }}</td>
+                                <td>{{ modal.retreat_sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div class="m-l m-r">
-                        <transition name="fade">
-                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
-                        </transition>
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="retreatSchedule">{{ $t('action.confirm') }}</button>
+                    <button type="button" class="btn btn-primary" @click="retreatSchedule">{{ $t('action.confirm') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
@@ -149,6 +145,7 @@
 <script>
 import api from '../../api.js'
 import pulling from '../../components/pulling'
+import alertMsg from '../../components/alertMsg'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 
@@ -179,29 +176,13 @@ export default {
                     result_str: ''
                 },
                 retreat_sched: {},
-                msg: '',
-                showMsg: false,
-                classObject: {
-                    'alert-success': false,
-                    'alert-warning': false,
-                    'alert-danger': false
-                },
-                iconObject: {
-                    'fa-check': false,
-                    'fa-warning': false,
-                    'fa-close': false
-                }
+                msg: ''
             },
             gameResultApi: api.game_result,
             queryset: [],
             query: {},
             extra: '',
-            today: Vue.moment().format(dateFormat),
-            field_locales: {
-                'status': '用户名错误：',
-                'permission': '权限错误：',
-                'email': '邮箱错误：'
-            }
+            today: Vue.moment().format(dateFormat)
         }
     },
     created () {
@@ -221,10 +202,10 @@ export default {
             this.$refs.pulling.rebase()
             this.getNewestResult()
             this.getRetreatSchedules()
-        }, 30000)
-        this.timing2 = setInterval(() => {
+        }, 1000)
+        this.timing_retreat_shced = setInterval(() => {
             this.getRetreatSchedules()
-        }, 10000)
+        }, 1000)
     },
     methods: {
         setDate () {
@@ -278,70 +259,48 @@ export default {
             }
             this.modal.isShow = true
         },
-        showSuccessMsg (msg) {
-            this.modal.showMsg = true
-            this.modal.msg = msg
-            this.modal.classObject['alert-success'] = true
-            this.modal.iconObject['fa-check'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-success'] = false
-                this.modal.iconObject['fa-check'] = false
-                this.modal.isShow = false
-            }, 1000)
-        },
-        showErrorMsg (msg) {
-            this.modal.showMsg = true
-            this.modal.msg = msg
-            this.modal.classObject['alert-danger'] = true
-            this.modal.iconObject['fa-close'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-danger'] = false
-                this.modal.iconObject['fa-close'] = false
-            }, 3000)
-        },
         hideModal () {
             this.modal.isShow = false
         },
         updateGameResult () {
-            this.modal.errorMsgs = []
-            this.$http.post(api.game_result, this.modal.gameResult)
-            .then((response) => {
-                if (response.data.code === 2000) {
-                    this.showSuccessMsg(this.$t('game_history.manual_draw_success'))
-                    this.$refs.pulling.rebase()
-                } else {
-                    this.showErrorMsg(this.$t('game_manage.modify_fail') + ` (${response.data.msg.join(' ')})`)
-                }
-            })
+            if (this.modal.gameResult.result_str) {
+                this.$http.post(api.game_result, this.modal.gameResult)
+                .then((response) => {
+                    if (response.data.code === 2000) {
+                        this.modal.msg = this.$t('game_history.manual_draw_success')
+                        this.$refs.alertMsg.trigger('success', 1, true)
+                        this.$refs.pulling.rebase()
+                    } else {
+                        this.modal.msg = this.$t('game_history.manual_draw_fail') + ` (${response.data.msg.join(' ')})`
+                        this.$refs.alertMsg.trigger('danger')
+                    }
+                })
+            } else {
+                this.modal.msg = this.$t('game_history.no_setting_draw_number')
+                this.$refs.alertMsg.trigger('warning', 3)
+            }
         },
         getResultClass (resultNum) {
             let gameClass = 'result-' + this.game.game_code
-            let resultClass
-            resultClass = 'resultnum-' + parseInt(resultNum)
+            let resultClass = 'resultnum-' + parseInt(resultNum)
             return [gameClass, resultClass]
         },
         retreatSchedule () {
-            let errMsg = ''
             this.$http.put(api.game_schedretreat + `${this.modal.retreat_sched.id}/`, { 'status': 'cancelled' })
             .then(response => {
-                this.showSuccessMsg(this.$t('game_history.cancelled'))
+                this.modal.msg = this.$t('game_history.cancelled')
+                this.$refs.alertMsg.trigger('success', 1, true)
                 this.getRetreatSchedules()
             }, response => {
+                let errMsg = ''
                 if (response.status === 400) {
                     for (let index in response.data.error) {
                         for (let property in response.data.error[index]) {
                             errMsg += `${property} : ${response.data.error[index][property]}`
                         }
                     }
-                }
-            })
-            .then(() => {
-                if (errMsg) {
-                    this.showErrorMsg(this.$t('game_history.retreat_sched_fail') + this.$t('game_history.later_try') + ` (${errMsg})`)
+                    this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.later_try') + `（${errMsg}）`
+                    this.$refs.alertMsg.trigger('danger')
                 }
             })
         },
@@ -369,69 +328,16 @@ export default {
         },
         isPageOne () {
             return this.queryset.length > 0 && this.newest_result && this.queryset[0].issue_number === this.newest_result.issue_number
-        },
-        amountOfValues () {
-            switch (parseInt(this.game.id)) {
-            case 155:
-            case 162:
-            case 163:
-                return 10
-            case 157:
-            case 158:
-            case 161:
-            case 164:
-            case 167:
-                return 5
-            case 156:
-            case 169:
-                return 8
-            case 160:
-            case 166:
-                return 3
-            case 170:
-                return 21
-            case 159:
-                return 6
-            default:
-                return undefined
-            }
-        },
-        rangeOfValue () {
-            switch (parseInt(this.game.id)) {
-            case 155:
-            case 162:
-            case 163:
-                return [1, 10]
-            case 157:
-            case 161:
-            case 164:
-            case 166:
-            case 167:
-                return [0, 9]
-            case 156:
-                return [1, 20]
-            case 158:
-                return [1, 11]
-            case 160:
-                return [1, 6]
-            case 169:
-                return [1, 11]
-            case 170:
-                return [1, 80]
-            case 159:
-                return [1, 45]
-            default:
-                return undefined
-            }
         }
     },
     components: {
         DatePicker,
-        pulling
+        pulling,
+        alertMsg
     },
     beforeDestroy () {
         clearInterval(this.timing)
-        clearInterval(this.timing2)
+        clearInterval(this.timing_retreat_shced)
     }
 }
 </script>
@@ -447,22 +353,12 @@ export default {
 .modal{
   display: block;
 }
-
 .result-balls span{
     display: inline-block;
     vertical-align: middle;
     margin-right: 2px;
 }
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0
-}
 .v-m td{
     vertical-align: middle;
-}
-.n-strong{
-    font-weight: normal;
 }
 </style>

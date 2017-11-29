@@ -24,11 +24,11 @@
             <tbody>
                 <tr v-for = "(game_period, index) in game_draw"
                     :key = "game_period.game_id">
-                    <td><a class="p-l-xs">
+                    <td>
                         <router-link :to = "'/game_history/' + game_period.game_id"
-                        class = "v-m">
-                        {{game_period.game}}</router-link>
-                        </a>
+                        class = "v-m p-l-xs">
+                        {{game_period.game}}
+                        </router-link>
                     </td>
                     <td><span class="label label-lg w-60">{{game_period.drawn_periods}}</span></td>
                     <td><span class="label label-lg w-60">{{game_period.total_periods - game_period.drawn_periods}}</span></td>
@@ -53,25 +53,24 @@
                     <tr>
                         <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_history.draw_date') }}</th>
-                        <th>{{ $t('game_history.draw_number') }}
-                            <span class="n-strong">{{'请输入'+amountOfValues+'个数字('+rangeOfValue.join('~')+')使用逗号(,)分隔'}}</span></th>
+                        <th>{{ $t('game_history.draw_number') }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>{{ modal.gameResult.issue_number }}</td>
                         <td>{{ today }}</td>
-                        <td><input class="form-control" v-model="modal.gameResult.result_str"></td>
+                        <td>
+                            <input class="form-control" v-model="modal.gameResult.result_str">
+                        </td>
                     </tr>
                     </tbody>
                     </table>
                     <div class="m-l m-r">
-                        <transition name="fade">
-                            <div class="alert" :class="modal.classObject" v-if="modal.showMsg"><i class="fa" :class="modal.iconObject"></i> {{ modal.msg }}</div>
-                        </transition>
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
                     </div>                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="updateGameResult">{{ $t('action.create') }}</button>
+                    <button type="button" class="btn btn-primary" @click="updateGameResult">{{ $t('action.create') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
@@ -81,6 +80,7 @@
 </template>
 <script>
 import api from '../../api.js'
+import alertMsg from '../../components/alertMsg'
 import Vue from 'vue'
 const dateFormat = 'YYYY-MM-DD'
 const dateFormat2 = 'YYYYMMDD'
@@ -102,18 +102,7 @@ export default{
                 },
                 newest_result: undefined,
                 errorMsgs: [],
-                msg: '',
-                showMsg: false,
-                classObject: {
-                    'alert-success': false,
-                    'alert-warning': false,
-                    'alert-danger': false
-                },
-                iconObject: {
-                    'fa-check': false,
-                    'fa-warning': false,
-                    'fa-close': false
-                }
+                msg: ''
             },
             today: Vue.moment().format(dateFormat)
         }
@@ -150,13 +139,17 @@ export default{
             })
         },
         getNewestResult (gameid) {
-            this.$http.get(api.game_result + `?game=${gameid}&date=${this.today}&limit=1`)
-            .then(response => {
-                if (response.data.code === 2000 && response.data.data.results.length > 0) {
-                    this.modal.newest_result = Object.assign({}, this.modal.newest_result, response.data.data.results[0])
-                } else {
-                    this.modal.newest_result = {}
-                }
+            return new Promise((resolve, reject) => {
+                this.$http.get(api.game_result + `?game=${gameid}&date=${this.today}&limit=1`)
+                .then(response => {
+                    if (response.data.code === 2000 && response.data.data.results.length > 0) {
+                        this.modal.newest_result = Object.assign({}, this.modal.newest_result, response.data.data.results[0])
+                        resolve(response.data.data.results[0])
+                    } else {
+                        reject()
+                        this.modal.newest_result = {}
+                    }
+                })
             })
         },
         showModal (gameid) {
@@ -165,56 +158,34 @@ export default{
             this.modal.newest_result = undefined
             this.modal.gameResult.result_str = ''
             this.getGameName(gameid)
-            this.getNewestResult(gameid)
-            this.timing = setInterval(() => {
-                if (this.modal.newest_result !== undefined) {
-                    if (this.modal.newest_result.issue_number === undefined) {
-                        this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
-                    } else {
-                        this.modal.gameResult.issue_number = parseInt(this.modal.newest_result.issue_number) + 1
-                    }
-                    this.modal.isShow = true
-                    clearInterval(this.timing)
-                }
-            }, 100)
-        },
-        showSuccessMsg (msg) {
-            this.modal.showMsg = true
-            this.modal.msg = msg
-            this.modal.classObject['alert-success'] = true
-            this.modal.iconObject['fa-check'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-success'] = false
-                this.modal.iconObject['fa-check'] = false
-                this.modal.isShow = false
-            }, 1000)
-        },
-        showErrorMsg (msg) {
-            this.modal.showMsg = true
-            this.modal.msg = msg
-            this.modal.classObject['alert-danger'] = true
-            this.modal.iconObject['fa-close'] = true
-            setTimeout(() => {
-                this.modal.showMsg = false
-                this.modal.msg = ''
-                this.modal.classObject['alert-danger'] = false
-                this.modal.iconObject['fa-close'] = false
-            }, 3000)
+            this.getNewestResult(gameid).then(result => {
+                this.modal.newest_result = Object.assign({}, this.modal.newest_result, result)
+                this.modal.gameResult.issue_number = parseInt(this.modal.newest_result.issue_number) + 1
+            }, () => {
+                this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
+            }).then(() => {
+                this.modal.isShow = true
+            })
         },
         hideModal () {
             this.modal.isShow = false
         },
         updateGameResult () {
-            this.$http.post(api.game_result, this.modal.gameResult)
-            .then((response) => {
-                if (response.data.code === 2000) {
-                    this.showSuccessMsg(this.$t('game_history.manual_draw_success'))
-                } else {
-                    this.showErrorMsg(this.$t('game_manage.modify_fail') + ` (${response.data.msg.join(' ')})`)
-                }
-            })
+            if (this.modal.gameResult.result_str) {
+                this.$http.post(api.game_result, this.modal.gameResult)
+                .then((response) => {
+                    if (response.data.code === 2000) {
+                        this.modal.msg = this.$t('game_history.manual_draw_success')
+                        this.$refs.alertMsg.trigger('success', 1, true)
+                    } else {
+                        this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${response.data.msg.join(' ')}）`
+                        this.$refs.alertMsg.trigger('danger', 3)
+                    }
+                })
+            } else {
+                this.modal.msg = this.$t('game_history.no_setting_draw_number')
+                this.$refs.alertMsg.trigger('warning', 3)
+            }
         }
     },
     created () {
@@ -226,61 +197,8 @@ export default{
     beforeDestroy () {
         clearInterval(this.timing)
     },
-    computed: {
-        amountOfValues () {
-            switch (parseInt(this.modal.game.id)) {
-            case 155:
-            case 162:
-            case 163:
-                return 10
-            case 157:
-            case 158:
-            case 161:
-            case 164:
-            case 167:
-                return 5
-            case 156:
-            case 169:
-                return 8
-            case 160:
-            case 166:
-                return 3
-            case 170:
-                return 21
-            case 159:
-                return 6
-            default:
-                return undefined
-            }
-        },
-        rangeOfValue () {
-            switch (parseInt(this.modal.game.id)) {
-            case 155:
-            case 162:
-            case 163:
-                return [1, 10]
-            case 157:
-            case 161:
-            case 164:
-            case 166:
-            case 167:
-                return [0, 9]
-            case 156:
-                return [1, 20]
-            case 158:
-                return [1, 11]
-            case 160:
-                return [1, 6]
-            case 169:
-                return [1, 11]
-            case 170:
-                return [1, 80]
-            case 159:
-                return [1, 45]
-            default:
-                return undefined
-            }
-        }
+    components: {
+        alertMsg
     }
 }
 </script>
@@ -297,14 +215,5 @@ export default{
 }
 .w-60{
     width: 60px;
-}
-.n-strong{
-    font-weight: normal;
-}
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0
 }
 </style>
