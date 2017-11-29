@@ -124,12 +124,12 @@
         methods: {
             getStaff (id) {
                 this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
-                    this.staff = response.data
+                    this.staff = response.data.data
                 })
             },
             getPermissions (id) {
                 this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then((response) => {
-                    this.permissions = response.data.permissions
+                    this.permissions = response.data.data.permissions
                     this.getSelect()
                 })
             },
