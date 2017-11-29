@@ -21,6 +21,8 @@ export default {
     game_list: managePrefix + 'game/',
     game_play: managePrefix + 'game/play/',
     game_draw: managePrefix + 'draw/',
+    game_schedule: managePrefix + 'game/schedule/',
+    game_schedretreat: managePrefix + 'game/schedretreat/',
     game_result: managePrefix + 'result/',
     playset: managePrefix + 'game/playset/',
     level: managePrefix + 'level/',

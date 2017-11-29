@@ -458,7 +458,13 @@ export default {
         max_per_draw: 'highest Amount Currently',
         return_rate: 'Return Rate',
         odds: 'Odds',
-        issue_number: 'Issue Number'
+        issue_number: 'Issue Number',
+        setting_holiday: 'Setting Holiday',
+        setting_icon: 'Setting Icon',
+        no_setting_icon: 'No Setting Icon File.',
+        no_setting_holiday: 'No Setting Holiday.',
+        modify_success: 'Successfully modified!',
+        modify_fail: 'Fail to modidy!'
     },
     game_history: {
         game: 'Game',
@@ -471,13 +477,22 @@ export default {
         periods: 'Periods',
         draw_date: 'Drawn Date',
         draw_number: 'Drawm Numbers',
+        no_setting_draw_number: 'No setting draw numbers',
         date: 'Date',
         loading: 'loading',
         auto_draw: 'Auto Draw',
         manual_draw: 'Manual Draw',
+        manual_draw_success: 'Successfully manual draw!',
+        manual_draw_fail: 'Fail to manual draw!',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
-        del_sheet: 'Delete sheet'
+        retreat_sched: 'Retreat Schedule',
+        retreat_sched_fail: 'Fail to retreat schedule!',
+        created: 'Created',
+        open: 'Open',
+        cancelled: 'Cancelled',
+        operating: 'Operating',
+        later_try: 'Please try later'
     },
     agent: {
         number: 'No.',
