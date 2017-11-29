@@ -1,10 +1,7 @@
 <template>
 <div>
     <div class="row m-b">
-        <div class="col-xs-3 text-left"><h3>{{ game.display_name }}</h3></div>
-        <div class="col-xs-9 text-right">
-            <button class="md-btn w-sm blue" @click="showModal(0)">{{ $t('game_history.manual_draw') }}</button>
-        </div>
+        <div class="m-l"><h3>{{ game.display_name }}</h3></div>
     </div>
     <div class="box">
         <div class="box-body clearfix form-inline form-input-sm">
@@ -28,40 +25,7 @@
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
-            <div class="modal-content" v-if="modal.mode===0">
-                <div class="modal-header">
-                    <span>{{ game.display_name }} - {{ $t('game_history.manual_draw') }}</span>
-                    <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
-                </div>
-                <div class="modal-body">
-                    <table st-table="rowCollectionBasic" class="table b-t">
-                        <thead>
-                            <tr>
-                                <th>{{ $t('game_history.periods') }}</th>
-                                <th>{{ $t('game_history.draw_date') }}</th>
-                                <th>{{ $t('game_history.draw_number') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ modal.gameResult.issue_number }}</td>
-                                <td>{{ today }}</td>
-                                <td>
-                                    <input class="form-control" v-model="modal.gameResult.result_str">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="updateGameResult">{{ $t('action.create') }}</button>
-                    <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
-                </div>
-            </div>
-            <div class="modal-content" v-if="modal.mode===1">
+            <div class="modal-content">
                 <div class="modal-header">
                     <span><strong>{{ game.display_name }} - {{ '确定撤单吗？'}}</strong></span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
@@ -76,8 +40,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ modal.retreat_sched.issue_number }}</td>
-                                <td>{{ modal.retreat_sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                                <td>{{ modal.retreatSched.issue_number }}</td>
+                                <td>{{ modal.retreatSched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -104,11 +68,11 @@
                     </tr>
                 </thead>
                 <tbody class="v-m">
-                    <tr v-if="isPageOne" v-for="sched in retreat_scheds" :key="sched.id">
+                    <tr v-if="isPageOne" v-for="sched in retreatScheds" :key="sched.id">
                         <td>{{ sched.issue_number }}</td>
                         <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
-                            <button class="md-btn blue w-s" @click="showModal(1, sched)" v-show="sched.status!=='cancelled'">{{ $t('game_history.retreat_sched') }}</button>
+                            <button class="md-btn blue" @click="showModal(sched)" v-show="sched.status!=='cancelled'">{{ $t('game_history.retreat_sched') }}</button>
                         </td>
                         <td>
                             <span v-if="sched.status==='cancelled'">{{ $t('game_history.cancelled') }}</span>
@@ -150,7 +114,6 @@ import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 
 const dateFormat = 'YYYY-MM-DD'
-const dateFormat2 = 'YYYYMMDD'
 
 export default {
     data () {
@@ -160,22 +123,14 @@ export default {
                 display_name: '',
                 game_code: ''
             },
-            newest_result: undefined,
-            retreat_scheds: [],
+            retreatScheds: [],
             input: {
                 date: Vue.moment().format(dateFormat),
                 period: ''
             },
             modal: {
-                mode: 0,
-                // 0-> manual draw; 1-> retreat schedule
                 isShow: false,
-                gameResult: {
-                    game_code: '',
-                    issue_number: '',
-                    result_str: ''
-                },
-                retreat_sched: {},
+                retreatSched: {},
                 msg: ''
             },
             gameResultApi: api.game_result,
@@ -190,7 +145,6 @@ export default {
         this.game.id = gameid
         this.extra = `game=${gameid}&date=${this.today}`
         this.getGameName(gameid)
-        this.getNewestResult(gameid)
         this.getRetreatSchedules(gameid)
 
         this.$nextTick(() => {
@@ -198,25 +152,22 @@ export default {
         })
     },
     beforeMount () {
-        this.timing = setInterval(() => {
+        this.timingPulling = setInterval(() => {
             this.$refs.pulling.rebase()
-            this.getNewestResult()
+        }, 20000)
+        this.timingRetreatShced = setInterval(() => {
             this.getRetreatSchedules()
-        }, 1000)
-        this.timing_retreat_shced = setInterval(() => {
-            this.getRetreatSchedules()
-        }, 1000)
+        }, 5000)
     },
     methods: {
         setDate () {
             const date = Vue.moment(this.input.date).format(dateFormat)
             this.extra = `game=${this.game.id}&date=${date}`
             if (date !== this.today) {
-                clearInterval(this.timing)
+                clearInterval(this.timingPulling)
             } else {
-                this.timing = setInterval(() => {
+                this.timingPulling = setInterval(() => {
                     this.$refs.pulling.rebase()
-                    this.getNewestResult()
                     this.getRetreatSchedules()
                 }, 20000)
             }
@@ -228,14 +179,7 @@ export default {
             gameid = gameid || this.game.id
             this.$http.get(api.game_schedule + `?game=${gameid}&ongoing=True`)
             .then(response => {
-                this.retreat_scheds = response.data
-            })
-        },
-        getNewestResult (gameid) {
-            gameid = gameid || this.game.id
-            this.$http.get(api.game_result + `?game=${gameid}&date=${this.today}&limit=1`)
-            .then(response => {
-                this.newest_result = Object.assign({}, this.newest_result, response.data.data.results[0])
+                this.retreatScheds = response.data
             })
         },
         getGameName (gameid) {
@@ -243,50 +187,22 @@ export default {
             .then(response => {
                 this.game.display_name = response.data.display_name
                 this.game.game_code = response.data.code
-                this.modal.gameResult.game_code = response.data.code
             })
         },
-        showModal (mode, sched) {
-            this.modal.mode = mode
-            if (mode === 0) {
-                if (this.queryset.length === 0) {
-                    this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
-                } else {
-                    this.modal.gameResult.issue_number = parseInt(this.newest_result.issue_number) + 1
-                }
-            } else {
-                this.modal.retreat_sched = Object.assign({}, this.modal.retreat_sched, sched)
-            }
+        showModal (sched) {
+            this.modal.retreatSched = Object.assign({}, this.modal.retreatSched, sched)
             this.modal.isShow = true
         },
         hideModal () {
             this.modal.isShow = false
         },
-        updateGameResult () {
-            if (this.modal.gameResult.result_str) {
-                this.$http.post(api.game_result, this.modal.gameResult)
-                .then((response) => {
-                    if (response.data.code === 2000) {
-                        this.modal.msg = this.$t('game_history.manual_draw_success')
-                        this.$refs.alertMsg.trigger('success', 1, true)
-                        this.$refs.pulling.rebase()
-                    } else {
-                        this.modal.msg = this.$t('game_history.manual_draw_fail') + ` (${response.data.msg.join(' ')})`
-                        this.$refs.alertMsg.trigger('danger')
-                    }
-                })
-            } else {
-                this.modal.msg = this.$t('game_history.no_setting_draw_number')
-                this.$refs.alertMsg.trigger('warning', 3)
-            }
-        },
         getResultClass (resultNum) {
-            let gameClass = 'result-' + this.game.game_code
-            let resultClass = 'resultnum-' + parseInt(resultNum)
+            let gameClass = `result-${this.game.game_code}`
+            let resultClass = `resultnum-${parseInt(resultNum)}`
             return [gameClass, resultClass]
         },
         retreatSchedule () {
-            this.$http.put(api.game_schedretreat + `${this.modal.retreat_sched.id}/`, { 'status': 'cancelled' })
+            this.$http.put(api.game_schedretreat + `${this.modal.retreatSched.id}/`, { 'status': 'cancelled' })
             .then(response => {
                 this.modal.msg = this.$t('game_history.cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
@@ -327,7 +243,7 @@ export default {
             })
         },
         isPageOne () {
-            return this.queryset.length > 0 && this.newest_result && this.queryset[0].issue_number === this.newest_result.issue_number
+            return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat)
         }
     },
     components: {
@@ -336,13 +252,12 @@ export default {
         alertMsg
     },
     beforeDestroy () {
-        clearInterval(this.timing)
-        clearInterval(this.timing_retreat_shced)
+        clearInterval(this.timingPulling)
+        clearInterval(this.timingRetreatShced)
     }
 }
 </script>
 <style lang="scss" scoped>
-@import '../../assets/resultsball.sass';
 .modal-backdrop, .modal{
   z-index: 1;
 }

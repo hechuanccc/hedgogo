@@ -100,8 +100,7 @@ export default{
                     issue_number: '',
                     result_str: ''
                 },
-                newest_result: undefined,
-                errorMsgs: [],
+                newestResult: undefined,
                 msg: ''
             },
             today: Vue.moment().format(dateFormat)
@@ -143,24 +142,33 @@ export default{
                 this.$http.get(api.game_result + `?game=${gameid}&date=${this.today}&limit=1`)
                 .then(response => {
                     if (response.data.code === 2000 && response.data.data.results.length > 0) {
-                        this.modal.newest_result = Object.assign({}, this.modal.newest_result, response.data.data.results[0])
+                        this.modal.newestResult = Object.assign({}, this.modal.newestResult, response.data.data.results[0])
                         resolve(response.data.data.results[0])
                     } else {
                         reject()
-                        this.modal.newest_result = {}
+                        this.modal.newestResult = {}
                     }
                 })
             })
         },
         showModal (gameid) {
-            this.modal.errorMsgs = []
+            this.modal = {
+                ...this.modal,
+                game: {
+                    id: gameid
+                },
+                newestResult: undefined,
+                gameResult: {
+                    result_str: ''
+                }
+            }
             this.modal.game.id = gameid
-            this.modal.newest_result = undefined
+            this.modal.newestResult = undefined
             this.modal.gameResult.result_str = ''
             this.getGameName(gameid)
             this.getNewestResult(gameid).then(result => {
-                this.modal.newest_result = Object.assign({}, this.modal.newest_result, result)
-                this.modal.gameResult.issue_number = parseInt(this.modal.newest_result.issue_number) + 1
+                this.modal.newestResult = Object.assign({}, this.modal.newestResult, result)
+                this.modal.gameResult.issue_number = parseInt(this.modal.newestResult.issue_number) + 1
             }, () => {
                 this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
             }).then(() => {

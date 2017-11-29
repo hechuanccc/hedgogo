@@ -1,6 +1,8 @@
 <template>
     <transition name="fade">
-        <div class="alert" :class="['alert', alertClass]" v-if="showMsg"><i :class="['fa', iconClass]"></i> {{ msg }}</div>
+        <div class="alert" :class="['alert', alertClass]" v-if="showMsg">
+            <i :class="['fa', iconClass]"></i>{{ ` ${msg}` }}
+        </div>
     </transition>
 </template>
 <script>

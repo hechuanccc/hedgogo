@@ -253,6 +253,11 @@ export default {
             }
             this.$router.push({path: basePath, query})
         }
+    },
+    computed: {
+        isPageOne () {
+            return this.showPageGo === 1
+        }
     }
 }
 </script>

@@ -97,7 +97,6 @@ import alertMsg from '../../components/alertMsg'
 import DatePicker from 'vue2-datepicker'
 
 import Vue from 'vue'
-// const formatDate = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -170,15 +169,20 @@ export default {
         },
         showModal (index) {
             const game = this.queryset[index]
-            this.modal.display_name = game.display_name
-            this.modal.id = game.id
-            this.modal.index = index
-            this.modal.value = []
-            this.modal.iconResult.display_name = game.display_name
-            this.modal.iconResult.code = game.code
-            this.modal.iconResult.icon = undefined
-            this.modal.image = game.icon
-            this.modal.isShow = true
+            this.modal = {
+                ...this.modal,
+                display_name: game.display_name,
+                id: game.id,
+                index: index,
+                value: [],
+                iconResult: {
+                    display_name: game.display_name,
+                    code: game.code,
+                    icon: undefined
+                },
+                image: game.icon,
+                isShow: true
+            }
         },
         hideModal () {
             this.modal.isShow = false
@@ -265,12 +269,12 @@ export default {
   display: block;
 }
 #circle {
-	width: 108px;
-	height: 108px;
-    line-height: 108px;
-	background: lightgray;
-	-moz-border-radius: 50%;
-	-webkit-border-radius: 50%;
-	border-radius: 50%;
+  width: 108px;
+  height: 108px;
+  line-height: 108px;
+  background: lightgray;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
 }
 </style>
