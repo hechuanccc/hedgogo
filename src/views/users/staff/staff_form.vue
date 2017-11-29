@@ -203,7 +203,7 @@
             },
             getStaff (id) {
                 this.$http.get(api.staff + id + '/').then((response) => {
-                    this.staff = response.data
+                    this.staff = response.data.data
                 })
             },
             getPermissionsListAll () {
