@@ -61,5 +61,7 @@ export default {
     manual_transaction: managePrefix + 'manual_transaction/',
     returnreport: host + '/report/',
     gamecategory: managePrefix + 'game/category/',
-    cancel_bet: managePrefix + 'betretreat/'
+    cancel_bet: managePrefix + 'betretreat/',
+    transaction_withdraw: managePrefix + 'transaction/withdraw/',
+    transaction_onlinepay: managePrefix + 'transaction/onlinepayment/'
 }
