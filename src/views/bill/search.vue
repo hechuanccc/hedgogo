@@ -202,6 +202,12 @@
             if (transactionType) {
                 this.transaction_type = transactionType.split(',')
             }
+            this.$nextTick(() => {
+                if (this.$route.query.member || this.$route.query.transaction_type || this.$route.query.agent_q) {
+                    this.transaction_type = this.$route.query.transaction_type || '0'
+                    this.$refs.pulling.rebase()
+                }
+            })
         },
         computed: {
             src () {
