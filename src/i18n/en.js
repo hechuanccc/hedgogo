@@ -486,13 +486,19 @@ export default {
         manual_draw_fail: 'Fail to manual draw!',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
+        retreat_sched_sure: 'Are you sure to retreat schedule?',
         retreat_sched: 'Retreat Schedule',
         retreat_sched_fail: 'Fail to retreat schedule!',
         created: 'Created',
         open: 'Open',
         cancelled: 'Cancelled',
         operating: 'Operating',
-        later_try: 'Please try later'
+        try_later: 'Please try later',
+        abnormal_period: 'Exception Message',
+        expired_period: 'Expired Period',
+        no_expired_period: 'No Expired Period',
+        period_bet_record: 'Bet Records',
+        show_all: 'Show all'
     },
     agent: {
         number: 'No.',
