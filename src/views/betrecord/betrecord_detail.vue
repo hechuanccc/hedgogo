@@ -88,7 +88,7 @@
               <table class="table b-a m-t-sm" >
                 <tbody >
                 <th class="grey-50" width="200">{{$t('game_manage.play')}}</th>
-                <td v-if="betrecords.play">{{betrecords.play.display_name}}</td>
+                <td v-if="betrecords.play">{{betrecords.play.play_group.display_name}} @ {{betrecords.play.display_name}}</td>
                 <tr v-for="(betrecord, index) in betrecords.bet_options">
                   <th class="grey-50" width="200" >{{$t(`details.${index}`)}}</th>
                   <td v-if='isArray(betrecord)'>
