@@ -468,7 +468,7 @@ export default {
         modify_fail: '修改失败！'
     },
     game_history: {
-        game: '游戏',
+        game: '游戏名称',
         already_result: '当日已开期数',
         notyet_result: '当日剩余期数',
         draw_period: '期数',
@@ -487,13 +487,19 @@ export default {
         manual_draw_fail: '手动开奖失败！',
         memo: '备注',
         no_draw: '未开奖',
+        retreat_sched_sure: '确定撤单吗？',
         retreat_sched: '撤单',
         retreat_sched_fail: '撤单失败！',
         created: '已创建',
         open: '已开放',
         cancelled: '已撤单',
         operating: '操作',
-        later_try: '请稍后再试'
+        try_later: '请稍后再试',
+        abnormal_period: '异常期数',
+        expired_period: '逾期期数',
+        no_expired_period: '无逾期期数',
+        period_bet_record: '当期单量',
+        show_all: '显示全部'
     },
     agent: {
         number: '编号',

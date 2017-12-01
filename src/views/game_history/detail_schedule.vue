@@ -8,16 +8,30 @@
             <div class="row">
                 <div class="col-xs-3">
                     <label>{{$t('game_history.date')}}：</label>
-                    <date-picker width='140' 
+                    <date-picker 
+                    width='140' 
                     v-model="input.date" 
-                    @input="setDate"></date-picker>
+                    @input="setDate"
+                    ></date-picker>
                 </div>
                 <div class="col-xs-3">
                     <label>{{$t('game_history.periods')}}：</label>
-                    <input type="number" 
+                    <input 
+                    type="number" 
                     v-model.number="input.period" 
                     :placeholder="$t('game_history.periods')" 
-                    class="form-control">
+                    class="form-control"
+                    >
+                </div>
+                <div class="col-xs-3 m-t-xs">
+                    <input 
+                    type="checkbox"
+                    value="1" 
+                    name="exception" 
+                    v-model="mode"
+                    >
+                    <i class="blue"></i>
+                    {{$t('game_history.abnormal_period')}}
                 </div>
             </div>
         </div>
@@ -27,21 +41,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span><strong>{{ game.display_name }} - {{ '确定撤单吗？'}}</strong></span>
+                    <span><strong>{{ game.display_name }} - {{ mode ? $t('game_history.manual_draw') : $t('game_history.retreat_sched_sure') }}</strong></span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="modal-body">
-                    <table st-table="rowCollectionBasic" class="table b-t m-t text-center">
+                    <table st-table="rowCollectionBasic" class="table b-t m-t">
                         <thead>
                             <tr>
-                                <th class="text-center">{{ $t('game_history.periods') }}</th>
-                                <th class="text-center">{{ $t('game_history.draw_date') }}</th>
+                                <th>{{ $t('game_history.periods') }}</th>
+                                <th>{{ $t('game_history.draw_date') }}</th>
+                                <th v-show="mode">{{ $t('game_history.draw_number') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ modal.retreatSched.issue_number }}</td>
-                                <td>{{ modal.retreatSched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                                <td>{{ modal.scheduleResult.issue_number }}</td>
+                                <td>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                                <td v-show="mode">
+                                    <input class="form-control" v-model="modal.scheduleResult.result_str">
+                                    <span>{{ inputTips }}</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -50,7 +69,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="retreatSchedule">{{ $t('action.confirm') }}</button>
+                    <button type="button" class="btn btn-primary" @click="updateGameResult" v-if="mode">{{ $t('action.confirm') }}</button>                    
+                    <button type="button" class="btn btn-primary" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
@@ -63,12 +83,12 @@
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
                         <th scope="col">{{$t('game_history.draw_date')}}</th>
-                        <th scope="col">{{$t('game_history.draw_number')}}</th>
-                        <th scope="col">{{$t('game_history.memo')}}</th>
+                        <th scope="col">{{ mode ? $t('game_history.period_bet_record') : $t('game_history.draw_number')}}</th>
+                        <th scope="col">{{ mode ? $t('game_history.operating') : $t('game_history.memo')}}</th>
                     </tr>
                 </thead>
                 <tbody class="v-m">
-                    <tr v-if="isPageOne" v-for="sched in retreatScheds" :key="sched.id">
+                    <tr v-if="isPageOne" v-for="sched in retreatedScheds" :key="sched.id">
                         <td>{{ sched.issue_number }}</td>
                         <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
@@ -78,15 +98,19 @@
                             <span v-if="sched.status==='cancelled'">{{ $t('game_history.cancelled') }}</span>
                         </td>
                     </tr>
-                    <tr v-for = "selected_result in filteredResults" :key = "selected_result.game_id">
-                        <td>{{selected_result.issue_number}}</td>
-                        <td>{{selected_result.created_at | moment("YYYY-MM-DD HH:mm:ss")}}</td>
-                        <td class="result-balls">
-                            <span v-for="(result, index) in selected_result.result_str.split(',')" :class="getResultClass(result)" :key="index">
-                                <b> {{result}} </b>
+                    <tr v-for = "result in filteredResults" :key = "result.game_id">
+                        <td>{{ result.issue_number }}</td>
+                        <td>{{ (mode ? result.schedule_result : result.created_at) | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td v-if="mode"></td>
+                        <td v-else class="result-balls">
+                            <span v-show="result.result_str!==undefined" v-for="(resultball, index) in result.result_str.split(',')" :class="getResultClass(resultball)" :key="index">
+                                <b>{{ resultball }}</b>
                             </span>
                         </td>
-                        <td>{{selected_result.created_by === null ? '' : $t('game_history.manual_draw')}}</td>
+                        <td v-if="mode">
+                            <span class="label btn blue" @click="showModal(result)">{{ $t('game_history.manual_draw') }}</span>
+                        </td>
+                        <td v-else>{{ result.created_by === null ? '' : $t('game_history.manual_draw') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -96,7 +120,7 @@
         <pulling 
         :queryset="queryset"
         :query="query"
-        :api="gameResultApi"
+        :api="pullingApi"
         :extra="extra"
         ref="pulling"
         @query-data="queryData"
@@ -118,34 +142,38 @@ const dateFormat = 'YYYY-MM-DD'
 export default {
     data () {
         return {
+            mode: 0,
             game: {
                 id: '',
                 display_name: '',
-                game_code: ''
+                game_code: '',
+                rules: {}
             },
-            retreatScheds: [],
+            retreatedScheds: [],
             input: {
                 date: Vue.moment().format(dateFormat),
                 period: ''
             },
             modal: {
                 isShow: false,
-                retreatSched: {},
+                scheduleResult: {},
                 msg: ''
             },
-            gameResultApi: api.game_result,
+            extra: '',
+            pullingApi: '',
             queryset: [],
             query: {},
-            extra: '',
             today: Vue.moment().format(dateFormat)
         }
     },
     created () {
         const gameid = this.$route.params.id
+        this.mode = this.$route.query.mode || 0
         this.game.id = gameid
-        this.extra = `game=${gameid}&date=${this.today}`
+        this.extra = `game=${this.game.id}&date=${this.today}&${this.mode ? 'abnormal=True' : ''}`
+        this.pullingApi = this.mode ? api.game_schedule : api.game_result
         this.getGameName(gameid)
-        this.getRetreatSchedules(gameid)
+        this.getRetreatedSchedules(gameid)
 
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
@@ -154,32 +182,49 @@ export default {
     beforeMount () {
         this.timingPulling = setInterval(() => {
             this.$refs.pulling.rebase()
-        }, 20000)
+        }, 20 * 1000)
         this.timingRetreatShced = setInterval(() => {
-            this.getRetreatSchedules()
-        }, 5000)
+            this.getRetreatedSchedules()
+        }, 5 * 1000)
+    },
+    watch: {
+        mode (newMode) {
+            if (!this.mode) {
+                clearInterval(this.timingRetreatShced)
+            } else {
+                this.timingRetreatShced = setInterval(() => {
+                    this.getRetreatedSchedules()
+                }, 5 * 1000)
+            }
+            this.queryset = []
+            this.extra = `game=${this.game.id}&date=${this.today}${this.mode ? '&abnormal=True' : ''}`
+            this.pullingApi = this.mode ? api.game_schedule : api.game_result
+            this.$nextTick(() => {
+                this.$refs.pulling.rebase()
+            })
+        }
     },
     methods: {
         setDate () {
             const date = Vue.moment(this.input.date).format(dateFormat)
-            this.extra = `game=${this.game.id}&date=${date}`
+            this.extra = `game=${this.game.id}&date=${date}${this.mode ? '&abnormal=True' : ''}`
             if (date !== this.today) {
                 clearInterval(this.timingPulling)
             } else {
                 this.timingPulling = setInterval(() => {
                     this.$refs.pulling.rebase()
-                    this.getRetreatSchedules()
+                    this.getRetreatedSchedules()
                 }, 20000)
             }
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
             })
         },
-        getRetreatSchedules (gameid) {
+        getRetreatedSchedules (gameid) {
             gameid = gameid || this.game.id
-            this.$http.get(api.game_schedule + `?game=${gameid}&ongoing=True`)
+            this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
             .then(response => {
-                this.retreatScheds = response.data
+                this.retreatedScheds = response.data
             })
         },
         getGameName (gameid) {
@@ -187,10 +232,20 @@ export default {
             .then(response => {
                 this.game.display_name = response.data.display_name
                 this.game.game_code = response.data.code
+                this.game.rules = response.data.rules
             })
         },
         showModal (sched) {
-            this.modal.retreatSched = Object.assign({}, this.modal.retreatSched, sched)
+            if (this.mode) {
+                this.modal.scheduleResult = {
+                    ...this.modal.scheduleResult,
+                    game_code: sched.game_code,
+                    result_str: '',
+                    issue_number: sched.issue_number
+                }
+            } else {
+                this.modal.scheduleResult = sched
+            }
             this.modal.isShow = true
         },
         hideModal () {
@@ -202,11 +257,11 @@ export default {
             return [gameClass, resultClass]
         },
         retreatSchedule () {
-            this.$http.put(api.game_schedretreat + `${this.modal.retreatSched.id}/`, { 'status': 'cancelled' })
+            this.$http.put(api.game_schedretreat + `${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
             .then(response => {
                 this.modal.msg = this.$t('game_history.cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
-                this.getRetreatSchedules()
+                this.getRetreatedSchedules()
             }, response => {
                 let errMsg = ''
                 if (response.status === 400) {
@@ -215,10 +270,27 @@ export default {
                             errMsg += `${property} : ${response.data.error[index][property]}`
                         }
                     }
-                    this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.later_try') + `（${errMsg}）`
+                    this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${errMsg}）`
                     this.$refs.alertMsg.trigger('danger')
                 }
             })
+        },
+        updateGameResult () {
+            if (this.modal.scheduleResult.result_str) {
+                this.$http.post(api.game_result, this.modal.scheduleResult)
+                .then((response) => {
+                    if (response.data.code === 2000) {
+                        this.modal.msg = this.$t('game_history.manual_draw_success')
+                        this.$refs.alertMsg.trigger('success', 1, true)
+                    } else {
+                        this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${response.data.msg.join(' ')}）`
+                        this.$refs.alertMsg.trigger('danger', 3)
+                    }
+                })
+            } else {
+                this.modal.msg = this.$t('game_history.no_setting_draw_number')
+                this.$refs.alertMsg.trigger('warning', 3)
+            }
         },
         submit () {
             this.$refs.pulling.submit()
@@ -232,18 +304,16 @@ export default {
     },
     computed: {
         filteredResults () {
-            if (!this.queryset.length) {
-                return []
-            }
-            const rawResults = this.queryset
-            return rawResults.filter(rawResult => {
-                if (rawResult['issue_number'].indexOf(this.input.period) !== -1) {
-                    return true
-                }
+            return this.queryset.filter(result => {
+                return result['issue_number'].indexOf(this.input.period) !== -1
             })
         },
         isPageOne () {
-            return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat)
+            return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.mode
+        },
+        inputTips () {
+            let rules = this.game.rules
+            return `请输入${rules.num_len}个${rules.unique ? '不' : '可'}重复数字(${rules.range_value[0]}~${rules.range_value[1]})使用'${rules.separator}'分隔`
         }
     },
     components: {
@@ -269,11 +339,11 @@ export default {
   display: block;
 }
 .result-balls span{
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 2px;
 }
 .v-m td{
-    vertical-align: middle;
+  vertical-align: middle;
 }
 </style>
