@@ -269,10 +269,6 @@ export default {
     created () {
         this.$nextTick(() => {
             this.getPageAccessed()
-            this.$router.push({
-                path: this.$route.path + '?report_flag=true',
-                query: this.query
-            })
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
@@ -311,10 +307,6 @@ export default {
             this.queryset = []
             setTimeout(() => {
                 this.getPageAccessed()
-                this.$router.push({
-                    path: this.$route.path + '?report_flag=true',
-                    query: this.query
-                })
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
             }, 100)
@@ -396,7 +388,9 @@ export default {
         getPageAccessed () {
             this.router_path = this.$route.path
             if (this.router_path === '/online_member') {
-                this.query.logined = 1
+                this.$router.push({
+                    path: this.$route.path + '?report_flag=true&logined=1'
+                })
                 this.pageSelected = 'online_member'
             } else {
                 this.pageSelected = 'all_members'

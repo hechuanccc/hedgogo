@@ -338,9 +338,9 @@ export default {
         bank_title: 'Bank Information',
         name: 'Bank',
         province: 'Province',
-        address: 'Bank Branch',
+        address: 'Branch',
         city: 'City',
-        account: 'Bank Account'
+        account: 'Account'
     },
     status: {
         active: 'Active',
@@ -464,7 +464,7 @@ export default {
         no_setting_icon: 'No Setting Icon File.',
         no_setting_holiday: 'No Setting Holiday.',
         modify_success: 'Successfully modified!',
-        modify_fail: 'Fail to modidy!'
+        modify_fail: 'Fail to modify!'
     },
     game_history: {
         game: 'Game',

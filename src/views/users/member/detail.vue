@@ -27,8 +27,8 @@
             </div>
             <div class="col-xs-8 text-right">
               <div>
-                <router-link class="md-btn md-flat m-r-sm"  :to="'/report/actionrecord?username=' + member.username">{{$t('action.view_action_record')}}</router-link>
-                <router-link class="md-btn md-flat m-r-sm"  :to="'/report/betrecord?member=' + member.username + '&created_at_0=' + today + '&created_at_1=' + today">{{$t('action.view_todays_bet_record')}}</router-link>
+                <router-link class="md-btn md-flat m-r-sm"  :to="'/actionrecord?username=' + member.username">{{$t('action.view_action_record')}}</router-link>
+                <router-link class="md-btn md-flat m-r-sm"  :to="'/report/betrecord/today?member=' + member.username + '&created_at_0=' + today + '&created_at_1=' + today">{{$t('action.view_todays_bet_record')}}</router-link>
                 <template v-if="$root.permissions.includes('update_member_details')">
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('action.reset_password')}}</a>
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword(2, $event)">{{$t('action.reset_withdraw_password')}}</a>
@@ -119,11 +119,11 @@
               <div class="row">
                 <div class="col-md-5">
                   <span class="text-muted">{{$t('betrecord.win')}}</span>
-                  <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=1'">{{member.total_gain | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
                 <div class="col-md-5">
                   <span class="text-muted">{{$t('betrecord.lose')}}</span>
-                  <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=0'">{{member.total_loss | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link></div>
                 </div>
               </div>
             </div>
@@ -233,8 +233,8 @@
               <div v-else class="text-muted"><small>{{$t('common.no_record')}}</small></div>
             </div>
             <div class="col-xs-5">
-              <router-link v-if="member.last_login" class="m-r" :to="'/report/login?member=' + member.username">{{$t('member.view_all_login')}}</router-link>
-              <router-link v-if="member.last_login" :to="'/report/login?ipaddr=' + member.last_login.ipaddr">{{$t('member.view_login_by_ip')}}</router-link>
+              <router-link v-if="member.last_login" class="m-r" :to="'/login_record?member=' + member.username">{{$t('member.view_all_login')}}</router-link>
+              <router-link v-if="member.last_login" :to="'/login_record?ipaddr=' + member.last_login.ipaddr">{{$t('member.view_login_by_ip')}}</router-link>
             </div>
           </div>
 
