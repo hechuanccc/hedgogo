@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <template v-for = "(game, index) in game_draw">
-                <tr class="v-m text-center" :key="game.game_id" v-if="abnormalPeriods[game.game_id]">
+                <tr class="v-m text-center" :key="index" v-if="abnormalPeriods[game.game_id]">
                     <td class="text-left p-l-md" style="text-transform: uppercase;"
                     :rowspan="abnormalPeriods[game.game_id].length+1"
                     >
