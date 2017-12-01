@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <template v-for = "(game, index) in game_draw">
-                <tr class="v-m text-center" :key="index" v-if="abnormalPeriods[game.game_id]">
+                <tr class="v-m text-center" v-if="abnormalPeriods[game.game_id]">
                     <td class="text-left p-l-md" style="text-transform: uppercase;"
                     :rowspan="abnormalPeriods[game.game_id].length+1"
                     >
@@ -53,14 +53,14 @@
                         </td>
                     </template>
                 </tr>
-                <tr class="text-center v-m" v-for="(period, index) in abnormalPeriods[game.game_id]" v-if="index" :key="index">
+                <tr class="text-center v-m" v-for="(period, index) in abnormalPeriods[game.game_id]" v-if="index">
                     <td class="">{{ period.issue_number }}</td>
                     <td class=""></td>
                     <td class="p-b-sm p-t-sm">
                         <span class="label btn blue" @click="showModal(game, period)">{{ $t('game_history.manual_draw') }}</span>
                     </td>
                 </tr>
-                <tr v-show="abnormalPeriods[game.game_id]">
+                <tr v-if="abnormalPeriods[game.game_id]">
                     <td colspan="3" class="text-center">
                         <router-link :to = "'/game_history/' + game.game_id + '?mode=1'"
                         class = "">
@@ -95,14 +95,21 @@
                         <td>{{ modal.game.resultTime | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
                             <input class="form-control" v-model="modal.gameResult.result_str">
-                            <span>{{ inputTips }}</span>
+                            <span>{{ $t('game_history.result_str_tips',{
+                                    num_len: modal.game.rules.num_len,
+                                    unique: modal.game.rules.unique?$t('game_history.non_repetitive'):$t('game_history.repeatable'),
+                                    range_floor: modal.game.rules.range_value[0],
+                                    range_ceil: modal.game.rules.range_value[1],
+                                    separator: modal.game.rules.separator
+                                })}}</span>
                         </td>
                     </tr>
                     </tbody>
                     </table>
                     <div class="m-l m-r">
                         <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
-                    </div>                </div>
+                    </div>                
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" @click="updateGameResult">{{ $t('action.create') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>

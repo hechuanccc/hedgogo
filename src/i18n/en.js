@@ -498,7 +498,10 @@ export default {
         expired_period: 'Expired Period',
         no_expired_period: 'No Expired Period',
         period_bet_record: 'Bet Records',
-        show_all: 'Show all'
+        show_all: 'Show all',
+        result_str_tips: 'Please enter %{num_len} %{unique} numbers(%{range_floor}~%{range_ceil}) separated by \'%{separator}\'.',
+        repeatable: 'repeatable',
+        non_repetitive: 'non-repetitive'
     },
     agent: {
         number: 'No.',
