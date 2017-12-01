@@ -114,7 +114,12 @@
                       </td>
                       <td>{{t.amount | currency('￥')}}</td>
                       <td>
-                        <router-link :to="'/remit_payee/' + t.remit_info.remit_payee.id" v-if="t.remit_info" >{{t.remit_info.remit_payee.bank.name}} - {{t.remit_info.remit_payee.payee_name}}</router-link>
+                        <router-link :to="'/remit_payee/' + t.remit_info.remit_payee.id" v-if="t.remit_info.remit_payee.payee_name && t.remit_info.remit_payee.bank.name">
+                          {{t.remit_info.remit_payee.bank.name}} - {{t.remit_info.remit_payee.payee_name}}
+                        </router-link>
+                        <router-link :to="'/remit_payee/' + t.remit_info.remit_payee.id" v-else-if="t.remit_info.remit_payee.nickname">
+                          {{t.remit_info.remit_payee.nickname}}
+                        </router-link>
                           <span v-else> - </span>
                       </td>
                       <td>{{t.memo}}</td>

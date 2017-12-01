@@ -119,11 +119,11 @@
               <div class="row">
                 <div class="col-md-5">
                   <span class="text-muted">{{$t('betrecord.win')}}</span>
-                  <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=1'">{{member.total_gain | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
                 <div class="col-md-5">
                   <span class="text-muted">{{$t('betrecord.lose')}}</span>
-                  <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=0'">{{member.total_loss | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link></div>
                 </div>
               </div>
             </div>
