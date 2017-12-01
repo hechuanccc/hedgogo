@@ -59,7 +59,13 @@
                                 <td>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                                 <td v-show="mode">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str">
-                                    <span>{{ inputTips }}</span>
+                                    <span>{{ $t('game_history.result_str_tips',{
+                                    num_len: game.rules.num_len,
+                                    unique: game.rules.unique?$t('game_history.non_repetitive'):$t('game_history.repeatable'),
+                                    range_floor: game.rules.range_value[0],
+                                    range_ceil: game.rules.range_value[1],
+                                    separator: game.rules.separator
+                                })}}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -310,10 +316,6 @@ export default {
         },
         isPageOne () {
             return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.mode
-        },
-        inputTips () {
-            let rules = this.game.rules
-            return `请输入${rules.num_len}个${rules.unique ? '不' : '可'}重复数字(${rules.range_value[0]}~${rules.range_value[1]})使用'${rules.separator}'分隔`
         }
     },
     components: {

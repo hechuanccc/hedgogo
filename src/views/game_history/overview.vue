@@ -241,12 +241,6 @@ export default{
             }
         }
     },
-    computed: {
-        inputTips () {
-            let rules = this.modal.game.rules
-            return `请输入${rules.num_len}个${rules.unique ? '不' : '可'}重复数字(${rules.range_value[0]}~${rules.range_value[1]})使用'${rules.separator}'分隔`
-        }
-    },
     beforeDestroy () {
         clearInterval(this.timing)
     },
