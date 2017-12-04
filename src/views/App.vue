@@ -128,8 +128,8 @@ export default {
                 return
             }
             this.$http.get(api.my).then((response) => {
-                this.username = response.data.username
-                this.userType = response.data.type
+                this.username = response.data.data.username
+                this.userType = response.data.data.type
                 if (this.userType === 'agent') {
                     this.agentPermission()
                 }
@@ -160,7 +160,7 @@ export default {
         getPermissions () {
             if (this.userType !== 'agent') {
                 this.$http.get(api.permissionsUser).then((response) => {
-                    this.permissions = response.data
+                    this.permissions = response.data.data
                     // permissions must be loaded before we can handle other data
                     this.setUpAuth()
                     this.setUpRouterHooks()
