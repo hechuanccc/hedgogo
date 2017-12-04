@@ -84,12 +84,17 @@
     </div>
     <div class="card col">
         <div class="card-body">
-            <table class="table table-hover" v-show="queryset.length>0">
+            <table class="table" v-show="queryset.length>0">
                 <thead>
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
                         <th scope="col">{{$t('game_history.draw_date')}}</th>
-                        <th scope="col">{{ mode ? $t('game_history.period_bet_record') : $t('game_history.draw_number')}}</th>
+                        <th scope="col" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
+                        <th scope="col" v-else>
+                            <button class="btn btn-xs blue">{{ $t('game_history.show_number') }}</button>
+                            <button class="btn btn-xs blue">{{ $t('game_history.show_big_small') }}</button>
+                            <button class="btn btn-xs blue">{{ $t('game_history.show_odd_even') }}</button>
+                        </th>
                         <th scope="col">{{ mode ? $t('game_history.operating') : $t('game_history.memo')}}</th>
                     </tr>
                 </thead>
@@ -109,9 +114,10 @@
                         <td>{{ (mode ? result.schedule_result : result.created_at) | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode"></td>
                         <td v-else class="result-balls">
-                            <span v-show="result.result_str!==undefined" v-for="(resultball, index) in result.result_str.split(',')" :class="getResultClass(resultball)" :key="index">
+                            <!-- <span v-show="result.result_str!==undefined" v-for="(resultball, index) in result.result_str.split(',')" :class="getResultClass(resultball)" :key="index">
                                 <b>{{ resultball }}</b>
-                            </span>
+                            </span> -->
+                            <span class="label label-warning">{{ $t('game_history.big') }}</span>
                         </td>
                         <td v-if="mode">
                             <span class="label btn blue" @click="showModal(result)">{{ $t('game_history.manual_draw') }}</span>
@@ -263,7 +269,7 @@ export default {
             return [gameClass, resultClass]
         },
         retreatSchedule () {
-            this.$http.put(api.game_schedretreat + `${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
+            this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
             .then(response => {
                 this.modal.msg = this.$t('game_history.cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
@@ -316,6 +322,9 @@ export default {
         },
         isPageOne () {
             return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.mode
+        },
+        numColGroup () {
+
         }
     },
     components: {

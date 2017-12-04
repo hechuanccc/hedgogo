@@ -1,23 +1,25 @@
 <template>
   <div>
-    <div class="m-b" v-if="!$root.permissions.includes('change_role')" >
-      <button class="md-btn w-sm blue" @click="showModal(1)">{{$t('role_manage.role_add_btn')}}</button>
+    <div class="row">
+        <div class="pull-right m-r">
+            <router-link tag="button" class="md-btn w-sm blue m-b"  to="/role/add">{{$t('role_manage.role_add_btn')}}</router-link>
+        </div>
     </div>
     <div class="box" v-if="rolesList.length">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t">
-          <thead>
-          <tr>
-            <th>{{$t('role_manage.id')}}</th>
-            <th>{{$t('role_manage.name')}}</th>
-            <th>{{$t('role_manage.created_at')}}</th>
-            <th>{{$t('role_manage.type')}}</th>
-            <th>{{$t('role_manage.operating')}}</th>
-          </tr>
-          </thead>
-          <tbody v-if="rolesList.length > 0">
+        <table st-table="rowCollectionBasic" class="table table-striped b-t">
+            <thead>
+                <tr>
+                    <th>{{$t('role_manage.id')}}</th>
+                    <th>{{$t('role_manage.name')}}</th>
+                    <th>{{$t('role_manage.created_at')}}</th>
+                    <th>{{$t('role_manage.type')}}</th>
+                    <th>{{$t('role_manage.operating')}}</th>
+                </tr>
+            </thead>
+            <tbody v-if="rolesList.length > 0">
                 <tr v-for="role in rolesList" :key="role.id">
                     <td>{{ role.id }}</td>
-                    <td>{{ role.name }}</td>
+                    <td><router-link :to="'/roles/' + role.id">{{ role.name }}</router-link></td>
                     <td>{{ role.created_at | datetimeFilter }}</td>
                     <td>{{ role.type | typeFilter }}</td>
                     <td>
@@ -25,7 +27,7 @@
                         <a class="p-l-xs" @click="deleteRole(role.id)" v-if="role.id !== 4">{{$t('role_manage.delete')}}</a>
                     </td>
                 </tr>
-          </tbody>
+            </tbody>
         </table>
     </div>
     <div class="modal" v-if="modal.isShow">
@@ -83,7 +85,7 @@ export default {
     methods: {
         getRolesList () {
             this.$http.get(api.managerole).then((response) => {
-                this.rolesList = response.data
+                this.rolesList = response.data.data
             })
         },
         updateRole () {

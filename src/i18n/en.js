@@ -81,7 +81,10 @@ export default {
         online_member_list: 'Online Member',
         system_configuration: 'Settings',
         permissions: 'Permissions',
-        roles: 'Roles',
+        roles: 'Role',
+        role_detail: 'Role Detail',
+        role_add: 'Add Role Setting',
+        role_edit: 'Edit Role Setting',
         global_parameters: 'Global Parameters',
         logging: 'Logging',
         login_logs: 'Login Logs',
@@ -501,7 +504,14 @@ export default {
         show_all: 'Show all',
         result_str_tips: 'Please enter %{num_len} %{unique} numbers(%{range_floor}~%{range_ceil}) separated by \'%{separator}\'.',
         repeatable: 'repeatable',
-        non_repetitive: 'non-repetitive'
+        non_repetitive: 'non-repetitive',
+        show_number: 'Number',
+        show_big_small: 'Comparison',
+        show_odd_even: 'Parity',
+        big: 'B',
+        small: 'S',
+        odd: 'O',
+        even: 'E'
     },
     agent: {
         number: 'No.',
@@ -723,8 +733,10 @@ export default {
         created_at: 'Created at',
         type: 'Type',
         role_add_btn: 'Add Role',
+        role_info: 'Role Information',
         operating: 'Operating',
         modify: 'Modify',
-        delete: 'Delete'
+        delete: 'Delete',
+        role_permission: 'Role\'s Permissions'
     }
 }

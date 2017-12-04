@@ -83,6 +83,9 @@ export default {
         permissions: '權限管理',
         permission_add: '添加权限',
         roles: '角色管理',
+        role_detail: '角色详情',
+        role_add: '添加角色',
+        role_edit: '修改角色',
         global_parameters: '系統參數配置',
         logging: '日誌管理',
         login_logs: '登錄日誌',
@@ -502,7 +505,14 @@ export default {
         show_all: '显示全部',
         result_str_tips: '请输入%{num_len}个%{unique}数字(%{range_floor}~%{range_ceil})使用\'%{separator}\'分隔',
         repeatable: '可重复',
-        non_repetitive: '不重复'
+        non_repetitive: '不重复',
+        show_number: '显示号码',
+        show_big_small: '显示大小',
+        show_odd_even: '显示单双',
+        big: '大',
+        small: '小',
+        odd: '单',
+        even: '双'
     },
     agent: {
         number: '编号',
@@ -724,8 +734,10 @@ export default {
         created_at: '添加时间',
         type: '类型',
         role_add_btn: '添加角色',
+        role_info: '角色信息',
         operating: '操作',
         modify: '修改',
-        delete: '删除'
+        delete: '删除',
+        role_permission: '角色权限'
     }
 }
