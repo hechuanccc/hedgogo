@@ -374,7 +374,7 @@ export default {
         sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
         cancelled_bets: '赌注被取消了',
-        total_valid_bet_amount: '总有效投注金额'
+        total_valid_bet_amount: '有效投注总’笔’数'
     },
     action: {
         view_today_report: '查看今日报表',
