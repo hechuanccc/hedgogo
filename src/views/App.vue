@@ -128,8 +128,8 @@ export default {
                 return
             }
             this.$http.get(api.my).then((response) => {
-                this.username = response.data.username
-                this.userType = response.data.type
+                this.username = response.data.data.username
+                this.userType = response.data.data.type
                 if (this.userType === 'agent') {
                     this.agentPermission()
                 }
