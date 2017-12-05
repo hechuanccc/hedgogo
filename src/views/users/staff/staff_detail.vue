@@ -207,9 +207,9 @@ export default {
 
 <style scoped>
 .permissions-list {
-  list-style:none;
-  padding-left:0;
-  margin-bottom:0;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 .ul-padding-vertical-05 > li {
   padding: 0.5em 0;

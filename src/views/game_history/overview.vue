@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="card">
-        <table class="table table-bordered" v-if="count>=game_draw.length&&count">
+        <table class="table table-bordered" v-if="count>=gameDraw.length&&count">
             <thead>
                 <tr>
                     <th scope="col" rowspan="2" width="20%" class="p-l-md">
@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for = "(game, index) in game_draw">
+                <template v-for = "(game, index) in gameDraw">
                 <tr class="v-m text-center" v-if="abnormalPeriods[game.game_id]" :key="index">
                     <td class="text-left p-l-md" style="text-transform: uppercase;"
                     :rowspan="abnormalPeriods[game.game_id].length+1"
@@ -127,7 +127,7 @@ const dateFormat = 'YYYY-MM-DD'
 export default{
     data () {
         return {
-            game_draw: [],
+            gameDraw: [],
             abnormalPeriods: [],
             abnormalPeriodsCount: [],
             isLatest: false,
@@ -151,29 +151,24 @@ export default{
         }
     },
     created () {
-        this.getPeriods().then((games) => {
-            this.game_draw = games
-            this.getAbnormalPeriods(games)
-        })
+        this.getPeriods()
     },
     beforeMount () {
         this.timing = setInterval(() => {
             this.getPeriods()
-            this.getAbnormalPeriods()
         }, 15 * 1000)
     },
     methods: {
         getPeriods () {
-            return new Promise((resolve, reject) => {
-                this.$http.get(api.game_draw).then(response => {
-                    resolve(response.data)
-                }, response => {
-                    this.errorCallback(response)
-                })
+            this.$http.get(api.game_draw).then(response => {
+                this.gameDraw = response.data
+                this.getAbnormalPeriods(response.data)
+            }, response => {
+                this.errorCallback(response)
             })
         },
         getAbnormalPeriods (games) {
-            games = games || this.game_draw
+            games = games || this.gameDraw
             games.forEach(game => {
                 this.$http.get(`${api.game_schedule}?game=${game.game_id}&abnormal=True&offset=0&limit=4&`).then(response => {
                     if (response.data.code === 2000) {
