@@ -1,17 +1,17 @@
 #!/bin/bash
 # NPM commands and Azure cli scripts to deploy our static VueJS in a CDN
 
-# Needed to avoid piling up of data in image and Azure file storage
-rm -rf dist
-/root/bin/az storage blob delete-batch --source static
-
-npm install
-npm run build
-
 export root_container=\$root  # is '\' is to escape the special character
 export audio_container=audio
 export langs_container=langs
 export static_container=static
+
+# Needed to avoid piling up of data in image and Azure file storage
+rm -rf dist
+/root/bin/az storage blob delete-batch --source $static_container
+
+npm install
+npm run build
 
 # Take note that the format URL for the storage account is {storage-url}/{blob-container} and $root is the only way to avoid the "blob container" format and the other static holders need to be declared as blobs to maintain the folder structure
 /root/bin/az storage container create --public-access blob --name $root_container

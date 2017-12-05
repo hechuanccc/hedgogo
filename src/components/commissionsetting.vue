@@ -26,7 +26,7 @@ export default {
         this.$nextTick(() => {
             this.$http.get(api.commission + '?opt_fields=id,name')
             .then(response => {
-                this.commissionsettings = response.data
+                this.commissionsettings = response.data.data
                 if (this.default) {
                     this.commissionsetting = this.default
                 }

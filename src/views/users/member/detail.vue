@@ -226,7 +226,8 @@
             <div class="col-xs-5">
               <span class="text-muted">{{$t('member.last_login')}}</span>
               <div v-if="member.last_login">
-                <div> IP : {{member.last_login.ipaddr}}</div>
+                <div>{{$t('member.ip')}} : {{member.last_login.ipaddr}}</div>
+                <div>{{$t('member.login_platform')}}: {{member.last_login.platform}}</div>
                 <div>{{member.last_login.country}} {{member.last_login.city}} {{member.last_login.isp}} </div>
                 <div>{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm:ss")}}</div>
               </div>
@@ -396,7 +397,7 @@
                     'account_id': this.member.id
                 }, {emulateJSON: true}).then(response => {
                     this.passwordChanged = type
-                    this.newPassword = response.data.new_password || response.data.new_withdraw_password
+                    this.newPassword = response.data.data.new_password || response.data.data.new_withdraw_password
                 }, response => {
                     this.passwordChanged = -1
                     this.errorMsg = response.data.error

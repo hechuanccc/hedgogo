@@ -117,7 +117,7 @@
             },
             getEnvelope (id) {
                 this.$http.get(api.envelope + id).then(response => {
-                    this.envelope = response.data
+                    this.envelope = response.data.data
                 })
             }
         }

@@ -293,7 +293,7 @@
                 }
                 this.$http.post(api.resetagent, { 'account_id': this.agent.id }, {emulateJSON: true}).then(response => {
                     this.passwordChanged = 1
-                    this.newPassword = response.data.new_password
+                    this.newPassword = response.data.data.new_password
                 }, response => {
                     this.passwordChanged = -1
                     this.errorMsg = response.data.error

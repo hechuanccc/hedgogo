@@ -393,7 +393,7 @@
             },
             getGameList () {
                 this.$http.get(api.game_list).then(response => {
-                    this.gamelist = response.data
+                    this.gamelist = response.data.data
                 })
             },
             getPageAccessed () {
@@ -401,6 +401,9 @@
                 if (this.router_path === '/report/betrecord/today') {
                     this.created_at_0 = this.today
                     this.created_at_1 = this.today
+                    if (this.$route.query.member && this.$route.query.created_at_0 && this.$route.query.created_at_1) {
+                        this.query.member = this.$route.query.member
+                    }
                     this.pageSelected = 'today'
                 } else if (this.router_path === '/report/betrecord/history') {
                     this.created_at_0 = ''
@@ -430,7 +433,7 @@
             },
             getGameCategory (game) {
                 this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(response => {
-                    this.categories = response.data
+                    this.categories = response.data.data
                 })
             },
             newWindow () {
