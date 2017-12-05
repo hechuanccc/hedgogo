@@ -3,7 +3,7 @@
         <div class="m-b">
             <ol class="breadcrumb">
                 <li class="active"><router-link to="/staff">{{$t('nav.staff')}}</router-link></li>
-                <li class="active" >{{$route.meta.title}}</li>
+                <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
         <div class="alert alert-success" v-if="passwordSuccess">
@@ -79,10 +79,10 @@
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('staff.status')}}</span>
                         <div>
-                            <span class="label success" v-if="staff.status==1" >{{$t('status.active')}}</span>
+                            <span class="label success" v-if="staff.status===1">{{$t('status.active')}}</span>
                             <span class="label" v-else >{{$t('status.inactive')}}</span>
                             <template v-if="$root.permissions.includes('add_change_staff')">
-                                <a class="text-sm m-l" @click="toggleStatus" v-if="staff.status===1" >禁用</a>
+                                <a class="text-sm m-l" @click="toggleStatus" v-if="staff.status===1">禁用</a>
                                 <a class="text-sm m-l" @click="toggleStatus" v-else >启用</a>
                             </template>
                             <span class="text-success text-sm m-l" v-show="statusUpdated" @click="toggleStatus">状态已更新</span>

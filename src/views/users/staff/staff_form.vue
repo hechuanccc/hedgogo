@@ -104,128 +104,128 @@
     </div>
 </template>
 <script>
-import api from '../../../api'
-import { handleError } from '../../../utils/handleError'
-export default {
-    data () {
-        return {
-            staff: {
-                id: '',
-                username: '',
-                password: '',
-                user_group: {
-                    id: undefined,
-                    permissions: []
+    import api from '../../../api'
+    import { handleError } from '../../../utils/handleError'
+    export default {
+        data () {
+            return {
+                staff: {
+                    id: '',
+                    username: '',
+                    password: '',
+                    user_group: {
+                        id: undefined,
+                        permissions: []
+                    },
+                    email: ''
                 },
-                email: ''
-            },
-            permissions: [],
-            staffAdvpermissionsList: [],
-            field_locales: {
-                'username': '用户名错误：',
-                'permission': '权限错误：',
-                'email': '邮箱错误：'
-            },
-            roles: [],
-            creating: false,
-            errorMsg: '',
-            showModal: false
-        }
-    },
-    created () {
-        this.getRoles()
-        this.getPermissionsAll()
-        if (this.$route.params.staffId) {
-            this.getStaff(this.$route.params.staffId).then((staff) => {
-                this.getStaffAdvpermissionsList(staff)
-            })
-        } else {
-            this.staffAdvpermissionsList = []
-        }
-    },
-    methods: {
-        onSubmit (e) {
-            if (this.staff.id) {
-                for (let x in this.staff) {
-                    if (!this.staff[x]) {
-                        delete this.staff[x]
-                    }
-                }
-                this.getSelect()
-                this.$http.put(api.staff + this.staff.id + '/', this.staff).then(response => {
-                    if (response.status === 200) {
-                        this.$router.push('/staff/' + response.data.id)
-                    }
+                permissions: [],
+                staffAdvpermissionsList: [],
+                field_locales: {
+                    'username': '用户名错误：',
+                    'permission': '权限错误：',
+                    'email': '邮箱错误：'
+                },
+                roles: [],
+                creating: false,
+                errorMsg: '',
+                showModal: false
+            }
+        },
+        created () {
+            this.getRoles()
+            this.getPermissionsAll()
+            if (this.$route.params.staffId) {
+                this.getStaff(this.$route.params.staffId).then((staff) => {
+                    this.getStaffAdvpermissionsList(staff)
                 })
             } else {
-                this.getSelect()
-                this.$http.post(api.staff, this.staff).then(response => {
-                    if (response.status === 201) {
-                        this.$router.push('/staff/' + response.data.id)
-                    }
-                }, response => {
-                    this.errorMsg = ''
-                    for (let field in this.field_locales) {
-                        this.errorMsg += handleError(response, field, this.field_locales)
-                    }
-                })
+                this.staffAdvpermissionsList = []
             }
         },
-        getStaff (id) {
-            return new Promise((resolve, reject) => {
-                this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
+        methods: {
+            onSubmit (e) {
+                if (this.staff.id) {
+                    for (let x in this.staff) {
+                        if (!this.staff[x]) {
+                            delete this.staff[x]
+                        }
+                    }
+                    this.getSelect()
+                    this.$http.put(api.staff + this.staff.id + '/', this.staff).then(response => {
+                        if (response.status === 200) {
+                            this.$router.push('/staff/' + response.data.id)
+                        }
+                    })
+                } else {
+                    this.getSelect()
+                    this.$http.post(api.staff, this.staff).then(response => {
+                        if (response.status === 201) {
+                            this.$router.push('/staff/' + response.data.id)
+                        }
+                    }, response => {
+                        this.errorMsg = ''
+                        for (let field in this.field_locales) {
+                            this.errorMsg += handleError(response, field, this.field_locales)
+                        }
+                    })
+                }
+            },
+            getStaff (id) {
+                return new Promise((resolve, reject) => {
+                    this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
+                        if (response.data.code === 2000) {
+                            this.staff = response.data.data
+                            resolve(response.data.data)
+                        } else {
+                            reject(response.data)
+                        }
+                    })
+                })
+            },
+            getStaffAdvpermissionsList (staff) {
+                staff.user_group.permissions.forEach(list => {
+                    list.advpermissions.forEach(permission => {
+                        this.staffAdvpermissionsList.push(permission.id)
+                    })
+                })
+            },
+            getPermissionsAll () {
+                this.$http.get(api.permissions + '?opt_expand=permissions').then((response) => {
+                    this.permissions = response.data.data
+                })
+            },
+            getRoles () {
+                this.$http.get(api.managerole).then((response) => {
                     if (response.data.code === 2000) {
-                        this.staff = response.data.data
-                        resolve(response.data.data)
-                    } else {
-                        reject(response.data)
+                        this.roles = response.data.data
                     }
                 })
-            })
-        },
-        getStaffAdvpermissionsList (staff) {
-            staff.user_group.permissions.forEach(list => {
-                list.advpermissions.forEach(permission => {
-                    this.staffAdvpermissionsList.push(permission.id)
-                })
-            })
-        },
-        getPermissionsAll () {
-            this.$http.get(api.permissions + '?opt_expand=permissions').then((response) => {
-                this.permissions = response.data.data
-            })
-        },
-        getRoles () {
-            this.$http.get(api.managerole).then((response) => {
-                if (response.data.code === 2000) {
-                    this.roles = response.data.data
+            },
+            getSelect () {
+                let selectId = []
+                for (let list in this.permissionsList) {
+                    for (let index in this.permissionsList[list].permissions) {
+                        if (this.permissionsList[list].permissions[index].checked) {
+                            selectId.push(this.permissionsList[list].permissions[index].id)
+                        }
+                    }
                 }
-            })
-        },
-        getSelect () {
-            let selectId = []
-            for (let list in this.permissionsList) {
-                for (let index in this.permissionsList[list].permissions) {
-                    if (this.permissionsList[list].permissions[index].checked) {
-                        selectId.push(this.permissionsList[list].permissions[index].id)
+                this.staff.permissions = selectId
+            },
+            setRolePermission (permission) {
+                this.clearSelectAll()
+                for (let list in this.permissionsList) {
+                    for (let index in this.permissionsList[list].permissions) {
+                        if (permission.includes(this.permissionsList[list].permissions[index].id)) {
+                            this.permissionsList[list].permissions[index].checked = 1
+                        }
                     }
                 }
             }
-            this.staff.permissions = selectId
-        },
-        setRolePermission (permission) {
-            this.clearSelectAll()
-            for (let list in this.permissionsList) {
-                for (let index in this.permissionsList[list].permissions) {
-                    if (permission.includes(this.permissionsList[list].permissions[index].id)) {
-                        this.permissionsList[list].permissions[index].checked = 1
-                    }
-                }
-            }
-        }
 
+        }
     }
-}
 </script>
 <style scoped>
     .modal-backdrop, .modal{z-index: 1}
