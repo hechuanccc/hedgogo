@@ -168,13 +168,13 @@
             getEnvelopeGroup (id) {
                 this.$http.get(api.envelope_settings + id + '/?opt_expand=group').then((response) => {
                     setTimeout(() => {
-                        this.envelope = response.data
+                        this.envelope = response.data.data
                     }, 500)
                 })
             },
             getEnvelope () {
                 this.$http.get(api.envelope + '?status=1').then((response) => {
-                    this.envelopes = response.data
+                    this.envelopes = response.data.data
                 })
             },
             changeFromLevel (val, index) {
