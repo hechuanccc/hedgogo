@@ -57,7 +57,7 @@ export default {
         },
         getReturnsettings () {
             this.$http.get(api.return + '?opt_fields=id,name,status,member_count,group_count').then((response) => {
-                this.returnsettings = response.data
+                this.returnsettings = response.data.data
             })
         }
     }

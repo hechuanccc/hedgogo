@@ -323,9 +323,9 @@ export default {
         },
         getLevel (id) {
             this.$http.get(api.level + id).then((response) => {
-                let keys = Object.keys(response.data)
+                let keys = Object.keys(response.data.data)
                 for (let i = 0; i < keys.length; i++) {
-                    this[keys[i]] = response.data[keys[i]]
+                    this[keys[i]] = response.data.data[keys[i]]
                 }
                 // this.data = Object.assign(this.$data, response.data)
                 // this.member_count = response.data.member_count || this.$data.member_count

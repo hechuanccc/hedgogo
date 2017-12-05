@@ -397,7 +397,7 @@
                     'account_id': this.member.id
                 }, {emulateJSON: true}).then(response => {
                     this.passwordChanged = type
-                    this.newPassword = response.data.new_password || response.data.new_withdraw_password
+                    this.newPassword = response.data.data.new_password || response.data.data.new_withdraw_password
                 }, response => {
                     this.passwordChanged = -1
                     this.errorMsg = response.data.error

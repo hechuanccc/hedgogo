@@ -65,7 +65,7 @@ export default {
         getCommissionsettings () {
             let fields = '?opt_fields=invest_least,id,name,status,deposit_fee,deposit_fee_max,withdraw_fee,withdraw_fee_max,member_count,agent_count'
             this.$http.get(api.commission + fields).then((response) => {
-                this.commissionsettings = response.data
+                this.commissionsettings = response.data.data
             })
         }
     }
