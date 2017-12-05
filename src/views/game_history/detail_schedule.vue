@@ -84,12 +84,13 @@
     </div>
     <div class="card col">
         <div class="card-body">
-            <table class="table table-hover" v-show="queryset.length>0">
+            <table class="table" v-show="queryset.length>0">
                 <thead>
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
                         <th scope="col">{{$t('game_history.draw_date')}}</th>
-                        <th scope="col">{{ mode ? $t('game_history.period_bet_record') : $t('game_history.draw_number')}}</th>
+                        <th scope="col" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
+                        <th scope="col" v-else>{{ $t('game_history.draw_number') }}</th>
                         <th scope="col">{{ mode ? $t('game_history.operating') : $t('game_history.memo')}}</th>
                     </tr>
                 </thead>
@@ -152,7 +153,7 @@ export default {
             game: {
                 id: '',
                 display_name: '',
-                game_code: '',
+                game: '',
                 rules: {}
             },
             retreatedScheds: [],
@@ -230,15 +231,12 @@ export default {
             gameid = gameid || this.game.id
             this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
             .then(response => {
-                this.retreatedScheds = response.data
+                this.retreatedScheds = response.data.data
             })
         },
         getGameName (gameid) {
-            this.$http.get(api.game_list + gameid)
-            .then(response => {
-                this.game.display_name = response.data.display_name
-                this.game.game_code = response.data.code
-                this.game.rules = response.data.rules
+            this.$http.get(api.game_list + gameid).then(response => {
+                this.game = response.data.data
             })
         },
         showModal (sched) {
@@ -258,12 +256,12 @@ export default {
             this.modal.isShow = false
         },
         getResultClass (resultNum) {
-            let gameClass = `result-${this.game.game_code}`
+            let gameClass = `result-${this.game.code}`
             let resultClass = `resultnum-${parseInt(resultNum)}`
             return [gameClass, resultClass]
         },
         retreatSchedule () {
-            this.$http.put(api.game_schedretreat + `${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
+            this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
             .then(response => {
                 this.modal.msg = this.$t('game_history.cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)

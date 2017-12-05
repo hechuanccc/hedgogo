@@ -129,9 +129,9 @@ export default {
     methods: {
         getGameList () {
             this.$http.get(api.game_list).then(response => {
-                this.queryset = response.data
+                this.queryset = response.data.data
                 const games = {}
-                response.data.forEach(game => {
+                response.data.data.forEach(game => {
                     games[game.id] = game.display_name
                 })
                 this.$store.dispatch('setGame', games)

@@ -15,58 +15,42 @@
                             <div class="form-group">
                                 <label for="username" class="label-width">{{$t('staff.staff_name')}}</label>
                                 <div class="inline-form-control">
-                                    <input type="text" class="form-control" name="username" :placeholder="$t('common.username')" v-model="staff.username" required :disabled="!isCreating">
+                                    <input type="text" class="form-control" name="username" :placeholder="$t('common.username')" v-model="staff.username" required>
                                 </div>
                             </div>
-                            <div class="form-group" v-if="isCreating">
+                            <div class="form-group" v-if="!staff.id">
                                 <label for="password" class="label-width">{{$t('staff.password')}}</label>
                                 <div class="inline-form-control">
                                     <input type="password" class="form-control" name="password" :placeholder="$t('staff.password')" v-model="staff.password">
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <label for="permission" class="label-width">{{$t('staff.role')}}</label>
+                                <label for="role" class="label-width">{{$t('staff.role')}}</label>
                                 <div class="inline-form-control">
-                                    <select class="form-control w-sm c-select" name="permission" v-model="staff.group" :disabled="!$root.permissions.includes('add_change_staff')">
-                                        <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{r.name}}</option>
+                                    <select class="form-control w-sm c-select" name="role" v-model="staff.user_group.id">
+                                        <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{ r.name }}</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="email" class="label-width">{{$t('staff.email')}}</label>
                                 <div class="inline-form-control">
                                     <input type="email" class="form-control" name="email" :placeholder="$t('staff.email')" v-model="staff.email">
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <label for="" class="label-width">{{$t('staff.permission')}}</label>
-                                <a @click="showModal=!showModal">{{$t('staff.quick_selection')}}</a>
-                                <div class="form-control">
-                                    <template v-for="(list, index) in permissionsList">
+                                <label class="label-width">{{$t('staff.permission')}}</label>
+                                <div class="box">
+                                    <template v-for="(list, index) in permissions">
                                         <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" v-model="list.checked" :checked="selectMax"  :disabled="!$root.permissions.includes('add_change_staff')" @click="toggleSelect(list, list.checked^1)" >
-                                                        <strong class=""> {{list.display_name}} </strong>
-                                                    </label>
-                                                </div>
-                                            </div>
+                                            <div class="col-sm-offset-1 col-sm-11 p-t">{{ list.display_name }}</div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-offset-1 col-sm-11" v-for="permission in list.permissions">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" :disabled="!$root.permissions.includes('add_change_staff')"  v-model="permission.checked">
-                                                        <span class="">{{permission.display_name}}</span>
-                                                        <span class="text-muted ">- {{permission.description}}</span>
-                                                        &nbsp&nbsp&nbsp&nbsp;
-                                                        <span class="text-danger "></span>
-                                                    </label>
-                                                </div>
+                                            <div class="col-sm-offset-2 col-sm-10 p-b" v-for="permission in list.permissions" :key="permission.id">
+                                                <i v-if="staffAdvpermissionsList.includes(permission.id)" class="fa fa-check text-success"></i>   
+                                                <i v-else class="fa fa-times text-danger"></i>
+                                                <span>{{ permission.display_name }}</span>
+                                                <span class="text-muted ">- {{ permission.description }}</span>
                                             </div>
                                         </div>
                                     </template>
@@ -129,49 +113,35 @@
                     id: '',
                     username: '',
                     password: '',
-                    group: '',
-                    email: '',
-                    permissions: []
+                    user_group: {
+                        id: undefined,
+                        permissions: []
+                    },
+                    email: ''
                 },
-                permissionsList: [],
-                staffPermissions: [],
+                permissions: [],
+                staffAdvpermissionsList: [],
                 field_locales: {
                     'username': '用户名错误：',
                     'permission': '权限错误：',
                     'email': '邮箱错误：'
                 },
-                roles: '',
+                roles: [],
                 creating: false,
                 errorMsg: '',
                 showModal: false
             }
         },
-        computed: {
-            isCreating () {
-                let action = this.staff.id === '' ? this.creating = true : this.creating = false
-                return action
-            },
-            selectMax () {
-                for (let list in this.permissionsList) {
-                    this.permissionsList[list].checked = this.permissionsList[list].permissions.every(function (permission) {
-                        return permission.checked
-                    })
-                }
-            }
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                let id = to.params.staffId
-                if (id) {
-                    vm.getStaff(id)
-                    vm.getStaffPermissionsList(id)
-                } else {
-                    vm.getPermissionsListAll()
-                }
-            })
-        },
         created () {
-            this.getRole()
+            this.getRoles()
+            this.getPermissionsAll()
+            if (this.$route.params.staffId) {
+                this.getStaff(this.$route.params.staffId).then((staff) => {
+                    this.getStaffAdvpermissionsList(staff)
+                })
+            } else {
+                this.staffAdvpermissionsList = []
+            }
         },
         methods: {
             onSubmit (e) {
@@ -202,29 +172,34 @@
                 }
             },
             getStaff (id) {
-                this.$http.get(api.staff + id + '/').then((response) => {
-                    this.staff = response.data.data
+                return new Promise((resolve, reject) => {
+                    this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
+                        if (response.data.code === 2000) {
+                            this.staff = response.data.data
+                            resolve(response.data.data)
+                        } else {
+                            reject(response.data)
+                        }
+                    })
                 })
             },
-            getPermissionsListAll () {
+            getStaffAdvpermissionsList (staff) {
+                staff.user_group.permissions.forEach(list => {
+                    list.advpermissions.forEach(permission => {
+                        this.staffAdvpermissionsList.push(permission.id)
+                    })
+                })
+            },
+            getPermissionsAll () {
                 this.$http.get(api.permissions + '?opt_expand=permissions').then((response) => {
-                    this.permissionsList = response.data
+                    this.permissions = response.data.data
                 })
             },
-            getStaffPermissionsList (id) {
-                this.$http.get(api.staffPermissions + id + '/?opt_expand=permissions').then((response) => {
-                    this.permissionsList = response.data.permissions
-                })
-            },
-            toggleSelect (list, inValue) {
-                list.checked = inValue
-                list.permissions.forEach(function (permission) {
-                    permission.checked = inValue
-                })
-            },
-            getRole () {
+            getRoles () {
                 this.$http.get(api.managerole).then((response) => {
-                    this.roles = response.data
+                    if (response.data.code === 2000) {
+                        this.roles = response.data.data
+                    }
                 })
             },
             getSelect () {
@@ -237,38 +212,6 @@
                     }
                 }
                 this.staff.permissions = selectId
-            },
-            selectAll () {
-                for (let list in this.permissionsList) {
-                    this.permissionsList[list].checked = 1
-                    for (let index in this.permissionsList[list].permissions) {
-                        this.permissionsList[list].permissions[index].checked = 1
-                    }
-                }
-            },
-            clearSelectAll () {
-                for (let list in this.permissionsList) {
-                    this.permissionsList[list].checked = 0
-                    for (let index in this.permissionsList[list].permissions) {
-                        this.permissionsList[list].permissions[index].checked = 0
-                    }
-                }
-            },
-            getManager () {
-                let permission = [11, 10, 9, 1, 7, 6, 5, 4, 3, 37, 36, 22, 19, 17, 15, 14, 13, 35, 34, 33, 32, 31, 30, 29, 26, 24, 23, 27, 16, 20, 18]
-                this.setRolePermission(permission)
-            },
-            getManager1 () {
-                let permission = [17, 14, 13]
-                this.setRolePermission(permission)
-            },
-            getManager2 () {
-                let permission = [1, 36, 22, 19, 17, 14, 13]
-                this.setRolePermission(permission)
-            },
-            getManager3 () {
-                let permission = [12, 2, 8, 37, 36, 22, 13, 26, 16, 20, 18]
-                this.setRolePermission(permission)
             },
             setRolePermission (permission) {
                 this.clearSelectAll()

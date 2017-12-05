@@ -1,7 +1,7 @@
 <template>
     <div>
       <div class="row">
-        <div class="pull-right m-r"  v-if="$root.permissions.includes('add_change_staff')">
+        <div class="pull-right m-r">
             <router-link tag="button" class="md-btn w-sm blue m-b"  to="/staff/add">{{$t('action.add_staff')}}</router-link>
         </div>
       </div>
@@ -29,7 +29,7 @@
                             <span class="label success" v-if="staff.status==1">{{$t('status.active')}}</span>
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
                         </td>
-                        <td>{{staff.group.name}}</td>
+                        <td>{{staff.user_group.name}}</td>
                         <td>{{staff.created_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.updated_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.memo}}</td>
@@ -55,11 +55,6 @@
                 optexpand: 'group'
             }
         },
-        // route: {
-        //     data (transition) {
-        //         this.$refs.pulling.rebase()
-        //     }
-        // },
         created () {
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
