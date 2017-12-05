@@ -479,7 +479,7 @@
                     this.$http.put(api.cancel_bet + betrecord.id + '/', {
                         status: status
                     }).then(response => {
-                        betrecord.status = response.data.status
+                        betrecord.status = response.data.data.status
                     }, response => {
                         this.errorMsg = ''
                         for (let field in this.field_locales) {
