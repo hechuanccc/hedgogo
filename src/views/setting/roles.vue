@@ -2,7 +2,7 @@
   <div>
     <div class="row">
         <div class="pull-right m-r">
-            <router-link tag="button" class="md-btn w-sm blue m-b"  to="/role/add">{{$t('role_manage.role_add_btn')}}</router-link>
+            <router-link tag="button" class="md-btn w-sm blue m-b"  to="/roles/add">{{$t('role_manage.role_add_btn')}}</router-link>
         </div>
     </div>
     <div class="box" v-if="rolesList.length">

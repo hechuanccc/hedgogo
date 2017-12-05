@@ -393,7 +393,7 @@
             },
             getGameList () {
                 this.$http.get(api.game_list).then(response => {
-                    this.gamelist = response.data
+                    this.gamelist = response.data.data
                 })
             },
             getPageAccessed () {
@@ -433,7 +433,7 @@
             },
             getGameCategory (game) {
                 this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(response => {
-                    this.categories = response.data
+                    this.categories = response.data.data
                 })
             },
             newWindow () {

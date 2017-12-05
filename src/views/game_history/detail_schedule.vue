@@ -90,11 +90,7 @@
                         <th scope="col">{{$t('game_history.periods')}}</th>
                         <th scope="col">{{$t('game_history.draw_date')}}</th>
                         <th scope="col" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
-                        <th scope="col" v-else>
-                            <button class="btn btn-xs blue">{{ $t('game_history.show_number') }}</button>
-                            <button class="btn btn-xs blue">{{ $t('game_history.show_big_small') }}</button>
-                            <button class="btn btn-xs blue">{{ $t('game_history.show_odd_even') }}</button>
-                        </th>
+                        <th scope="col" v-else>{{ $t('game_history.draw_number') }}</th>
                         <th scope="col">{{ mode ? $t('game_history.operating') : $t('game_history.memo')}}</th>
                     </tr>
                 </thead>
@@ -114,10 +110,9 @@
                         <td>{{ (mode ? result.schedule_result : result.created_at) | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode"></td>
                         <td v-else class="result-balls">
-                            <!-- <span v-show="result.result_str!==undefined" v-for="(resultball, index) in result.result_str.split(',')" :class="getResultClass(resultball)" :key="index">
+                            <span v-show="result.result_str!==undefined" v-for="(resultball, index) in result.result_str.split(',')" :class="getResultClass(resultball)" :key="index">
                                 <b>{{ resultball }}</b>
-                            </span> -->
-                            <span class="label label-warning">{{ $t('game_history.big') }}</span>
+                            </span>
                         </td>
                         <td v-if="mode">
                             <span class="label btn blue" @click="showModal(result)">{{ $t('game_history.manual_draw') }}</span>
@@ -158,7 +153,7 @@ export default {
             game: {
                 id: '',
                 display_name: '',
-                game_code: '',
+                game: '',
                 rules: {}
             },
             retreatedScheds: [],
@@ -236,15 +231,12 @@ export default {
             gameid = gameid || this.game.id
             this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
             .then(response => {
-                this.retreatedScheds = response.data
+                this.retreatedScheds = response.data.data
             })
         },
         getGameName (gameid) {
-            this.$http.get(api.game_list + gameid)
-            .then(response => {
-                this.game.display_name = response.data.display_name
-                this.game.game_code = response.data.code
-                this.game.rules = response.data.rules
+            this.$http.get(api.game_list + gameid).then(response => {
+                this.game = response.data.data
             })
         },
         showModal (sched) {
@@ -264,7 +256,7 @@ export default {
             this.modal.isShow = false
         },
         getResultClass (resultNum) {
-            let gameClass = `result-${this.game.game_code}`
+            let gameClass = `result-${this.game.code}`
             let resultClass = `resultnum-${parseInt(resultNum)}`
             return [gameClass, resultClass]
         },
@@ -322,9 +314,6 @@ export default {
         },
         isPageOne () {
             return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.mode
-        },
-        numColGroup () {
-
         }
     },
     components: {

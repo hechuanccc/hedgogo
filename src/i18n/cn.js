@@ -727,7 +727,9 @@ export default {
         operating: '操作',
         modify: '修改',
         delete: '删除',
-        parameter_add_btn: '添加参数'
+        parameter_add_btn: '添加参数',
+        sure_update_parameter: '确定修改参数？',
+        cancel: '取消'
     },
     role_manage: {
         id: '角色ID',

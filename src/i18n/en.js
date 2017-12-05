@@ -726,7 +726,9 @@ export default {
         operating: 'Operating',
         modify: 'Modify',
         delete: 'Delete',
-        parameter_add_btn: 'Add Parameter'
+        parameter_add_btn: 'Add Parameter',
+        sure_update_parameter: 'Are you sure to update the parameter?',
+        cancel: 'Cancel'
     },
     role_manage: {
         id: 'Role ID',

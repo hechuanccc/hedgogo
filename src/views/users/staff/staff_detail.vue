@@ -95,123 +95,123 @@
     </div>
 </template>
 <script>
-    import api from '../../../api'
-    export default {
-        data () {
-            return {
-                staff: {
+import api from '../../../api'
+export default {
+    data () {
+        return {
+            staff: {
+                id: undefined,
+                email: '',
+                user_group: {
                     id: undefined,
-                    email: '',
-                    user_group: {
-                        id: undefined,
-                        name: '',
-                        permissions: []
-                    },
-                    username: '',
-                    status: undefined
+                    name: '',
+                    permissions: []
                 },
-                staffAdvpermissionsList: [],
-                statusUpdated: false,
-                passwordSuccess: false,
-                permissions: [],
-                permissionsList: [],
-                passwordError: '',
-                permissionsId: []
+                username: '',
+                status: undefined
+            },
+            staffAdvpermissionsList: [],
+            statusUpdated: false,
+            passwordSuccess: false,
+            permissions: [],
+            permissionsList: [],
+            passwordError: '',
+            permissionsId: []
+        }
+    },
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            let id = to.params.staffId
+            vm.staff.id = id
+            if (id) {
+                vm.getStaff(id).then((staff) => {
+                    vm.getStaffAdvpermissionsList(staff)
+                })
+                vm.getPermissionsAll()
             }
+        })
+    },
+    methods: {
+        getStaff (id) {
+            return new Promise((resolve, reject) => {
+                this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
+                    if (response.data.code === 2000) {
+                        this.staff = response.data.data
+                        resolve(response.data.data)
+                    } else {
+                        reject(response.data)
+                    }
+                })
+            })
         },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                let id = to.params.staffId
-                vm.staff.id = id
-                if (id) {
-                    vm.getStaff(id).then((staff) => {
-                        vm.getStaffAdvpermissionsList(staff)
-                    })
-                    vm.getPermissionsAll()
+        getStaffAdvpermissionsList (staff) {
+            staff.user_group.permissions.forEach(list => {
+                list.advpermissions.forEach(permission => {
+                    this.staffAdvpermissionsList.push(permission.id)
+                })
+            })
+        },
+        getPermissionsAll () {
+            this.$http.get(`${api.permissions}?opt_expand=permissions`).then((response) => {
+                if (response.data.code === 2000) {
+                    this.permissions = response.data.data
                 }
             })
         },
-        methods: {
-            getStaff (id) {
-                return new Promise((resolve, reject) => {
-                    this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
-                        if (response.data.code === 2000) {
-                            this.staff = response.data.data
-                            resolve(response.data.data)
-                        } else {
-                            reject(response.data)
-                        }
-                    })
-                })
-            },
-            getStaffAdvpermissionsList (staff) {
-                staff.user_group.permissions.forEach(list => {
-                    list.advpermissions.forEach(permission => {
-                        this.staffAdvpermissionsList.push(permission.id)
-                    })
-                })
-            },
-            getPermissionsAll () {
-                this.$http.get(`${api.permissions}?opt_expand=permissions`).then((response) => {
-                    if (response.data.code === 2000) {
-                        this.permissions = response.data.data
-                    }
-                })
-            },
-            toggleStatus () {
-                this.statusUpdated = false
-                this.$http.put(api.staff + this.staff.id + '/?opt_fields=status', {
-                    username: this.staff.username,
-                    status: this.staff.status === 1 ? 0 : 1,
-                    permissions: this.staffAdvpermissionsList
-                }).then((response) => {
-                    if (response.status === 200) {
-                        this.staff.status = response.data.status
-                        this.statusUpdated = true
-                        setTimeout(() => {
-                            this.statusUpdated = false
-                        }, 2000)
-                    }
-                })
-            },
-            resetPassword (event) {
-                if (!window.confirm(this.$t('member.reset_confirm', {
+        toggleStatus () {
+            this.statusUpdated = false
+            this.$http.put(api.staff + this.staff.id + '/?opt_fields=status', {
+                username: this.staff.username,
+                status: this.staff.status === 1 ? 0 : 1,
+                permissions: this.staffAdvpermissionsList
+            }).then((response) => {
+                if (response.status === 200) {
+                    this.staff.status = response.data.status
+                    this.statusUpdated = true
+                    setTimeout(() => {
+                        this.statusUpdated = false
+                    }, 2000)
+                }
+            })
+        },
+        resetPassword (event) {
+            if (!window.confirm(this.$t('member.reset_confirm', {
+                action: event.target.innerText
+            }))) {
+                return
+            }
+            this.$http.post(api.passwordstaff, {
+                'account_id': this.staff.id
+            }, {emulateJSON: true}).then(response => {
+                this.passwordSuccess = true
+                this.newPassword = response.data.new_password
+            }, response => {
+                this.passwordError = response.data.error
+            })
+        },
+        deleteStaff (id, confirm, event) {
+            if (confirm) {
+                if (!window.confirm(this.$t('common.confirm', {
                     action: event.target.innerText
                 }))) {
                     return
                 }
-                this.$http.post(api.passwordstaff, {
-                    'account_id': this.staff.id
-                }, {emulateJSON: true}).then(response => {
-                    this.passwordSuccess = true
-                    this.newPassword = response.data.new_password
-                }, response => {
-                    this.passwordError = response.data.error
-                })
-            },
-            deleteStaff (id, confirm, event) {
-                if (confirm) {
-                    if (!window.confirm(this.$t('common.confirm', {
-                        action: event.target.innerText
-                    }))) {
-                        return
-                    }
-                }
-                this.$http.delete(api.staff + id + '/').then((response) => {
-                    this.$router.push('/staff')
-                })
             }
+            this.$http.delete(api.staff + id + '/').then((response) => {
+                this.$router.push('/staff')
+            })
         }
     }
+}
 </script>
 
 <style scoped>
-     .permissions-list{
-         list-style:none;
-         padding-left:0;
-         margin-bottom:0;
-     }
-     .ul-padding-vertical-05 > li {
-        padding: 0.5em 0;
-     }
+.permissions-list {
+  list-style:none;
+  padding-left:0;
+  margin-bottom:0;
+}
+.ul-padding-vertical-05 > li {
+  padding: 0.5em 0;
+}
 </style>

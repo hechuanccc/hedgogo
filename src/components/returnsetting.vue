@@ -33,7 +33,7 @@ export default {
         this.$nextTick(function () {
             this.$http.get(api.return + '?opt_fields=id,name')
             .then(response => {
-                this.returnsettings = response.data
+                this.returnsettings = response.data.data
                 if (this.default) {
                     this.$emit('return', this.default)
                 }

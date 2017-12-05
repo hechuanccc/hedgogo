@@ -80,7 +80,7 @@
         methods: {
             getWebsite () {
                 this.$http.get(api.website).then(response => {
-                    this.website = Object.assign(this.website, response.data)
+                    this.website = Object.assign(this.website, response.data.data)
                 })
             },
             syncImg (e) {

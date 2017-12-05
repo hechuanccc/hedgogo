@@ -319,7 +319,7 @@ export default {
                 this.verifyDiscounts(this.level.online_discounts)
                 this.$http.put(api.level + this.level.id + '/', this.level).then(response => {
                     if (response.status === 200) {
-                        this.$router.push('/level/' + response.data.id)
+                        this.$router.push('/level/' + response.data.data.id)
                     }
                 }, response => {
                     this.level.responseError = ''
@@ -332,7 +332,7 @@ export default {
                 this.verifyDiscounts(this.level.online_discounts)
                 this.$http.post(api.level, this.level).then(response => {
                     if (response.status === 201) {
-                        this.$router.push('/level/' + response.data.id)
+                        this.$router.push('/level/' + response.data.data.id)
                     }
                 }, response => {
                     this.level.responseError = ''
@@ -344,7 +344,7 @@ export default {
         },
         getLevel (id) {
             this.$http.get(api.level + id + '/').then((response) => {
-                let data = response.data
+                let data = response.data.data
                 let onlineDiscounts = data.online_discounts
                 if (onlineDiscounts.length === 0) {
                     data.online_discounts = [{

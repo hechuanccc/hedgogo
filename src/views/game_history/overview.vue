@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="card">
-        <table class="table table-bordered">
+        <table class="table table-bordered" v-if="count>=game_draw.length&&count">
             <thead>
                 <tr>
                     <th scope="col" rowspan="2" width="20%" class="p-l-md">
@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <template v-for = "(game, index) in game_draw">
-                <tr class="v-m text-center" v-if="abnormalPeriods[game.game_id]">
+                <tr class="v-m text-center" v-if="abnormalPeriods[game.game_id]" :key="index">
                     <td class="text-left p-l-md" style="text-transform: uppercase;"
                     :rowspan="abnormalPeriods[game.game_id].length+1"
                     >
@@ -53,14 +53,14 @@
                         </td>
                     </template>
                 </tr>
-                <tr class="text-center v-m" v-for="(period, index) in abnormalPeriods[game.game_id]" v-if="index">
+                <tr class="text-center v-m" v-for="(period, i) in abnormalPeriods[game.game_id]" v-if="i" :key="period.id">
                     <td class="">{{ period.issue_number }}</td>
                     <td class=""></td>
                     <td class="p-b-sm p-t-sm">
                         <span class="label btn blue" @click="showModal(game, period)">{{ $t('game_history.manual_draw') }}</span>
                     </td>
                 </tr>
-                <tr v-if="abnormalPeriods[game.game_id]">
+                <tr v-if="abnormalPeriods[game.game_id]" :key="index">
                     <td colspan="3" class="text-center">
                         <router-link :to = "'/game_history/' + game.game_id + '?mode=1'"
                         class = "">
@@ -127,7 +127,7 @@ const dateFormat = 'YYYY-MM-DD'
 export default{
     data () {
         return {
-            game_draw: {},
+            game_draw: [],
             abnormalPeriods: [],
             abnormalPeriodsCount: [],
             isLatest: false,
@@ -146,13 +146,17 @@ export default{
                 },
                 msg: ''
             },
-            today: Vue.moment().format(dateFormat)
+            today: Vue.moment().format(dateFormat),
+            count: 0
         }
     },
     created () {
         this.getPeriods().then((games) => {
-            return this.getAbnormalPeriods(games)
+            this.game_draw = games
+            this.getAbnormalPeriods(games)
         })
+    },
+    beforeMount () {
         this.timing = setInterval(() => {
             this.getPeriods()
             this.getAbnormalPeriods()
@@ -161,31 +165,22 @@ export default{
     methods: {
         getPeriods () {
             return new Promise((resolve, reject) => {
-                this.$http.get(api.game_draw).then(
-                    response => {
-                        this.game_draw = response.data
-                        const games = {}
-                        response.data.forEach(game => {
-                            games[game.game_id] = game.game
-                        })
-                        this.$store.dispatch('setGame', games)
-
-                        this.isLatest = true
-                        setTimeout(() => { this.isLatest = false }, 1500)
-                        resolve(response.data)
-                    },
-                    response => {
-                        this.errorCallback(response)
-                    }
-                )
+                this.$http.get(api.game_draw).then(response => {
+                    resolve(response.data)
+                }, response => {
+                    this.errorCallback(response)
+                })
             })
         },
         getAbnormalPeriods (games) {
             games = games || this.game_draw
             games.forEach(game => {
                 this.$http.get(`${api.game_schedule}?game=${game.game_id}&abnormal=True&offset=0&limit=4&`).then(response => {
-                    this.abnormalPeriods[game.game_id] = response.data.results
-                    this.abnormalPeriodsCount[game.game_id] = response.data.count
+                    if (response.data.code === 2000) {
+                        this.abnormalPeriods[game.game_id] = response.data.data.results
+                        this.abnormalPeriodsCount[game.game_id] = response.data.data.count
+                        this.count += 1
+                    }
                 })
             })
         },
@@ -197,7 +192,7 @@ export default{
         getGameInfo (gameId) {
             return new Promise((resolve, reject) => {
                 this.$http.get(api.game_list + gameId).then((response) => {
-                    resolve(response.data.rules)
+                    resolve(response.data.data.rules)
                 })
             })
         },

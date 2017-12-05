@@ -171,7 +171,7 @@
             },
             getReturnSetting (id) {
                 this.$http.get(api.return + id + '/').then((response) => {
-                    this.returnsetting = response.data
+                    this.returnsetting = response.data.data
                 })
             },
             deleteReturn () {
