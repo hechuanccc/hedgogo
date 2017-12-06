@@ -164,7 +164,7 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(response => {
                 if (response.status === 200) {
-                    this.$set(this.queryset, index, response.data)
+                    this.$set(this.queryset, index, response.data.data)
                 }
             })
         },
@@ -177,7 +177,7 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(response => {
                 if (response.status === 200) {
-                    this.$set(this.queryset, index, response.data)
+                    this.$set(this.queryset, index, response.data.data)
                 }
             })
         },
@@ -209,7 +209,7 @@ export default {
                     end_date: Vue.moment(this.modal.value[1]).format('YYYY-MM-DD HH:mm')
                 }).then(response => {
                     if (response.status === 200) {
-                        this.$set(this.queryset, this.modal.index, response.data)
+                        this.$set(this.queryset, this.modal.index, response.data.data)
                         this.modal.msg = this.$t('game_manage.modify_success')
                         this.$refs.alertMsg.trigger('success', 3)
                     }
@@ -238,7 +238,6 @@ export default {
                 formData.append('display_name', this.modal.iconResult.display_name)
                 formData.append('code', this.modal.iconResult.code)
                 formData.append('icon', this.modal.iconResult.icon)
-                formData.append('to_display', this.modal.iconResult.to_display)
                 this.$http.put(api.game_list + this.modal.id + '/', formData)
                 .then(response => {
                     if (response.status === 200) {

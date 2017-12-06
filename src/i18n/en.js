@@ -502,7 +502,7 @@ export default {
         try_later: 'Please try later',
         abnormal_period: 'Exception Message',
         expired_period: 'Expired Period',
-        no_expired_period: 'No Expired Period',
+        no_abnormal_period: 'No Abnormal Period',
         period_bet_record: 'Bet Records',
         show_all: 'Show all',
         result_str_tips: 'Please enter %{num_len} %{unique} numbers(%{range_floor}~%{range_ceil}) separated by \'%{separator}\'.',

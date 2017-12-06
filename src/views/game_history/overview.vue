@@ -40,7 +40,7 @@
                     </td>
                     <td :rowspan="abnormalPeriods[game.game_id].length+1"><span class="label label-lg" style="width:60px;">{{ game.drawn_periods }}</span></td>
                     <td :rowspan="abnormalPeriods[game.game_id].length+1"><span class="label label-lg" style="width:60px;">{{ game.total_periods - game.drawn_periods }}</span></td>
-                    <template v-if="abnormalPeriods[game.game_id]">
+                    <template v-if="abnormalPeriods[game.game_id][0]">
                         <td>{{ abnormalPeriods[game.game_id][0].issue_number }}</td>
                         <td></td>
                         <td class="p-b-sm p-t-sm">
@@ -48,9 +48,7 @@
                         </td>
                     </template>
                     <template v-else>
-                        <td>
-                            <td colspan="3">{{ $t('game_history.no_expired_period')}}</td>
-                        </td>
+                        <td colspan="3">{{ $t('game_history.no_abnormal_period')}}</td>
                     </template>
                 </tr>
                 <tr class="text-center v-m" v-for="(period, i) in abnormalPeriods[game.game_id]" v-if="i" :key="period.id">
@@ -60,7 +58,7 @@
                         <span class="label btn blue" @click="showModal(game, period)">{{ $t('game_history.manual_draw') }}</span>
                     </td>
                 </tr>
-                <tr v-if="abnormalPeriods[game.game_id]" :key="index">
+                <tr v-if="abnormalPeriods[game.game_id].length>0" :key="index">
                     <td colspan="3" class="text-center">
                         <router-link :to = "'/game_history/' + game.game_id + '?mode=1'"
                         class = "">

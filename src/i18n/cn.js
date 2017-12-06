@@ -503,7 +503,7 @@ export default {
         try_later: '请稍后再试',
         abnormal_period: '异常期数',
         expired_period: '逾期期数',
-        no_expired_period: '无逾期期数',
+        no_abnormal_period: '无异常期数',
         period_bet_record: '当期单量',
         show_all: '显示全部',
         result_str_tips: '请输入%{num_len}个%{unique}数字(%{range_floor}~%{range_ceil})使用\'%{separator}\'分隔',
