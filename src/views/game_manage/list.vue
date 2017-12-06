@@ -6,7 +6,7 @@
         </transition>
         <div class="pull-right m-r">
             <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-            <button class="md-btn w-sm blue m-b" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
         </div>
     </div>
     <div class="box" v-if="queryset.length">
@@ -117,6 +117,7 @@ export default {
             gameApi: api.game_list,
             query: {},
             queryset: [],
+            initial_queryset: [],
             optexpand: 'group',
             modal: {
                 isShow: false,
@@ -256,17 +257,11 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                let rankResult = []
-                for (let i = 0; i < this.queryset.length; ++i) {
-                    if (this.queryset[i].rank !== i + 1) {
-                        rankResult.push({
-                            id: this.queryset[i].id,
-                            display_name: this.queryset[i].display_name,
-                            rank: i + 1
-                        })
-                    }
-                }
-                this.$http.post(api.game_list, rankResult).then(response => {
+                this.$http.post(api.game_list, this.queryset.map((game, index) => Object({
+                    id: game.id,
+                    display_name: game.display_name,
+                    rank: index + 1
+                }))).then(response => {
                     if (response.data.code === 2000) {
                         this.updateRankMsg = this.$t('game_manage.modify_success')
                         setTimeout(() => {
@@ -276,11 +271,13 @@ export default {
                         this.cancelAdjustRank()
                     }
                 })
+            } else {
+                this.initial_queryset = this.queryset
             }
             this.mode = !this.mode
         },
         cancelAdjustRank () {
-            this.getGameList()
+            this.queryset = this.initial_queryset
             this.mode = !this.mode
         }
     },
