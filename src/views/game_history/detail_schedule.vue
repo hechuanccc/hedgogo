@@ -242,7 +242,6 @@ export default {
         showModal (sched) {
             if (this.mode) {
                 this.modal.scheduleResult = {
-                    ...this.modal.scheduleResult,
                     game_code: sched.game_code,
                     result_str: '',
                     issue_number: sched.issue_number

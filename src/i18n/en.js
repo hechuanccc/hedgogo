@@ -395,6 +395,7 @@ export default {
         delete: 'Delete',
         setting: 'Setting',
         confirm: 'Confirm',
+        cancel: 'Cancel',
         view_remit_payees: 'View remit payees',
         update_remit_payee: 'Update',
         add_remit_payee: 'Add Remit Payee',
@@ -468,7 +469,8 @@ export default {
         no_setting_icon: 'No Setting Icon File.',
         no_setting_holiday: 'No Setting Holiday.',
         modify_success: 'Successfully modified!',
-        modify_fail: 'Fail to modify!'
+        modify_fail: 'Fail to modify!',
+        adjust_rank: 'Adjust Rank'
     },
     game_history: {
         game: 'Game',
@@ -500,7 +502,7 @@ export default {
         try_later: 'Please try later',
         abnormal_period: 'Exception Message',
         expired_period: 'Expired Period',
-        no_expired_period: 'No Expired Period',
+        no_abnormal_period: 'No Abnormal Period',
         period_bet_record: 'Bet Records',
         show_all: 'Show all',
         result_str_tips: 'Please enter %{num_len} %{unique} numbers(%{range_floor}~%{range_ceil}) separated by \'%{separator}\'.',
