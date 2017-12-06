@@ -117,7 +117,7 @@ export default {
             gameApi: api.game_list,
             query: {},
             queryset: [],
-            initial_queryset: [],
+            initialQueryset: [],
             optexpand: 'group',
             modal: {
                 isShow: false,
@@ -272,12 +272,12 @@ export default {
                     }
                 })
             } else {
-                this.initial_queryset = this.queryset
+                this.initialQueryset = this.queryset
             }
             this.mode = !this.mode
         },
         cancelAdjustRank () {
-            this.queryset = this.initial_queryset
+            this.queryset = this.initialQueryset
             this.mode = !this.mode
         }
     },
