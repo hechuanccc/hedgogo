@@ -396,6 +396,7 @@ export default {
         delete: '删除',
         setting: '设定',
         confirm: '确定',
+        cancel: '取消',
         view_remit_payees: '查看公司入款账号',
         update_remit_payee: '更新',
         add_remit_payee: '增加公司入款账户',
@@ -469,7 +470,8 @@ export default {
         no_setting_icon: '未设置图标档案',
         no_setting_holiday: '未设置公休开始结束时间',
         modify_success: '修改成功！',
-        modify_fail: '修改失败！'
+        modify_fail: '修改失败！',
+        adjust_rank: '调整排序'
     },
     game_history: {
         game: '游戏名称',

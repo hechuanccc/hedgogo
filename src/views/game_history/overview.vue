@@ -161,8 +161,8 @@ export default{
     methods: {
         getPeriods () {
             this.$http.get(api.game_draw).then(response => {
-                this.gameDraw = response.data
-                this.getAbnormalPeriods(response.data)
+                this.gameDraw = response.data.data
+                this.getAbnormalPeriods(response.data.data)
             }, response => {
                 this.errorCallback(response)
             })

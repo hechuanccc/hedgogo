@@ -1,9 +1,19 @@
 <template>
   <div>
+    <div class="row">
+        <transition name="fade">
+            <div class="pull-center alert alert-success m-l m-t-0 p-t-xs p-b-xs" v-show="updateRankMsg"><i class="fa fa-check"></i>{{ updateRankMsg }}</div>
+        </transition>
+        <div class="pull-right m-r">
+            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
+            <button class="md-btn w-sm blue m-b" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+        </div>
+    </div>
     <div class="box" v-if="queryset.length">
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
           <thead>
           <tr>
+            <th v-show="!mode"></th>
             <th>{{$t('game_manage.name')}}</th>
             <th>{{$t('game_manage.holiday_start_time')}}</th>
             <th>{{$t('game_manage.holiday_end_time')}}</th>
@@ -12,8 +22,9 @@
             <th>{{$t('game_manage.operating')}}</th>
           </tr>
           </thead>
-          <tbody v-if="queryset.length > 0">
+          <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
           <tr v-for="(game, index) in queryset" :key="game.id">
+              <td v-show="!mode"><i class="fa fa-reorder blue"></i></td>
             <td>
               <router-link :to="'/game_detail/' + game.id">{{game.display_name}}</router-link>
             </td>
@@ -35,7 +46,7 @@
               <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
             </td>
           </tr>
-          </tbody>
+          </draggable>
         </table>
     </div>
     <div class="modal" v-if="modal.isShow">
@@ -95,12 +106,14 @@
 import api from '../../api'
 import alertMsg from '../../components/alertMsg'
 import DatePicker from 'vue2-datepicker'
+import draggable from 'vuedraggable'
 
 import Vue from 'vue'
 
 export default {
     data () {
         return {
+            mode: 1,
             gameApi: api.game_list,
             query: {},
             queryset: [],
@@ -120,7 +133,8 @@ export default {
                     to_display: true
                 },
                 msg: ''
-            }
+            },
+            updateRankMsg: ''
         }
     },
     created () {
@@ -240,6 +254,35 @@ export default {
                 this.modal.msg = this.$t('game_manage.no_setting_icon')
                 this.$refs.alertMsg.trigger('warning', 3)
             }
+        },
+        changeMode () {
+            if (!this.mode) {
+                let rankResult = []
+                for (let i = 0; i < this.queryset.length; ++i) {
+                    if (this.queryset[i].rank !== i + 1) {
+                        rankResult.push({
+                            id: this.queryset[i].id,
+                            display_name: this.queryset[i].display_name,
+                            rank: i + 1
+                        })
+                    }
+                }
+                this.$http.post(api.game_list, rankResult).then(response => {
+                    if (response.data.code === 2000) {
+                        this.updateRankMsg = this.$t('game_manage.modify_success')
+                        setTimeout(() => {
+                            this.updateRankMsg = ''
+                        }, 3000)
+                    } else {
+                        this.cancelAdjustRank()
+                    }
+                })
+            }
+            this.mode = !this.mode
+        },
+        cancelAdjustRank () {
+            this.getGameList()
+            this.mode = !this.mode
         }
     },
     filters: {
@@ -253,7 +296,8 @@ export default {
     },
     components: {
         DatePicker,
-        alertMsg
+        alertMsg,
+        draggable
     }
 }
 </script>
@@ -276,5 +320,11 @@ export default {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0
 }
 </style>

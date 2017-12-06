@@ -395,6 +395,7 @@ export default {
         delete: 'Delete',
         setting: 'Setting',
         confirm: 'Confirm',
+        cancel: 'Cancel',
         view_remit_payees: 'View remit payees',
         update_remit_payee: 'Update',
         add_remit_payee: 'Add Remit Payee',
@@ -468,7 +469,8 @@ export default {
         no_setting_icon: 'No Setting Icon File.',
         no_setting_holiday: 'No Setting Holiday.',
         modify_success: 'Successfully modified!',
-        modify_fail: 'Fail to modify!'
+        modify_fail: 'Fail to modify!',
+        adjust_rank: 'Adjust Rank'
     },
     game_history: {
         game: 'Game',

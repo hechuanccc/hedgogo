@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="alert alert-danger" v-if="passwordError">
-        修改失败：{{passwordError}}
-    </div>
     <div class="box" v-if="queryset.length > 0">
       <table st-table="rowCollectionBasic" class="table table-striped b-t align-middle">
           <thead>
@@ -109,6 +106,7 @@ export default {
         },
         cancel (index) {
             this.queryset[index].newValue = this.queryset[index].value
+            this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
         },
         updateGlobalPreference () {
             this.$http.patch(this.globalPreferencesApi + this.modal.key + '/', this.modal.globalPreferenceResult)
