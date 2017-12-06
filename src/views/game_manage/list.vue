@@ -24,7 +24,7 @@
           </thead>
           <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
           <tr v-for="(game, index) in queryset" :key="game.id">
-              <td v-show="!mode"><i class="fa fa-reorder blue"></i></td>
+            <td v-show="!mode"><i class="fa fa-reorder blue"></i></td>
             <td>
               <router-link :to="'/game_detail/' + game.id">{{game.display_name}}</router-link>
             </td>
