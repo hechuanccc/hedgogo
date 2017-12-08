@@ -108,7 +108,7 @@ export default {
         },
         getPayees () {
             this.$http.get(api.remitpayee + '?opt_expand=1').then((response) => {
-                this.payees = response.data
+                this.payees = response.data.data
             })
         }
     }
