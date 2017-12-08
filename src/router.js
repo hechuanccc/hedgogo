@@ -1061,7 +1061,6 @@ export default new Router({
         path: '/roles/add',
         name: 'role_add',
         component: function (resolve) {
-            console.log('why')
             require(['./views/setting/role_form.vue'], resolve)
         },
         meta: {
