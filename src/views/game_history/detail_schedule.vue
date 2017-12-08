@@ -308,7 +308,7 @@ export default {
     computed: {
         filteredResults () {
             return this.queryset.filter(result => {
-                return result['issue_number'].indexOf(this.input.period) !== -1
+                return result.issue_number.indexOf(this.input.period) !== -1
             })
         },
         isPageOne () {
