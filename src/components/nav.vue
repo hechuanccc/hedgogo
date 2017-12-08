@@ -29,7 +29,6 @@
                                 <li v-if="$root.permissions.includes('list_remit_online_withdraw_page')"><router-link to="/bill/online?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.online_pay_orders')}}</span></router-link></li>
                                 <li v-if="$root.permissions.includes('list_remit_online_withdraw_page')"><router-link to="/bill/withdraw?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.withdraw_request')}}</span></router-link></li>
                                 <li><router-link to="/bill/search?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.transaction')}}</span></router-link></li>
-                                <li><router-link to="/bill/returnrate"><span class="nav-text">{{$t('nav.returnrate')}}</span></router-link></li>
                             </ul>
                         </li>
                         <li :class="$route.meta.group == 'reporting' ? 'active' : ''">
@@ -114,7 +113,6 @@
                                 <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>
                                 <li><router-link to="/paymenttype"><span class="nav-text">{{$t("nav.payment_type_setting")}}</span></router-link></li>
                                 <li><router-link to="/remit_payee"><span class="nav-text">{{$t("nav.setting_remit_payee")}}</span></router-link></li>
-                                <li><router-link to="/return"><span class="nav-text">{{$t("nav.setting_return")}}</span></router-link></li>
                                 <li><router-link to="/commission"><span class="nav-text">{{$t("nav.setting_commission")}}</span></router-link></li>
                                 <li><router-link to="/envelope_settings"><span class="nav-text">{{$t("nav.envelope_setting")}}</span></router-link></li>
                             </ul>

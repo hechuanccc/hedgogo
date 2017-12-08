@@ -129,15 +129,6 @@
             </div>
           </div>
           <div class="row p-b b-b p-t">
-            <div class="col-xs-5">
-              <span class="text-muted">{{$t('member.return_setting')}}</span>
-              <div v-if="member.return_settings">
-                <router-link :to="'/return/' + member.return_settings.id + '/edit'">{{member.return_settings.name}}</router-link>
-              </div>
-              <div v-else class="text-muted">
-                  无设定
-              </div>
-            </div>
             <div class="col-md-5">
               <span class="text-muted">{{$t('member.agent')}}</span>
               <div><router-link :to="'/agent/' + member.agent.id">{{member.agent.name}}</router-link></div>
@@ -316,7 +307,6 @@
                 member: {
                     id: '',
                     account_type: '',
-                    return_settings: {},
                     level: {},
                     balance: {
                         balance: ''

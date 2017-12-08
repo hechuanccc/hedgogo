@@ -55,7 +55,6 @@
                 <input v-if="selected == '2'" type="text" v-model="query.email_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.email')"/>
                 <input v-if="selected == '3'" type="text" v-model="query.qq_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')"/>
                 <input v-if="selected == '4'" type="text" v-model="query.wechat_q" class="form-control w-sm " v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')"/>
-                <returnsetting :returnsetting="return_settings" @myReturn="returnData" class="inline"></returnsetting>
                 <input type="text" v-model="query.register_ip" class="form-control w-sm " v-bind:placeholder="$t('member.created_ip')"/>
                 <input type="text" v-model="query.balance_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
                 <input type="text" v-model="query.balance_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
@@ -257,7 +256,6 @@ export default {
                 account_type: ''
             },
             status: '',
-            return_settings: '0',
             level: '0',
             selected: '0',
             filter: {},
@@ -317,10 +315,6 @@ export default {
             this.query.level = val
             this.level = val
         },
-        returnData (data) {
-            this.query.return_settings = data
-            this.return_settings = data
-        },
         queryData (queryset) {
             this.query = Object.assign({}, this.filter)
             this.created_at_0 = ''
@@ -345,7 +339,6 @@ export default {
         },
         clearall: function () {
             this.query = {}
-            this.return_settings = 0
             this.status = ''
             this.member_logged_in = ''
             this.created_at_0 = ''
@@ -402,8 +395,7 @@ export default {
     components: {
         DatePicker,
         level: require('../../../components/level'),
-        pulling,
-        returnsetting: require('../../../components/returnsetting')
+        pulling
     }
 }
 </script>

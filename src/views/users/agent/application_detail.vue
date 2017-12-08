@@ -82,12 +82,6 @@
                   </div>
                 </div>
 
-                <div class="form-group p-b-md m-t-md">
-                  <label class="label-width">{{$t('agent.dft_return_setting')}}</label>
-                  <div class="inline-form-control">
-                    <returnsetting :returnsetting="agent.default_return_settings" @myReturn="myReturn"></returnsetting>
-                  </div>
-                </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('common.wechat')}}</label>
                   <div class="inline-form-control">
@@ -275,13 +269,6 @@
               <span class="text-muted">{{$t('agent.promo_code')}}</span>
               <div >{{agent.promo_code}}</div>
             </div>
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.dft_return_setting')}}</span>
-              <div>
-                <router-link v-if="agent.default_return_settings" :to="'/return/' + agent.default_return_settings.id + '/edit'">{{agent.default_return_settings.name}}</router-link>
-                <span class="label" v-else>未设定</span>
-              </div>
-            </div>
           </div>
           <div class="row m-b p-t p-b b-b">
             <div class="col-xs-4">
@@ -411,7 +398,6 @@
                     parent_agent: {},
                     commission_settings: '',
                     default_member_lv: '',
-                    default_return_settings: '',
                     real_name: '',
                     phone: '',
                     birthday: '',
@@ -467,9 +453,6 @@
             },
             myCommission (val) {
                 this.agent.commission_settings = val
-            },
-            myReturn (val) {
-                this.agent.default_return_settings = val
             },
             bank (val) {
                 this.agent.bank.bank = val
@@ -574,7 +557,6 @@
             bank: require('../../../components/bank'),
             level: require('../../../components/level'),
             agentlevel: require('../../../components/agentlevel'),
-            returnsetting: require('../../../components/returnsetting'),
             commissionsetting: require('../../../components/commissionsetting')
         }
     }

@@ -61,7 +61,7 @@ export default {
         },
         getPayees () {
             this.$http.get(api.onlinepayee + '?opt_expand=1').then((response) => {
-                this.online_payees = response.data
+                this.online_payees = response.data.data
             })
         }
     }

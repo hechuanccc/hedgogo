@@ -68,12 +68,6 @@
                   </div>
                 </div>
 
-                <div class="form-group p-b-md m-t-md">
-                  <label for="agent" class="label-width">{{$t('agent.dft_return_setting')}} </label>
-                  <div class="inline-form-control">
-                    <returnsetting :returnsetting="agent.default_return_settings" @myReturn="returnData"></returnsetting>
-                  </div>
-                </div>
                 <div class="form-group">
                   <label for="wechat" class="label-width">{{$t('common.wechat')}}</label>
                   <div class="inline-form-control">
@@ -216,7 +210,6 @@
                     parent_agent: '3',
                     commission_settings: '',
                     default_member_lv: '',
-                    default_return_settings: '',
                     real_name: '',
                     phone: '',
                     birthday: '',
@@ -303,9 +296,6 @@
         methods: {
             bankSelect (bank) {
                 this.agent.bank.bank = bank
-            },
-            returnData (data) {
-                this.agent.default_return_settings = data
             },
             levelSelect (val) {
                 this.agent.default_member_lv = val
@@ -420,7 +410,6 @@
             bank: require('../../../components/bank'),
             level: require('../../../components/level'),
             agentlevel: require('../../../components/agentlevel'),
-            returnsetting: require('../../../components/returnsetting'),
             commissionsetting: require('../../../components/commissionsetting')
         }
     }
