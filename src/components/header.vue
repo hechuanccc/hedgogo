@@ -233,10 +233,10 @@
                         let userType = $.storage.fetch().type
                         if (userType !== 'agent') {
                             this.$http.get(api.metrics_count).then(response => {
-                                this.remit_count = response.data.remit_count
-                                this.withdraw_count = response.data.withdraw_count
-                                this.agent_application = response.data.agent_application
-                                this.online_member = response.data.online_member
+                                this.remit_count = response.data.data.remit_count
+                                this.withdraw_count = response.data.data.withdraw_count
+                                this.agent_application = response.data.data.agent_application
+                                this.online_member = response.data.data.online_member
                             }, response => {
                                 this.$router.push('/login?next=' + this.$route.path)
                             })

@@ -90,12 +90,9 @@
 
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'game_manage' ? 'active' : ''">
-                            <a>
+                            <router-link to="/game_list">
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>游戏管理</span>
-                            </a>
-                            <ul class="nav-sub">
-                                <li><router-link to="/game_list"><span class="nav-text">{{$t("nav.game_list")}}</span></router-link></li>
-                            </ul>
+                            </router-link>
                         </li>
                         
                         <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
