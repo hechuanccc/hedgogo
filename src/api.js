@@ -1,8 +1,8 @@
 'use strict'
 
 const config = require('../config')
-const env = process.env.NODE_ENV === 'development' ? config.dev.env : process.env
-const host = env.HOST
+const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
+const host = env.HOST.replace(/"/g, '')
 const prefix = host + '/manage/'
 const managePrefix = host + '/v1/manage/'
 

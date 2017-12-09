@@ -1,5 +1,5 @@
 module.exports = {
     NODE_ENV: '"production"',
-    HOST: JSON.stringify(process.env.HOST),
+    HOST: '"' + process.env.HOST + '"',
     NAME: '"Lottery"'
 }
