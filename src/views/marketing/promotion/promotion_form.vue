@@ -200,7 +200,7 @@
                 if (this.promotion.id) {
                     this.$http.put(api.promotion + this.promotion.id + '/', formData).then(response => {
                         if (response.status === 200) {
-                            this.$router.push('/promotion/' + response.data.id)
+                            this.$router.push('/promotion/' + response.data.data.id)
                         }
                     }, response => {
                         this.responseError = ''
@@ -211,7 +211,7 @@
                 } else {
                     this.$http.post(api.promotion, formData).then(response => {
                         if (response.status === 201) {
-                            this.$router.push('/promotion/' + response.data.id)
+                            this.$router.push('/promotion/' + response.data.data.id)
                         }
                     }, response => {
                         this.responseError = ''
@@ -231,7 +231,7 @@
             },
             getPromotion (id) {
                 this.$http.get(api.promotion + id + '/').then((response) => {
-                    this.promotion = response.data
+                    this.promotion = response.data.data
                     this.selectedPromotion = this.promotion
                     // add image_url so we can pass a image url instead
                     // of image file while copying
@@ -246,7 +246,7 @@
             },
             getPromotions () {
                 this.$http.get(api.promotion).then((response) => {
-                    this.promotions = response.data
+                    this.promotions = response.data.data
                 })
             },
             selectPromotion (event) {

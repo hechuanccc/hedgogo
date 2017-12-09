@@ -147,14 +147,14 @@ export default {
             this.busy = true
             this.loading = true
             this.$http.get(this.next).then(response => {
-                if (response.data.total_amount) {
-                    amount = response.data.total_amount
+                if (response.data.data.total_amount) {
+                    amount = response.data.data.total_amount
                 }
-                if (response.data.total_profit) {
-                    profit = response.data.total_profit
+                if (response.data.data.total_profit) {
+                    profit = response.data.data.total_profit
                 }
-                if (response.data.total_bet_amount) {
-                    totalBet = response.data.total_bet_amount
+                if (response.data.data.total_bet_amount) {
+                    totalBet = response.data.data.total_bet_amount
                 }
                 this.$emit('amount', amount)
                 this.$emit('profit', profit)

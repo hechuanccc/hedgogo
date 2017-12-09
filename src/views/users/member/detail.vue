@@ -119,25 +119,16 @@
               <div class="row">
                 <div class="col-md-5">
                   <span class="text-muted">{{$t('betrecord.win')}}</span>
-                  <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=1'">{{member.total_gain | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
                 <div class="col-md-5">
                   <span class="text-muted">{{$t('betrecord.lose')}}</span>
-                  <div><router-link :to="'/report/betrecord?member=' + member.username + '&result=0'">{{member.total_loss | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link></div>
                 </div>
               </div>
             </div>
           </div>
           <div class="row p-b b-b p-t">
-            <div class="col-xs-5">
-              <span class="text-muted">{{$t('member.return_setting')}}</span>
-              <div v-if="member.return_settings">
-                <router-link :to="'/return/' + member.return_settings.id + '/edit'">{{member.return_settings.name}}</router-link>
-              </div>
-              <div v-else class="text-muted">
-                  无设定
-              </div>
-            </div>
             <div class="col-md-5">
               <span class="text-muted">{{$t('member.agent')}}</span>
               <div><router-link :to="'/agent/' + member.agent.id">{{member.agent.name}}</router-link></div>
@@ -226,7 +217,8 @@
             <div class="col-xs-5">
               <span class="text-muted">{{$t('member.last_login')}}</span>
               <div v-if="member.last_login">
-                <div> IP : {{member.last_login.ipaddr}}</div>
+                <div>{{$t('member.ip')}} : {{member.last_login.ipaddr}}</div>
+                <div>{{$t('member.login_platform')}}: {{member.last_login.platform}}</div>
                 <div>{{member.last_login.country}} {{member.last_login.city}} {{member.last_login.isp}} </div>
                 <div>{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm:ss")}}</div>
               </div>
@@ -315,7 +307,6 @@
                 member: {
                     id: '',
                     account_type: '',
-                    return_settings: {},
                     level: {},
                     balance: {
                         balance: ''
@@ -396,7 +387,7 @@
                     'account_id': this.member.id
                 }, {emulateJSON: true}).then(response => {
                     this.passwordChanged = type
-                    this.newPassword = response.data.new_password || response.data.new_withdraw_password
+                    this.newPassword = response.data.data.new_password || response.data.data.new_withdraw_password
                 }, response => {
                     this.passwordChanged = -1
                     this.errorMsg = response.data.error

@@ -3,7 +3,7 @@
     <div class="m-b">
       <ol class="breadcrumb">
         <li class="active">
-          <router-link :to="'/report/betrecord?report_flag=true&created_at_0=' + today + '&created_at_1=' + today">{{$t('nav.recent_bet_records')}}</router-link></li>
+          <router-link :to="'/report/betrecord/today?report_flag=true&created_at_0=' + today + '&created_at_1=' + today">{{$t('nav.recent_bet_records')}}</router-link></li>
         <li class="active">{{$route.meta.title}}</li>
       </ol>
     </div>
@@ -88,7 +88,7 @@
               <table class="table b-a m-t-sm" >
                 <tbody >
                 <th class="grey-50" width="200">{{$t('game_manage.play')}}</th>
-                <td v-if="betrecords.play">{{betrecords.play.display_name}}</td>
+                <td v-if="betrecords.play">{{betrecords.play.play_group.display_name}} @ {{betrecords.play.display_name}}</td>
                 <tr v-for="(betrecord, index) in betrecords.bet_options">
                   <th class="grey-50" width="200" >{{$t(`details.${index}`)}}</th>
                   <td v-if='isArray(betrecord)'>
@@ -138,7 +138,7 @@
         methods: {
             getBetRecord (id) {
                 this.$http.get(api.betrecords + id + '/?opt_expand=details').then((response) => {
-                    this.betrecords = response.data
+                    this.betrecords = response.data.data
                 })
             },
             isArray (o) {

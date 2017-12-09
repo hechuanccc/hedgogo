@@ -12,30 +12,61 @@
         </div>
     </div>
     <div class="card">
-        <table class="table table-bordered">
+        <table class="table table-bordered" v-if="count>=gameDraw.length&&count">
             <thead>
                 <tr>
-                    <th scope="col">{{$t('game_history.game')}}</th>
-                    <th scope="col">{{$t('game_history.already_result')}}</th>
-                    <th scope="col">{{$t('game_history.notyet_result')}}</th>
-                    <th scope="col">{{$t('game_history.manual_draw')}}</th>
+                    <th scope="col" rowspan="2" width="20%" class="p-l-md">
+                        {{$t('game_history.game')}}
+                    </th>
+                    <th scope="col" rowspan="2" class="text-center" width="15%">{{ $t('game_history.already_result') }}</th>
+                    <th scope="col" rowspan="2" class="text-center" width="15%">{{ $t('game_history.notyet_result') }}</th>
+                    <th scope="col" colspan="3" class="text-center p-b-xs" width="50%">{{$t('game_history.abnormal_period')}}</th>
+                </tr>
+                <tr>
+                    <th class="p-t-0 p-b-0 text-center">{{$t('game_history.expired_period')}}</th>
+                    <th class="p-t-0 p-b-0 text-center">{{$t('game_history.period_bet_record')}}</th>
+                    <th class="p-t-0 p-b-0 text-center">{{$t('game_history.operating')}}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for = "(game_period, index) in game_draw"
-                    :key = "game_period.game_id">
-                    <td>
-                        <router-link :to = "'/game_history/' + game_period.game_id"
-                        class = "v-m p-l-xs">
-                        {{game_period.game}}
+                <template v-for = "(game, index) in gameDraw">
+                <tr class="v-m text-center" v-if="abnormalPeriods[game.game_id]" :key="index">
+                    <td class="text-left p-l-md" style="text-transform: uppercase;"
+                    :rowspan="abnormalPeriods[game.game_id].length+1"
+                    >
+                        <router-link :to="'/game_history/'+game.game_id" class="p-l-0">
+                        {{ game.game }}
                         </router-link>
                     </td>
-                    <td><span class="label label-lg w-60">{{game_period.drawn_periods}}</span></td>
-                    <td><span class="label label-lg w-60">{{game_period.total_periods - game_period.drawn_periods}}</span></td>
-                    <td>
-                        <button class="md-btn w-sm blue" @click="showModal(game_period.game_id)">{{ $t('game_history.manual_draw') }}</button>
+                    <td :rowspan="abnormalPeriods[game.game_id].length+1"><span class="label label-lg" style="width:60px;">{{ game.drawn_periods }}</span></td>
+                    <td :rowspan="abnormalPeriods[game.game_id].length+1"><span class="label label-lg" style="width:60px;">{{ game.total_periods - game.drawn_periods }}</span></td>
+                    <template v-if="abnormalPeriods[game.game_id][0]">
+                        <td>{{ abnormalPeriods[game.game_id][0].issue_number }}</td>
+                        <td></td>
+                        <td class="p-b-sm p-t-sm">
+                            <span class="label btn blue" @click="showModal(game, abnormalPeriods[game.game_id][0])">{{ $t('game_history.manual_draw') }}</span>
+                        </td>
+                    </template>
+                    <template v-else>
+                        <td colspan="3">{{ $t('game_history.no_abnormal_period')}}</td>
+                    </template>
+                </tr>
+                <tr class="text-center v-m" v-for="(period, i) in abnormalPeriods[game.game_id]" v-if="i" :key="period.id">
+                    <td class="">{{ period.issue_number }}</td>
+                    <td class=""></td>
+                    <td class="p-b-sm p-t-sm">
+                        <span class="label btn blue" @click="showModal(game, period)">{{ $t('game_history.manual_draw') }}</span>
                     </td>
                 </tr>
+                <tr v-if="abnormalPeriods[game.game_id].length>0" :key="index">
+                    <td colspan="3" class="text-center">
+                        <router-link :to = "'/game_history/' + game.game_id + '?mode=1'"
+                        class = "">
+                        {{ `${$t('game_history.show_all')}(${abnormalPeriodsCount[game.game_id]})...`  }}
+                        </router-link>
+                    </td>
+                </tr>
+                </template>
             </tbody>
         </table>
     </div>
@@ -59,16 +90,24 @@
                     <tbody>
                     <tr>
                         <td>{{ modal.gameResult.issue_number }}</td>
-                        <td>{{ today }}</td>
+                        <td>{{ modal.game.resultTime | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
                             <input class="form-control" v-model="modal.gameResult.result_str">
+                            <span>{{ $t('game_history.result_str_tips',{
+                                    num_len: modal.game.rules.num_len,
+                                    unique: modal.game.rules.unique?$t('game_history.non_repetitive'):$t('game_history.repeatable'),
+                                    range_floor: modal.game.rules.range_value[0],
+                                    range_ceil: modal.game.rules.range_value[1],
+                                    separator: modal.game.rules.separator
+                                })}}</span>
                         </td>
                     </tr>
                     </tbody>
                     </table>
                     <div class="m-l m-r">
                         <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
-                    </div>                </div>
+                    </div>                
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" @click="updateGameResult">{{ $t('action.create') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
@@ -83,16 +122,19 @@ import api from '../../api.js'
 import alertMsg from '../../components/alertMsg'
 import Vue from 'vue'
 const dateFormat = 'YYYY-MM-DD'
-const dateFormat2 = 'YYYYMMDD'
 export default{
     data () {
         return {
-            game_draw: '',
+            gameDraw: [],
+            abnormalPeriods: [],
+            abnormalPeriodsCount: [],
             isLatest: false,
             modal: {
                 game: {
                     id: undefined,
-                    display_name: undefined
+                    display_name: undefined,
+                    rules: {},
+                    resultTime: ''
                 },
                 isShow: false,
                 gameResult: {
@@ -100,79 +142,70 @@ export default{
                     issue_number: '',
                     result_str: ''
                 },
-                newestResult: undefined,
                 msg: ''
             },
-            today: Vue.moment().format(dateFormat)
+            today: Vue.moment().format(dateFormat),
+            count: 0
         }
+    },
+    created () {
+        this.getPeriods()
+    },
+    beforeMount () {
+        this.timing = setInterval(() => {
+            this.getPeriods()
+        }, 15 * 1000)
     },
     methods: {
         getPeriods () {
-            this.$http.get(api.game_draw).then(
-                response => {
-                    this.game_draw = response.data
-                    const games = {}
-                    response.data.forEach(game => {
-                        games[game.game_id] = game.game
-                    })
-                    this.$store.dispatch('setGame', games)
-
-                    this.isLatest = true
-                    setTimeout(() => { this.isLatest = false }, 1500)
-                },
-                response => {
-                    this.errorCallback(response)
-                }
-            )
+            this.$http.get(api.game_draw).then(response => {
+                this.gameDraw = response.data.data
+                this.getAbnormalPeriods(response.data.data)
+            }, response => {
+                this.errorCallback(response)
+            })
+        },
+        getAbnormalPeriods (games) {
+            games = games || this.gameDraw
+            games.forEach(game => {
+                this.$http.get(`${api.game_schedule}?game=${game.game_id}&abnormal=True&offset=0&limit=4&`).then(response => {
+                    if (response.data.code === 2000) {
+                        this.abnormalPeriods[game.game_id] = response.data.data.results
+                        this.abnormalPeriodsCount[game.game_id] = response.data.data.count
+                        this.count += 1
+                    }
+                })
+            })
         },
         errorCallback (response) {
             if (('' + response.status).indexOf('4') === 0) {
                 this.$router.push('/login?next=' + this.$route.path)
             }
         },
-        getGameName (gameid) {
-            this.$http.get(api.game_list + gameid)
-            .then(response => {
-                this.modal.game.display_name = response.data.display_name
-                this.modal.gameResult.game_code = response.data.code
-            })
-        },
-        getNewestResult (gameid) {
+        getGameInfo (gameId) {
             return new Promise((resolve, reject) => {
-                this.$http.get(api.game_result + `?game=${gameid}&date=${this.today}&limit=1`)
-                .then(response => {
-                    if (response.data.code === 2000 && response.data.data.results.length > 0) {
-                        this.modal.newestResult = Object.assign({}, this.modal.newestResult, response.data.data.results[0])
-                        resolve(response.data.data.results[0])
-                    } else {
-                        reject()
-                        this.modal.newestResult = {}
-                    }
+                this.$http.get(api.game_list + gameId).then((response) => {
+                    resolve(response.data.data.rules)
                 })
             })
         },
-        showModal (gameid) {
-            this.modal = {
-                ...this.modal,
-                game: {
-                    id: gameid
-                },
-                newestResult: undefined,
-                gameResult: {
-                    result_str: ''
+        showModal (game, period) {
+            this.getGameInfo(game.game_id).then(rules => {
+                this.modal = {
+                    ...this.modal,
+                    game: {
+                        id: game.game_id,
+                        display_name: game.game,
+                        rules: rules,
+                        resultTime: period.schedule_result
+                    },
+                    gameResult: {
+                        game_code: period.game_code,
+                        issue_number: period.issue_number,
+                        result_str: ''
+                    },
+                    isShow: true
                 }
-            }
-            this.modal.game.id = gameid
-            this.modal.newestResult = undefined
-            this.modal.gameResult.result_str = ''
-            this.getGameName(gameid)
-            this.getNewestResult(gameid).then(result => {
-                this.modal.newestResult = Object.assign({}, this.modal.newestResult, result)
-                this.modal.gameResult.issue_number = parseInt(this.modal.newestResult.issue_number) + 1
-            }, () => {
-                this.modal.gameResult.issue_number = Vue.moment().format(dateFormat2) + '000'
-            }).then(() => {
-                this.modal.isShow = true
             })
         },
         hideModal () {
@@ -196,12 +229,6 @@ export default{
             }
         }
     },
-    created () {
-        this.getPeriods()
-        this.timing = setInterval(() => {
-            this.getPeriods()
-        }, 60000) // update data every min
-    },
     beforeDestroy () {
         clearInterval(this.timing)
     },
@@ -221,7 +248,7 @@ export default{
 .modal{
   display: block;
 }
-.w-60{
-    width: 60px;
+.table td{
+  vertical-align: middle
 }
 </style>

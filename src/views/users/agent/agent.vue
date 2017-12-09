@@ -19,7 +19,7 @@
                 <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
                 <input type="text" v-model="query.promo_code" class="form-control w-sm"  v-bind:placeholder="$t('agent.promo_code')"/>
                 <input type="text" v-model="query.real_name_q" class="form-control w-sm" v-bind:placeholder="$t('common.real_name')" />
-                <input type="text" v-model="query.parent_agent" class="form-control w-sm" v-bind:placeholder="$t('agent.parent_agent')" />
+                <input type="text" v-model="query.parent_agent_q" class="form-control w-sm" v-bind:placeholder="$t('agent.parent_agent')" />
                 <select class="form-control c-select w-sm" v-model="level" >
                   <option value="0">{{$t('agent.level')}}</option>
                   <option value="1">大股东</option>
@@ -97,7 +97,7 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="agent.is_logged_in==true">&#x25CF;</div>
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
-            <td v-if="agent.parent_agent">{{agent.parent_agent}}</td><td v-else>-</td>
+            <td v-if="agent.parent_agent">{{agent.parent_agent.name}}</td><td v-else>-</td>
             <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
             <td><span v-if="agent.real_name">{{agent.real_name}}</span><span v-else>-</span></td>
             <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
@@ -143,7 +143,7 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
-            <td><router-link :to="'/agent/?parent_agent=gagent'" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
+            <td><router-link :to="'/agent/?parent_agent_q=gagent'" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
             <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
             <td>
               <span class="label success" v-if="agent.status==1">{{$t('status.active')}}</span>
@@ -183,7 +183,7 @@ export default {
         return {
             created_at_0: '',
             created_at_1: '',
-            optexpand: 'level',
+            optexpand: 'level,parent_agent',
             showAll: false,
             agentApi: api.agent,
             queryset: [],

@@ -80,7 +80,7 @@
                 <div class="col-xs-12">
                     <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" @input="quickFilter"/>
                     <input type="text" v-model="query.bet_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"@input="quickFilter"/>
-                    <input type="text" v-model="query.game_schedule" class="form-control inline w-sm" v-bind:placeholder="$t('game_manage.issue_number')"@input="quickFilter"/>
+                    <input type="text" v-model="query.issue_number" class="form-control inline w-sm" v-bind:placeholder="$t('game_manage.issue_number')"@input="quickFilter"/>
                     <select class="form-control w-sm c-select inline" v-model="period">
                       <option value="5000">{{$t('betrecord.five_seconds')}}</option>
                       <option value="10000">{{$t('betrecord.ten_seconds')}}</option>
@@ -144,10 +144,10 @@
               {{t.game.display_name}}
             </td>
             <td>
-              {{t.game_schedule}}
+              {{t.issue_number}}
             </td>
             <td>
-              {{t.play.display_name}}
+              {{t.play.play_group.display_name}} @ {{t.play.display_name}}
             </td>
             <td>
               {{t.bet_amount | currency('￥')}}
@@ -213,10 +213,10 @@
               {{t.game.display_name}}
             </td>
             <td>
-              {{t.game_schedule}}
+              {{t.issue_number}}
             </td>
             <td>
-              {{t.play.display_name}}
+              {{t.play.play_group.display_name}} @ {{t.play.display_name}}
             </td>
             <td>
               {{t.returnrate}}
@@ -393,7 +393,7 @@
             },
             getGameList () {
                 this.$http.get(api.game_list).then(response => {
-                    this.gamelist = response.data
+                    this.gamelist = response.data.data
                 })
             },
             getPageAccessed () {
@@ -401,10 +401,20 @@
                 if (this.router_path === '/report/betrecord/today') {
                     this.created_at_0 = this.today
                     this.created_at_1 = this.today
+                    if (this.$route.query.member && this.$route.query.created_at_0 && this.$route.query.created_at_1) {
+                        this.query.member = this.$route.query.member
+                    }
                     this.pageSelected = 'today'
                 } else if (this.router_path === '/report/betrecord/history') {
                     this.created_at_0 = ''
                     this.created_at_1 = this.yesterday
+                    if (this.$route.query.member && this.$route.query.status && this.$route.query.created_at_1) {
+                        this.query.member = this.$route.query.member
+                        this.query.status = this.$route.query.status
+                        this.status = this.query.status
+                        this.query.created_at_1 = this.$route.query.created_at_1
+                        this.created_at_1 = this.query.created_at_1
+                    }
                     this.pageSelected = 'history'
                 } else if (this.router_path === '/report/betrecord/realtime') {
                     this.created_at_0 = this.today
@@ -423,7 +433,7 @@
             },
             getGameCategory (game) {
                 this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(response => {
-                    this.categories = response.data
+                    this.categories = response.data.data
                 })
             },
             newWindow () {
@@ -469,7 +479,7 @@
                     this.$http.put(api.cancel_bet + betrecord.id + '/', {
                         status: status
                     }).then(response => {
-                        betrecord.status = response.data.status
+                        betrecord.status = response.data.data.status
                     }, response => {
                         this.errorMsg = ''
                         for (let field in this.field_locales) {

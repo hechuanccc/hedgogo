@@ -137,7 +137,7 @@
                 if (this.payee.id) {
                     this.$http.put(api.onlinepayee + this.payee.id + '/', this.payee).then(response => {
                         if (response.status === 200) {
-                            this.$router.push('/online_payee/' + response.data.id)
+                            this.$router.push('/online_payee/' + response.data.data.id)
                         }
                     }, response => {
                         this.responseError = ''
@@ -148,7 +148,7 @@
                 } else {
                     this.$http.post(api.onlinepayee, this.payee).then(response => {
                         if (response.status === 201) {
-                            this.$router.push('/online_payee/' + response.data.id)
+                            this.$router.push('/online_payee/' + response.data.data.id)
                         }
                     }, response => {
                         this.responseError = ''
@@ -160,13 +160,13 @@
             },
             getPaymentTypes () {
                 this.$http.get(api.paymentgateway).then((response) => {
-                    this.paymenttypes = response.data
+                    this.paymenttypes = response.data.data
                 })
             },
             getPayee (id) {
                 this.$http.get(api.onlinepayee + id + '/').then((response) => {
                     setTimeout(() => {
-                        this.payee = Object.assign(this.payee, response.data)
+                        this.payee = Object.assign(this.payee, response.data.data)
                     }, 300)
                 })
             },

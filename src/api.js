@@ -63,5 +63,7 @@ export default {
     gamecategory: managePrefix + 'game/category/',
     cancel_bet: managePrefix + 'betretreat/',
     transaction_withdraw: managePrefix + 'transaction/withdraw/',
-    transaction_onlinepay: managePrefix + 'transaction/onlinepayment/'
+    transaction_onlinepay: managePrefix + 'transaction/onlinepayment/',
+    refresh_token: prefix + 'login/refresh/',
+    global_preferences: managePrefix + 'global-preferences/'
 }

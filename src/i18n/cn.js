@@ -83,6 +83,9 @@ export default {
         permissions: '權限管理',
         permission_add: '添加权限',
         roles: '角色管理',
+        role_detail: '角色详情',
+        role_add: '添加角色',
+        role_edit: '修改角色',
         global_parameters: '系統參數配置',
         logging: '日誌管理',
         login_logs: '登錄日誌',
@@ -373,7 +376,8 @@ export default {
         thirty_seconds: '30 秒',
         sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
-        cancelled_bets: '赌注被取消了'
+        cancelled_bets: '赌注被取消了',
+        total_valid_bet_amount: '有效投注总’笔’数'
     },
     action: {
         view_today_report: '查看今日报表',
@@ -392,6 +396,7 @@ export default {
         delete: '删除',
         setting: '设定',
         confirm: '确定',
+        cancel: '取消',
         view_remit_payees: '查看公司入款账号',
         update_remit_payee: '更新',
         add_remit_payee: '增加公司入款账户',
@@ -465,10 +470,11 @@ export default {
         no_setting_icon: '未设置图标档案',
         no_setting_holiday: '未设置公休开始结束时间',
         modify_success: '修改成功！',
-        modify_fail: '修改失败！'
+        modify_fail: '修改失败！',
+        adjust_rank: '调整排序'
     },
     game_history: {
-        game: '游戏',
+        game: '游戏名称',
         already_result: '当日已开期数',
         notyet_result: '当日剩余期数',
         draw_period: '期数',
@@ -487,13 +493,29 @@ export default {
         manual_draw_fail: '手动开奖失败！',
         memo: '备注',
         no_draw: '未开奖',
+        retreat_sched_sure: '确定撤单吗？',
         retreat_sched: '撤单',
         retreat_sched_fail: '撤单失败！',
         created: '已创建',
         open: '已开放',
         cancelled: '已撤单',
         operating: '操作',
-        later_try: '请稍后再试'
+        try_later: '请稍后再试',
+        abnormal_period: '异常期数',
+        expired_period: '逾期期数',
+        no_abnormal_period: '无异常期数',
+        period_bet_record: '当期单量',
+        show_all: '显示全部',
+        result_str_tips: '请输入%{num_len}个%{unique}数字(%{range_floor}~%{range_ceil})使用\'%{separator}\'分隔',
+        repeatable: '可重复',
+        non_repetitive: '不重复',
+        show_number: '显示号码',
+        show_big_small: '显示大小',
+        show_odd_even: '显示单双',
+        big: '大',
+        small: '小',
+        odd: '单',
+        even: '双'
     },
     agent: {
         number: '编号',
@@ -707,7 +729,9 @@ export default {
         operating: '操作',
         modify: '修改',
         delete: '删除',
-        parameter_add_btn: '添加参数'
+        parameter_add_btn: '添加参数',
+        sure_update_parameter: '确定修改参数？',
+        cancel: '取消'
     },
     role_manage: {
         id: '角色ID',
@@ -715,8 +739,10 @@ export default {
         created_at: '添加时间',
         type: '类型',
         role_add_btn: '添加角色',
+        role_info: '角色信息',
         operating: '操作',
         modify: '修改',
-        delete: '删除'
+        delete: '删除',
+        role_permission: '角色权限'
     }
 }

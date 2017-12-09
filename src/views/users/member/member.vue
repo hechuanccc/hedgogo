@@ -55,7 +55,6 @@
                 <input v-if="selected == '2'" type="text" v-model="query.email_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.email')"/>
                 <input v-if="selected == '3'" type="text" v-model="query.qq_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')"/>
                 <input v-if="selected == '4'" type="text" v-model="query.wechat_q" class="form-control w-sm " v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')"/>
-                <returnsetting :returnsetting="return_settings" @myReturn="returnData" class="inline"></returnsetting>
                 <input type="text" v-model="query.register_ip" class="form-control w-sm " v-bind:placeholder="$t('member.created_ip')"/>
                 <input type="text" v-model="query.balance_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
                 <input type="text" v-model="query.balance_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
@@ -146,15 +145,15 @@
             <th class="text-center">{{$t('common.login_status')}}</th>
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
-            <th>{{$t('member.created_at')}}</th>
             <th>{{$t('member.created_ip')}}</th>
             <th>{{$t('member.last_login')}}</th>
-            <th>{{$t('member.login_platform')}}</th>
             <th>{{$t('member.agent')}}</th>
             <th>{{$t('member.level')}}</th>
             <th>{{$t('member.status')}}</th>
+            <th>{{$t('betrecord.total_valid_bet_amount')}}</th>
+            <th>{{$t('betrecord.total_bet_amount')}}</th>
+            <th>{{$t('common.profit')}}</th>
             <th>{{$t('member.balance')}}</th>
-            <th>{{$t('common.memo')}}</th>
           </tr>
           </thead>
           <tbody v-if="queryset.length > 0">
@@ -172,9 +171,6 @@
                 <span class="label danger">{{$t('common.repeat')}}</span>
               </div>
             </td>
-            <td class="text-sm">
-              {{member.created_at | moment("YYYY-MM-DD HH:mm") }}
-            </td>
             <td>
               <div>{{member.register_ip || '-'}}
                 <div><span class="label danger" v-if="member.ip_repeated">{{$t('common.repeat')}}</span></div>
@@ -182,10 +178,6 @@
             </td>
             <td>
               <span v-if="member.last_login">{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm")}}</span>
-              <span v-else>-</span>
-            </td>
-            <td>
-              <span v-if="member.last_login">{{member.last_login.platform}}</span>
               <span v-else>-</span>
             </td>
             <td v-if="member.agent.name">
@@ -198,8 +190,15 @@
               <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
+            <td>{{member.total_valid_bet_amount | currency('￥')}}</td>
+            <td>{{member.total_bet_amount | currency('￥')}}</td>
+            <td>
+              <span class="text-success">{{$t('betrecord.win')}}: </span>
+              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link> <br/>
+              <span class="text-danger">{{$t('betrecord.lose')}}: </span>
+              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link>
+            </td>
             <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
-            <td><span v-if="member.memo">{{member.memo}}</span><span v-else>-</span></td>
           </tr>
           </tbody>
         </table>
@@ -223,7 +222,9 @@ import DatePicker from 'vue2-datepicker'
 import api from '../../../api'
 import pulling from '../../../components/pulling'
 import VueCookie from 'vue-cookie'
+import Vue from 'vue'
 
+const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
@@ -252,18 +253,17 @@ export default {
                 level: '',
                 report_flag: true,
                 is_logged_in: '',
-                account_type: '',
-                memo: ''
+                account_type: ''
             },
             status: '',
-            return_settings: '0',
             level: '0',
             selected: '0',
             filter: {},
             href: '',
             member_logged_in: '',
             loading: false,
-            export_query: []
+            export_query: [],
+            today: Vue.moment().format(format)
         }
     },
     created () {
@@ -315,10 +315,6 @@ export default {
             this.query.level = val
             this.level = val
         },
-        returnData (data) {
-            this.query.return_settings = data
-            this.return_settings = data
-        },
         queryData (queryset) {
             this.query = Object.assign({}, this.filter)
             this.created_at_0 = ''
@@ -343,7 +339,6 @@ export default {
         },
         clearall: function () {
             this.query = {}
-            this.return_settings = 0
             this.status = ''
             this.member_logged_in = ''
             this.created_at_0 = ''
@@ -400,8 +395,7 @@ export default {
     components: {
         DatePicker,
         level: require('../../../components/level'),
-        pulling,
-        returnsetting: require('../../../components/returnsetting')
+        pulling
     }
 }
 </script>

@@ -139,7 +139,7 @@
         methods: {
             getPayee (id) {
                 this.$http.get(api.remitpayee + id + '/?opt_expand=1').then((response) => {
-                    this.remit_payee = response.data
+                    this.remit_payee = response.data.data
                 })
             },
             deletePayee (id, confirm, event) {
@@ -160,8 +160,8 @@
             },
             remitTransactions () {
                 this.$http.get(api.bill + '?transaction_type=remit').then((response) => {
-                    for (let i = 0; i < response.data.length; i++) {
-                        this.names.push(response.data[i].remit_info.remit_payee.payee_name)
+                    for (let i = 0; i < response.data.data.length; i++) {
+                        this.names.push(response.data.data[i].remit_info.remit_payee.payee_name)
                     }
                     if (this.names.indexOf(this.remit_payee.payee_name) !== -1) {
                         this.isActive = true

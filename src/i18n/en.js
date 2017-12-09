@@ -81,7 +81,10 @@ export default {
         online_member_list: 'Online Member',
         system_configuration: 'Settings',
         permissions: 'Permissions',
-        roles: 'Roles',
+        roles: 'Role',
+        role_detail: 'Role Detail',
+        role_add: 'Add Role Setting',
+        role_edit: 'Edit Role Setting',
         global_parameters: 'Global Parameters',
         logging: 'Logging',
         login_logs: 'Login Logs',
@@ -338,9 +341,9 @@ export default {
         bank_title: 'Bank Information',
         name: 'Bank',
         province: 'Province',
-        address: 'Bank Branch',
+        address: 'Branch',
         city: 'City',
-        account: 'Bank Account'
+        account: 'Account'
     },
     status: {
         active: 'Active',
@@ -372,7 +375,8 @@ export default {
         thirty_seconds: '30 seconds',
         sixty_seconds: '60 seconds',
         cancel_bet: 'Cancel Bet',
-        cancelled_bet: 'Cancelled Bet'
+        cancelled_bet: 'Cancelled Bet',
+        total_valid_bet_amount: 'Total Valid Bet Amount'
     },
     action: {
         view_today_report: 'View today\'s Report',
@@ -391,6 +395,7 @@ export default {
         delete: 'Delete',
         setting: 'Setting',
         confirm: 'Confirm',
+        cancel: 'Cancel',
         view_remit_payees: 'View remit payees',
         update_remit_payee: 'Update',
         add_remit_payee: 'Add Remit Payee',
@@ -464,7 +469,8 @@ export default {
         no_setting_icon: 'No Setting Icon File.',
         no_setting_holiday: 'No Setting Holiday.',
         modify_success: 'Successfully modified!',
-        modify_fail: 'Fail to modidy!'
+        modify_fail: 'Fail to modify!',
+        adjust_rank: 'Adjust Rank'
     },
     game_history: {
         game: 'Game',
@@ -486,13 +492,29 @@ export default {
         manual_draw_fail: 'Fail to manual draw!',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
+        retreat_sched_sure: 'Are you sure to retreat schedule?',
         retreat_sched: 'Retreat Schedule',
         retreat_sched_fail: 'Fail to retreat schedule!',
         created: 'Created',
         open: 'Open',
         cancelled: 'Cancelled',
         operating: 'Operating',
-        later_try: 'Please try later'
+        try_later: 'Please try later',
+        abnormal_period: 'Exception Message',
+        expired_period: 'Expired Period',
+        no_abnormal_period: 'No Abnormal Period',
+        period_bet_record: 'Bet Records',
+        show_all: 'Show all',
+        result_str_tips: 'Please enter %{num_len} %{unique} numbers(%{range_floor}~%{range_ceil}) separated by \'%{separator}\'.',
+        repeatable: 'repeatable',
+        non_repetitive: 'non-repetitive',
+        show_number: 'Number',
+        show_big_small: 'Comparison',
+        show_odd_even: 'Parity',
+        big: 'B',
+        small: 'S',
+        odd: 'O',
+        even: 'E'
     },
     agent: {
         number: 'No.',
@@ -706,7 +728,9 @@ export default {
         operating: 'Operating',
         modify: 'Modify',
         delete: 'Delete',
-        parameter_add_btn: 'Add Parameter'
+        parameter_add_btn: 'Add Parameter',
+        sure_update_parameter: 'Are you sure to update the parameter?',
+        cancel: 'Cancel'
     },
     role_manage: {
         id: 'Role ID',
@@ -714,8 +738,10 @@ export default {
         created_at: 'Created at',
         type: 'Type',
         role_add_btn: 'Add Role',
+        role_info: 'Role Information',
         operating: 'Operating',
         modify: 'Modify',
-        delete: 'Delete'
+        delete: 'Delete',
+        role_permission: 'Role\'s Permissions'
     }
 }

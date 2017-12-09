@@ -215,14 +215,14 @@
                 } else {
                     this.$http.post(api.commission, this.commissionsetting).then(response => {
                         if (response.status === 201) {
-                            this.$router.push('/commission/' + response.data.id + '/edit')
+                            this.$router.push('/commission/' + response.data.data.id + '/edit')
                         }
                     })
                 }
             },
             getCommissionSetting (id) {
                 this.$http.get(api.commission + id + '/').then((response) => {
-                    this.commissionsetting = response.data
+                    this.commissionsetting = response.data.data
                 })
             },
             deleteCommission () {

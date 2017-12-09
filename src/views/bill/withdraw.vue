@@ -101,13 +101,16 @@
                             <span v-else>-</span>
                       </td>
                       <td>
-                            <span>{{$t('bank.bank_title')}}: {{t.member.bank.name}}</span> <br/>
+                            <span>{{$t('bank.name')}}: {{t.member.bank.name}}</span> <br/>
                             <span>{{$t('bank.account')}}: {{t.member.bank.account}}</span> <br/>
                             <span>{{$t('bank.address')}}: {{t.member.bank.city}} , {{t.member.bank.province}}</span> <br/>
                       </td>
                       <td>
-                            <span>{{$t('member.ip')}}: {{t.member.ipaddr}}</span> <br/>
-                            <span>{{$t('member.area')}}: {{t.member.address}}</span> <br/>
+                            <span v-if='t.member.ip_info'>{{$t('member.ip')}}: {{t.member.ip_info.ip}}</span> <span v-else>-</span> <br/>
+                            <span v-if='t.member.ip_info'>
+                              {{$t('member.area')}}: {{t.member.ip_info.address.country}} {{t.member.ip_info.address.region}} {{t.member.ip_info.address.city}}
+                            </span> <br/>
+
                       </td>
                       <td>
                           <span class="label success" v-if="t.status===1">{{$t('status.success')}}</span>

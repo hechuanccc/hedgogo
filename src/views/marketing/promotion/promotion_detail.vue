@@ -105,7 +105,7 @@
         methods: {
             getPromotion (id) {
                 this.$http.get(api.promotion + id + '/?opt_expand=level').then((response) => {
-                    this.promotion = response.data
+                    this.promotion = response.data.data
                 })
             },
             deletePromotion (id, confirm, event) {

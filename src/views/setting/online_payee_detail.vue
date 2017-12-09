@@ -133,9 +133,9 @@
             getPayee (id) {
                 this.$http.get(api.onlinepayee + id + '/?opt_expand=1').then(response => {
                     // this.$data = response.data
-                    let keys = Object.keys(response.data)
+                    let keys = Object.keys(response.data.data)
                     for (let i = 0; i < keys.length; i++) {
-                        this[keys[i]] = response.data[keys[i]]
+                        this[keys[i]] = response.data.data[keys[i]]
                     }
                 })
             }

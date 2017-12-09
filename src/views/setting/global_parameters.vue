@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div class="m-b" v-if="!$root.permissions.includes('change_global_parameters')" >
-      <div tag="button" class="md-btn w-sm blue" @click="showModal">{{$t('global_parameters.parameter_add_btn')}}</div>
-    </div>
-    <div class="box" v-if="globalParametersList.length > 0">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t gbp">
+    <div class="box" v-if="queryset.length > 0">
+      <table st-table="rowCollectionBasic" class="table table-striped b-t align-middle">
           <thead>
           <tr>
             <th width="20%" class="text-center align-middle">{{ $t('global_parameters.name') }}</th>
@@ -13,10 +10,14 @@
           </tr>
           </thead>
           <tbody>
-            <tr v-for="(globalParameter, index) in globalParametersList" :key="globalParameter.id">
-                <td class="text-center align-middle">{{ globalParameter.name }}</td>
-                <td><input class="form-control" v-model="globalParameter.value "></td>
-                <td class="align-middle"><a class="p-l-xs" @click="modifyGlobalParameter(globalParameter.id)">{{ $t('global_parameters.modify') }}</a></td>
+            <tr v-for="(preference, index) in queryset" :key="index">
+                <td class="text-center align-middle">{{ preference.display_name }}</td>
+                <td v-if="listMode.includes(index)"><div :class="preference.newValue ? '' : 'has-danger'"><input :class="['form-control', preference.newValue ? '' : 'form-control-danger']" v-model="preference.newValue"></div></td>
+                <td v-else>{{ preference.value }}</td>
+                <td class="align-middle">
+                    <a class="p-l-xs" @click="changeMode(index)">{{ listMode.includes(index) ? $t('action.confirm') : $t('global_parameters.modify') }}</a>
+                    <a class="p-l-xs" v-if="listMode.includes(index)" @click="cancel(index)">{{ $t('global_parameters.cancel') }}</a>
+                </td>
             </tr>
           </tbody>
         </table>
@@ -26,6 +27,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <strong>{{ $t('global_parameters.sure_update_parameter') }}</strong>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal">×</button>
                 </div>
                 <div class="modal-body">
@@ -38,104 +40,107 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input class="form-control" v-model="modal.globalParameterResult.name"></td>
-                            <td><input class="form-control" v-model="modal.globalParameterResult.value"></td>
+                            <td>{{ modal.globalPreferenceResult.display_name }}</td>
+                            <td>{{ modal.globalPreferenceResult.value }}</td>
                         </tr>
                     </tbody>
                     </table>
+                    <div class="row m-l m-r">
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
+                    </div>   
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="addGlobalParameter">{{ $t('action.create') }}</button>
+                    <button type="button" class="btn btn-primary" @click="updateGlobalPreference">{{ $t('action.update') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row m-b-lg">
+        <pulling :queryset="queryset" :api="globalPreferencesApi" :query="query" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
+    </div>
   </div>
 </template>
 <script>
-// import api from '../../api'
+import api from '../../api'
+import pulling from '../../components/pulling'
+import alertMsg from '../../components/alertMsg'
 // import Vue from 'vue'
 
 export default {
     data () {
         return {
-            globalParametersList: [],
-            testData: [{
-                id: 1,
-                name: '试玩帐号默认金额',
-                value: '2000'
-            },
-            {
-                id: 2,
-                name: '注册黑名单',
-                value: '王小明;'
-            },
-            {
-                id: 3,
-                name: '六合彩金',
-                value: '01,06,46,23,34,42,35,04,13,33'
-            },
-            {
-                id: 4,
-                name: '六合彩木',
-                value: '01,06,46,23,34,42,35,04,13,37'
-            },
-            {
-                id: 5,
-                name: '六合彩水',
-                value: '21,16,36,13,14,32,35,04,19,22'
-            },
-            {
-                id: 6,
-                name: '六合彩火',
-                value: '31,06,46,43,34,42,35,04,18,01'
-            },
-            {
-                id: 7,
-                name: '六合彩土',
-                value: '01,06,46,03,34,32,35,04,17,13'
-            },
-            {
-                id: 8,
-                name: '在线客服',
-                value: ''
-            },
-            {
-                id: 9,
-                name: '一天一个ip可以注册多少用户',
-                value: ''
-            }],
+            globalPreferencesApi: api.global_preferences,
+            query: {},
+            queryset: [],
             modal: {
                 isShow: false,
-                globalParameterResult: {
-                    name: '',
+                index: '',
+                key: '',
+                globalPreferenceResult: {
+                    display_name: '',
                     value: ''
-                }
-            }
+                },
+                msg: ''
+            },
+            listMode: []
         }
     },
     created () {
-        this.getGlobalParameters()
+        this.$nextTick(() => {
+            this.$refs.pulling.rebase()
+        })
     },
     methods: {
-        getGlobalParameters () {
-            console.log('no api')
-            this.globalParametersList = this.testData
+        changeMode (index) {
+            if (this.listMode.includes(index)) {
+                this.modal.key = this.queryset[index].key
+                this.modal.index = index
+                this.modal.globalPreferenceResult.value = this.queryset[index].newValue
+                this.modal.globalPreferenceResult.display_name = this.queryset[index].display_name
+                this.showModal()
+            } else {
+                this.$set(this.queryset[index], 'newValue', this.queryset[index].value)
+                this.listMode.push(index)
+            }
         },
-        modifyGlobalParameter (id) {
-            console.log(`modify: ${id}`)
+        cancel (index) {
+            this.queryset[index].newValue = this.queryset[index].value
+            this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
         },
-        addGlobalParameter () {
-            console.log('add')
-            this.hideModal()
+        updateGlobalPreference () {
+            this.$http.patch(this.globalPreferencesApi + this.modal.key + '/', this.modal.globalPreferenceResult)
+            .then(response => {
+                if (response.data.code === 2000) {
+                    this.queryset[this.modal.index].value = response.data.data.value
+                    this.modal.msg = this.$t('game_manage.modify_success')
+                    this.$refs.alertMsg.trigger('success', 1, true)
+                    this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
+                } else {
+                    this.modal.msg = response.data.msg
+                    this.$refs.alertMsg.trigger('danger', 1, true)
+                }
+            })
         },
         showModal () {
             this.modal.isShow = true
         },
         hideModal () {
             this.modal.isShow = false
+        },
+        submit () {
+            this.$refs.pulling.submit()
+        },
+        queryData (queryset) {
+            this.queryset = queryset
+        },
+        queryParam (query) {
+            this.query = query
         }
+    },
+    components: {
+        pulling,
+        alertMsg
     }
 }
 </script>
@@ -150,7 +155,7 @@ export default {
 .modal{
   display: block;
 }
-.gbp td{
-    vertical-align:middle;
+.align-middle td{
+  vertical-align:middle;
 }
 </style>
