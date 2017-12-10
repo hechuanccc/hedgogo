@@ -90,13 +90,6 @@
               <span class="text-muted">{{$t('agent.promo_code')}}</span>
               <div >{{agent.promo_code}}</div>
             </div>
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.dft_return_setting')}}</span>
-              <div>
-                <router-link v-if="agent.default_return_settings" :to="'/return/' + agent.default_return_settings.id + '/edit'">{{agent.default_return_settings.name}}</router-link>
-                <span class="label" v-else>未设定</span>
-              </div>
-            </div>
           </div>
           <div class="row m-b p-t p-b b-b">
             <div class="col-xs-4">
@@ -236,7 +229,6 @@
                             name: ''
                         }
                     },
-                    default_return_settings: {},
                     commission_settings: {},
                     level: '',
                     status: ''
@@ -310,7 +302,7 @@
                 })
             },
             getAgent (id) {
-                let fields = 'level,default_return_settings,commission_settings,default_member_lv,parent_agent,bank'
+                let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
                 this.$http.get(api.agent + id + '/?opt_expand=' + fields).then((response) => {
                     this.agent = response.data.data
                     this.account_id = {'account_id': response.data.data.id}

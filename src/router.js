@@ -177,32 +177,6 @@ export default new Router({
         }
     },
     {
-        path: '/bill/returnrate',
-        name: 'returnrate',
-        component: function (resolve) {
-            require(['./views/bill/returnrate.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            disable_tabs: true,
-            title: Vue.t('nav.returnrate'),
-            group: 'financing'
-        }
-    },
-    {
-        path: '/bill/returnrate/:returnId',
-        name: 'returnrate_detail',
-        component: function (resolve) {
-            require(['./views/bill/returnrate_detail.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            disable_tabs: true,
-            title: Vue.t('nav.returnrate'),
-            group: 'financing'
-        }
-    },
-    {
         path: '/bill/operation',
         name: 'bill-operation',
         component: function (resolve) {
@@ -627,39 +601,6 @@ export default new Router({
             group: 'setting',
             title: Vue.t('nav.remit_payee_update'),
             auth: true
-        }
-    },
-    {
-        path: '/return',
-        component: function (resolve) {
-            require(['./views/setting/return.vue'], resolve)
-        },
-        meta: {
-            group: 'setting',
-            auth: true,
-            title: Vue.t('nav.setting_return')
-        }
-    },
-    {
-        path: '/return/add',
-        component: function (resolve) {
-            require(['./views/setting/return_form.vue'], resolve)
-        },
-        meta: {
-            group: 'setting',
-            auth: true,
-            title: Vue.t('nav.setting_return_add')
-        }
-    },
-    {
-        path: '/return/:returnId/edit',
-        component: function (resolve) {
-            require(['./views/setting/return_form.vue'], resolve)
-        },
-        meta: {
-            group: 'setting',
-            auth: true,
-            title: Vue.t('nav.setting_return_edit')
         }
     },
     {

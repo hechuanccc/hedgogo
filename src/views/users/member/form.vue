@@ -127,12 +127,6 @@
                     <level :level="member.level" @level-select="levelSelect"></level>
                   </div>
                 </div>
-                <div class="form-group b-b p-b">
-                  <label for="agent" class="label-width">{{$t('member.return_setting')}}</label>
-                  <div class="inline-form-control">
-                    <returnsetting :returnsetting="member.return_settings" @myReturn="returnData"></returnsetting>
-                  </div>
-                </div>
                 <div v-if="$root.permissions.includes('list_update_member_bank')">
                   <h5 class="m-b">{{$t('bank.bank_title')}} </h5>
                   <div class="form-group">
@@ -172,7 +166,7 @@
 <script>
     import DatePicker from 'vue2-datepicker'
     import VueTypeahead from 'vue-typeahead'
-    import { handleError } from '../../../utils/handleError'
+    // import { handleError } from '../../../utils/handleError'
     import api from '../../../api'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
@@ -201,7 +195,6 @@
                         bank: '',
                         province: ''
                     },
-                    return_settings: '',
                     level: '',
                     password: '123456',
                     withdraw_password: '123456'
@@ -210,8 +203,7 @@
                 field_locales: {
                     'username': '用户名错误：',
                     'birthday': ' 生日日期错误：',
-                    'level': ' 会员等级错误：',
-                    'return_settings': '反水设定错误：'
+                    'level': ' 会员等级错误：'
                 },
                 done: false,
                 errorMsg: ''
@@ -247,9 +239,6 @@
             })
         },
         methods: {
-            returnData (data) {
-                this.member.return_settings = data
-            },
             bankSelect (bank) {
                 this.member.bank.bank = bank
             },
@@ -287,13 +276,13 @@
                 if (this.member.id) {
                     this.$http.put(api.member + this.member.id + '/', this.initMember).then(response => {
                         if (response.status === 200) {
-                            this.$router.push('/member/' + response.data.data.id)
+                            this.$router.push('/member/' + response.data.id)
                         }
                     }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                        this.errorMsg = response.data.msg
+                        // for (let field in this.field_locales) {
+                        //     this.errorMsg += handleError(response, field, this.field_locales)
+                        // }
                     })
                 } else {
                     this.$http.post(api.member, this.initMember).then(response => {
@@ -301,10 +290,10 @@
                             this.$router.push('/member/' + response.data.data.id)
                         }
                     }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                        this.errorMsg = response.data.msg
+                        // for (let field in this.field_locales) {
+                        //     this.errorMsg += handleError(response, field, this.field_locales)
+                        // }
                     })
                 }
             },
@@ -316,9 +305,6 @@
                     }
                     if (data.level) {
                         data.level = data.level.id
-                    }
-                    if (data.return_settings) {
-                        data.return_settings = data.return_settings.id
                     }
                     this.member = Object.assign(this.member, data)
                 })
@@ -340,8 +326,7 @@
         components: {
             DatePicker,
             bank: require('../../../components/bank'),
-            level: require('../../../components/level'),
-            returnsetting: require('../../../components/returnsetting')
+            level: require('../../../components/level')
         }
     }
 </script>
