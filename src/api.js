@@ -65,5 +65,6 @@ export default {
     transaction_withdraw: managePrefix + 'transaction/withdraw/',
     transaction_onlinepay: managePrefix + 'transaction/onlinepayment/',
     refresh_token: prefix + 'login/refresh/',
-    global_preferences: managePrefix + 'global-preferences/'
+    global_preferences: managePrefix + 'global-preferences/',
+    website_descriptions: managePrefix + 'website/descriptions/'
 }
