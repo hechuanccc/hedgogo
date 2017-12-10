@@ -43,37 +43,36 @@
     </div>
 </template>
 <script>
-    import api from '../../../api'
-    import pulling from '../../../components/pulling'
+import api from '../../../api'
+import pulling from '../../../components/pulling'
 
-    export default {
-        data () {
-            return {
-                staffApi: api.staff,
-                query: {},
-                queryset: [],
-                optexpand: 'group'
-            }
-        },
-        created () {
-            this.$nextTick(() => {
-                this.$refs.pulling.rebase()
-            })
-        },
-        methods: {
-            submit () {
-                this.$refs.pulling.submit()
-            },
-            queryData (queryset) {
-                this.queryset = queryset
-            },
-            queryParam (query) {
-                this.query = query
-            }
-        },
-        components: {
-            pulling
+export default {
+    data () {
+        return {
+            staffApi: api.staff,
+            query: {},
+            queryset: [],
+            optexpand: 'group'
         }
+    },
+    created () {
+        this.$nextTick(() => {
+            this.$refs.pulling.rebase()
+        })
+    },
+    methods: {
+        submit () {
+            this.$refs.pulling.submit()
+        },
+        queryData (queryset) {
+            this.queryset = queryset
+        },
+        queryParam (query) {
+            this.query = query
+        }
+    },
+    components: {
+        pulling
     }
-
+}
 </script>

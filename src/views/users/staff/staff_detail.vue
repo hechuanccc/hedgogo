@@ -2,28 +2,28 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/staff">{{$t('nav.staff')}}</router-link></li>
-                <li class="active">{{$route.meta.title}}</li>
+                <li class="active"><router-link to="/staff">{{ $t('nav.staff') }}</router-link></li>
+                <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
         <div class="alert alert-success" v-if="passwordSuccess">
-            <span>{{$t('action.login_password_changed')}}</span>
-            <strong>{{newPassword}}</strong>
+            <span>{{ $t('action.login_password_changed') }}</span>
+            <strong>{{ newPassword }}</strong>
         </div>
         <div class="alert alert-danger" v-if="passwordError">
-            修改失败：{{passwordError}}
+            修改失败：{{ passwordError }}
         </div>
         <div class="box">
             <div class="box-header b-b">
                 <div class="row">
                     <div class="col-md-4">
-                        <h2 class="v-m m-t-sm">{{staff.username}}</h2>
+                        <h2 class="v-m m-t-sm">{{ staff.username }}</h2>
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right" v-if="$root.permissions.includes('add_change_staff')">
-                        <router-link class="md-btn md-flat m-r-sm" to="/staff/add">{{$t('action.create')}}</router-link>
-                        <router-link class="md-btn md-flat m-r-sm" :to="'/staff/' + staff.id + '/edit'">{{$t('action.update')}}</router-link>
-                        <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)">{{$t('action.reset_password')}}</a>
-                        <a class="md-btn md-flat m-r-sm" @click="deleteStaff(staff.id, true, $event)">{{$t('action.delete')}}</a>
+                        <router-link class="md-btn md-flat m-r-sm" to="/staff/add">{{ $t('action.create') }}</router-link>
+                        <router-link class="md-btn md-flat m-r-sm" :to="'/staff/'+staff.id+'/edit'">{{ $t('action.update') }}</router-link>
+                        <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)">{{ $t('action.reset_password') }}</a>
+                        <a class="md-btn md-flat m-r-sm" @click="deleteStaff(staff.id, true, $event)">{{ $t('action.delete') }}</a>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                             <tbody>
                                 <tr>
                                     <th class="grey-50" width="130">{{$t('staff.account')}}</th>
-                                    <td>{{staff.username}}</td>
+                                    <td>{{ staff.username }}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50" width="130">{{$t('staff.role')}}</th>
@@ -43,22 +43,21 @@
                                 </tr>
                                 <tr>
                                     <th class="grey-50" width="130">{{$t('staff.email')}}</th>
-                                    <td v-if="staff.email!==null">{{staff.email}}</td>
-                                    <td v-else>{{$t('staff.no_setting')}}</td>
+                                    <td>{{ staff.email ? staff.email : $t('staff.no_setting') }}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('staff.permission')}}</th>
                                     <td>
-                                        <template v-for="(list, index) in permissions">
+                                        <template v-for="(list, index) in staff.user_group.permissions">
                                             <div class="row">
                                                 <div class="col-sm-12 p-b"> 
                                                     <strong>{{ list.display_name }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-sm-offset-1 col-sm-11 p-b" v-for="permission in list.permissions" :key="permission.id">
-                                                    <i v-if="staffAdvpermissionsList.includes(permission.id)" class="fa fa-check text-success"></i>   
-                                                    <i v-else class="fa fa-times text-danger"></i>
+                                                <div class="col-sm-offset-1 col-sm-11 p-b" v-for="permission in list.advpermissions" :key="permission.id">
+                                                    <i v-if="permission.checked" class="fa fa-check text-success m-r-xs"></i>   
+                                                    <i v-else class="fa fa-times text-danger m-r-xs"></i>
                                                     <span>{{ permission.display_name }}</span>
                                                     <span class="text-muted ">- {{ permission.description }}</span>
                                                 </div>
@@ -68,7 +67,7 @@
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('common.memo')}}</th>
-                                    <td>{{staff.memo}}</td>
+                                    <td>{{ staff.memo }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -79,14 +78,11 @@
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('staff.status')}}</span>
                         <div>
-                            <span class="label success" v-if="staff.status===1">{{$t('status.active')}}</span>
-                            <span class="label" v-else >{{$t('status.inactive')}}</span>
+                            <span :class="['label', staff.status?'success':'danger']">{{ staff.status ?  $t('status.active') : $t('status.inactive') }}</span>
                             <template v-if="$root.permissions.includes('add_change_staff')">
-                                <a class="text-sm m-l" @click="toggleStatus" v-if="staff.status===1">禁用</a>
-                                <a class="text-sm m-l" @click="toggleStatus" v-else >启用</a>
+                                <a class="text-sm m-l" @click="toggleStatus">{{ staff.status ? $t('staff.disabled') : $t('staff.enabled') }}</a>
                             </template>
-                            <span class="text-success text-sm m-l" v-show="statusUpdated" @click="toggleStatus">状态已更新</span>
-
+                            <span class="text-success text-sm m-l" v-show="statusUpdated">{{ $t('staff.status_updated') }}</span>
                         </div>
                     </div>
                 </div>
@@ -100,73 +96,34 @@ export default {
     data () {
         return {
             staff: {
-                id: undefined,
-                email: '',
-                user_group: {
-                    id: undefined,
-                    name: '',
-                    permissions: []
-                },
-                username: '',
-                status: undefined
+                user_group: {}
             },
-            staffAdvpermissionsList: [],
             statusUpdated: false,
             passwordSuccess: false,
-            permissions: [],
-            permissionsList: [],
             passwordError: '',
-            permissionsId: []
+            newPassword: ''
         }
     },
-    beforeRouteEnter (to, from, next) {
-        next(vm => {
-            let id = to.params.staffId
-            vm.staff.id = id
-            if (id) {
-                vm.getStaff(id).then((staff) => {
-                    vm.getStaffAdvpermissionsList(staff)
-                })
-                vm.getPermissionsAll()
-            }
-        })
+    created () {
+        this.getStaff(this.$route.params.staffId)
     },
     methods: {
         getStaff (id) {
-            return new Promise((resolve, reject) => {
-                this.$http.get(api.staff + id + '/?opt_expand=group').then((response) => {
-                    if (response.data.code === 2000) {
-                        this.staff = response.data.data
-                        resolve(response.data.data)
-                    } else {
-                        reject(response.data)
-                    }
-                })
-            })
-        },
-        getStaffAdvpermissionsList (staff) {
-            staff.user_group.permissions.forEach(list => {
-                list.advpermissions.forEach(permission => {
-                    this.staffAdvpermissionsList.push(permission.id)
-                })
-            })
-        },
-        getPermissionsAll () {
-            this.$http.get(`${api.permissions}?opt_expand=permissions`).then((response) => {
+            this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then((response) => {
                 if (response.data.code === 2000) {
-                    this.permissions = response.data.data
+                    this.staff = response.data.data
                 }
             })
         },
         toggleStatus () {
             this.statusUpdated = false
-            this.$http.put(api.staff + this.staff.id + '/?opt_fields=status', {
+            this.$http.put(api.staff + this.staff.id + '/', {
                 username: this.staff.username,
-                status: this.staff.status === 1 ? 0 : 1,
-                permissions: this.staffAdvpermissionsList
+                group: this.staff.user_group.id,
+                status: this.staff.status ^ 1
             }).then((response) => {
-                if (response.status === 200) {
-                    this.staff.status = response.data.status
+                if (response.data.code === 2000) {
+                    this.staff.status = response.data.data.status
                     this.statusUpdated = true
                     setTimeout(() => {
                         this.statusUpdated = false
@@ -183,10 +140,12 @@ export default {
             this.$http.post(api.passwordstaff, {
                 'account_id': this.staff.id
             }, {emulateJSON: true}).then(response => {
-                this.passwordSuccess = true
-                this.newPassword = response.data.new_password
-            }, response => {
-                this.passwordError = response.data.error
+                if (response.data.code === 2000) {
+                    this.passwordSuccess = true
+                    this.newPassword = response.data.data.new_password
+                } else {
+                    this.passwordError = response.data.msg
+                }
             })
         },
         deleteStaff (id, confirm, event) {

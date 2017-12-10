@@ -437,7 +437,11 @@ export default {
         created_at: '注册日期',
         updated_at: '最后修改日期',
         email: '邮箱',
-        no_setting: '未设置'
+        no_setting: '未设置',
+        enabled: '启用',
+        disabled: '停用',
+        status_updated: '状态已更新！',
+        no_select_group: '尚未选择角色！'
     },
     game_manage: {
         id: ' 游戏ID',
@@ -656,6 +660,7 @@ export default {
         platform: '平台',
         platform_select: '平台选择',
         img: '图片',
+        text: '文字',
         operate: '操作',
         sequence: '排序',
         add_announcement: '新增公告',
@@ -672,7 +677,9 @@ export default {
         link: '推广地址',
         prev_password: '原密码',
         new_password: '新密码',
-        repeat_password: '重复密码'
+        repeat_password: '重复密码',
+        header_img: '标题图片',
+        desc_method: '描述方式'
     },
     cms: {
         pctitle: '电脑网页管理',
@@ -743,6 +750,7 @@ export default {
         operating: '操作',
         modify: '修改',
         delete: '删除',
-        role_permission: '角色权限'
+        role_permission: '角色权限',
+        sure_delete_role: '确定删除该角色吗？'
     }
 }

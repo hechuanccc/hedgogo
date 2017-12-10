@@ -32,6 +32,13 @@
 
             <div class="navbar-nav pull-right m-r">
                 <ul class="nav navbar-nav pull-left prompt">
+                    <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer"  :to="'/game_history'" >
+                        <a class="nav-link" >
+                            <label class="pointer label">{{$t('game_history.abnormal_period')}}</label>
+                            <span v-if="abnormal_count" class="label label-sm up warn">{{abnormal_count}}</span>
+                            <span v-else class="label label-sm up ">{{abnormal_count}}</span>
+                        </a>
+                    </router-link>
                     <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer"  :to="'/bill/remit?status=' + status" >
                         <a class="nav-link" >
                             <label class="pointer label">{{$t('header.deposit')}}</label>
@@ -89,7 +96,8 @@
                 num: 0,
                 remit_count: '',
                 withdraw_count: '',
-                agent_application: ''
+                agent_application: '',
+                abnormal_count: ''
             }
         },
         props: {
@@ -233,10 +241,12 @@
                         let userType = $.storage.fetch().type
                         if (userType !== 'agent') {
                             this.$http.get(api.metrics_count).then(response => {
-                                this.remit_count = response.data.data.remit_count
-                                this.withdraw_count = response.data.data.withdraw_count
-                                this.agent_application = response.data.data.agent_application
-                                this.online_member = response.data.data.online_member
+                                const data = response.data.data
+                                this.remit_count = data.remit_count
+                                this.withdraw_count = data.withdraw_count
+                                this.agent_application = data.agent_application
+                                this.online_member = data.online_member
+                                this.abnormal_count = data.abnormal_count
                             }, response => {
                                 this.$router.push('/login?next=' + this.$route.path)
                             })
