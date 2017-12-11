@@ -60,9 +60,6 @@
                     <th>{{$t('common.balance_before')}}</th>
                     <th>{{$t('common.balance_after')}}</th>
                     <th>{{$t('common.amount')}}</th>
-                    <th>{{$t('game_manage.issue_number')}}</th>
-                    <th>{{$t('game_manage.name')}}</th>
-                    <th>{{$t('game_manage.play')}}</th>
                     <th>{{$t('common.operator')}}</th>
                     <th>{{$t('common.memo')}}</th>
                 </tr>
@@ -92,9 +89,6 @@
                       <span v-else>-</span>
                     </td>
                     <td>{{t.amount | currency('￥')}} <label v-if="t.withdraw_fee"> - 手续费：{{t.withdraw_fee}}</label></td>
-                    <td v-if="t.issue_number">{{t.issue_number}}</td> <td v-else>-</td>
-                    <td v-if="t.game">{{t.game}}</td> <td v-else>-</td>
-                    <td v-if="t.play">{{t.play}</td> <td v-else>-</td>
                     <td v-if="t.updated_by">{{t.updated_by.username}}</td> <td v-else>-</td>
                     <td v-if="t.memo">{{t.memo}}</td> <td v-else>-</td>
                 </tr>
