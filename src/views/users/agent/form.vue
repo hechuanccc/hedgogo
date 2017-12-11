@@ -318,7 +318,7 @@
                     delete this.initAgent.default_member_lv
                 }
                 if (this.agent.id) {
-                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(response => { 
+                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(response => {
                         if (response.data.code === 2000) {
                             this.statusUpdated = true
                             setTimeout(() => {
@@ -338,7 +338,6 @@
                         } else {
                             this.formError = response.data.msg
                         }
-
                     })
                 }
             },
