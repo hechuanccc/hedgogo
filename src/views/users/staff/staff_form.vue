@@ -155,12 +155,7 @@ export default {
             })
         },
         changeRole () {
-            this.roles.forEach(role => {
-                if (role.id === this.staff.user_group.id) {
-                    this.permissions = role.manage_permissiongroup
-                    return
-                }
-            })
+            this.permissions = this.roles.find(role => role.id === this.staff.user_group.id).manage_permissiongroup
         }
     }
 }
