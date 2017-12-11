@@ -89,15 +89,10 @@
                 <tbody >
                 <th class="grey-50" width="200">{{$t('game_manage.play')}}</th>
                 <td v-if="betrecords.play">{{betrecords.play.play_group.display_name}} @ {{betrecords.play.display_name}}</td>
-                <tr v-for="(betrecord, index) in betrecords.bet_options">
-                  <th class="grey-50" width="200" >{{$t(`details.${index}`)}}</th>
-                  <td v-if='isArray(betrecord)'>
-                    <div v-for="card in betrecord" :class="isArray(card)?'':'img-box'">
-                      <img v-if='!isArray(card)' :src="card">
-                      <img v-else v-for="(src, index, $index) in card" :src="src" :class="$index">
-                    </div>
-                  </td>
-                  <td v-else>{{betrecord}}</td>
+                <tr v-for="(bet_options_list, index) in betrecords.bet_options">
+                  <th class="grey-50" width="200">{{$t(`betrecord.${index}`)}}</th>
+                  <td v-if="bet_options_list">{{bet_options_list}}</td>
+                  <td v-else>{{bet_options}}</td>
                 </tr>
                 </tbody>
               </table>

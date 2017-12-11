@@ -376,7 +376,9 @@ export default {
         sixty_seconds: '60 seconds',
         cancel_bet: 'Cancel Bet',
         cancelled_bet: 'Cancelled Bet',
-        total_valid_bet_amount: 'Total Valid Bet Amount'
+        total_valid_bet_amount: 'Total Valid Bet Amount',
+        options: 'Bet Options',
+        opts_combos_count: 'Combo Options Count'
     },
     action: {
         view_today_report: 'View today\'s Report',
