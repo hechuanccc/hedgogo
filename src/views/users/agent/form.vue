@@ -172,7 +172,9 @@
 
             </div>
             <div>
-              <div class="alert alert-danger" v-if="formError">{{formError}}</div>
+              <div class="alert alert-danger" v-if="formError">
+                <span v-for="(msg,index) in formError">[{{index}}]  {{msg}} <br/> </span>
+              </div>
               <div class="alert alert-success" v-if="statusUpdated">{{$t('agent.status_update')}}</div>
               <button type="submit" :disabled="!levelPermission" class="md-btn blue w-sm" >{{$t('common.save')}}</button>
             </div>
@@ -184,7 +186,6 @@
 <script>
     import VueTypeahead from 'vue-typeahead'
     import DatePicker from 'vue2-datepicker'
-    import { handleError } from '../../../utils/handleError'
     import api from '../../../api'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
@@ -225,13 +226,6 @@
                     password: '123456'
                 },
                 initAgent: {},
-                field_locales: {
-                    'username': '用户名错误：',
-                    'promo_code': '推广码',
-                    'default_member_lv': '预设会员等级错误：',
-                    'username_field': '',
-                    'domain': ''
-                },
                 done: false,
                 statusUpdated: false
             }
@@ -319,35 +313,30 @@
                     this.formError = ''
                 }
                 this.initAgent = Object.assign(this.initAgent, this.agent)
-                if (!this.bankFilled) {
+                if (!this.bankFilled || !this.agent.default_member_lv) {
                     delete this.initAgent.bank
+                    delete this.initAgent.default_member_lv
                 }
                 if (this.agent.id) {
                     this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(response => {
-                        if (response.status === 200) {
+                        if (response.data.code === 2000) {
                             this.statusUpdated = true
                             setTimeout(() => {
                                 this.$router.push('/agent/' + response.data.data.id)
                             }, 2000)
-                        }
-                    }, response => {
-                        this.formError = ''
-                        for (let field in this.field_locales) {
-                            this.formError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.formError = response.data.msg
                         }
                     })
                 } else {
                     this.$http.post(api.agent, this.initAgent).then(response => {
-                        if (response.status === 200) {
+                        if (response.status === 2000) {
                             this.statusUpdated = true
                             setTimeout(() => {
                                 this.$router.push('/agent/' + response.data.data.id)
                             }, 2000)
-                        }
-                    }, response => {
-                        this.formError = ''
-                        for (let field in this.field_locales) {
-                            this.formError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.formError = response.data.msg
                         }
                     })
                 }

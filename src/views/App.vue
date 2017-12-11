@@ -115,7 +115,7 @@ export default {
             // requested an unauthorized resource, the response.status will be 403
             Vue.http.interceptors.push((request, next) => {
                 next((response) => {
-                    if (response.status === 403) {
+                    if (response.data.code === 9007) {
                         if (this.$route.name !== 'login') {
                             this.authErrors = this.authErrors.concat(response.data.detail)
                         }
@@ -135,7 +135,7 @@ export default {
                 }
                 this.getPermissions()
             }, (response) => {
-                if (response.status === 404) {
+                if (response.data.code === 9007) {
                     this.$router.push('/login')
                 }
             })
@@ -148,7 +148,7 @@ export default {
             this.$http.post(api.refresh_token, {
                 refresh_token: this.$cookie.get('refresh_token')
             }).then(response => {
-                let data = response.data
+                let data = response.data.data
                 let d = new Date(data.expires_in)
                 // use access_token to access APIs
                 window.document.cookie = 'access_token=' + data.access_token + ';path=/;expires=' + d.toGMTString()
