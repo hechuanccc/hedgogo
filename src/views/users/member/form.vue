@@ -266,18 +266,18 @@
 
                 if (this.member.id) {
                     this.$http.put(api.member + this.member.id + '/', this.initMember).then(response => {
-                        if (response.data.code === 9011 || 9010) {
-                            this.errorMsg = response.data.msg
-                        } else if (response.data.code === 2000) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/member/' + response.data.data.id)
+                        } else {
+                            this.errorMsg = response.data.msg
                         }
                     })
                 } else {
                     this.$http.post(api.member, this.initMember).then(response => {
-                        if (response.data.code === 9011 || 9010) {
-                            this.errorMsg = response.data.msg
-                        } else if (response.data.code === 2000) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/member/' + response.data.data.id)
+                        } else {
+                            this.errorMsg = response.data.msg
                         }
                     })
                 }

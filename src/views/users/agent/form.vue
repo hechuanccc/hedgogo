@@ -318,26 +318,27 @@
                     delete this.initAgent.default_member_lv
                 }
                 if (this.agent.id) {
-                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(response => {
-                        if (response.data.code === 9011 || 9010) {
-                            this.formError = response.data.msg
-                        } else if (response.data.code === 2000) {
+                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(response => { 
+                        if (response.data.code === 2000) {
                             this.statusUpdated = true
                             setTimeout(() => {
                                 this.$router.push('/agent/' + response.data.data.id)
                             }, 2000)
+                        } else {
+                            this.formError = response.data.msg
                         }
                     })
                 } else {
                     this.$http.post(api.agent, this.initAgent).then(response => {
-                        if (response.data.code === 9011 || 9010) {
-                            this.formError = response.data.msg
-                        } else if (response.status === 2000) {
+                        if (response.status === 2000) {
                             this.statusUpdated = true
                             setTimeout(() => {
                                 this.$router.push('/agent/' + response.data.data.id)
                             }, 2000)
+                        } else {
+                            this.formError = response.data.msg
                         }
+
                     })
                 }
             },
