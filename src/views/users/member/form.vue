@@ -155,7 +155,9 @@
               </div>
             </div>
             <div>
-              <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
+              <div class="alert alert-danger" v-if="errorMsg">
+                <span v-for="(msg,index) in errorMsg">[{{index}}]  {{msg}} <br/> </span> 
+              </div>
               <button type="submit" :disabled="!$root.permissions.includes('update_member_details')" class="md-btn blue w-sm" >{{$t('common.save')}} </button>
             </div>
           </form>
@@ -166,7 +168,6 @@
 <script>
     import DatePicker from 'vue2-datepicker'
     import VueTypeahead from 'vue-typeahead'
-    // import { handleError } from '../../../utils/handleError'
     import api from '../../../api'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
@@ -200,11 +201,6 @@
                     withdraw_password: '123456'
                 },
                 initMember: {},
-                field_locales: {
-                    'username': '用户名错误：',
-                    'birthday': ' 生日日期错误：',
-                    'level': ' 会员等级错误：'
-                },
                 done: false,
                 errorMsg: ''
             }
@@ -267,33 +263,22 @@
                 if (!this.bankFilled) {
                     delete this.initMember.bank
                 }
-                // transfer json to string for agent
-                if (!this.member.agent) {
-                    this.errorMsg = '选择一个代理'
-                    return
-                }
 
                 if (this.member.id) {
                     this.$http.put(api.member + this.member.id + '/', this.initMember).then(response => {
-                        if (response.status === 200) {
-                            this.$router.push('/member/' + response.data.id)
+                        if (response.data.code === 9011 || 9010) {
+                            this.errorMsg = response.data.msg
+                        } else if (response.data.code === 2000) {
+                            this.$router.push('/member/' + response.data.data.id)
                         }
-                    }, response => {
-                        this.errorMsg = response.data.msg
-                        // for (let field in this.field_locales) {
-                        //     this.errorMsg += handleError(response, field, this.field_locales)
-                        // }
                     })
                 } else {
                     this.$http.post(api.member, this.initMember).then(response => {
-                        if (response.status === 200) {
+                        if (response.data.code === 9011 || 9010) {
+                            this.errorMsg = response.data.msg
+                        } else if (response.data.code === 2000) {
                             this.$router.push('/member/' + response.data.data.id)
                         }
-                    }, response => {
-                        this.errorMsg = response.data.msg
-                        // for (let field in this.field_locales) {
-                        //     this.errorMsg += handleError(response, field, this.field_locales)
-                        // }
                     })
                 }
             },

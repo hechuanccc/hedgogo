@@ -41,10 +41,6 @@
                     username: '',
                     password: ''
                 },
-                field_locales: {
-                    'username_password_fields': '',
-                    'username_field': ''
-                },
                 errorMsg: ''
             }
         },
@@ -78,10 +74,7 @@
                     url = url ? decodeURIComponent(url.split('?')[0]) : '/'
                     this.$router.push(url)
                 }, (response) => {
-                    this.errorMsg = ''
-                    for (let field in this.field_locales) {
-                        this.errorMsg += $.handleError(response, field, this.field_locales)
-                    }
+                    this.errorMsg = response.data.msg
                 })
             }
         },

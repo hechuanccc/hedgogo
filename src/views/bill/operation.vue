@@ -164,7 +164,7 @@
                 }
                 this.$http.post(api.manual_transaction, this.transaction).then(response => {
                     if (response.data.id) {
-                        this.$router.push('/transaction/' + response.data.id)
+                        this.$router.push('/transaction/' + response.data.data.id)
                     }
                 }, response => {
                     this.errorMsg = response.data.error[0][0]
