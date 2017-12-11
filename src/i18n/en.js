@@ -81,6 +81,7 @@ export default {
         online_member_list: 'Online Member',
         system_configuration: 'Settings',
         permissions: 'Permissions',
+        permission_add: 'Add Permissions',
         roles: 'Role',
         role_detail: 'Role Detail',
         role_add: 'Add Role Setting',
