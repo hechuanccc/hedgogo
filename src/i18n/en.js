@@ -438,7 +438,11 @@ export default {
         created_at: 'Created at',
         updated_at: 'Updated at',
         email: 'Email',
-        no_setting: 'No Setting'
+        no_setting: 'No Setting',
+        enable: 'Enable',
+        disabled: 'Disabled',
+        status_updated: 'Status Updated!',
+        no_select_grop: 'Please select a role!'
     },
     game_manage: {
         id: 'Game ID',
@@ -657,6 +661,7 @@ export default {
         platform: 'Platform',
         platform_select: 'Select Platform',
         img: 'Img',
+        text: 'Text',
         operate: 'Operate',
         sequence: 'Sequence',
         add_announcement: 'Create',
@@ -673,7 +678,9 @@ export default {
         link: 'Promotion Address',
         prev_password: 'Previous Password',
         new_password: 'New Password',
-        repeat_password: 'Repeat Password'
+        repeat_password: 'Repeat Password',
+        header_img: 'Header Image',
+        desc_method: 'Desc. Method'
     },
     cms: {
         pctitle: 'PC Website Management',
@@ -744,6 +751,7 @@ export default {
         operating: 'Operating',
         modify: 'Modify',
         delete: 'Delete',
-        role_permission: 'Role\'s Permissions'
+        role_permission: 'Role\'s Permissions',
+        sure_delete_role: 'Are you sure to delete the role?'
     }
 }
