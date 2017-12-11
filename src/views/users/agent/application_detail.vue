@@ -77,7 +77,6 @@
                 <div class="form-group m-t-md">
                   <label class="label-width">{{$t('agent.dft_member_lv')}}</label>
                   <div class="inline-form-control">
-
                     <level :level="agent.default_member_lv" @level-select="levelSelect"></level>
                   </div>
                 </div>
@@ -184,7 +183,9 @@
 
             </div>
             <div>
-              <div class="alert alert-danger" v-if="formError">{{formError}}</div>
+              <div class="alert alert-danger" v-if="formError">
+                <span v-for="(msg,index) in formError">[{{index}}]  {{msg}} <br/> </span>
+              </div>
               <button :disabled="!$root.permissions.includes('audit_agent_application')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
             </div>
           </form>
@@ -373,7 +374,6 @@
     import VueTypeahead from 'vue-typeahead'
     import DatePicker from 'vue2-datepicker'
     import api from '../../../api'
-    import { handleError } from '../../../utils/handleError'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
 
@@ -407,9 +407,6 @@
                     memo: '',
                     bank: {},
                     password: '123456'
-                },
-                field_locales: {
-                    'default_member_lv': '预设会员等级错误：'
                 },
                 done: false,
                 hasAgentParent: false,
@@ -472,8 +469,9 @@
                 } else {
                     this.formError = ''
                 }
-                if (!this.bankFilled) {
+                if (!this.bankFilled || !this.agent.default_member_lv) {
                     delete this.agent.bank
+                    delete this.agent.default_member_lv
                 }
                 if (this.agent.id) {
                     for (let x in this.agent) {
@@ -482,24 +480,18 @@
                         }
                     }
                     this.$http.put(api.agentapplication + this.agent.id + '/', this.agent).then(response => {
-                        if (response.status === 200) {
+                        if (response.data.code === 9011 || 9010) {
+                            this.errorMsg = response.data.msg
+                        } else if (response.data.code === 2000) {
                             this.$router.push('/agent/applications/')
-                        }
-                    }, response => {
-                        this.formError = ''
-                        for (let field in this.field_locales) {
-                            this.formError += handleError(response, field, this.field_locales)
                         }
                     })
                 } else {
                     this.$http.post(api.agentapplication, this.agent).then(response => {
-                        if (response.status === 201) {
+                        if (response.data.code === 9011 || 9010) {
+                            this.errorMsg = response.data.msg
+                        } else if (response.data.code === 2000) {
                             this.$router.push('/agent/applications/')
-                        }
-                    }, response => {
-                        this.formError = ''
-                        for (let field in this.field_locales) {
-                            this.formError += handleError(response, field, this.field_locales)
                         }
                     })
                 }

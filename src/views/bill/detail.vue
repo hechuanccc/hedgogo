@@ -313,7 +313,7 @@
             },
             getTransaction (id) {
                 this.$http.get(api.bill + id + '/?opt_expand=bank,updated_by').then((response) => {
-                    this.transaction = response.data
+                    this.transaction = response.data.data
                 })
             }
         },
