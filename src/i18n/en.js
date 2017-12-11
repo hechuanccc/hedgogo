@@ -678,7 +678,8 @@ export default {
         new_password: 'New Password',
         repeat_password: 'Repeat Password',
         header_img: 'Header Image',
-        desc_method: 'Desc. Method'
+        main: 'Main box',
+        advertisement: 'Advertisement'
     },
     cms: {
         pctitle: 'PC Website Management',
@@ -747,8 +748,6 @@ export default {
         role_add_btn: 'Add Role',
         role_info: 'Role Information',
         operating: 'Operating',
-        modify: 'Modify',
-        delete: 'Delete',
         role_permission: 'Role\'s Permissions',
         sure_delete_role: 'Are you sure to delete the role?'
     }
