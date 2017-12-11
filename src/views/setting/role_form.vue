@@ -134,11 +134,11 @@ export default {
         },
         getSelect () {
             let selectId = [[], []]
-            this.permissions.forEach(list => {
-                if (list.checked) {
-                    selectId[0].push(list.id)
+            this.permissions.forEach(permissionGroup => {
+                if (permissionGroup.checked) {
+                    selectId[0].push(permissionGroup.id)
                 } else {
-                    list.advpermissions.forEach(advpermission => {
+                    permissionGroup.advpermissions.forEach(advpermission => {
                         if (advpermission.checked) {
                             selectId[1].push(advpermission.id)
                         }
