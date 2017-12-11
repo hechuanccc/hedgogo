@@ -91,7 +91,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                        <div class="alert alert-danger" v-if="responseError">
+                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span> 
+                        </div>
                         <button :disabled="!$root.permissions.includes('change_remitpayee')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
                 </form>
@@ -166,26 +168,26 @@
 
                 if (this.payee.id) {
                     this.$http.put(api.remitpayee + this.payee.id + '/', formData).then(response => {
-                        if (response.status === 200) {
-                            this.$router.push('/remit_payee/' + response.data.id)
+                        if (response.data.code === 2000) {
+                            this.$router.push('/remit_payee/' + response.data.data.id)
+                        } else {
+                            this.responseError = response.data.msg
                         }
-                    }, response => {
-                        this.responseError = response.data.error
                     })
                 } else {
                     this.$http.post(api.remitpayee, formData).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/remit_payee/' + response.data.id)
+                        if (response.data.code === 2000) {
+                            this.$router.push('/remit_payee/' + response.data.data.id)
+                        } else {
+                            this.responseError = response.data.msg
                         }
-                    }, response => {
-                        this.responseError = response.data.error
                     })
                 }
             },
             getPayee (id) {
                 this.$http.get(api.remitpayee + id + '/').then((response) => {
-                    response.data.remit_type += ''
-                    this.payee = response.data
+                    response.data.data.remit_type += ''
+                    this.payee = response.data.data
                 })
             },
             syncImage (e) {
