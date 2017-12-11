@@ -975,17 +975,6 @@ export default new Router({
         }
     },
     {
-        path: '/permission/add',
-        component: function (resolve) {
-            require(['./views/permission_manage/permission_form.vue'], resolve)
-        },
-        meta: {
-            group: 'permission_manage',
-            auth: true,
-            title: Vue.t('nav.permission_add')
-        }
-    },
-    {
         path: '/roles',
         name: 'roles',
         component: function (resolve) {

@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="m-b" v-if="$root.permissions.includes('change_permission')" >
-      <router-link tag="button" class="md-btn w-sm blue" to="/permission/add">{{$t('permission_manage.permission_add_btn')}}</router-link>
-    </div>
     <div class="box" v-if="permissionsListAll.length">
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
           <thead>

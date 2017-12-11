@@ -81,7 +81,6 @@ export default {
         online_member_list: '在線會員',
         system_configuration: '系統配置',
         permissions: '權限管理',
-        permission_add: '添加权限',
         roles: '角色管理',
         role_detail: '角色详情',
         role_add: '添加角色',
