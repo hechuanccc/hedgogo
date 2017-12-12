@@ -90,7 +90,6 @@
                 num: 0,
                 remit_count: '',
                 withdraw_count: '',
-                agent_application: '',
                 abnormal_count: ''
             }
         },
@@ -107,7 +106,7 @@
         },
         computed: {
             count: function () {
-                return this.remit_count + this.withdraw_count + this.agent_application
+                return this.remit_count + this.withdraw_count
             }
         },
         watch: {
@@ -194,9 +193,6 @@
                 } else if (messageType === 'withdraw') {
                     url = '/bill/withdraw?status[]=' + vm.status
                     title = '取款通知'
-                } else {
-                    url = '/agent/applications'
-                    title = '代理申请通知'
                 }
 
                 let titleD = vm.iNotify.setTitle()
@@ -227,7 +223,6 @@
                                 const data = response.data.data
                                 this.remit_count = data.remit_count
                                 this.withdraw_count = data.withdraw_count
-                                this.agent_application = data.agent_application
                                 this.online_member = data.online_member
                                 this.abnormal_count = data.abnormal_count
                             }, response => {
