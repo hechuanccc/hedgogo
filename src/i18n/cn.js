@@ -81,7 +81,6 @@ export default {
         online_member_list: '在線會員',
         system_configuration: '系統配置',
         permissions: '權限管理',
-        permission_add: '添加权限',
         roles: '角色管理',
         role_detail: '角色详情',
         role_add: '添加角色',
@@ -681,7 +680,8 @@ export default {
         new_password: '新密码',
         repeat_password: '重复密码',
         header_img: '标题图片',
-        desc_method: '描述方式'
+        main: '描述内容',
+        advertisement: '网站广告'
     },
     cms: {
         pctitle: '电脑网页管理',
@@ -750,8 +750,6 @@ export default {
         role_add_btn: '添加角色',
         role_info: '角色信息',
         operating: '操作',
-        modify: '修改',
-        delete: '删除',
         role_permission: '角色权限',
         sure_delete_role: '确定删除该角色吗？'
     }

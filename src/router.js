@@ -975,17 +975,6 @@ export default new Router({
         }
     },
     {
-        path: '/permission/add',
-        component: function (resolve) {
-            require(['./views/permission_manage/permission_form.vue'], resolve)
-        },
-        meta: {
-            group: 'permission_manage',
-            auth: true,
-            title: Vue.t('nav.permission_add')
-        }
-    },
-    {
         path: '/roles',
         name: 'roles',
         component: function (resolve) {
@@ -996,6 +985,42 @@ export default new Router({
             auth: true,
             agentPermission: 'true',
             title: Vue.t('nav.roles')
+        }
+    },
+    {
+        path: '/roles/add',
+        name: 'role_add',
+        component: function (resolve) {
+            require(['./views/setting/role_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.role_add')
+        }
+    },
+    {
+        path: '/roles/:roleId',
+        name: 'role_detail',
+        component: function (resolve) {
+            require(['./views/setting/role_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.role_detail')
+        }
+    },
+    {
+        path: '/roles/:roleId/edit',
+        name: 'role_edit',
+        component: function (resolve) {
+            require(['./views/setting/role_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.role_edit')
         }
     },
     {
