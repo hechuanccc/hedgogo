@@ -56,7 +56,7 @@
                         <tbody>
                             <tr>
                                 <td>{{ modal.scheduleResult.issue_number }}</td>
-                                <td>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                                <td>{{ mode ? modal.time : modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                                 <td v-show="mode">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str">
                                     <span>{{ $t('game_history.result_str_tips',{
@@ -164,6 +164,7 @@ export default {
             modal: {
                 isShow: false,
                 scheduleResult: {},
+                time: '',
                 msg: ''
             },
             extra: '',
@@ -242,10 +243,12 @@ export default {
         showModal (sched) {
             if (this.mode) {
                 this.modal.scheduleResult = {
+                    game_schedule: sched.id,
                     game_code: sched.game_code,
                     result_str: '',
                     issue_number: sched.issue_number
                 }
+                this.modal.time = sched.schedule_result
             } else {
                 this.modal.scheduleResult = sched
             }

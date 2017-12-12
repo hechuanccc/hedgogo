@@ -53,12 +53,6 @@
                             <span v-else class="label label-sm up">{{withdraw_count}}</span>
                         </a>
                     </router-link>
-                    <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer" to="/agent/applications?status=3">
-                        <a class="nav-link" >
-                            <label class="pointer label">{{$t('nav.agent_application')}}</label>
-                            <span  class="label label-sm up warn">{{agent_application}}</span>
-                        </a>
-                    </router-link>
                     <li class="nav-item dropdown pos-stc-xs pointer" >
                         <router-link class="nav-link" to="/online_member">
                             <label class=" label pointer" >{{$t('common.onlinemembers')}}</label>
@@ -96,7 +90,6 @@
                 num: 0,
                 remit_count: '',
                 withdraw_count: '',
-                agent_application: '',
                 abnormal_count: ''
             }
         },
@@ -113,7 +106,7 @@
         },
         computed: {
             count: function () {
-                return this.remit_count + this.withdraw_count + this.agent_application
+                return this.remit_count + this.withdraw_count
             }
         },
         watch: {
@@ -152,17 +145,6 @@
                         this.$root.$data.withdraw_count = this.withdraw_count
                     }
                     this.message(newObj, 'withdraw')
-                    this.iNotify.player()
-                } else if (old !== '') {
-                    this.iNotify.setFavicon(newObj)
-                }
-            },
-            agent_application (newObj, old) {
-                if (newObj > old) {
-                    if (old) {
-                        this.$root.$data.agent_application = this.agent_application
-                    }
-                    this.message(newObj, 'agent')
                     this.iNotify.player()
                 } else if (old !== '') {
                     this.iNotify.setFavicon(newObj)
@@ -211,9 +193,6 @@
                 } else if (messageType === 'withdraw') {
                     url = '/bill/withdraw?status[]=' + vm.status
                     title = '取款通知'
-                } else {
-                    url = '/agent/applications'
-                    title = '代理申请通知'
                 }
 
                 let titleD = vm.iNotify.setTitle()
@@ -244,7 +223,6 @@
                                 const data = response.data.data
                                 this.remit_count = data.remit_count
                                 this.withdraw_count = data.withdraw_count
-                                this.agent_application = data.agent_application
                                 this.online_member = data.online_member
                                 this.abnormal_count = data.abnormal_count
                             }, response => {

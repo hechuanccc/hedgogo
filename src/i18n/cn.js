@@ -17,7 +17,7 @@ export default {
         agent_list: '代理商列表',
         agent_add: '增加代理商',
         agent_password: '充值代理商登录密码',
-        agent_application: '代理申请',
+        agent_application: '代理商申请',
         setting_level: '会员等级',
         setting_remit_payee: '公司入款账号',
         setting_return: '反水设定',
@@ -414,7 +414,8 @@ export default {
         delete_level: '删除会员等级',
         logout: '退出登录',
         clear_all: '全部清除',
-        filter_trial_account: '过滤测试用户'
+        filter_trial_account: '过滤测试用户',
+        no_setting: '未设置'
     },
     staff: {
         roles: '角色 / 权限',

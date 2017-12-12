@@ -200,6 +200,7 @@ export default{
                         resultTime: period.schedule_result
                     },
                     gameResult: {
+                        game_schedule: period.id,
                         game_code: period.game_code,
                         issue_number: period.issue_number,
                         result_str: ''
