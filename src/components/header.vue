@@ -53,12 +53,6 @@
                             <span v-else class="label label-sm up">{{withdraw_count}}</span>
                         </a>
                     </router-link>
-                    <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer" to="/agent/applications?status=3">
-                        <a class="nav-link" >
-                            <label class="pointer label">{{$t('nav.agent_application')}}</label>
-                            <span  class="label label-sm up warn">{{agent_application}}</span>
-                        </a>
-                    </router-link>
                     <li class="nav-item dropdown pos-stc-xs pointer" >
                         <router-link class="nav-link" to="/online_member">
                             <label class=" label pointer" >{{$t('common.onlinemembers')}}</label>

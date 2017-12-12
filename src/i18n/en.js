@@ -414,7 +414,8 @@ export default {
         delete_level: 'Delete Level',
         logout: 'Log Out',
         clear_all: 'Clear All',
-        filter_trial_account: 'Filter Test User'
+        filter_trial_account: 'Filter Test User',
+        no_setting: 'No setting'
     },
     staff: {
         roles: 'Roles / Permission',
