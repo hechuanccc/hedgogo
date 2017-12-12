@@ -244,7 +244,7 @@
             },
             getTransactionType () {
                 this.$http.get(api.transactiontype).then(response => {
-                    this.trans_type = response.data
+                    this.trans_type = response.data.data
                 })
             },
             removeSpace () {
