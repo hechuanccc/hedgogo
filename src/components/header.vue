@@ -150,17 +150,6 @@
                 } else if (old !== '') {
                     this.iNotify.setFavicon(newObj)
                 }
-            },
-            agent_application (newObj, old) {
-                if (newObj > old) {
-                    if (old) {
-                        this.$root.$data.agent_application = this.agent_application
-                    }
-                    this.message(newObj, 'agent')
-                    this.iNotify.player()
-                } else if (old !== '') {
-                    this.iNotify.setFavicon(newObj)
-                }
             }
         },
         methods: {
