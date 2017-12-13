@@ -362,7 +362,6 @@ export default {
         lose: '输',
         refund: '退款',
         tie: '和局',
-        void: '非法',
         reject: '未投注',
         waiting: '待确认',
         game: '游戏',

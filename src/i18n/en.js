@@ -362,7 +362,6 @@ export default {
         lose: 'Lose',
         refund: 'Refund',
         tie: 'Tie',
-        void: 'Void',
         reject: 'Reject',
         waiting: 'Waiting',
         game: 'Game',
