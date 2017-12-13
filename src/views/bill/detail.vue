@@ -291,14 +291,16 @@
                     this.$http.put(url + this.transaction.id + '/',
                     {status: status, memo: this.transaction.memo, member: this.member, transaction_type: this.transactiontype})
                     .then(response => {
-                        this.transaction.status = response.data.status
-                        this.loading = false
-                        if (routerLink) {
-                            this.$router.go(routerLink)
+                        if (response.data.code === 2000) {
+                            this.transaction.status = response.data.status
+                            this.loading = false
+                            if (routerLink) {
+                                this.$router.go(routerLink)
+                            }
+                        } else {
+                            this.loading = false
+                            this.errorMsg = response.data.msg
                         }
-                    }, response => {
-                        this.loading = false
-                        this.errorMsg = response.data.msg
                     })
                 }
             },
