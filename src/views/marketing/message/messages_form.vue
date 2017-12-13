@@ -42,7 +42,7 @@
                     </div>
                     <div>
                         <div class="alert alert-danger" v-if="responseError">
-                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span>
+                            <span>{{responseError}} <br/> </span>
                         </div>
                         <button type="submit" class="md-btn w-sm blue">{{$t('common.send')}}</button>
                     </div>
@@ -71,21 +71,21 @@
         },
         methods: {
             onSubmit (e) {
-                // if (this.message.member_level || this.message.receiver) {
-                //     if (!this.checkMembers) {
-                //         this.checkMember()
-                //         return
-                //     }
-                //     this.$http.post(api.messages, this.message).then(response => {
-                //         if (response.data.code === 2000) {
-                //             this.$router.push('/messages/')
-                //         } else {
-                //             this.responseError = response.data.msg
-                //         }
-                //     })
-                // } else {
-                //     this.responseError = '群发或接收人必须填写一个'
-                // }
+                if (this.message.member_level || this.message.receiver) {
+                    if (!this.checkMembers) {
+                        this.checkMember()
+                        return
+                    }
+                    this.$http.post(api.messages, this.message).then(response => {
+                        if (response.data.code === 2000) {
+                            this.$router.push('/messages/')
+                        } else {
+                            this.responseError = response.data.msg
+                        }
+                    })
+                } else {
+                    this.responseError = '群发或接收人必须填写一个'
+                }
                 this.$http.post(api.messages, this.message).then(response => {
                     if (response.data.code === 2000) {
                         this.$router.push('/messages/')
