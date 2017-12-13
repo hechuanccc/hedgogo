@@ -232,16 +232,10 @@
 <script>
     import api from '../../api'
     import transactionStatus from '../../components/transaction_status'
-    import { handleError } from '../../utils/handleError'
     export default {
         data () {
             return {
                 errorMsg: '',
-                field_locales: {
-                    'order_status': '',
-                    'balance': '',
-                    'audit': ''
-                },
                 transaction: {
                     member: {
                         level: {},
@@ -300,14 +294,13 @@
                         this.transaction.status = response.data.status
                         this.loading = false
                         if (routerLink) {
+                            console.log('test')
+                            console.log(routerLink)
                             this.$router.go(routerLink)
                         }
                     }, response => {
                         this.loading = false
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                        this.errorMsg = response.data.msg
                     })
                 }
             },

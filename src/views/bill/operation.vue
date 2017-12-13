@@ -113,7 +113,9 @@
                 <div class="form-group row" v-if="$root.permissions.includes('manual_deposit_withdraw')">
                     <label class="col-sm-2 form-control-label"></label>
                     <div class="col-sm-5">
-                        <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
+                        <div class="alert alert-danger" v-if="errorMsg">
+                            <span v-for="(msg,index) in errorMsg"> {{msg}} <br/> </span>
+                        </div>
                         <button class="md-btn blue w-sm" type="submit">{{$t('common.submit')}}</button>
                         <div class="m-t-sm text-sm t-red">{{$t('bill.submit_alert')}}</div>
                     </div>
@@ -163,11 +165,11 @@
                     this.transaction.is_compensation = true
                 }
                 this.$http.post(api.manual_transaction, this.transaction).then(response => {
-                    if (response.data.id) {
+                    if (response.data.code === 2000) {
                         this.$router.push('/transaction/' + response.data.data.id)
+                    } else {
+                        this.errorMsg = response.data.msg
                     }
-                }, response => {
-                    this.errorMsg = response.data.error[0][0]
                 })
             }
         }

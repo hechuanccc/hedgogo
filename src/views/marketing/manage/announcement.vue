@@ -168,7 +168,7 @@ export default {
         updateAnnouncement (id, key) {
             if (id) {
                 this.$http.get(this.announcementApi + id + '/').then((response) => {
-                    this.announcement = response.data
+                    this.announcement = response.data.data
                     this.id = id
                     this.querysetIndex = key
                 })
@@ -178,23 +178,23 @@ export default {
         onSubmit () {
             if (this.id) {
                 this.$http.put(this.announcementApi + this.id + '/', this.announcement).then(response => {
-                    if (response.status === 200) {
-                        this.queryset[this.querysetIndex].platform = response.data.platform
-                        this.queryset[this.querysetIndex].announcement = response.data.announcement
+                    if (response.data.code === 2000) {
+                        this.queryset[this.querysetIndex].platform = response.data.data.platform
+                        this.queryset[this.querysetIndex].announcement = response.data.data.announcement
                         this.showAll = false
+                    } else {
+                        this.responseError = response.data.msg
                     }
-                }, response => {
-                    this.responseError = response.data.error[0].image
                 })
             } else {
                 this.$http.post(this.announcementApi, this.announcement).then(response => {
-                    if (response.status === 201) {
+                    if (response.data.code === 2000) {
                         this.announcement.name = ''
                         this.announcement.announcement = ''
-                        this.queryset.unshift(response.data)
+                        this.queryset.unshift(response.data.data)
+                    } else {
+                        this.responseError = response.data.msg
                     }
-                }, response => {
-                    this.responseError = response.data.error[0].image
                 })
             }
         },
@@ -202,7 +202,7 @@ export default {
             this.$http.put(this.announcementApi + announcement.id + '/', {
                 'status': announcement.status === 0 ? 1 : 0
             }).then((response) => {
-                announcement.status = response.data.status
+                announcement.status = response.data.data.status
             })
         },
         queryData (queryset) {

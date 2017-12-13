@@ -56,7 +56,7 @@ export default {
             this.$http.put(api.onlinepayee + payee.id + '/', {
                 'status': payee.status === 0 ? 1 : 0
             }).then((response) => {
-                payee.status = response.data.status
+                payee.status = response.data.data.status
             })
         },
         getPayees () {

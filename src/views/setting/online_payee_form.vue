@@ -88,7 +88,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                        <div class="alert alert-danger" v-if="responseError">
+                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span>
+                        </div>
                         <button :disabled="!$root.permissions.includes('change_onlinepayee')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                      </div>
                 </form>
@@ -98,7 +100,6 @@
 </template>
 <script>
     import api from '../../api'
-    import { handleError } from '../../utils/handleError'
 
     export default {
         data () {
@@ -114,10 +115,6 @@
                     payment_gateway: '',
                     domain_url: '',
                     display_name: ''
-                },
-                field_locales: {
-                    'display_name': '显示名称有误：',
-                    'level_field': '会员等级有误：'
                 },
                 responseError: '',
                 paymenttypes: []
@@ -136,24 +133,18 @@
             onSubmit (e) {
                 if (this.payee.id) {
                     this.$http.put(api.onlinepayee + this.payee.id + '/', this.payee).then(response => {
-                        if (response.status === 200) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/online_payee/' + response.data.data.id)
-                        }
-                    }, response => {
-                        this.responseError = ''
-                        for (let field in this.field_locales) {
-                            this.responseError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.responseError = response.data.msg
                         }
                     })
                 } else {
                     this.$http.post(api.onlinepayee, this.payee).then(response => {
                         if (response.status === 201) {
                             this.$router.push('/online_payee/' + response.data.data.id)
-                        }
-                    }, response => {
-                        this.responseError = ''
-                        for (let field in this.field_locales) {
-                            this.responseError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.responseError = response.data.msg
                         }
                     })
                 }

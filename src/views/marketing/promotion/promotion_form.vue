@@ -89,7 +89,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                        <div class="alert alert-danger" v-if="responseError">
+                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span>
+                        </div>
                         <button :disabled="!$root.permissions.includes('change_promotion')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
                 </form>
@@ -99,7 +101,6 @@
 </template>
 <script>
     import api from '../../../api'
-    import { handleError } from '../../../utils/handleError'
     import tinymce from '../../../components/tinymce'
     import Vue from 'vue'
     import DatePicker from 'vue2-datepicker'
@@ -122,15 +123,6 @@
                     image_url_mobile: '',
                     image_mobile: '',
                     mobile_description: ''
-                },
-                field_locales: {
-                    'name': '名称错误：',
-                    'rank': '活动排序有误：',
-                    'start_date': '有效期开始时间有误：',
-                    'end_date': '有效期结束时间有误：',
-                    'date_field': '时间选择有误：',
-                    'image': '图片有误：',
-                    'level': '会员等级有误：'
                 },
                 promotions: [],
                 hasImage: false,
@@ -199,24 +191,18 @@
 
                 if (this.promotion.id) {
                     this.$http.put(api.promotion + this.promotion.id + '/', formData).then(response => {
-                        if (response.status === 200) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/promotion/' + response.data.data.id)
-                        }
-                    }, response => {
-                        this.responseError = ''
-                        for (let field in this.field_locales) {
-                            this.responseError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.responseError = response.data.msg
                         }
                     })
                 } else {
                     this.$http.post(api.promotion, formData).then(response => {
-                        if (response.status === 201) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/promotion/' + response.data.data.id)
-                        }
-                    }, response => {
-                        this.responseError = ''
-                        for (let field in this.field_locales) {
-                            this.responseError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.responseError = response.data.msg
                         }
                     })
                 }

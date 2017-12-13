@@ -41,7 +41,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                        <div class="alert alert-danger" v-if="responseError">
+                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span>
+                        </div>
                         <button type="submit" class="md-btn w-sm blue">{{$t('common.send')}}</button>
                     </div>
                 </form>
@@ -51,7 +53,6 @@
 </template>
 <script>
     import api from '../../../api'
-    import { handleError } from '../../../utils/handleError'
 
     export default {
         data () {
@@ -65,34 +66,33 @@
                     member_level: ''
                 },
                 responseError: '',
-                field_locales: {
-                    'content': '发送内容有误：',
-                    'receiver': '群发或接收人有误：',
-                    'title': '标题有误：'
-                },
                 checkMembers: true
             }
         },
         methods: {
             onSubmit (e) {
-                if (this.message.member_level || this.message.receiver) {
-                    if (!this.checkMembers) {
-                        this.checkMember()
-                        return
+                // if (this.message.member_level || this.message.receiver) {
+                //     if (!this.checkMembers) {
+                //         this.checkMember()
+                //         return
+                //     }
+                //     this.$http.post(api.messages, this.message).then(response => {
+                //         if (response.data.code === 2000) {
+                //             this.$router.push('/messages/')
+                //         } else {
+                //             this.responseError = response.data.msg
+                //         }
+                //     })
+                // } else {
+                //     this.responseError = '群发或接收人必须填写一个'
+                // }
+                this.$http.post(api.messages, this.message).then(response => {
+                    if (response.data.code === 2000) {
+                        this.$router.push('/messages/')
+                    } else {
+                        this.responseError = response.data.msg
                     }
-                    this.$http.post(api.messages, this.message).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/messages/')
-                        }
-                    }, response => {
-                        this.responseError = ''
-                        for (let field in this.field_locales) {
-                            this.responseError += handleError(response, field, this.field_locales)
-                        }
-                    })
-                } else {
-                    this.responseError = '群发或接收人必须填写一个'
-                }
+                })
             },
             checkMember () {
                 this.responseError = ''
