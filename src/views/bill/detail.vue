@@ -294,8 +294,6 @@
                         this.transaction.status = response.data.status
                         this.loading = false
                         if (routerLink) {
-                            console.log('test')
-                            console.log(routerLink)
                             this.$router.go(routerLink)
                         }
                     }, response => {
