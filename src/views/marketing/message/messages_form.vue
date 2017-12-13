@@ -41,7 +41,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                        <div class="alert alert-danger" v-if="responseError">
+                            <span>{{responseError}} <br/> </span>
+                        </div>
                         <button type="submit" class="md-btn w-sm blue">{{$t('common.send')}}</button>
                     </div>
                 </form>
@@ -51,7 +53,6 @@
 </template>
 <script>
     import api from '../../../api'
-    import { handleError } from '../../../utils/handleError'
 
     export default {
         data () {
@@ -65,11 +66,6 @@
                     member_level: ''
                 },
                 responseError: '',
-                field_locales: {
-                    'content': '发送内容有误：',
-                    'receiver': '群发或接收人有误：',
-                    'title': '标题有误：'
-                },
                 checkMembers: true
             }
         },
@@ -81,13 +77,10 @@
                         return
                     }
                     this.$http.post(api.messages, this.message).then(response => {
-                        if (response.status === 201) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/messages/')
-                        }
-                    }, response => {
-                        this.responseError = ''
-                        for (let field in this.field_locales) {
-                            this.responseError += handleError(response, field, this.field_locales)
+                        } else {
+                            this.responseError = response.data.msg
                         }
                     })
                 } else {

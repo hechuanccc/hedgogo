@@ -210,7 +210,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-show="level.responseError">{{level.responseError}}</div>
+                        <div class="alert alert-danger" v-show="level.responseError">
+                            <span v-for="(msg,index) in level.responseError">[{{index}}]  {{msg}} <br/> </span>
+                        </div>
                         <button :disabled="!$root.permissions.includes('change_level')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
                 </form>
@@ -221,7 +223,6 @@
 </template>
 <script>
 import api from '../../api'
-import { handleError } from '../../utils/handleError'
 
 export default {
     data () {
@@ -318,26 +319,20 @@ export default {
                 this.verifyDiscounts(this.level.remit_discounts)
                 this.verifyDiscounts(this.level.online_discounts)
                 this.$http.put(api.level + this.level.id + '/', this.level).then(response => {
-                    if (response.status === 200) {
+                    if (response.data.code === 2000) {
                         this.$router.push('/level/' + response.data.data.id)
-                    }
-                }, response => {
-                    this.level.responseError = ''
-                    for (let field in this.level.field_locales) {
-                        this.level.responseError += handleError(response, field, this.level.field_locales)
+                    } else {
+                        this.level.responseError = response.data.msg
                     }
                 })
             } else {
                 this.verifyDiscounts(this.level.remit_discounts)
                 this.verifyDiscounts(this.level.online_discounts)
                 this.$http.post(api.level, this.level).then(response => {
-                    if (response.status === 201) {
+                    if (response.data.code === 2000) {
                         this.$router.push('/level/' + response.data.data.id)
-                    }
-                }, response => {
-                    this.level.responseError = ''
-                    for (let field in this.level.field_locales) {
-                        this.level.responseError += handleError(response, field, this.level.field_locales)
+                    } else {
+                        this.level.responseError = response.data.msg
                     }
                 })
             }

@@ -162,7 +162,6 @@
     import DatePicker from 'vue2-datepicker'
     import pulling from '../../components/pulling'
     import transactionStatus from '../../components/transaction_status'
-    import { handleError } from '../../utils/handleError'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import Vue from 'vue'
@@ -431,12 +430,11 @@
                     this.$http.put(api.bill + transaction.id + '/?opt_expand=bank,updated_by', {
                         status: status
                     }).then(response => {
-                        transaction.status = response.data.status
-                        transaction.balance_after = response.data.balance_after
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
+                        if (response.data.code === 2000) {
+                            transaction.status = response.data.data.status
+                            transaction.balance_after = response.data.data.balance_after
+                        } else {
+                            this.errorMsg = response.data.msg
                         }
                     })
                 }
