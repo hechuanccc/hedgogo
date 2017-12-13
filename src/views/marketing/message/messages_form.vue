@@ -86,13 +86,6 @@
                 } else {
                     this.responseError = '群发或接收人必须填写一个'
                 }
-                this.$http.post(api.messages, this.message).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/messages/')
-                    } else {
-                        this.responseError = response.data.msg
-                    }
-                })
             },
             checkMember () {
                 this.responseError = ''
