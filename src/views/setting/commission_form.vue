@@ -106,28 +106,23 @@
                         <a v-if="index > 0" class="pull-right m-r" @click="deleteConfig(index)">{{$t('action.delete')}}</a>
                     </div>
                 </div>
-                <!-- Will be enabled once requirement is finalized -->
-                <!-- <div class="col-xs-12 p-t-sm p-b-sm">
+                <div class="col-xs-12 p-t-sm p-b-sm">
                     退佣比 %
                 </div>
 
-                <div v-for="rateconfig in group.rates" class="p-r m-b-sm col-xs-6" >
-                    <div class="col-xs-2">
-                        <label class="m-t label" :class="rateconfig.status==1 ? 'success' : ''">{{rateconfig.name}}</label>
-                    </div>
-
-                    <div class="col-xs-2" v-for="t in rateconfig.gamecategories">
-                        <div class="md-form-group" >
-                            <input class="md-input" type="number" step="0.1" v-model="t.rate" required min="0" max="100" />
-                            <label>{{t.name}}</label>
+                <div v-for="rateconfig in commissionsetting.groups" class="p-r m-b-sm" >
+                    <div v-for="rate in rateconfig.rates" class="p-r m-b-sm" >
+                        <div class="col-xs-3">
+                            <label class="m-t label success" >{{rate.game || rate.display_name}}</label>
+                            <input class="md-input" type="number" step="0.1" v-model="rate.rate" required min="0" max="100"/>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <button :disabled="!$root.permissions.includes('change_commission')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
-                    <span class="text-success m-l-md" v-show="updated">{{$t('common.saved_successfully')}</span>
+                    <span class="text-success m-l-md" v-show="updated">{{$t('common.saved_successfully')}}</span>
                 </div>
             </div>
         </form>
@@ -141,7 +136,7 @@
             return {
                 deleted: 0,
                 updated: false,
-                defaultProviders: [],
+                gamelist: [],
                 commissionsetting: {
                     name: '',
                     status: 0,
@@ -160,15 +155,6 @@
                 }
             }
         },
-        // route: {
-        //     data (transition) {
-        //         this.fetchProviders()
-        //         let id = transition.to.params.commissionId
-        //         if (id) {
-        //             this.getCommissionSetting(id)
-        //         }
-        //     }
-        // },
         beforeRouteEnter (to, from, next) {
             next(vm => {
                 let id = to.params.commissionId
@@ -177,35 +163,25 @@
                 }
             })
         },
-        // Will be enabled once requirement is finalized
-        // created () {
-        //     this.fetchProviders()
-        // },
+        created () {
+            this.getGameList()
+        },
         methods: {
             deleteConfig (index) {
                 this.commissionsetting.groups.splice(index, 1)
             },
-            // Will be enabled once requirement is finalized
-            // fetchProviders () {
-            //     this.$http.get(api.provider_setting + '?opt_fields=provider,name,status,gamecategories').then(response => {
-            //         this.defaultProviders = response.data
-            //         if (!this.commissionsetting.id) {
-            //             this.commissionsetting.groups[0].rates = this.defaultProviders
-            //         }
-            //     })
-            // },
             addConfig () {
                 this.commissionsetting.groups.push({
                     threshold: '',
                     max: '',
                     check_amount: '',
-                    rates: this.defaultProviders
+                    rates: ''
                 })
             },
             onSubmit (e) {
                 if (this.commissionsetting.id) {
                     this.$http.put(api.commission + this.commissionsetting.id + '/', this.commissionsetting).then(response => {
-                        if (response.status === 200) {
+                        if (response.data.code === 2000) {
                             this.updated = true
                             setTimeout(() => {
                                 this.updated = false
@@ -214,7 +190,7 @@
                     })
                 } else {
                     this.$http.post(api.commission, this.commissionsetting).then(response => {
-                        if (response.status === 201) {
+                        if (response.data.code === 2000) {
                             this.$router.push('/commission/' + response.data.data.id + '/edit')
                         }
                     })
@@ -223,6 +199,14 @@
             getCommissionSetting (id) {
                 this.$http.get(api.commission + id + '/').then((response) => {
                     this.commissionsetting = response.data.data
+                })
+            },
+            getGameList () {
+                this.$http.get(api.game_list).then(response => {
+                    this.gamelist = response.data.data
+                    if (!this.commissionsetting.id) {
+                        this.commissionsetting.groups[0].rates = this.gamelist
+                    }
                 })
             },
             deleteCommission () {
