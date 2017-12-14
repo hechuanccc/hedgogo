@@ -362,7 +362,8 @@
                         return
                     }
                 }
-                this.$http.put(api.member + id + '/?audit=' + id).then((response) => {
+                this.$http.put(api.member + id + '/?audit=' + id, {username: this.member.username, agent: this.member.agent.id, level: this.member.level.id})
+                .then((response) => {
                     this.member.balance.bet_amount = response.data.data.balance.bet_amount
                     this.member.balance.audit_amount = response.data.data.balance.audit_amount
                 })
