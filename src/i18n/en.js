@@ -497,6 +497,7 @@ export default {
         manual_draw: 'Manual Draw',
         manual_draw_success: 'Successfully manual draw!',
         manual_draw_fail: 'Fail to manual draw!',
+        sure_manual_draw: 'Please check if manual draw. This operation affects %{bet_record_count} bet record(s).',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
         retreat_sched_sure: 'Are you sure to retreat schedule?',

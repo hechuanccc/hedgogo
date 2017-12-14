@@ -497,6 +497,7 @@ export default {
         manual_draw: '手动开奖',
         manual_draw_success: '手动开奖成功！',
         manual_draw_fail: '手动开奖失败！',
+        sure_manual_draw: '请确认是否手动开奖，该操作将会影响%{bet_record_count}个注单',
         memo: '备注',
         no_draw: '未开奖',
         retreat_sched_sure: '确定撤单吗？',
