@@ -89,9 +89,9 @@
                                                         </div>
                                                         <div class="m-a alert alert-danger" v-if="box.errMsg">{{ box.errMsg }}</div>
                                                         <div class="row m-t-sm">
-                                                            <button class="md-btn w-sm blue" @click="changeMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('action.update')}}</button>
+                                                            <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('action.update')}}</button>
                                                             <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('action.confirm')}}</button>
-                                                            <button class="btn btn-sm" @click="cancelUpdate(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('action.cancel')}}</button>  
+                                                            <button class="btn btn-sm" @click="cancelUpdateBox(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('action.cancel')}}</button>  
                                                             <span class="text-success text-sm m-l" v-if="box.successMsg"><i class="fa fa-check"></i> {{ box.successMsg }}</span>                                                      
                                                         </div>
                                                     </div>
@@ -194,7 +194,7 @@
                     this.boxes.splice(index, 1)
                 })
             },
-            changeMode (id, index) {
+            changeBoxMode (id, index) {
                 const box = this.boxes[index]
                 this.boxes[index].mode = 1
                 this.initialBoxes[box.id] = Object({
@@ -250,6 +250,15 @@
                     }
                 })
             },
+            cancelUpdateBox (id, index) {
+                this.$set(this.boxes, index, {
+                    ...this.boxes[index],
+                    ...this.initialBoxes[id],
+                    mode: 0,
+                    errMsg: ''
+                })
+                delete this.initialBoxes[id]
+            },
             updateBoxSuccess (id, index) {
                 this.boxes[index].successMsg = this.$t('status.success')
                 setTimeout(() => {
@@ -277,15 +286,6 @@
             cancelUpdateRank () {
                 this.boxes.sort((a, b) => a.rank - b.rank)
                 this.mode = 0
-            },
-            cancelUpdate (id, index) {
-                this.$set(this.boxes, index, {
-                    ...this.boxes[index],
-                    ...this.initialBoxes[id],
-                    mode: 0,
-                    errMsg: ''
-                })
-                delete this.initialBoxes[id]
             },
             syncImg (e) {
                 this.website.icon = e.target.files[0]
