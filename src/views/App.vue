@@ -118,6 +118,7 @@ export default {
                     if (response.data.code === 9007) {
                         if (this.$route.name !== 'login') {
                             this.authErrors = this.authErrors.concat(response.data.detail)
+                            this.$router.push('/login?next=' + this.$route.path)
                         }
                     }
                 })
@@ -128,15 +129,15 @@ export default {
                 return
             }
             this.$http.get(api.my).then((response) => {
-                this.username = response.data.data.username
-                this.userType = response.data.data.type
-                if (this.userType === 'agent') {
-                    this.agentPermission()
-                }
-                this.getPermissions()
-            }, (response) => {
                 if (response.data.code === 9007) {
                     this.$router.push('/login')
+                } else {
+                    this.username = response.data.data.username
+                    this.userType = response.data.data.type
+                    if (this.userType === 'agent') {
+                        this.agentPermission()
+                    }
+                    this.getPermissions()
                 }
             })
         },

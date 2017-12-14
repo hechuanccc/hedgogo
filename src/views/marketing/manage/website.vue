@@ -1,9 +1,8 @@
 <template>
-    <div class="box  ">
+    <div class="box">
         <div class="box-body">
-            <form class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
                 <div class="row b-b p-b m-b">
-                    <div class="col-md-9 ">
+                    <div class="col-md-12">
                         <div>
                             <div class="form-group">
                                 <label  class="label-width col-xs-1">{{$t('manage.name')}} </label>
@@ -26,27 +25,95 @@
                                     <input type="file" class="form-control" accept="image/*" @change="syncImg">
                                 </div>
                             </div>
-                            <div class="form-group ">
-                                <label class="col-xs-1  label-width">{{$t('manage.description')}} </label>
-                                <div class="inline-form-control col-md-10 website-text">
-                                    <textarea class="form-control" rows="6" placeholder="" required v-model="website.description"></textarea>
+                            <div class="b-b p-b m-t">
+                                <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                                <div class="alert alert-success" v-if="statusUpdated">{{$t('agent.status_update')}}</div>
+                                <button type="" class="md-btn w-sm blue" @click="onSubmit">{{$t('common.save')}}</button>
+                            </div>
+                            <div class="row m-t">
+                                <label class="m-l-sm label-width col-xs-1">{{$t('manage.advertisement')}} </label>
+                            </div>
+                            <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-if="!mode">
+                                <button class="md-btn w-sm blue" @click="mode=1"><i class="fa fa-arrows-h"></i> {{ $t('manage.adjust_rank') }}</button>
+                                <span class="text-success text-sm m-l" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>                                                                                      
+                            </div>
+                            <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-else>
+                                <button class="btn btn-sm  blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>                                
+                                <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
+                            </div>
+                            <div class="row">
+                                <div :class="`col-xs-${boxes.length<4?'11':'12'}`">
+                                    <draggable v-model="boxes" class="row" :options="{disabled:!mode}">
+                                        <transition-group name="list-complete">
+                                            <div :class="[`col-xs-${12/boxes.length}`, 'list-complete-item m-a-0']" v-for="(box, index) in boxes" :key="box.id">
+                                                <div :class="['box', mode?'b-a b-dashed b-3x':'']">
+                                                    <div class="box-tool">
+                                                        <ul class="nav">
+                                                            <li class="nav-item inline" v-if="boxes.length>2">
+                                                                <button type="button" class="close" aria-hidden="true" @click="deleteBox(box.id, index)"><i class="fa fa-times"></i>
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="box-body text-center">
+                                                        <div class="m-a-sm">{{ $t('manage.header_img') }}</div>
+                                                        <div v-if="box.header_image">
+                                                            <img :src="box.header_image" width="250" height="50">
+                                                        </div>
+                                                        <div v-else style="height:50px; background:lightgrey; line-height:50px;">{{ $t('action.no_setting') }}</div>
+                                                        <div class="inline-form-control m-t-xs" v-if="box.mode">
+                                                            <input type="file" class="form-control" accept="image/*" @change="syncBoxImg($event, box, index, 'header_image')" style="width:250px;">
+                                                        </div>
+                                                        <div class="form-group m-b-xs m-t-sm">
+                                                            <label class="form-control-label">{{ $t('manage.main') }}</label>
+                                                            <label class="radio-inline" v-if="box.mode">
+                                                            <input type="radio" :value="0" v-model="box.status">{{ $t('manage.img') }}
+                                                            </label>
+                                                            <label class="radio-inline" v-if="box.mode">
+                                                            <input type="radio" :value="1" v-model="box.status">{{ $t('manage.text') }}
+                                                            </label>
+                                                        </div>
+                                                        <div class="row m-l-xs m-r-xs" v-if="box.status===0">
+                                                            <div v-if="box.main_image">
+                                                                <img :src="box.main_image" height="300">
+                                                            </div>
+                                                            <div v-else style="height:300px; background:lightgrey; line-height:300px;">
+                                                                {{ $t('action.no_setting') }}
+                                                            </div>
+                                                            <div class="inline-form-control m-t-xs" v-if="box.mode">
+                                                                <input type="file" class="form-control" accept="image/*" @change="syncBoxImg($event, box, index, 'main_image')" style="width:250px;">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row m-l-xs m-r-xs" v-else-if="box.status===1">
+                                                            <textarea class="form-control" rows="15" cols="12" v-model="box.main_description" :disabled="!box.mode" style="resize:none;"></textarea>
+                                                        </div>
+                                                        <div class="m-a alert alert-danger" v-if="box.errMsg">{{ box.errMsg }}</div>
+                                                        <div class="row m-t-sm">
+                                                            <button class="md-btn w-sm blue" @click="changeMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('action.update')}}</button>
+                                                            <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('action.confirm')}}</button>
+                                                            <button class="btn btn-sm" @click="cancelUpdate(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('action.cancel')}}</button>  
+                                                            <span class="text-success text-sm m-l" v-if="box.successMsg"><i class="fa fa-check"></i> {{ box.successMsg }}</span>                                                      
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </transition-group>
+                                    </draggable>
+                                </div>
+                                <div class="col-xs-1" v-if="boxes.length<4">
+                                    <button class="md-btn md-fab m-b-sm blue" @click="createBox"><i class="material-icons md-24">&#xe145;</i></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="m-t">
-                    <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
-                    <div class="alert alert-success" v-if="statusUpdated">{{$t('agent.status_update')}}</div>
-                    <button type="" class="md-btn w-sm blue">{{$t('common.save')}}</button>
-                </div>
-            </form>
         </div>
     </div>
 </template>
 
 <script>
     import api from '../../../api'
+    import draggable from 'vuedraggable'
     export default {
         data () {
             return {
@@ -57,13 +124,19 @@
                     description: '',
                     second_name: ''
                 },
+                mode: 0,
+                boxes: [],
+                initialBoxes: {},
+                boxResults: {},
                 hasImage: false,
                 statusUpdated: false,
-                responseError: ''
+                responseError: '',
+                successMsg: ''
             }
         },
         created () {
             this.getWebsite()
+            this.getWebsiteDescription()
         },
         watch: {
             statusUpdated (newObj, old) {
@@ -83,9 +156,152 @@
                     this.website = Object.assign(this.website, response.data.data)
                 })
             },
+            getWebsiteDescription () {
+                this.$http.get(api.website_descriptions).then(response => {
+                    this.boxes = response.data.data.map(box => Object({
+                        ...box,
+                        mode: 0,
+                        errMsg: '',
+                        successMsg: '',
+                        loading: false
+                    }))
+                })
+            },
+            createBox () {
+                this.$http.post(api.website_descriptions).then(response => {
+                    let box = response.data.data
+                    this.boxes = [...this.boxes, {
+                        ...box,
+                        mode: 1,
+                        errMsg: '',
+                        successMsg: '',
+                        loading: false
+                    }]
+                    this.initialBoxes[box.id] = Object({
+                        header_image: null,
+                        main_image: null,
+                        main_description: null,
+                        status: box.status
+                    })
+                })
+            },
+            deleteBox (id, index) {
+                this.$http.delete(api.website_descriptions + id + '/').then(response => {
+                    if (this.boxes[index].mode) {
+                        delete this.boxResults[id]
+                        delete this.initialBoxes[id]
+                    }
+                    this.boxes.splice(index, 1)
+                })
+            },
+            changeMode (id, index) {
+                const box = this.boxes[index]
+                this.boxes[index].mode = 1
+                this.initialBoxes[box.id] = Object({
+                    header_image: box.header_image,
+                    main_image: box.main_image,
+                    main_description: box.main_description,
+                    status: box.status
+                })
+            },
+            updateBox (id, index) {
+                let formData = new window.FormData()
+                let box = this.boxes[index]
+                let boxResult = this.boxResults[id]
+                const errMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.main')}`
+                if (!box.header_image) {
+                    box.errMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.header_img')}`
+                    return
+                } else if (boxResult && boxResult.header_image) {
+                    formData.append('header_image', boxResult.header_image)
+                }
+
+                formData.append('status', box.status)
+                if (box.status === 0) {
+                    if (!box.main_image) {
+                        box.errMsg = errMsg
+                        return
+                    } else if (boxResult && boxResult.main_image) {
+                        formData.append('main_image', boxResult.main_image)
+                    }
+                } else if (box.status === 1) {
+                    if (!box.main_description) {
+                        box.errMsg = errMsg
+                        return
+                    } else {
+                        formData.append('main_description', box.main_description)
+                    }
+                }
+                box.loading = true
+                this.$http.put(api.website_descriptions + id + '/', formData).then(response => {
+                    if (response.data.code === 2000) {
+                        this.updateBoxSuccess(box.id, index)
+                        this.$set(this.boxes, index, {
+                            ...this.boxes[index],
+                            ...response.data.data,
+                            mode: 0,
+                            errMsg: '',
+                            loading: false
+                        })
+                        delete this.boxResults[id]
+                        delete this.initialBoxes[id]
+                    } else {
+                        this.boxes[index].errMsg = response.data.msg
+                    }
+                })
+            },
+            updateBoxSuccess (id, index) {
+                this.boxes[index].successMsg = this.$t('status.success')
+                setTimeout(() => {
+                    this.boxes[index].successMsg = ''
+                }, 2000)
+            },
+            updateRank () {
+                this.$http.post(api.website_descriptions_ranks, this.boxes.map((box, index) => Object({
+                    id: box.id,
+                    rank: index + 1
+                }))).then(response => {
+                    this.boxes.forEach((box, index) => {
+                        this.boxes[index].rank = index + 1
+                    })
+                    this.mode = 0
+                    this.updateRankSuccess()
+                })
+            },
+            updateRankSuccess () {
+                this.successMsg = this.$t('status.success')
+                setTimeout(() => {
+                    this.successMsg = ''
+                }, 2000)
+            },
+            cancelUpdateRank () {
+                this.boxes.sort((a, b) => a.rank - b.rank)
+                this.mode = 0
+            },
+            cancelUpdate (id, index) {
+                this.$set(this.boxes, index, {
+                    ...this.boxes[index],
+                    ...this.initialBoxes[id],
+                    mode: 0,
+                    errMsg: ''
+                })
+                delete this.initialBoxes[id]
+            },
             syncImg (e) {
                 this.website.icon = e.target.files[0]
                 this.hasImage = true
+            },
+            syncBoxImg (e, box, index, attr) {
+                var reader = new FileReader()
+
+                reader.onload = (e) => {
+                    box[attr] = e.target.result
+                }
+                reader.readAsDataURL(e.target.files[0])
+                if (!this.boxResults[box.id]) {
+                    this.boxResults[box.id] = {}
+                }
+                this.boxResults[box.id][attr] = e.target.files[0]
             },
             onSubmit (e) {
                 let formData = new window.FormData()
@@ -97,7 +313,7 @@
                 }
                 this.$http.put(api.website, formData).then(response => {
                     if (response.status === 200) {
-                        this.website = Object.assign(this.website, response.data)
+                        this.website = Object.assign(this.website, response.data.data)
                         this.responseError = ''
                         this.statusUpdated = true
                     }
@@ -105,12 +321,23 @@
                     this.responseError = response.data.error[0].icon
                 })
             }
+        },
+        components: {
+            draggable
         }
     }
 </script>
-
-<style>
-    .row .website-text{
-        padding:0
-    }
+<style scoped>
+.list-complete-item {
+  transition: all .5s;
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-complete-enter, .list-complete-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
+}
 </style>

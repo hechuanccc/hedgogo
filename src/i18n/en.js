@@ -682,7 +682,8 @@ export default {
         repeat_password: 'Repeat Password',
         header_img: 'Header Image',
         main: 'Main box',
-        advertisement: 'Advertisement'
+        advertisement: 'Advertisement',
+        adjust_rank: 'Adjust Rank'
     },
     cms: {
         pctitle: 'PC Website Management',
