@@ -217,7 +217,7 @@
               {{t.play.play_group.display_name}} @ {{t.play.display_name}}
             </td>
             <td>
-              {{t.returnrate}}
+              {{t.return_rate}}
             </td>
             <td>
               {{t.bet_amount | currency('￥')}}
