@@ -353,7 +353,7 @@ export default {
         rejected: '已拒绝',
         declined: '已拒绝',
         success: '成功',
-        canceled: '已取消',
+        cancelled: '已取消',
         failed: '失败',
         disabled: '停用'
     },
@@ -681,7 +681,8 @@ export default {
         repeat_password: '重复密码',
         header_img: '标题图片',
         main: '描述内容',
-        advertisement: '网站广告'
+        advertisement: '网站广告',
+        adjust_rank: '调整排序'
     },
     cms: {
         pctitle: '电脑网页管理',

@@ -263,7 +263,8 @@ export default {
             member_logged_in: '',
             loading: false,
             export_query: [],
-            today: Vue.moment().format(format)
+            today: Vue.moment().format(format),
+            pageSelected: ''
         }
     },
     created () {

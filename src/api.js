@@ -66,5 +66,6 @@ export default {
     transaction_onlinepay: managePrefix + 'transaction/onlinepayment/',
     refresh_token: prefix + 'login/refresh/',
     global_preferences: managePrefix + 'global-preferences/',
-    website_descriptions: managePrefix + 'website/descriptions/'
+    website_descriptions: managePrefix + 'website/descriptions/',
+    website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/'
 }
