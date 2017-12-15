@@ -60,11 +60,6 @@
                             </a>
                             <ul class="nav-sub">
                                 <li>
-                                    <router-link to="/agent?level=3">
-                                        <span class="nav-text">{{$t("nav.general_agent_list")}}</span>
-                                    </router-link>
-                                </li>
-                                <li>
                                     <router-link  to="/agent/applications?status=3">
                                         <span class="nav-text">{{$t("nav.agent_application")}}</span>
                                     </router-link>

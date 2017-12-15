@@ -22,13 +22,6 @@
                     <input class="form-control" name="account" :placeholder="member.id!='' ? '':'用户名, 必填'" v-model="member.username" required :disabled="member.id!=''" >
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="label-width">{{$t('member.account_type')}} </label>
-                    <select class="form-control w-sm c-select" v-model="member.account_type" :disabled="true">
-                      <option value="0">{{$t('member.trial_account')}}</option>
-                      <option value="1">{{$t('member.real_account')}}</option>
-                    </select>
-                </div>
                 <div class="form-group" v-if="member.agent.name">
                   <label for="account" class="label-width">{{$t('member.agent')}}</label>
                   <div class="inline-form-control">
