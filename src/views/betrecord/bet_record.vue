@@ -46,6 +46,12 @@
                         <i class="blue">{{game.display_name}}</i>
                     </option>
                   </select>
+                  <select class="form-control c-select" width="240" v-model="game_category" :disabled="game == '0'">
+                    <option value="0" hidden>{{$t('common.gamecategory')}}</option>
+                    <option name="game" :value="category.id" v-for="(category, index) in categories" :key="category.id">
+                        <i class="blue">{{category.display_name}}</i>
+                    </option>
+                  </select>
                     <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                 </div>
               </div>
