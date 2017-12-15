@@ -37,14 +37,23 @@
           <td><router-link :to="'/login_record?member_q=' + report.member.username">{{report.member.username}}</router-link></td>
           <td>{{report.logindate | moment("YYYY-MM-DD HH:mm:ss")}}</td>
           <td><router-link :to="'/login_record?ipaddr_q=' + report.ipaddr">{{report.ipaddr}}</router-link></td>
-          <td>{{report.isp}}</td>
+          <td>
+            <span v-if="report.isp">{{report.isp}}</span>
+            <span v-else>-</span>
+          </td>
           <td>{{report.address.country}} {{report.address.region}} {{report.address.city}}</td>
           <td>
             <span v-if="report.platform">{{report.platform}}</span>
             <span v-else>-</span>
           </td>
-          <td>{{report.domain}}</td>
-          <td>{{report.logout_at}}</td>
+          <td>
+            <span v-if="report.domain">{{report.domain}}</span>
+            <span v-else>-</span>
+          </td>
+          <td>
+            <span v-if="report.logoutdate">{{report.logoutdate | moment("YYYY-MM-DD HH:mm:ss")}}</span>
+            <span v-else>-</span>
+          </td>
         </tr>
         </tbody>
         <tbody v-else>

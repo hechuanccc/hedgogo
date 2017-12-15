@@ -39,8 +39,6 @@
             </div>
         </div>
     </form>
-    <input type="checkbox" name="account_type" v-model="account_type" >
-    <i class="blue"></i>{{$t('action.filter_trial_account')}}
     <div class="pull-right">
       <a :href="href" :getReport="getReport" v-if="queryset.length">
         <span><i class="material-icons">&#xe2c4;</i></span>
@@ -60,9 +58,6 @@
                     <th>{{$t('common.balance_before')}}</th>
                     <th>{{$t('common.balance_after')}}</th>
                     <th>{{$t('common.amount')}}</th>
-                    <th>{{$t('game_manage.issue_number')}}</th>
-                    <th>{{$t('game_manage.name')}}</th>
-                    <th>{{$t('game_manage.play')}}</th>
                     <th>{{$t('common.operator')}}</th>
                     <th>{{$t('common.memo')}}</th>
                 </tr>
@@ -92,9 +87,6 @@
                       <span v-else>-</span>
                     </td>
                     <td>{{t.amount | currency('￥')}} <label v-if="t.withdraw_fee"> - 手续费：{{t.withdraw_fee}}</label></td>
-                    <td v-if="t.issue_number">{{t.issue_number}}</td> <td v-else>-</td>
-                    <td v-if="t.game">{{t.game}}</td> <td v-else>-</td>
-                    <td v-if="t.play">{{t.play}</td> <td v-else>-</td>
                     <td v-if="t.updated_by">{{t.updated_by.username}}</td> <td v-else>-</td>
                     <td v-if="t.memo">{{t.memo}}</td> <td v-else>-</td>
                 </tr>
@@ -102,8 +94,7 @@
         </table>
     </div>
     <div class="row m-b-lg">
-      <div v-show="!queryset.length" class="col-xs-12 text-center">{{$t('report.no_record_found')}}</div>
-      <pulling v-show="queryset.length"
+      <pulling
         :queryset="queryset"
         :query="query"
         :export_query="export_query"
@@ -135,7 +126,6 @@
                 billApi: api.bill,
                 order_id: '',
                 query: {
-                    account_type: '',
                     id: '',
                     member_q: '',
                     created_at_0: '',
@@ -150,7 +140,6 @@
                 },
                 member_level: '0',
                 selected: '0',
-                account_type: 'true',
                 // use selectd transaction types
                 transaction_type: '0',
                 // all of the transaction types
@@ -166,14 +155,6 @@
             }
         },
         watch: {
-            account_type: function (newObj, old) {
-                if (newObj === true) {
-                    this.query.account_type = '1'
-                } else {
-                    this.query.account_type = '0'
-                }
-                this.submit()
-            },
             transaction_type: function (newObj, old) {
                 if (newObj === '0') {
                     this.query.transaction_type = ''
@@ -203,10 +184,8 @@
                 this.transaction_type = transactionType.split(',')
             }
             this.$nextTick(() => {
-                if (this.$route.query.member || this.$route.query.transaction_type || this.$route.query.agent_q) {
-                    this.transaction_type = this.$route.query.transaction_type || '0'
-                    this.$refs.pulling.rebase()
-                }
+                this.transaction_type = this.$route.query.transaction_type || '0'
+                this.$refs.pulling.rebase()
             })
         },
         computed: {
@@ -250,7 +229,7 @@
             },
             getTransactionType () {
                 this.$http.get(api.transactiontype).then(response => {
-                    this.trans_type = response.data
+                    this.trans_type = response.data.data
                 })
             },
             removeSpace () {
@@ -264,9 +243,8 @@
                 this.member_level = 0
                 this.transaction_type = '0'
                 this.selected = '0'
-                this.account_type = true
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true&account_type=1'
+                    path: this.$route.path + '?report_flag=true'
                 })
             },
             getData: function () {
@@ -274,7 +252,7 @@
                     this.query.created_at_0 = ''
                     this.query.created_at_1 = ''
                     this.$router.push({
-                        path: this.$route.path + '?report_flag=true&account_type=1'
+                        path: this.$route.path + '?report_flag=true'
                     })
                 } else {
                     this.created_at_0 = ''
@@ -288,7 +266,7 @@
                 this.query.created_at_0 = ''
                 this.query.created_at_1 = ''
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true&account_type=1',
+                    path: this.$route.path + '?report_flag=true',
                     query: this.query
                 })
             },

@@ -12,7 +12,8 @@
           <tbody>
             <tr v-for="(preference, index) in queryset" :key="index">
                 <td class="text-center align-middle">{{ preference.display_name }}</td>
-                <td v-if="listMode.includes(index)"><div :class="preference.newValue ? '' : 'has-danger'"><input :class="['form-control', preference.newValue ? '' : 'form-control-danger']" v-model="preference.newValue"></div></td>
+                <td v-if="listMode.includes(index)">
+                    <div :class="preference.newValue ? '' : 'has-danger'"><input :class="['form-control', preference.newValue ? '' : 'form-control-danger']" v-model="preference.newValue"></div></td>
                 <td v-else>{{ preference.value }}</td>
                 <td class="align-middle">
                     <a class="p-l-xs" @click="changeMode(index)">{{ listMode.includes(index) ? $t('action.confirm') : $t('global_parameters.modify') }}</a>

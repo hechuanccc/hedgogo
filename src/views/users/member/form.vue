@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('member.account_type')}} </label>
-                    <select class="form-control w-sm c-select" v-model="member.account_type">
+                    <select class="form-control w-sm c-select" v-model="member.account_type" :disabled="true">
                       <option value="0">{{$t('member.trial_account')}}</option>
                       <option value="1">{{$t('member.real_account')}}</option>
                     </select>

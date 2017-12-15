@@ -38,7 +38,6 @@
 
 <script>
     import api from '../../api'
-    import { handleError } from '../../utils/handleError'
     export default {
         data () {
             return {
@@ -46,11 +45,6 @@
                     prev_password: '',
                     new_password: '',
                     repeat_password: ''
-                },
-                field_locales: {
-                    'previous_password_field': '原密码输入有误：',
-                    'new_password': '新密码输入有误：',
-                    'password_field': '密码输入有误：'
                 },
                 responseError: '',
                 success: false
@@ -66,14 +60,11 @@
         methods: {
             onSubmit (e) {
                 this.$http.post(api.changePassword, this.user).then(response => {
-                    if (response.status === 200) {
+                    if (response.data.code === 2000) {
                         this.responseError = ''
                         this.success = true
-                    }
-                }, response => {
-                    this.responseError = ''
-                    for (let field in this.field_locales) {
-                        this.responseError += handleError(response, field, this.field_locales)
+                    } else {
+                        this.responseError = response.data.msg
                     }
                 })
             }

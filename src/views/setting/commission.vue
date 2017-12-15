@@ -59,7 +59,7 @@ export default {
             this.$http.put(api.commission + setting.id + '/', {
                 'status': setting.status === 0 ? 1 : 0
             }).then((response) => {
-                setting.status = response.data.status
+                setting.status = response.data.data.status
             })
         },
         getCommissionsettings () {

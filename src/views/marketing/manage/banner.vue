@@ -136,12 +136,12 @@ export default {
             formData.append('image', this.banner.image)
             formData.append('platform', this.banner.platform)
             this.$http.post(this.bannerApi, formData).then(response => {
-                if (response.status === 201) {
-                    this.queryset.unshift(response.data)
+                if (response.data.code === 2000) {
+                    this.queryset.unshift(response.data.data)
                     this.loading = false
+                } else {
+                    this.responseError = response.data.msg
                 }
-            }, response => {
-                this.responseError = response.data.error[0].image
             })
         },
         getImg (e) {
@@ -155,7 +155,7 @@ export default {
             this.$http.put(this.bannerApi + banner.id + '/', {
                 'status': banner.status === 0 ? 1 : 0
             }).then((response) => {
-                banner.status = response.data.status
+                banner.status = response.data.data.status
             })
         },
         queryData (queryset) {

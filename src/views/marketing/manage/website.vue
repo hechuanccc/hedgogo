@@ -168,21 +168,26 @@
                 })
             },
             createBox () {
+                this.boxes = [...this.boxes, {}]
                 this.$http.post(api.website_descriptions).then(response => {
-                    let box = response.data.data
-                    this.boxes = [...this.boxes, {
-                        ...box,
-                        mode: 1,
-                        errMsg: '',
-                        successMsg: '',
-                        loading: false
-                    }]
-                    this.initialBoxes[box.id] = Object({
-                        header_image: null,
-                        main_image: null,
-                        main_description: null,
-                        status: box.status
-                    })
+                    if (response.data.code === 2000) {
+                        let box = Object({
+                            ...response.data.data,
+                            mode: 1,
+                            errMsg: '',
+                            successMsg: '',
+                            loading: false
+                        })
+                        this.initialBoxes[box.id] = Object({
+                            header_image: null,
+                            main_image: null,
+                            main_description: null,
+                            status: box.status
+                        })
+                        this.$set(this.boxes, this.boxes.length - 1, box)
+                    } else {
+                        this.boxes.splice(this.boxes.length - 1, 1)
+                    }
                 })
             },
             deleteBox (id, index) {
@@ -329,7 +334,7 @@
 </script>
 <style scoped>
 .list-complete-item {
-  transition: all .5s;
+  transition: all .1s;
   display: inline-block;
   margin-right: 10px;
 }

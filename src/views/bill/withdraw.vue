@@ -50,10 +50,6 @@
       </form>
       <div class="row">
         <div class="col-xs-12">
-          <div class="pull-left">
-            <input type="checkbox" name="account_type" v-model="account_type">
-            <i class="blue"></i>{{$t('action.filter_trial_account')}}
-          </div>
           <div class="pull-right total-amount">
             <span>{{$t('common.total')}} {{$t('nav.withdraw_request')}}: </span>
             <span v-if="queryset.length">{{total_amount | currency('￥')}}</span>
@@ -115,7 +111,7 @@
                       <td>
                           <span class="label success" v-if="t.status===1">{{$t('status.success')}}</span>
                           <span class="label danger" v-if="t.status===2">{{$t('status.failed')}}</span>
-                          <router-link class="label warn pointer" v-if="t.status===3" tag="span" :to="'/transaction/' + t.id">{{$t('status.ongoing')}}</router-link>
+                          <router-link v-if="t.status===3" :to="'/transaction/' + t.id">{{$t('status.ongoing')}}</router-link>
                           <span class="label" v-if="t.status===4">{{$t('status.cancelled')}}</span>
                           <span class="label danger" v-if="t.status===5">{{$t('status.declined')}}</span>
                       </td>
@@ -156,7 +152,6 @@
                 billApi: api.bill,
                 order_id: '',
                 query: {
-                    account_type: '',
                     status: '',
                     id: '',
                     member_q: '',
@@ -175,7 +170,6 @@
                 status: '0',
                 dateRange: -1,
                 memo: '',
-                account_type: true,
                 total_amount: '',
                 filter: {
                     created_at_0: Vue.moment().subtract(7, 'days').format(format),
@@ -187,14 +181,6 @@
             }
         },
         watch: {
-            account_type: function (newObj, old) {
-                if (newObj === true) {
-                    this.query.account_type = '1'
-                } else {
-                    this.query.account_type = '0'
-                }
-                this.submit()
-            },
             '$root.withdraw_count' (newObj, old) {
                 this.$refs.pulling.rebase()
             },
@@ -298,9 +284,8 @@
                 this.query.updated_at_1 = ''
                 this.member_level = 0
                 this.selected = '0'
-                this.account_type = true
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true&account_type=1'
+                    path: this.$route.path + '?report_flag=true'
                 })
             },
             updateDateFilter: function () {
@@ -320,7 +305,7 @@
                     this.query.created_at_1 = ''
                 }
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true&account_type=1',
+                    path: this.$route.path + '?report_flag=true',
                     query: this.query
                 })
             },

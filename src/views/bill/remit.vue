@@ -55,10 +55,6 @@
     </form>
       <div class="row">
         <div class="col-xs-12">
-          <div class="pull-left">
-            <input type="checkbox" name="account_type" v-model="account_type">
-            <i class="blue"></i>{{$t('action.filter_trial_account')}}
-          </div>
           <div class="pull-right">
           <a :href="href" :getReport="getReport" v-if="queryset.length">
             <span ><i class="material-icons">&#xe2c4;</i></span>
@@ -162,7 +158,6 @@
     import DatePicker from 'vue2-datepicker'
     import pulling from '../../components/pulling'
     import transactionStatus from '../../components/transaction_status'
-    import { handleError } from '../../utils/handleError'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import Vue from 'vue'
@@ -174,7 +169,6 @@
                 queryset: [],
                 billApi: api.bill,
                 query: {
-                    account_type: '',
                     id: '',
                     remit_type: '',
                     member_q: '',
@@ -197,7 +191,6 @@
                 remit_type: '0',
                 dateRange: -1,
                 memo: '',
-                account_type: true,
                 total_amount: '',
                 href: '',
                 export_query: [],
@@ -211,14 +204,6 @@
             }
         },
         watch: {
-            account_type: function (newObj, old) {
-                if (newObj === true) {
-                    this.query.account_type = '1'
-                } else {
-                    this.query.account_type = '0'
-                }
-                this.submit()
-            },
             remit_type: function (newObj, old) {
                 if (newObj === '0') {
                     this.query.remit_type = ''
@@ -323,7 +308,6 @@
                 this.query = {}
                 this.status = '0'
                 this.remit_type = '0'
-                this.account_type = true
                 this.dateRange = -1
                 this.query.created_at_0 = ''
                 this.query.created_at_1 = ''
@@ -332,7 +316,7 @@
                 this.member_level = '0'
                 this.selected = '0'
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true&account_type=1'
+                    path: this.$route.path + '?report_flag=true'
                 })
             },
             updateDateFilter: function () {
@@ -352,7 +336,7 @@
                     this.query.created_at_1 = ''
                 }
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true&account_type=1',
+                    path: this.$route.path + '?report_flag=true',
                     query: this.query
                 })
             },
@@ -431,12 +415,11 @@
                     this.$http.put(api.bill + transaction.id + '/?opt_expand=bank,updated_by', {
                         status: status
                     }).then(response => {
-                        transaction.status = response.data.status
-                        transaction.balance_after = response.data.balance_after
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
+                        if (response.data.code === 2000) {
+                            transaction.status = response.data.data.status
+                            transaction.balance_after = response.data.data.balance_after
+                        } else {
+                            this.errorMsg = response.data.msg
                         }
                     })
                 }

@@ -253,7 +253,7 @@ export default {
                 level: '',
                 report_flag: true,
                 is_logged_in: '',
-                account_type: ''
+                account_type: '1'
             },
             status: '',
             level: '0',
@@ -270,6 +270,7 @@ export default {
     created () {
         this.$nextTick(() => {
             this.getPageAccessed()
+            this.$refs.pulling.submit()
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })

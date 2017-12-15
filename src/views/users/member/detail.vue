@@ -27,7 +27,6 @@
             </div>
             <div class="col-xs-8 text-right">
               <div>
-                <router-link class="md-btn md-flat m-r-sm"  :to="'/actionrecord?username=' + member.username">{{$t('action.view_action_record')}}</router-link>
                 <router-link class="md-btn md-flat m-r-sm"  :to="'/report/betrecord/today?member=' + member.username + '&created_at_0=' + today + '&created_at_1=' + today">{{$t('action.view_todays_bet_record')}}</router-link>
                 <template v-if="$root.permissions.includes('update_member_details')">
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('action.reset_password')}}</a>
@@ -230,54 +229,6 @@
             </div>
           </div>
 
-          <div class="row m-b b-b p-b">
-            <div class="col-xs-12">
-              <span class="text-muted">{{$t('member.recent_action')}}</span>
-              <table class="table table-striped b-t m-t" v-if="member.action">
-                <thead>
-                <tr>
-                  <th>{{$t('actionrecord.action_time')}}</th>
-                  <th>{{$t('actionrecord.action_username')}}</th>
-                  <th>{{$t('actionrecord.username')}}</th>
-                  <th>{{$t('actionrecord.ipaddr')}}</th>
-                  <th>{{$t('actionrecord.action_type')}}</th>
-                  <th>{{$t('actionrecord.provider')}}</th>
-                  <th>{{$t('actionrecord.game_name')}}</th>
-                  <th>{{$t('actionrecord.action_result')}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="action in member.action.detail" v-if="member.action">
-                  <td>{{action.action_time | moment("YYYY-MM-DD HH:mm:ss")}}</td>
-                  <td>{{action.action_username || '-'}}</td>
-                  <td><router-link :to="'/report/actionrecord?username=' + action.username">{{action.username}}</router-link></td>
-                  <td>{{action.ipaddr}}</td>
-                  <td>
-                    <span v-if="action.action_type == '0'">登入</span>
-                    <span v-if="action.action_type == '1'">修改密码</span>
-                    <span v-if="action.action_type == '2'">修改取款密码</span>
-                    <span v-if="action.action_type == '3'">登入游戏</span>
-                  </td>
-                  <td>
-                    <span v-if="action.provider">{{action.provider || ''}}</span>
-                    <span v-else>-</span>
-                  </td>
-                  <td>
-                    <span v-if="action.game_name">{{action.game_name}}</span>
-                    <span v-else>-</span>
-                  </td>
-                  <td>
-                    <span v-if="action.action_result" class="label success">成功</span>
-
-                    <span v-else class="label  danger">失败</span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-              <div class="text-muted" v-else><small>{{$t('common.no_record')}}</small></div>
-            </div>
-          </div>
-
           <div class="row">
             <div class="col-xs-5">
               <span class="text-muted">{{$t('common.remarks')}}</span>
@@ -317,10 +268,7 @@
                         ongoing: [],
                         confirmed: []
                     },
-                    last_login: {},
-                    action: {
-                        detail: []
-                    }
+                    last_login: {}
                 },
                 accounts: [],
                 loading: true,
@@ -414,7 +362,8 @@
                         return
                     }
                 }
-                this.$http.put(api.member + id + '/?audit=' + id).then((response) => {
+                this.$http.put(api.member + id + '/?audit=' + id, {username: this.member.username, agent: this.member.agent.id, level: this.member.level.id})
+                .then((response) => {
                     this.member.balance.bet_amount = response.data.data.balance.bet_amount
                     this.member.balance.audit_amount = response.data.data.balance.audit_amount
                 })
