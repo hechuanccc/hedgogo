@@ -169,7 +169,6 @@
                 this.commissionsetting.groups.splice(index, 1)
             },
             addConfig () {
-                // this.getGameList()
                 this.commissionsetting.groups.push({
                     threshold: '',
                     max: '',
