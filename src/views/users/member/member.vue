@@ -299,7 +299,7 @@ export default {
     },
     computed: {
         getReport () {
-            this.href = `${api.report_member}?token=${VueCookie.get('access_token')}&${this.export_query}`
+            this.href = `${api.report_member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
             return this.queryset.length
         }
     },
