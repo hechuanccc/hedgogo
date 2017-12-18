@@ -17,6 +17,7 @@ export default {
     envelope_settings: managePrefix + 'envelope/settings/',
     envelope: managePrefix + 'envelope/',
     member: managePrefix + 'member/',
+    report_member: managePrefix + 'report/member/',
     agent: managePrefix + 'agent/',
     game_list: managePrefix + 'game/',
     game_play: managePrefix + 'game/play/',
