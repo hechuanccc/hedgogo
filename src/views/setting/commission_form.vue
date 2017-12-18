@@ -110,12 +110,10 @@
                     退佣比 %
                 </div>
 
-                <div v-for="rateconfig in commissionsetting.groups" class="p-r m-b-sm" >
-                    <div v-for="rate in rateconfig.rates" class="p-r m-b-sm" >
-                        <div class="col-xs-3">
-                            <label class="m-t label success" >{{rate.game || rate.display_name}}</label>
-                            <input class="md-input" type="number" step="0.1" v-model="rate.rate" required min="0" max="100"/>
-                        </div>
+                <div v-for="rateconfig in group.rates" class="p-r m-b-sm" >
+                    <div class="col-xs-3">
+                        <label class="m-t label success" >{{rateconfig.game || rateconfig.display_name}}</label>
+                        <input class="md-input" type="number" step="0.1" v-model="rateconfig.rate" required min="0" max="100"/>
                     </div>
                 </div>
             </div>
@@ -175,7 +173,7 @@
                     threshold: '',
                     max: '',
                     check_amount: '',
-                    rates: ''
+                    rates: this.gamelist
                 })
             },
             onSubmit (e) {
@@ -199,15 +197,21 @@
             },
             getGameList () {
                 this.$http.get(api.game_list).then(data => {
-                    this.gamelist = data
+                    this.gamelist = this.createGameRate(data)
                     if (!this.commissionsetting.id) {
                         this.commissionsetting.groups[0].rates = this.gamelist
                     }
                 })
             },
+            createGameRate (game) {
+                let result = game.map(function (g) {
+                    return {game_id: g.id, rate: '', game: g.display_name}
+                })
+                return result
+            },
             deleteCommission () {
                 if (window.confirm('确定删除该佣金设定吗?')) {
-                    this.$http.delete(api.commission + this.commissionsetting.id + '/').then(response => {
+                    this.$http.delete(api.commission + this.commissionsetting.id + '/').then(() => {
                         this.deleted = 1
                         setTimeout(() => {
                             this.$router.push('/commission')
