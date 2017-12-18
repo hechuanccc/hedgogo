@@ -11,7 +11,7 @@ export default {
     logout: host + '/logout/',
     static: host + '/static/',
     bill: managePrefix + 'transaction/',
-    report_deposit: host + '/report/deposit/',
+    report_deposit: managePrefix + 'report/deposit/',
     transactiontype: managePrefix + 'transaction_type/',
     returnrate: prefix + 'report/returnrate/',
     envelope_settings: managePrefix + 'envelope/settings/',
