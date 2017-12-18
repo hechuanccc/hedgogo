@@ -7,14 +7,6 @@
         <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
                 <div class="col-xs-3">
-                    <label>{{$t('game_history.date')}}：</label>
-                    <date-picker 
-                    width='140' 
-                    v-model="input.date" 
-                    @input="setDate"
-                    ></date-picker>
-                </div>
-                <div class="col-xs-3">
                     <label>{{$t('game_history.periods')}}：</label>
                     <input 
                     type="number" 
@@ -23,15 +15,13 @@
                     class="form-control"
                     >
                 </div>
-                <div class="col-xs-3 m-t-xs">
-                    <input 
-                    type="checkbox"
-                    value="1" 
-                    name="exception" 
-                    v-model="mode"
-                    >
-                    <i class="blue"></i>
-                    {{$t('game_history.abnormal_period')}}
+                <div class="col-xs-3" v-if="!mode">
+                    <label>{{$t('game_history.date')}}：</label>
+                    <date-picker
+                    width='140'
+                    v-model="input.date" 
+                    @input="setDate"
+                    ></date-picker>
                 </div>
             </div>
         </div>
@@ -49,14 +39,14 @@
                         <thead>
                             <tr>
                                 <th>{{ $t('game_history.periods') }}</th>
-                                <th>{{ $t('game_history.draw_date') }}</th>
+                                <th>{{ mode ? $t('game_history.period_bet_record') : $t('game_history.draw_date') }}</th>
                                 <th v-show="mode">{{ $t('game_history.draw_number') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>{{ modal.scheduleResult.issue_number }}</td>
-                                <td>{{ mode ? modal.time : modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                                <td>{{ mode ? modal.betrecords : (modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss")) }}</td>
                                 <td v-show="mode">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str">
                                     <span>{{ $t('game_history.result_str_tips',{
@@ -75,12 +65,26 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="updateGameResult" v-if="mode">{{ $t('action.confirm') }}</button>                    
+                    <div class="inline m-r-xs checkbox" v-if="mode">
+                        <input type="checkbox" v-model="modal.sureDraw">
+                        <i class="blue"></i>{{$t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords})}}
+                    </div>
+                    <button type="button" class="btn btn-primary" @click="updateGameResult" v-if="mode" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>                    
                     <button type="button" class="btn btn-primary" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="text-left">
+        <input 
+            type="checkbox"
+            value="1" 
+            name="exception" 
+            v-model="mode"
+            >
+            <i class="blue"></i>
+            {{$t('game_history.abnormal_period')}}
     </div>
     <div class="card col">
         <div class="card-body">
@@ -108,7 +112,7 @@
                     <tr v-for = "result in filteredResults" :key = "result.game_id">
                         <td>{{ result.issue_number }}</td>
                         <td>{{ (mode ? result.schedule_result : result.created_at) | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                        <td v-if="mode"></td>
+                        <td v-if="mode">{{ result.betrecords }}</td>
                         <td v-else class="result-balls">
                             <span v-show="result.result_str!==undefined" v-for="(resultball, index) in result.result_str.split(',')" :class="getResultClass(resultball)" :key="index">
                                 <b>{{ resultball }}</b>
@@ -164,6 +168,8 @@ export default {
             modal: {
                 isShow: false,
                 scheduleResult: {},
+                betrecords: '',
+                sureDraw: false,
                 time: '',
                 msg: ''
             },
@@ -191,13 +197,15 @@ export default {
         this.timingPulling = setInterval(() => {
             this.$refs.pulling.rebase()
         }, 20 * 1000)
-        this.timingRetreatShced = setInterval(() => {
-            this.getRetreatedSchedules()
-        }, 5 * 1000)
+        if (!this.mode) {
+            this.timingRetreatShced = setInterval(() => {
+                this.getRetreatedSchedules()
+            }, 5 * 1000)
+        }
     },
     watch: {
         mode (newMode) {
-            if (!this.mode) {
+            if (this.mode) {
                 clearInterval(this.timingRetreatShced)
             } else {
                 this.timingRetreatShced = setInterval(() => {
@@ -249,6 +257,8 @@ export default {
                     issue_number: sched.issue_number
                 }
                 this.modal.time = sched.schedule_result
+                this.modal.sureDraw = false
+                this.modal.betrecords = sched.betrecords
             } else {
                 this.modal.scheduleResult = sched
             }
@@ -288,6 +298,7 @@ export default {
                     if (response.data.code === 2000) {
                         this.modal.msg = this.$t('game_history.manual_draw_success')
                         this.$refs.alertMsg.trigger('success', 1, true)
+                        this.$refs.pulling.rebase()
                     } else {
                         this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${response.data.msg.join(' ')}）`
                         this.$refs.alertMsg.trigger('danger', 3)

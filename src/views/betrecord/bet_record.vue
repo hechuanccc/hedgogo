@@ -94,7 +94,7 @@
       </div>
       <div class="row">
             <div class="col-xs-12">
-              <div class="pull-left">
+              <div class="pull-left" v-if="pageSelected === 'realtime'">
                 <input type="checkbox" value="1" name="account_type" v-model="account_type">
                 <i class="blue"></i>{{$t('action.filter_trial_account')}}
               </div>
@@ -189,6 +189,7 @@
             <th>{{$t('report.bet_record_number')}}</th>
             <th>{{$t('common.settledat')}}</th>
             <th>{{$t('common.member')}}</th>
+            <th>{{$t('member.account_type')}}</th>
             <th>{{$t('common.game')}}</th>
             <th>{{$t('game_manage.issue_number')}}</th>
             <th>{{$t('game_manage.play')}}</th>
@@ -206,6 +207,9 @@
             </td>
             <td>
               <router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
+            </td>
+            <td>
+              {{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}
             </td>
             <td>
               {{t.game.display_name}}
@@ -269,8 +273,10 @@
                     settlement_lte: '',
                     status: '',
                     category: '',
-                    report_flag: true
+                    report_flag: true,
+                    account_type: '1'
                 },
+                account_type: '1',
                 period: 10000,
                 pageSelected: '',
                 game_category: '0',
@@ -283,7 +289,6 @@
                 total_amount: '',
                 total_profit: '',
                 total_bet_amount: '',
-                account_type: '0',
                 today: Vue.moment().format(format),
                 yesterday: Vue.moment().subtract(1, 'days').format(format)
             }
@@ -292,10 +297,19 @@
             this.getGameList()
             this.$nextTick(() => {
                 this.getPageAccessed()
+                this.submit()
                 this.$refs.pulling.rebase()
             })
         },
         watch: {
+            account_type: function (newObj, old) {
+                if (newObj === true) {
+                    this.query.account_type = '1'
+                } else {
+                    this.query.account_type = ''
+                }
+                this.submit()
+            },
             status: function (newObj, old) {
                 if (this.status === '0') {
                     this.query.status = ''
