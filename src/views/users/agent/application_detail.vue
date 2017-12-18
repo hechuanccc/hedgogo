@@ -455,8 +455,8 @@
                 this.agent.bank.bank = val
             },
             getLevels () {
-                this.$http.get(api.level).then(response => {
-                    this.levels = response.data.data
+                this.$http.get(api.level).then(data => {
+                    this.levels = data
                 })
             },
             onSubmit (e) {
@@ -479,29 +479,25 @@
                             delete this.agent[x]
                         }
                     }
-                    this.$http.put(api.agentapplication + this.agent.id + '/', this.agent).then(response => {
-                        if (response.data.code === 9011 || 9010) {
-                            this.errorMsg = response.data.msg
-                        } else if (response.data.code === 2000) {
-                            this.$router.push('/agent/applications/')
-                        }
+                    this.$http.put(api.agentapplication + this.agent.id + '/', this.agent).then(() => {
+                        this.$router.push('/agent/applications/')
+                    }, error => {
+                        this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.agentapplication, this.agent).then(response => {
-                        if (response.data.code === 9011 || 9010) {
-                            this.errorMsg = response.data.msg
-                        } else if (response.data.code === 2000) {
-                            this.$router.push('/agent/applications/')
-                        }
+                    this.$http.post(api.agentapplication, this.agent).then(() => {
+                        this.$router.push('/agent/applications/')
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             },
             checkAgent () {
                 if (this.query !== '') {
-                    this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then((response) => {
-                        if (response.data.data.length === 1) {
+                    this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
+                        if (data.length === 1) {
                             this.agentValid = true
-                            this.agent.parent_agent = response.data.data[0].id
+                            this.agent.parent_agent = data[0].id
                         } else {
                             this.agentValid = false
                             this.agent.parent_agent = ''
@@ -513,8 +509,7 @@
                 }
             },
             getAgent (id) {
-                this.$http.get(api.agentapplication + id + '/?opt_expand=detail').then((response) => {
-                    let data = response.data.data
+                this.$http.get(api.agentapplication + id + '/?opt_expand=detail').then(data => {
                     if (!data.bank) {
                         data.bank = {}
                     }

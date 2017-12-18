@@ -34,7 +34,7 @@
 <script>
 import $ from '../utils/util'
 import api from '../api'
-import Vue from 'vue'
+import axios from 'axios'
 export default {
     data () {
         return {
@@ -110,35 +110,20 @@ export default {
             }, () => {
                 window.clearInterval(refreshTokenInterval)
             })
-
-            // add an interceptor to check the authentication, if the logined user
-            // requested an unauthorized resource, the response.status will be 403
-            Vue.http.interceptors.push((request, next) => {
-                next((response) => {
-                    if (response.data.code === 9007) {
-                        if (this.$route.name !== 'login') {
-                            this.authErrors = this.authErrors.concat(response.data.detail)
-                            this.$router.push('/login?next=' + this.$route.path)
-                        }
-                    }
-                })
-            })
         },
         getMy () {
             if (!this.$cookie.get('access_token')) {
                 return
             }
-            this.$http.get(api.my).then((response) => {
-                if (response.data.code === 9007) {
-                    this.$router.push('/login')
-                } else {
-                    this.username = response.data.data.username
-                    this.userType = response.data.data.type
-                    if (this.userType === 'agent') {
-                        this.agentPermission()
-                    }
-                    this.getPermissions()
+            this.$http.get(api.my).then(data => {
+                this.username = data.username
+                this.userType = data.type
+                if (this.userType === 'agent') {
+                    this.agentPermission()
                 }
+                this.getPermissions()
+            }, () => {
+                this.$router.push('/login?next=' + this.$route.path)
             })
         },
         refresh () {
@@ -148,20 +133,19 @@ export default {
             }
             this.$http.post(api.refresh_token, {
                 refresh_token: this.$cookie.get('refresh_token')
-            }).then(response => {
-                let data = response.data.data
+            }).then(data => {
                 let d = new Date(data.expires_in)
                 // use access_token to access APIs
                 window.document.cookie = 'access_token=' + data.access_token + ';path=/;expires=' + d.toGMTString()
                 // use refresh_token to fetch new access_token
                 window.document.cookie = 'refresh_token=' + data.refresh_token + ';path=/;expires=' + d.toGMTString()
-                Vue.http.headers.common['Authorization'] = 'Bearer ' + data.access_token
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
             })
         },
         getPermissions () {
             if (this.userType !== 'agent') {
-                this.$http.get(api.permissionsUser).then((response) => {
-                    this.permissions = response.data.data
+                this.$http.get(api.permissionsUser).then(data => {
+                    this.permissions = data
                     // permissions must be loaded before we can handle other data
                     this.setUpAuth()
                     this.setUpRouterHooks()

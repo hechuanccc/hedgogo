@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
 import VueI18n from 'vue-i18n'
 import locales from './i18n/locales'
 import VueCookie from 'vue-cookie'
@@ -9,14 +8,16 @@ import store from './vuex/store'
 import { sync } from 'vuex-router-sync'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
+import axios from 'axios'
+import qs from 'qs'
 
 import App from './views/App'
+import { isArray } from 'util'
 
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
-
+Vue.prototype.$http = axios
 Vue.use(Vue2Filters)
-Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(Moment)
 Vue.use(VueI18n)
@@ -27,10 +28,41 @@ Vue.use(VueCookie)
 // especially mobile browser
 // @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
 // so we need to set a common header 'Authorization' for sending credentials
-Vue.http.options.credentials = true
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// Vue.http.options.credentials = true
 if (VueCookie.get('access_token')) {
-    Vue.http.headers.common['Authorization'] = 'Bearer ' + VueCookie.get('access_token')
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + VueCookie.get('access_token')
 }
+
+axios.interceptors.request.use((config) => {
+    if (config.method === 'post') {
+        if (isArray(config.data) || config.headers['Content-Type'] === 'application/json') {
+            config.headers['Content-Type'] = 'application/json'
+        } else {
+            config.data = qs.stringify(config.data)
+        }
+    }
+    return config
+}, error => {
+    return Promise.reject(error)
+})
+
+axios.interceptors.response.use(response => {
+    if (response.data.code === 2000) {
+        return response.data.data
+    } else if (response.data.code === 9007) {
+        router.push({
+            path: '/login',
+            query: {
+                next: router.path
+            }
+        })
+    } else {
+        return Promise.reject(response.data.msg)
+    }
+}, error => {
+    return Promise.reject(error)
+})
 
 let navLang = navigator.language || navigator.userLanguage
 if (navLang === 'zh-CN' || navLang === 'zh-cn') {

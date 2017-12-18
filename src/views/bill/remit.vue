@@ -414,13 +414,11 @@
                 if (transaction.id) {
                     this.$http.put(api.bill + transaction.id + '/?opt_expand=bank,updated_by', {
                         status: status
-                    }).then(response => {
-                        if (response.data.code === 2000) {
-                            transaction.status = response.data.data.status
-                            transaction.balance_after = response.data.data.balance_after
-                        } else {
-                            this.errorMsg = response.data.msg
-                        }
+                    }).then(data => {
+                        transaction.status = data.status
+                        transaction.balance_after = data.balance_after
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             },

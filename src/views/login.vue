@@ -32,8 +32,8 @@
 </template>
 <script>
     import api from '../api'
-    import Vue from 'vue'
     import $ from '../utils/util'
+    import axios from 'axios'
     export default {
         data () {
             return {
@@ -54,15 +54,14 @@
         },
         methods: {
             login () {
-                this.$http.post(api.login, this.user, {emulateJSON: true}).then(response => {
-                    let data = response.data.data
+                this.$http.post(api.login, this.user).then(data => {
                     $.storage.save({type: data.type})
                     let d = new Date(data.expires_in)
                     // Vue.http.headers.common['Authorization'] = 'Bearer ' + data.access_token
                     // use access_token to access APIs
                     if (data.access_token) {
                         window.document.cookie = 'access_token=' + data.access_token + ';path=/;expires=' + d.toGMTString()
-                        Vue.http.headers.common['Authorization'] = 'Bearer ' + data.access_token
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
                     }
                     // use refresh_token to fetch new access_token
                     if (data.refresh_token) {
@@ -73,8 +72,8 @@
                     let url = this.$route.query.next
                     url = url ? decodeURIComponent(url.split('?')[0]) : '/'
                     this.$router.push(url)
-                }, (response) => {
-                    this.errorMsg = response.data.msg
+                }, error => {
+                    this.errorMsg = error
                 })
             }
         },

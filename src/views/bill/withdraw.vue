@@ -77,7 +77,7 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr v-for="t in queryset">
+                  <tr v-for="t in queryset" :key="t.id">
                       <td><router-link :to="'/transaction/' + t.id">{{t.id}}</router-link></td>
                       <td><router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link></td>
                       <td><router-link :to="'/level/' + t.member.level.id">{{t.member.level.name}}</router-link></td>

@@ -111,12 +111,10 @@ export default {
                 memo: this.staff.memo
             })
             if (this.staff.id) {
-                this.$http.put(api.staff + this.staff.id + '/', staffResult).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/staff/' + response.data.data.id)
-                    } else {
-                        this.errorMsg = response.data.msg
-                    }
+                this.$http.put(api.staff + this.staff.id + '/', staffResult).then(data => {
+                    this.$router.push('/staff/' + data.id)
+                }, error => {
+                    this.errorMsg = error
                 })
             } else {
                 if (!this.staff.user_group.id) {
@@ -126,32 +124,26 @@ export default {
                 this.$http.post(api.staff, Object({
                     ...staffResult,
                     password: this.staff.password
-                })).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/staff/' + response.data.data.id)
-                    } else {
-                        this.errorMsg = response.data.msg
-                    }
+                })).then(data => {
+                    this.$router.push('/staff/' + data.id)
+                }, error => {
+                    this.errorMsg = error
                 })
             }
         },
         getStaff (id) {
-            this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then((response) => {
-                if (response.data.code === 2000) {
-                    this.staff = response.data.data
-                    this.permissions = response.data.data.user_group.permissions
-                } else {
-                    this.errorMsg = response.data.msg
-                }
+            this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then(data => {
+                this.staff = data
+                this.permissions = data.user_group.permissions
+            }, error => {
+                this.errorMsg = error
             })
         },
         getRoles () {
-            this.$http.get(api.managerole + '?opt_expand=group,permissions').then((response) => {
-                if (response.data.code === 2000) {
-                    this.roles = response.data.data
-                } else {
-                    this.errorMsg = response.data.msg
-                }
+            this.$http.get(api.managerole + '?opt_expand=group,permissions').then(data => {
+                this.roles = data
+            }, error => {
+                this.errorMsg = error
             })
         },
         changeRole () {

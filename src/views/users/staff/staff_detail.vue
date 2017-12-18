@@ -109,10 +109,8 @@ export default {
     },
     methods: {
         getStaff (id) {
-            this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then((response) => {
-                if (response.data.code === 2000) {
-                    this.staff = response.data.data
-                }
+            this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then(data => {
+                this.staff = data
             })
         },
         toggleStatus () {
@@ -121,14 +119,12 @@ export default {
                 username: this.staff.username,
                 group: this.staff.user_group.id,
                 status: this.staff.status ^ 1
-            }).then((response) => {
-                if (response.data.code === 2000) {
-                    this.staff.status = response.data.data.status
-                    this.statusUpdated = true
-                    setTimeout(() => {
-                        this.statusUpdated = false
-                    }, 2000)
-                }
+            }).then(data => {
+                this.staff.status = data.status
+                this.statusUpdated = true
+                setTimeout(() => {
+                    this.statusUpdated = false
+                }, 2000)
             })
         },
         resetPassword (event) {
@@ -139,13 +135,11 @@ export default {
             }
             this.$http.post(api.passwordstaff, {
                 'account_id': this.staff.id
-            }, {emulateJSON: true}).then(response => {
-                if (response.data.code === 2000) {
-                    this.passwordSuccess = true
-                    this.newPassword = response.data.data.new_password
-                } else {
-                    this.passwordError = response.data.msg
-                }
+            }, {emulateJSON: true}).then(data => {
+                this.passwordSuccess = true
+                this.newPassword = data.new_password
+            }, error => {
+                this.passwordError = error
             })
         },
         deleteStaff (id, confirm, event) {
@@ -156,7 +150,7 @@ export default {
                     return
                 }
             }
-            this.$http.delete(api.staff + id + '/').then((response) => {
+            this.$http.delete(api.staff + id + '/').then(() => {
                 this.$router.push('/staff')
             })
         }

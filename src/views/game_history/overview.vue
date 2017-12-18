@@ -19,7 +19,7 @@
                     </th>
                     <th scope="col" class="text-center" width="15%">{{ $t('game_history.already_result') }}</th>
                     <th scope="col" class="text-center" width="15%">{{ $t('game_history.notyet_result') }}</th>
-                    <th scope="col" colspan="3" class="text-center" width="55%">{{$t('game_history.abnormal_period')}}</th>
+                    <th scope="col" colspan="3" class="text-center" width="55%">{{$t('game_history.abnormal_msg')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@
                         <table class="table m-a-0">
                             <thead>
                                 <tr>
-                                    <th class="text-center" width="33%">{{ $t('game_history.expired_period') }}</th>
+                                    <th class="text-center" width="33%">{{ $t('game_history.abnormal_period') }}</th>
                                     <th class="text-center" width="33%">{{ $t('game_history.period_bet_record') }}</th>
                                     <th class="text-center" width="33%">{{ $t('game_history.operating') }}</th>
                                 </tr>
@@ -52,14 +52,14 @@
                                 <tr>
                                     <td colspan="3" class="text-right">
                                         <router-link :to = "'/game_history/' + game.game_id + '?mode=1'">
-                                        {{ `${$t('game_history.show_all')}${$t('game_history.expired_period')}(${game.abnormal_count})`  }}
+                                        {{ `${$t('game_history.show_all')}${$t('game_history.abnormal_period')}(${game.abnormal_count})`  }}
                                         </router-link>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </td>
-                    <td v-else class="text-muted">{{ $t('game_history.no_abnormal_period')}}</td>
+                    <td v-else class="text-muted">{{ $t('game_history.no_abnormal')}}</td>
                 </tr>
                 </template>
             </tbody>
@@ -155,22 +155,15 @@ export default{
     methods: {
         getPeriods () {
             this.isLatest = false
-            this.$http.get(`${api.game_draw}?abnormal=5&ongoing_bet=True`).then(response => {
-                this.gameDraw = response.data.data
+            this.$http.get(`${api.game_draw}?abnormal=5`).then(data => {
+                this.gameDraw = data
                 this.isLatest = true
-            }, response => {
-                this.errorCallback(response)
             })
-        },
-        errorCallback (response) {
-            if (('' + response.status).indexOf('4') === 0) {
-                this.$router.push('/login?next=' + this.$route.path)
-            }
         },
         getGameInfo (gameId) {
             return new Promise((resolve, reject) => {
-                this.$http.get(api.game_list + gameId).then((response) => {
-                    resolve(response.data.data)
+                this.$http.get(api.game_list + gameId).then(data => {
+                    resolve(data)
                 })
             })
         },
@@ -201,16 +194,13 @@ export default{
         },
         updateGameResult () {
             if (this.modal.gameResult.result_str) {
-                this.$http.post(api.game_result, this.modal.gameResult)
-                .then((response) => {
-                    if (response.data.code === 2000) {
-                        this.modal.msg = this.$t('game_history.manual_draw_success')
-                        this.$refs.alertMsg.trigger('success', 1, true)
-                        this.getPeriods()
-                    } else {
-                        this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${response.data.msg.join(' ')}）`
-                        this.$refs.alertMsg.trigger('danger', 3)
-                    }
+                this.$http.post(api.game_result, this.modal.gameResult).then(() => {
+                    this.modal.msg = this.$t('game_history.manual_draw_success')
+                    this.$refs.alertMsg.trigger('success', 1, true)
+                    this.getPeriods()
+                }, error => {
+                    this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error.join(' ')}）`
+                    this.$refs.alertMsg.trigger('danger', 3)
                 })
             } else {
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')

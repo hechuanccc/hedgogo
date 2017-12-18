@@ -59,13 +59,11 @@
         },
         methods: {
             onSubmit (e) {
-                this.$http.post(api.changePassword, this.user).then(response => {
-                    if (response.data.code === 2000) {
-                        this.responseError = ''
-                        this.success = true
-                    } else {
-                        this.responseError = response.data.msg
-                    }
+                this.$http.post(api.changePassword, this.user).then(data => {
+                    this.responseError = ''
+                    this.success = true
+                }, error => {
+                    this.responseError = error
                 })
             }
         }

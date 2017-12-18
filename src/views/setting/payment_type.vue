@@ -43,13 +43,13 @@ export default {
         toggleStatus (paymentType) {
             this.$http.put(api.paymenttype + paymentType.id + '/', {
                 'status': paymentType.status === 0 ? 1 : 0
-            }).then((response) => {
-                paymentType.status = response.data.data.status
+            }).then(data => {
+                paymentType.status = data.status
             })
         },
         getPaymentType () {
-            this.$http.get(api.paymenttype).then((response) => {
-                this.payment_types = response.data.data
+            this.$http.get(api.paymenttype).then(data => {
+                this.payment_types = data
             })
         }
     }

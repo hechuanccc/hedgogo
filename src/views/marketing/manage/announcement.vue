@@ -146,12 +146,12 @@ export default {
     },
     methods: {
         changeUp (announcement) {
-            this.$http.put(this.announcementApi + announcement.id + '/', {'rank': announcement.rank + 1}).then((response) => {
+            this.$http.put(this.announcementApi + announcement.id + '/', {'rank': announcement.rank + 1}).then(() => {
                 this.$refs.pulling.rebase()
             })
         },
         changeDown (announcement) {
-            this.$http.put(this.announcementApi + announcement.id + '/', {'rank': announcement.rank - 1}).then((response) => {
+            this.$http.put(this.announcementApi + announcement.id + '/', {'rank': announcement.rank - 1}).then(() => {
                 this.$refs.pulling.rebase()
             })
         },
@@ -161,14 +161,14 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(this.announcementApi + id + '/').then((response) => {
+            this.$http.delete(this.announcementApi + id + '/').then(() => {
                 this.$refs.pulling.rebase()
             })
         },
         updateAnnouncement (id, key) {
             if (id) {
-                this.$http.get(this.announcementApi + id + '/').then((response) => {
-                    this.announcement = response.data.data
+                this.$http.get(this.announcementApi + id + '/').then(data => {
+                    this.announcement = data
                     this.id = id
                     this.querysetIndex = key
                 })
@@ -177,32 +177,28 @@ export default {
         },
         onSubmit () {
             if (this.id) {
-                this.$http.put(this.announcementApi + this.id + '/', this.announcement).then(response => {
-                    if (response.data.code === 2000) {
-                        this.queryset[this.querysetIndex].platform = response.data.data.platform
-                        this.queryset[this.querysetIndex].announcement = response.data.data.announcement
-                        this.showAll = false
-                    } else {
-                        this.responseError = response.data.msg
-                    }
+                this.$http.put(this.announcementApi + this.id + '/', this.announcement).then(data => {
+                    this.queryset[this.querysetIndex].platform = data.platform
+                    this.queryset[this.querysetIndex].announcement = data.announcement
+                    this.showAll = false
+                }, error => {
+                    this.responseError = error
                 })
             } else {
-                this.$http.post(this.announcementApi, this.announcement).then(response => {
-                    if (response.data.code === 2000) {
-                        this.announcement.name = ''
-                        this.announcement.announcement = ''
-                        this.queryset.unshift(response.data.data)
-                    } else {
-                        this.responseError = response.data.msg
-                    }
+                this.$http.post(this.announcementApi, this.announcement).then(data => {
+                    this.announcement.name = ''
+                    this.announcement.announcement = ''
+                    this.queryset.unshift(data)
+                }, error => {
+                    this.responseError = error
                 })
             }
         },
         toggleStatus (announcement) {
             this.$http.put(this.announcementApi + announcement.id + '/', {
                 'status': announcement.status === 0 ? 1 : 0
-            }).then((response) => {
-                announcement.status = response.data.data.status
+            }).then(data => {
+                announcement.status = data.status
             })
         },
         queryData (queryset) {

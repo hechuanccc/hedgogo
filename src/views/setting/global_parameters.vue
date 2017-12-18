@@ -111,16 +111,14 @@ export default {
         },
         updateGlobalPreference () {
             this.$http.patch(this.globalPreferencesApi + this.modal.key + '/', this.modal.globalPreferenceResult)
-            .then(response => {
-                if (response.data.code === 2000) {
-                    this.queryset[this.modal.index].value = response.data.data.value
-                    this.modal.msg = this.$t('game_manage.modify_success')
-                    this.$refs.alertMsg.trigger('success', 1, true)
-                    this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
-                } else {
-                    this.modal.msg = response.data.msg
-                    this.$refs.alertMsg.trigger('danger', 1, true)
-                }
+            .then(data => {
+                this.queryset[this.modal.index].value = data.value
+                this.modal.msg = this.$t('game_manage.modify_success')
+                this.$refs.alertMsg.trigger('success', 1, true)
+                this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
+            }, error => {
+                this.modal.msg = error
+                this.$refs.alertMsg.trigger('danger', 1, true)
             })
         },
         showModal () {

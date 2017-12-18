@@ -89,22 +89,20 @@
         methods: {
             onSubmit (e) {
                 if (this.payment.id) {
-                    this.$http.put(api.paymenttype + this.payment.id + '/', this.payment).then(response => {
-                        if (response.status === 200) {
-                            this.updated = true
-                        }
+                    this.$http.put(api.paymenttype + this.payment.id + '/', this.payment).then(() => {
+                        this.updated = true
                     })
                 }
             },
             getPaymentType (id) {
-                this.$http.get(api.paymenttype + id + '?opt_expand=1').then((response) => {
-                    for (let i = 0; i < response.data.detail.length; i++) {
-                        response.data.detail[i].payee_id = String(response.data.detail[i].payee_id)
-                        if (response.data.detail[i].activate) {
-                            this.payment.payees.push(response.data.detail[i].payee_id)
+                this.$http.get(api.paymenttype + id + '?opt_expand=1').then(data => {
+                    for (let i = 0; i < data.detail.length; i++) {
+                        data.detail[i].payee_id = String(data.detail[i].payee_id)
+                        if (data.detail[i].activate) {
+                            this.payment.payees.push(data.detail[i].payee_id)
                         }
                     }
-                    this.payment = Object.assign(this.payment, response.data)
+                    this.payment = Object.assign(this.payment, data)
                 })
             },
             changePayee (id, index) {

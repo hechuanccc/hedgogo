@@ -228,8 +228,8 @@
                 this.$refs.pulling.getExportQuery()
             },
             getTransactionType () {
-                this.$http.get(api.transactiontype).then(response => {
-                    this.trans_type = response.data.data
+                this.$http.get(api.transactiontype).then(data => {
+                    this.trans_type = data
                 })
             },
             removeSpace () {

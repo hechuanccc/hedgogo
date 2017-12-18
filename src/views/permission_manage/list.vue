@@ -90,13 +90,13 @@ export default {
     methods: {
         getPermissionsListAll () {
             this.$http.get(api.advpermissions)
-            .then(response => {
-                this.permissionsListAll = response.data.data.sort((a, b) => a.group - b.group)
+            .then(data => {
+                this.permissionsListAll = data.sort((a, b) => a.group - b.group)
             })
         },
         getPermissions () {
-            this.$http.get(api.permissions).then((response) => {
-                this.permissions = response.data.data
+            this.$http.get(api.permissions).then(data => {
+                this.permissions = data
             })
         },
         getPermission (id) {
@@ -107,8 +107,8 @@ export default {
             }
         },
         getPermissionResult (id) {
-            this.$http.get(api.advpermissions + id + '/').then((response) => {
-                this.modal.permission = response.data.data
+            this.$http.get(api.advpermissions + id + '/').then(data => {
+                this.modal.permission = data
             })
         },
         showModal (group, id) {
@@ -124,10 +124,8 @@ export default {
             if (this.modal.group === this.modal.permission.group) {
                 this.hideModal()
             } else {
-                this.$http.put(api.advpermissions + this.modal.id + '/', this.modal.permission).then(response => {
-                    if (response.status === 200) {
-                        this.getPermissionsListAll()
-                    }
+                this.$http.put(api.advpermissions + this.modal.id + '/', this.modal.permission).then(() => {
+                    this.getPermissionsListAll()
                 })
                 this.hideModal()
             }

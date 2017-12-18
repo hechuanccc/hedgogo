@@ -138,8 +138,8 @@
         },
         methods: {
             getPayee (id) {
-                this.$http.get(api.remitpayee + id + '/?opt_expand=1').then((response) => {
-                    this.remit_payee = response.data.data
+                this.$http.get(api.remitpayee + id + '/?opt_expand=1').then(data => {
+                    this.remit_payee = data
                 })
             },
             deletePayee (id, confirm, event) {
@@ -151,7 +151,7 @@
                     }
                 }
                 if (!this.isActive) {
-                    this.$http.delete(api.remitpayee + id + '/').then((response) => {
+                    this.$http.delete(api.remitpayee + id + '/').then(() => {
                         this.$router.push('/remit_payee')
                     })
                 } else {
@@ -159,15 +159,15 @@
                 }
             },
             remitTransactions () {
-                this.$http.get(api.bill + '?transaction_type=remit').then((response) => {
-                    for (let i = 0; i < response.data.data.length; i++) {
-                        this.names.push(response.data.data[i].remit_info.remit_payee.payee_name)
+                this.$http.get(api.bill + '?transaction_type=remit').then(data => {
+                    for (let i = 0; i < data.length; i++) {
+                        this.names.push(data[i].remit_info.remit_payee.payee_name)
                     }
                     if (this.names.indexOf(this.remit_payee.payee_name) !== -1) {
                         this.isActive = true
                     }
-                }, response => {
-                    this.errorMsg = response.data.error
+                }, error => {
+                    this.errorMsg = error
                 })
             }
         }

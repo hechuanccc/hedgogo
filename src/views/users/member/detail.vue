@@ -312,14 +312,12 @@
                 this.statusUpdated = false
                 this.$http.put(api.member + this.member.id + '/?opt_fields=status', {
                     status: this.member.status === 1 ? 0 : 1
-                }).then((response) => {
-                    if (response.status === 200) {
-                        this.member.status = response.data.data.status
-                        this.statusUpdated = true
-                        setTimeout(() => {
-                            this.statusUpdated = false
-                        }, 2000)
-                    }
+                }).then(data => {
+                    this.member.status = data.status
+                    this.statusUpdated = true
+                    setTimeout(() => {
+                        this.statusUpdated = false
+                    }, 2000)
                 })
             },
             resetPassword (type, event) {
@@ -333,23 +331,20 @@
                 let url = type === 1 ? api.resetmember : api.resetwithdraw
                 this.$http.post(url, {
                     'account_id': this.member.id
-                }, {emulateJSON: true}).then(response => {
+                }, {emulateJSON: true}).then(data => {
                     this.passwordChanged = type
-                    this.newPassword = response.data.data.new_password || response.data.data.new_withdraw_password
-                }, response => {
+                    this.newPassword = data.new_password || data.new_withdraw_password
+                }, error => {
                     this.passwordChanged = -1
-                    this.errorMsg = response.data.error
+                    this.errorMsg = error
                 })
             },
             getMember (id) {
-                this.$http.get(api.member + id + '/?opt_expand=bank&action').then((response) => {
-                    this.member = response.data.data
-                    // this.gameAccounts = response.data.sum_balance - response.data.balance.balance
-                    this.member_id = {'account_id': response.data.data.id}
-                }, response => {
-                    if (('' + response.status).indexOf('4') === 0) {
-                        this.$router.push('/login?next=' + this.$route.path)
-                    }
+                this.$http.get(api.member + id + '/?opt_expand=bank&action').then(data => {
+                    this.member = data
+                    this.member_id = {'account_id': data.id}
+                }, () => {
+                    this.$router.push('/login?next=' + this.$route.path)
                 })
             },
             changeAudit () {
@@ -363,9 +358,9 @@
                     }
                 }
                 this.$http.put(api.member + id + '/?audit=' + id, {username: this.member.username, agent: this.member.agent.id, level: this.member.level.id})
-                .then((response) => {
-                    this.member.balance.bet_amount = response.data.data.balance.bet_amount
-                    this.member.balance.audit_amount = response.data.data.balance.audit_amount
+                .then(data => {
+                    this.member.balance.bet_amount = data.balance.bet_amount
+                    this.member.balance.audit_amount = data.balance.audit_amount
                 })
             }
         }

@@ -152,10 +152,10 @@
         },
         methods: {
             fetchMember (username) {
-                this.$http.get(api.member + '?username=' + username).then(response => {
+                this.$http.get(api.member + '?username=' + username).then(data => {
 
-                }, response => {
-                    this.errorMsg = '无法获取会员资料'
+                }, error => {
+                    this.errorMsg = '无法获取会员资料' + error
                 })
             },
             onSubmit () {
@@ -164,12 +164,10 @@
                 } else {
                     this.transaction.is_compensation = true
                 }
-                this.$http.post(api.manual_transaction, this.transaction).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/transaction/' + response.data.data.id)
-                    } else {
-                        this.errorMsg = response.data.msg
-                    }
+                this.$http.post(api.manual_transaction, this.transaction).then(data => {
+                    this.$router.push('/transaction/' + data.id)
+                }, error => {
+                    this.errorMsg = error
                 })
             }
         }
