@@ -3,8 +3,7 @@
       <div class="m-b-sm">
         <div class="row">
           <div class="col-xs-12">
-            <div v-show="pageSelected == 'gagent'" class="h6 inline">{{$t('nav.general_agent_list')}}</div>
-            <div v-show="pageSelected == 'agent'" class="h6 inline">{{$t('nav.agent')}}</div>
+            <div class="h6 inline">{{$t('nav.agent')}}</div>
             <div class="pull-right inline"  v-if="$root.permissions.includes('add_change_staff')">
               <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
             </div>
@@ -13,7 +12,7 @@
       </div>
       <form class="form" v-on:submit.prevent="submit('agent')">
         <div class="box">
-          <div class="box-body clearfix form-inline form-input-sm" v-if="pageSelected == 'agent'">
+          <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
               <div class="col-xs-12">
                 <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
@@ -27,7 +26,7 @@
                   <option value="3">总代理</option>
                   <option value="4">代理</option>
                 </select>
-                <commissionsetting :commissionsetting="commission_settings" @myCommission="myCommission"></commissionsetting>
+                <commissionsetting :commissionsetting="commission_settings" @myCommission="myCommission"/>
                 <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                 <button class="md-btn grey-100 pull-right m-r"  @click="showAll=!showAll">
                   <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
@@ -62,21 +61,11 @@
               </div>
             </div>
           </div>
-          <!-- General -->
-          <div class="box-body clearfix form-inline form-input-sm" v-else>
-            <div class="row">
-              <div class="col-xs-12">
-                <input type="text" v-model="query.id" class="form-control" v-bind:placeholder="$t('agent.number')"/>
-                <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
-                <button class="md-btn w-xs blue pull-right m-r-xs" type="submit">{{$t('common.search')}}</button>
-              </div>
-            </div>
-          </div>
         </div>
       </form>
 
       <div class="box">
-        <table class="table table-striped" v-if="pageSelected == 'agent'">
+        <table class="table table-striped">
           <thead>
           <tr>
             <th class="text-center">{{$t("common.login_status")}}</th>
@@ -121,39 +110,6 @@
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
             <td v-if="agent.memo">{{agent.memo}}</td><td v-else>-</td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table table-striped" v-else>
-          <thead>
-          <tr>
-            <th class="text-center">{{$t("common.login_status")}}</th>
-            <th>{{$t("agent.account")}}</th>
-            <th>{{$t('common.agent_count')}}</th>
-            <th>{{$t("agent.member_count")}}</th>
-            <th>{{$t("common.status")}}</th>
-            <th>{{$t("agent.joined_at")}}</th>
-            <th>{{$t("member.logout_at")}}</th>
-          </tr>
-          </thead>
-          <tbody v-if="queryset.length">
-          <tr v-for="agent in queryset">
-            <td>
-              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="agent.is_logged_in==true">&#x25CF;</div>
-              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
-            </td>
-            <td><router-link :to="'/agent/' + agent.id">{{agent.username}}</router-link></td>
-            <td><router-link :to="'/agent/?parent_agent_q=gagent'" v-if="agent.agent_count">{{agent.agent_count}}</router-link><span v-else>-</span></td>
-            <td><router-link :to="'/member/?agent=' + agent.username">{{agent.member_count}}</router-link></td>
-            <td>
-              <span class="label success" v-if="agent.status==1">{{$t('status.active')}}</span>
-              <span class="label" v-else>{{$t('status.inactive')}}</span>
-            </td>
-            <td>
-              <span v-if="agent.created_at">{{agent.created_at | moment("YYYY-MM-DD HH:mm")}}</span>
-              <span v-else>-</span>
-            </td>
-            <td v-if="agent.logout_at">{{agent.logout_at}}</td><td v-else>-</td>
           </tr>
           </tbody>
         </table>
@@ -207,7 +163,6 @@ export default {
                 agent_count: '',
                 memo: ''
             },
-            pageSelected: '',
             status: '',
             level: '0',
             commission_settings: '0',
@@ -241,7 +196,6 @@ export default {
     created () {
         this.$nextTick(() => {
             this.level = this.$route.query.level
-            this.getPageAccessed()
             this.$refs.pulling.rebase()
         })
     },
@@ -250,7 +204,6 @@ export default {
             this.queryset = []
             setTimeout(() => {
                 this.level = this.$route.query.level
-                this.getPageAccessed()
                 this.$refs.pulling.rebase()
             }, 100)
         },
@@ -312,16 +265,6 @@ export default {
             this.$router.push({
                 path: this.$route.path
             })
-        },
-        getPageAccessed () {
-            if (this.level !== '3') {
-                this.pageSelected = 'agent'
-                if (!this.level) {
-                    this.level = 0
-                }
-            } else {
-                this.pageSelected = 'gagent'
-            }
         }
     },
     components: {
