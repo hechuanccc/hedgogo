@@ -46,7 +46,8 @@
                         <tbody>
                             <tr>
                                 <td>{{ modal.scheduleResult.issue_number }}</td>
-                                <td>{{ mode ? modal.betrecords : (modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss")) }}</td>
+                                <td v-if="mode">{{ modal.betrecords }}</td>
+                                <td v-else>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                                 <td v-show="mode">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str">
                                     <span>{{ $t('game_history.result_str_tips',{
@@ -88,7 +89,7 @@
     </div>
     <div class="card col">
         <div class="card-body">
-            <table class="table" v-show="queryset.length>0">
+            <table class="table" v-show="queryset.length>0 || retreatedScheds.length>0">
                 <thead>
                     <tr>
                         <th scope="col">{{$t('game_history.periods')}}</th>
@@ -239,13 +240,13 @@ export default {
         getRetreatedSchedules (gameid) {
             gameid = gameid || this.game.id
             this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
-            .then(response => {
-                this.retreatedScheds = response.data.data
+            .then(data => {
+                this.retreatedScheds = data
             })
         },
         getGameName (gameid) {
-            this.$http.get(api.game_list + gameid).then(response => {
-                this.game = response.data.data
+            this.$http.get(api.game_list + gameid).then(data => {
+                this.game = data
             })
         },
         showModal (sched) {
@@ -274,35 +275,25 @@ export default {
         },
         retreatSchedule () {
             this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
-            .then(response => {
+            .then(data => {
                 this.modal.msg = this.$t('game_history.cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
                 this.getRetreatedSchedules()
-            }, response => {
-                let errMsg = ''
-                if (response.status === 400) {
-                    for (let index in response.data.error) {
-                        for (let property in response.data.error[index]) {
-                            errMsg += `${property} : ${response.data.error[index][property]}`
-                        }
-                    }
-                    this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${errMsg}）`
-                    this.$refs.alertMsg.trigger('danger')
-                }
+            }, error => {
+                this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${error}）`
+                this.$refs.alertMsg.trigger('danger')
             })
         },
         updateGameResult () {
             if (this.modal.scheduleResult.result_str) {
                 this.$http.post(api.game_result, this.modal.scheduleResult)
-                .then((response) => {
-                    if (response.data.code === 2000) {
-                        this.modal.msg = this.$t('game_history.manual_draw_success')
-                        this.$refs.alertMsg.trigger('success', 1, true)
-                        this.$refs.pulling.rebase()
-                    } else {
-                        this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${response.data.msg.join(' ')}）`
-                        this.$refs.alertMsg.trigger('danger', 3)
-                    }
+                .then(() => {
+                    this.modal.msg = this.$t('game_history.manual_draw_success')
+                    this.$refs.alertMsg.trigger('success', 1, true)
+                    this.$refs.pulling.rebase()
+                }, error => {
+                    this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error.join(' ')}）`
+                    this.$refs.alertMsg.trigger('danger', 3)
                 })
             } else {
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')

@@ -178,30 +178,26 @@
             },
             onSubmit (e) {
                 if (this.commissionsetting.id) {
-                    this.$http.put(api.commission + this.commissionsetting.id + '/', this.commissionsetting).then(response => {
-                        if (response.data.code === 2000) {
-                            this.updated = true
-                            setTimeout(() => {
-                                this.updated = false
-                            }, 3000)
-                        }
+                    this.$http.put(api.commission + this.commissionsetting.id + '/', this.commissionsetting).then(() => {
+                        this.updated = true
+                        setTimeout(() => {
+                            this.updated = false
+                        }, 3000)
                     })
                 } else {
-                    this.$http.post(api.commission, this.commissionsetting).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/commission/' + response.data.data.id + '/edit')
-                        }
+                    this.$http.post(api.commission, this.commissionsetting).then(data => {
+                        this.$router.push('/commission/' + data.id + '/edit')
                     })
                 }
             },
             getCommissionSetting (id) {
-                this.$http.get(api.commission + id + '/').then((response) => {
-                    this.commissionsetting = response.data.data
+                this.$http.get(api.commission + id + '/').then(data => {
+                    this.commissionsetting = data
                 })
             },
             getGameList () {
-                this.$http.get(api.game_list).then(response => {
-                    this.gamelist = this.createGameRate(response.data.data)
+                this.$http.get(api.game_list).then(data => {
+                    this.gamelist = this.createGameRate(data)
                     if (!this.commissionsetting.id) {
                         this.commissionsetting.groups[0].rates = this.gamelist
                     }
@@ -215,14 +211,14 @@
             },
             deleteCommission () {
                 if (window.confirm('确定删除该佣金设定吗?')) {
-                    this.$http.delete(api.commission + this.commissionsetting.id + '/').then(response => {
+                    this.$http.delete(api.commission + this.commissionsetting.id + '/').then(() => {
                         this.deleted = 1
                         setTimeout(() => {
                             this.$router.push('/commission')
                         }, 2000)
-                    }, response => {
+                    }, error => {
                         this.deleted = -1
-                        this.errorMsg = response.data.detail
+                        this.errorMsg = error
                         setTimeout(() => {
                             this.deleted = 0
                         }, 5000)

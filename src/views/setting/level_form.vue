@@ -318,28 +318,23 @@ export default {
             if (this.level.id) {
                 this.verifyDiscounts(this.level.remit_discounts)
                 this.verifyDiscounts(this.level.online_discounts)
-                this.$http.put(api.level + this.level.id + '/', this.level).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/level/' + response.data.data.id)
-                    } else {
-                        this.level.responseError = response.data.msg
-                    }
+                this.$http.put(api.level + this.level.id + '/', this.level).then(data => {
+                    this.$router.push('/level/' + data.id)
+                }, error => {
+                    this.level.responseError = error
                 })
             } else {
                 this.verifyDiscounts(this.level.remit_discounts)
                 this.verifyDiscounts(this.level.online_discounts)
-                this.$http.post(api.level, this.level).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/level/' + response.data.data.id)
-                    } else {
-                        this.level.responseError = response.data.msg
-                    }
+                this.$http.post(api.level, this.level).then(data => {
+                    this.$router.push('/level/' + data.id)
+                }, error => {
+                    this.level.responseError = error
                 })
             }
         },
         getLevel (id) {
-            this.$http.get(api.level + id + '/').then((response) => {
-                let data = response.data.data
+            this.$http.get(api.level + id + '/').then(data => {
                 let onlineDiscounts = data.online_discounts
                 if (onlineDiscounts.length === 0) {
                     data.online_discounts = [{

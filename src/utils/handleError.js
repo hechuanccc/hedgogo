@@ -1,5 +1,4 @@
-export function handleError (response, field, fields) {
-    let errors = response.data.error
+export function handleError (errors, field, fields) {
     let responseError = ''
     let gettype = Object.prototype.toString
 

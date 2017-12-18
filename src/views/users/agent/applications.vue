@@ -95,8 +95,8 @@
             },
             toggleStatus (agent, status) {
                 this.$http.put(api.agentapplication + agent.id + '/', { 'status': status })
-                .then((response) => {
-                    agent.status = response.data.status
+                .then(data => {
+                    agent.status = data.status
                 })
             }
         },

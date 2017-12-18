@@ -315,24 +315,17 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(api.level + id).then((response) => {
+            this.$http.delete(api.level + id).then(() => {
                 this.$router.push('/level')
-            }, response => {
-                this.responseError = response.data.error[0].level
+            }, error => {
+                this.responseError = error
             })
         },
         getLevel (id) {
-            this.$http.get(api.level + id).then((response) => {
-                let keys = Object.keys(response.data.data)
+            this.$http.get(api.level + id).then(data => {
+                let keys = Object.keys(data)
                 for (let i = 0; i < keys.length; i++) {
-                    this[keys[i]] = response.data.data[keys[i]]
-                }
-                // this.data = Object.assign(this.$data, response.data)
-                // this.member_count = response.data.member_count || this.$data.member_count
-                // this.agent_count = response.data.agent_count || this.$data.agent_count
-            }, response => {
-                if (('' + response.status).indexOf('4') === 0) {
-                    this.$router.push('/login?next=' + this.$route.path)
+                    this[keys[i]] = data[keys[i]]
                 }
             })
         }

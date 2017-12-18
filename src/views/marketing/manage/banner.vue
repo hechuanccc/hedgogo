@@ -112,12 +112,12 @@ export default {
     },
     methods: {
         changeUp (banner) {
-            this.$http.put(this.bannerApi + banner.id + '/', {'rank': banner.rank + 1}).then((response) => {
+            this.$http.put(this.bannerApi + banner.id + '/', {'rank': banner.rank + 1}).then(() => {
                 this.$refs.pulling.rebase()
             })
         },
         changeDown (banner) {
-            this.$http.put(this.bannerApi + banner.id + '/', {'rank': banner.rank - 1}).then((response) => {
+            this.$http.put(this.bannerApi + banner.id + '/', {'rank': banner.rank - 1}).then(() => {
                 this.$refs.pulling.rebase()
             })
         },
@@ -127,7 +127,7 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(this.bannerApi + id + '/').then((response) => {
+            this.$http.delete(this.bannerApi + id + '/').then(() => {
                 this.$refs.pulling.rebase()
             })
         },
@@ -135,13 +135,11 @@ export default {
             let formData = new window.FormData()
             formData.append('image', this.banner.image)
             formData.append('platform', this.banner.platform)
-            this.$http.post(this.bannerApi, formData).then(response => {
-                if (response.data.code === 2000) {
-                    this.queryset.unshift(response.data.data)
-                    this.loading = false
-                } else {
-                    this.responseError = response.data.msg
-                }
+            this.$http.post(this.bannerApi, formData).then(data => {
+                this.queryset.unshift(data)
+                this.loading = false
+            }, error => {
+                this.responseError = error
             })
         },
         getImg (e) {
@@ -154,8 +152,8 @@ export default {
         toggleStatus (banner) {
             this.$http.put(this.bannerApi + banner.id + '/', {
                 'status': banner.status === 0 ? 1 : 0
-            }).then((response) => {
-                banner.status = response.data.data.status
+            }).then(data => {
+                banner.status = data.status
             })
         },
         queryData (queryset) {

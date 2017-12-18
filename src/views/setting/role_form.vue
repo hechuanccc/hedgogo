@@ -87,9 +87,9 @@ export default {
     },
     methods: {
         getRole (id) {
-            this.$http.get(api.managerole + id + '?opt_expand=group,permissions').then((response) => {
-                this.role = response.data.data
-                this.permissions = response.data.data.manage_permissiongroup
+            this.$http.get(api.managerole + id + '?opt_expand=group,permissions').then(data => {
+                this.role = data
+                this.permissions = data.manage_permissiongroup
             })
         },
         onSubmit (e) {
@@ -100,30 +100,28 @@ export default {
                 permissions: this.selectId[1]
             }
             if (this.role.id) {
-                this.$http.put(api.managerole + this.role.id + '/?opt_expand=group,permissions', roleResult).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/roles/' + response.data.data.id)
-                    } else {
-                        this.errorMsg = response.data.msg
-                    }
+                this.$http.put(api.managerole + this.role.id + '/?opt_expand=group,permissions', roleResult).then(data => {
+                    this.$router.push('/roles/' + data.id)
+                }, error => {
+                    this.errorMsg = error
                 })
             } else {
-                this.$http.post(api.managerole + '?opt_expand=group,permissions', roleResult).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$router.push('/roles/' + response.data.data.id)
-                    } else {
-                        this.errorMsg = response.data.msg
+                this.$http.post(api.managerole + '?opt_expand=group,permissions', roleResult, {
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
+                }).then(data => {
+                    this.$router.push('/roles/' + data.id)
+                }, error => {
+                    this.errorMsg = error
                 })
             }
         },
         getPermissionsAll () {
-            this.$http.get(api.permissions + '?opt_expand=permissions').then((response) => {
-                if (response.data.code === 2000) {
-                    this.permissions = response.data.data
-                } else {
-                    this.errorMsg = response.data.msg
-                }
+            this.$http.get(api.permissions + '?opt_expand=permissions').then(data => {
+                this.permissions = data
+            }, error => {
+                this.errorMsg = error
             })
         },
         toggleSelect (list, value) {

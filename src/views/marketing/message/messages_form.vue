@@ -76,12 +76,10 @@
                         this.checkMember()
                         return
                     }
-                    this.$http.post(api.messages, this.message).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/messages/')
-                        } else {
-                            this.responseError = response.data.msg
-                        }
+                    this.$http.post(api.messages, this.message).then(() => {
+                        this.$router.push('/messages/')
+                    }, error => {
+                        this.responseError = error
                     })
                 } else {
                     this.responseError = '群发或接收人必须填写一个'
@@ -90,9 +88,9 @@
             checkMember () {
                 this.responseError = ''
                 if (this.message.receiver) {
-                    this.$http.get(api.checkMember + '?username=' + this.message.receiver).then((response) => {
-                        if (response.data.length > 0) {
-                            this.responseError = response.data + ' 会员名输入有误，请从新填写(接收人请用英文","隔开)'
+                    this.$http.get(api.checkMember + '?username=' + this.message.receiver).then(data => {
+                        if (data.length > 0) {
+                            this.responseError = data + ' 会员名输入有误，请从新填写(接收人请用英文","隔开)'
                             this.checkMembers = false
                         } else {
                             this.checkMembers = true

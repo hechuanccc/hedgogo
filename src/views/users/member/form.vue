@@ -237,10 +237,10 @@
             checkAgent () {
                 if (this.query !== '') {
                     this.$http.get(api.agent + '?opt_fields=username,id,&username=' + this.query + '&level=4')
-                    .then((response) => {
-                        if (response.data.data.length === 1) {
+                    .then(data => {
+                        if (data.length === 1) {
                             this.agentValid = true
-                            this.member.agent = response.data.data[0].id
+                            this.member.agent = data[0].id
                         } else {
                             this.agentValid = false
                             this.member.agent = ''
@@ -258,26 +258,21 @@
                 }
 
                 if (this.member.id) {
-                    this.$http.put(api.member + this.member.id + '/', this.initMember).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/member/' + response.data.data.id)
-                        } else {
-                            this.errorMsg = response.data.msg
-                        }
+                    this.$http.put(api.member + this.member.id + '/', this.initMember).then(data => {
+                        this.$router.push('/member/' + data.id)
+                    }, error => {
+                        this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.member, this.initMember).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/member/' + response.data.data.id)
-                        } else {
-                            this.errorMsg = response.data.msg
-                        }
+                    this.$http.post(api.member, this.initMember).then(data => {
+                        this.$router.push('/member/' + data.id)
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             },
             getMember (id) {
-                this.$http.get(api.member + id + '/?opt_expand=1').then((response) => {
-                    let data = response.data.data
+                this.$http.get(api.member + id + '/?opt_expand=1').then(data => {
                     if (!data.bank) {
                         data.bank = {bank: '', province: ''}
                     }

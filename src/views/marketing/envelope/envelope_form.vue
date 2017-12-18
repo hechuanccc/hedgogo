@@ -52,7 +52,6 @@
 </template>
 <script>
     import api from '../../../api'
-    import { handleError } from '../../../utils/handleError'
 
     export default {
         data () {
@@ -63,11 +62,6 @@
                     min_bonus: '',
                     max_bonus: '',
                     status: 1
-                },
-                field_locales: {
-                    'name': '红包名称有误：',
-                    'min_bonus': ' 红包最小金额有误：',
-                    'max_bonus': ' 红包最大金额有误：'
                 },
                 errorMsg: '',
                 updated: false
@@ -92,32 +86,22 @@
         methods: {
             onSubmit (e) {
                 if (this.envelope.id) {
-                    this.$http.put(api.envelope + this.envelope.id + '/', this.envelope).then(response => {
-                        if (response.status === 200) {
-                            this.$router.push('/envelope')
-                        }
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                    this.$http.put(api.envelope + this.envelope.id + '/', this.envelope).then(() => {
+                        this.$router.push('/envelope')
+                    }, error => {
+                        this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.envelope, this.envelope).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/envelope')
-                        }
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                    this.$http.post(api.envelope, this.envelope).then(() => {
+                        this.$router.push('/envelope')
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             },
             getEnvelope (id) {
-                this.$http.get(api.envelope + id).then(response => {
-                    this.envelope = response.data.data
+                this.$http.get(api.envelope + id).then(data => {
+                    this.envelope = data
                 })
             }
         }

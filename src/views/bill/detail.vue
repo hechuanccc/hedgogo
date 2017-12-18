@@ -288,25 +288,26 @@
                 }
 
                 if (this.transaction.id) {
-                    this.$http.put(url + this.transaction.id + '/',
-                    {status: status, memo: this.transaction.memo, member: this.member, transaction_type: this.transactiontype})
-                    .then(response => {
-                        if (response.data.code === 2000) {
-                            this.transaction.status = response.data.status
-                            this.loading = false
-                            if (routerLink) {
-                                this.$router.go(routerLink)
-                            }
-                        } else {
-                            this.loading = false
-                            this.errorMsg = response.data.msg
+                    this.$http.put(url + this.transaction.id + '/', {
+                        status: status,
+                        memo: this.transaction.memo,
+                        member: this.member,
+                        transaction_type: this.transactiontype
+                    }).then(data => {
+                        this.transaction.status = data.status
+                        this.loading = false
+                        if (routerLink) {
+                            this.$router.go(routerLink)
                         }
+                    }, error => {
+                        this.loading = false
+                        this.errorMsg = error
                     })
                 }
             },
             getTransaction (id) {
-                this.$http.get(api.bill + id + '/?opt_expand=bank,updated_by').then((response) => {
-                    this.transaction = response.data.data
+                this.$http.get(api.bill + id + '/?opt_expand=bank,updated_by').then(data => {
+                    this.transaction = data
                 })
             }
         },

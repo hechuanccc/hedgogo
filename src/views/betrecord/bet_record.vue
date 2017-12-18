@@ -251,7 +251,6 @@
     import DatePicker from 'vue2-datepicker'
     import Vue from 'vue'
     import VueCookie from 'vue-cookie'
-    import { handleError } from '../../utils/handleError'
 
     const format = 'YYYY-MM-DD'
     export default {
@@ -404,8 +403,8 @@
                 this.quickFilter()
             },
             getGameList () {
-                this.$http.get(api.game_list).then(response => {
-                    this.gamelist = response.data.data
+                this.$http.get(api.game_list).then(data => {
+                    this.gamelist = data
                 })
             },
             getPageAccessed () {
@@ -444,8 +443,8 @@
                 this.filter_game = this.gamelist.map(game => game.id)
             },
             getGameCategory (game) {
-                this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(response => {
-                    this.categories = response.data.data
+                this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(data => {
+                    this.categories = data
                 })
             },
             newWindow () {
@@ -490,13 +489,10 @@
                 if (betrecord.id) {
                     this.$http.put(api.cancel_bet + betrecord.id + '/', {
                         status: status
-                    }).then(response => {
-                        betrecord.status = response.data.data.status
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                    }).then(data => {
+                        betrecord.status = data.status
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             }

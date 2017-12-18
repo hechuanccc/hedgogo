@@ -190,20 +190,16 @@
                 formData.append('mobile_description', this.promotion.mobile_description)
 
                 if (this.promotion.id) {
-                    this.$http.put(api.promotion + this.promotion.id + '/', formData).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/promotion/' + response.data.data.id)
-                        } else {
-                            this.responseError = response.data.msg
-                        }
+                    this.$http.put(api.promotion + this.promotion.id + '/', formData).then(data => {
+                        this.$router.push('/promotion/' + data.id)
+                    }, error => {
+                        this.responseError = error
                     })
                 } else {
-                    this.$http.post(api.promotion, formData).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/promotion/' + response.data.data.id)
-                        } else {
-                            this.responseError = response.data.msg
-                        }
+                    this.$http.post(api.promotion, formData).then(data => {
+                        this.$router.push('/promotion/' + data.id)
+                    }, error => {
+                        this.responseError = error
                     })
                 }
             },
@@ -216,8 +212,8 @@
                 this.hasImageMobile = true
             },
             getPromotion (id) {
-                this.$http.get(api.promotion + id + '/').then((response) => {
-                    this.promotion = response.data.data
+                this.$http.get(api.promotion + id + '/').then(data => {
+                    this.promotion = data
                     this.selectedPromotion = this.promotion
                     // add image_url so we can pass a image url instead
                     // of image file while copying
@@ -231,8 +227,8 @@
                 })
             },
             getPromotions () {
-                this.$http.get(api.promotion).then((response) => {
-                    this.promotions = response.data.data
+                this.$http.get(api.promotion).then(data => {
+                    this.promotions = data
                 })
             },
             selectPromotion (event) {
