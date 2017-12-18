@@ -116,12 +116,16 @@ export default {
                 return
             }
             this.$http.get(api.my).then(data => {
-                this.username = data.username
-                this.userType = data.type
-                if (this.userType === 'agent') {
-                    this.agentPermission()
+                if (data) {
+                    this.username = data.username
+                    this.userType = data.type
+                    if (this.userType === 'agent') {
+                        this.agentPermission()
+                    }
+                    this.getPermissions()
+                } else {
+                    this.$router.push('/login?next=' + this.$route.path)
                 }
-                this.getPermissions()
             }, () => {
                 this.$router.push('/login?next=' + this.$route.path)
             })

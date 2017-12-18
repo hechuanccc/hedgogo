@@ -138,7 +138,11 @@
                         this.responseError = error
                     })
                 } else {
-                    this.$http.post(api.onlinepayee, this.payee).then(data => {
+                    this.$http.post(api.onlinepayee, this.payee,  {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(data => {
                         this.$router.push('/online_payee/' + data.id)
                     }, error => {
                         this.responseError = error

@@ -19,13 +19,13 @@
                 <div class="form-group">
                   <label for="account" class="label-width">{{$t('member.account')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" name="account" :placeholder="member.id!='' ? '':'用户名, 必填'" v-model="member.username" required :disabled="member.id!=''" >
+                    <input class="form-control" name="account" :placeholder="member.id!='' ? '':'用户名, 必填'" v-model="member.username" :disabled="member.id!=''" required/>
                   </div>
                 </div>
                 <div class="form-group" v-if="member.agent.name">
                   <label for="account" class="label-width">{{$t('member.agent')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" name="account" v-model="member.agent.name" required disabled >
+                    <input class="form-control" name="account" v-model="member.agent.name" disabled required/>
                   </div>
                 </div>
                 <div class="form-group b-b p-b">
@@ -41,7 +41,8 @@
                            @keydown.enter="hit"
                            @keydown.esc="reset"
                            @blur="checkAgent"
-                           @input="update"/>
+                           @input="update"
+						   required/>
                     <div class="dropdown-menu"  v-show="hasItems">
                       <a v-for="(item, $index) in items" class="dropdown-item" :class="activeClass($index)" @click="hit" @mousemove="setActive($index)">
                         <span v-text="item.username"></span>
@@ -105,19 +106,19 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.real_name')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" :placeholder="member.id!='' ? '' : '比如：张三丰'" v-model="member.real_name" :disabled="!$root.permissions.includes('update_member_name')">
+                    <input class="form-control" :placeholder="member.id!='' ? '' : '比如：张三丰'" v-model="member.real_name" :disabled="!$root.permissions.includes('update_member_name')" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('common.phone')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" type="number" :placeholder="member.id!='' ? '' : '比如：13856789876'" v-model="member.phone">
+                    <input class="form-control" type="number" :placeholder="member.id!='' ? '' : '比如：13856789876'" v-model="member.phone" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="agent" class="label-width">{{$t('member.level')}} </label>
                   <div class="inline-form-control">
-                    <level :level="member.level" @level-select="levelSelect"></level>
+                    <level :level="member.level" @level-select="levelSelect" :req="true"></level>
                   </div>
                 </div>
                 <div v-if="$root.permissions.includes('list_update_member_bank')">
