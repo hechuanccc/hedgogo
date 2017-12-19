@@ -138,7 +138,7 @@
                         this.responseError = error
                     })
                 } else {
-                    this.$http.post(api.onlinepayee, this.payee,  {
+                    this.$http.post(api.onlinepayee, this.payee, {
                         headers: {
                             'Content-Type': 'application/json'
                         }

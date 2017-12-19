@@ -190,7 +190,7 @@
             </div>
             <div class="col-xs-6">
               <span class="text-muted">{{$t('agent.link')}}</span>
-              <div class="t-red">首页地址?r=推广码 如：https://vnsr186.com/?r={{agent.promo_code}}</div>
+              <div class="t-red">首页地址?r=推广码 如：http://rico-st8ging.azureedge.net/?r={{agent.promo_code}}</div>
             </div>
           </div>
 
