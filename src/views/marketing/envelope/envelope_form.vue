@@ -92,7 +92,11 @@
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.envelope, this.envelope).then(() => {
+                    this.$http.post(api.envelope, this.envelope, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(() => {
                         this.$router.push('/envelope')
                     }, error => {
                         this.errorMsg = error

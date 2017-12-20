@@ -265,7 +265,11 @@
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.member, this.initMember).then(data => {
+                    this.$http.post(api.member, this.initMember, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(data => {
                         this.$router.push('/member/' + data.id)
                     }, error => {
                         this.errorMsg = error
