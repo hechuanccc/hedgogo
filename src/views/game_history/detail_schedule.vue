@@ -94,20 +94,20 @@
                     <tr>
                         <th 
                             width="10%"
-                            :class="twoRow ? 'p-b-md' : ''"
+                            :class="{'p-b-md': twoRow}"
                         >
                             {{ $t('game_history.periods') }}
                         </th>
                         <th 
                             width="15%"
-                            :class="twoRow ? 'p-b-md' : ''"
+                            :class="{'p-b-md': twoRow}"
                         >
                             {{ $t('game_history.draw_date') }}
                         </th>
                         <th class="text-center" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
                         <th
                             :width="game.code === 'bjkl8' ? '360' : ''"
-                            :class="twoRow ? 'p-b-md' : ''"
+                            :class="{'p-b-md': twoRow}"
                             v-else
                         >
                             <template 
@@ -187,14 +187,14 @@
                             </template>
                         </th>
                         <th
-                            :class="twoRow ? 'p-b-md' : ''"
+                            :class="{'p-b-md': twoRow}"
                             v-for="col in otherCol"
                             :key="col"
                             v-if="otherCol.length > 0"
                         >
                             {{ $t('game_history.' + col) }}
                         </th>
-                        <th :class="twoRow ? 'p-b-md' : ''">
+                        <th :class="{'p-b-md': twoRow}">
                             {{ mode ? $t('game_history.operating') : $t('game_history.memo')}}
                         </th>
                     </tr>
