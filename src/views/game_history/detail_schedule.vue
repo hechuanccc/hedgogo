@@ -546,6 +546,9 @@ export default {
                 this.otherCol = [...otherCol]
                 this.allCol = [this.sumCol, this.dragonTigerCol, this.comparisonCol].filter(e => e.length > 0)
                 this.twoRow = (this.sumCol.length > 0 || this.dragonTigerCol.length > 1 || this.comparisonCol.length > 0)
+            } else {
+                this.resultCol = this.sumCol = this.dragonTigerCol = this.comparisonCol = this.otherCol = this.allCol = []
+                this.twoRow = false
             }
             return this.queryset.filter(result => {
                 return result.issue_number.indexOf(this.input.period) !== -1
