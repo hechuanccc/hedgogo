@@ -62,8 +62,8 @@
         },
         methods: {
             getMessage (id) {
-                this.$http.get(api.messages + id).then((response) => {
-                    this.message = response.data.data
+                this.$http.get(api.messages + id).then(data => {
+                    this.message = data
                 })
             }
         },

@@ -253,7 +253,7 @@ export default {
                 level: '',
                 report_flag: true,
                 is_logged_in: '',
-                account_type: ''
+                account_type: '1'
             },
             status: '',
             level: '0',
@@ -270,6 +270,7 @@ export default {
     created () {
         this.$nextTick(() => {
             this.getPageAccessed()
+            this.submit()
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
@@ -299,7 +300,7 @@ export default {
     },
     computed: {
         getReport () {
-            this.href = `${api.report_member}?token=${VueCookie.get('access_token')}&${this.export_query}`
+            this.href = `${api.report_member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
             return this.queryset.length
         }
     },

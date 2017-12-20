@@ -110,12 +110,10 @@
                     退佣比 %
                 </div>
 
-                <div v-for="rateconfig in commissionsetting.groups" class="p-r m-b-sm" >
-                    <div v-for="rate in rateconfig.rates" class="p-r m-b-sm" >
-                        <div class="col-xs-3">
-                            <label class="m-t label success" >{{rate.game || rate.display_name}}</label>
-                            <input class="md-input" type="number" step="0.1" v-model="rate.rate" required min="0" max="100"/>
-                        </div>
+                <div v-for="rateconfig in group.rates" class="p-r m-b-sm" >
+                    <div class="col-xs-3">
+                        <label class="m-t label success" >{{rateconfig.game || rateconfig.display_name}}</label>
+                        <input class="md-input" type="number" step="0.1" v-model="rateconfig.rate" required min="0" max="100"/>
                     </div>
                 </div>
             </div>
@@ -175,50 +173,52 @@
                     threshold: '',
                     max: '',
                     check_amount: '',
-                    rates: ''
+                    rates: this.gamelist
                 })
             },
             onSubmit (e) {
                 if (this.commissionsetting.id) {
-                    this.$http.put(api.commission + this.commissionsetting.id + '/', this.commissionsetting).then(response => {
-                        if (response.data.code === 2000) {
-                            this.updated = true
-                            setTimeout(() => {
-                                this.updated = false
-                            }, 3000)
-                        }
+                    this.$http.put(api.commission + this.commissionsetting.id + '/', this.commissionsetting).then(() => {
+                        this.updated = true
+                        setTimeout(() => {
+                            this.updated = false
+                        }, 3000)
                     })
                 } else {
-                    this.$http.post(api.commission, this.commissionsetting).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/commission/' + response.data.data.id + '/edit')
-                        }
+                    this.$http.post(api.commission, this.commissionsetting).then(data => {
+                        this.$router.push('/commission/' + data.id + '/edit')
                     })
                 }
             },
             getCommissionSetting (id) {
-                this.$http.get(api.commission + id + '/').then((response) => {
-                    this.commissionsetting = response.data.data
+                this.$http.get(api.commission + id + '/').then(data => {
+                    this.commissionsetting = data
                 })
             },
             getGameList () {
-                this.$http.get(api.game_list).then(response => {
-                    this.gamelist = response.data.data
+                this.$http.get(api.game_list).then(data => {
+                    this.gamelist = this.createGameRate(data)
                     if (!this.commissionsetting.id) {
                         this.commissionsetting.groups[0].rates = this.gamelist
                     }
                 })
             },
+            createGameRate (game) {
+                let result = game.map(function (g) {
+                    return {game_id: g.id, rate: '', game: g.display_name}
+                })
+                return result
+            },
             deleteCommission () {
                 if (window.confirm('确定删除该佣金设定吗?')) {
-                    this.$http.delete(api.commission + this.commissionsetting.id + '/').then(response => {
+                    this.$http.delete(api.commission + this.commissionsetting.id + '/').then(() => {
                         this.deleted = 1
                         setTimeout(() => {
                             this.$router.push('/commission')
                         }, 2000)
-                    }, response => {
+                    }, error => {
                         this.deleted = -1
-                        this.errorMsg = response.data.detail
+                        this.errorMsg = error
                         setTimeout(() => {
                             this.deleted = 0
                         }, 5000)

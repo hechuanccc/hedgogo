@@ -152,13 +152,13 @@
         },
         methods: {
             getWebsite () {
-                this.$http.get(api.website).then(response => {
-                    this.website = Object.assign(this.website, response.data.data)
+                this.$http.get(api.website).then(data => {
+                    this.website = Object.assign(this.website, data)
                 })
             },
             getWebsiteDescription () {
-                this.$http.get(api.website_descriptions).then(response => {
-                    this.boxes = response.data.data.map(box => Object({
+                this.$http.get(api.website_descriptions).then(data => {
+                    this.boxes = data.map(box => Object({
                         ...box,
                         mode: 0,
                         errMsg: '',
@@ -168,25 +168,28 @@
                 })
             },
             createBox () {
-                this.$http.post(api.website_descriptions).then(response => {
-                    let box = response.data.data
-                    this.boxes = [...this.boxes, {
-                        ...box,
+                this.boxes = [...this.boxes, {}]
+                this.$http.post(api.website_descriptions).then(data => {
+                    let box = Object({
+                        ...data,
                         mode: 1,
                         errMsg: '',
                         successMsg: '',
                         loading: false
-                    }]
+                    })
                     this.initialBoxes[box.id] = Object({
                         header_image: null,
                         main_image: null,
                         main_description: null,
                         status: box.status
                     })
+                    this.$set(this.boxes, this.boxes.length - 1, box)
+                }, () => {
+                    this.boxes.splice(this.boxes.length - 1, 1)
                 })
             },
             deleteBox (id, index) {
-                this.$http.delete(api.website_descriptions + id + '/').then(response => {
+                this.$http.delete(api.website_descriptions + id + '/').then(() => {
                     if (this.boxes[index].mode) {
                         delete this.boxResults[id]
                         delete this.initialBoxes[id]
@@ -233,21 +236,19 @@
                     }
                 }
                 box.loading = true
-                this.$http.put(api.website_descriptions + id + '/', formData).then(response => {
-                    if (response.data.code === 2000) {
-                        this.updateBoxSuccess(box.id, index)
-                        this.$set(this.boxes, index, {
-                            ...this.boxes[index],
-                            ...response.data.data,
-                            mode: 0,
-                            errMsg: '',
-                            loading: false
-                        })
-                        delete this.boxResults[id]
-                        delete this.initialBoxes[id]
-                    } else {
-                        this.boxes[index].errMsg = response.data.msg
-                    }
+                this.$http.put(api.website_descriptions + id + '/', formData).then(data => {
+                    this.updateBoxSuccess(box.id, index)
+                    this.$set(this.boxes, index, {
+                        ...this.boxes[index],
+                        ...data,
+                        mode: 0,
+                        errMsg: '',
+                        loading: false
+                    })
+                    delete this.boxResults[id]
+                    delete this.initialBoxes[id]
+                }, error => {
+                    this.boxes[index].errMsg = error
                 })
             },
             cancelUpdateBox (id, index) {
@@ -269,7 +270,7 @@
                 this.$http.post(api.website_descriptions_ranks, this.boxes.map((box, index) => Object({
                     id: box.id,
                     rank: index + 1
-                }))).then(response => {
+                }))).then(() => {
                     this.boxes.forEach((box, index) => {
                         this.boxes[index].rank = index + 1
                     })
@@ -311,14 +312,12 @@
                 if (this.hasImage) {
                     formData.append('icon', this.website.icon)
                 }
-                this.$http.put(api.website, formData).then(response => {
-                    if (response.status === 200) {
-                        this.website = Object.assign(this.website, response.data.data)
-                        this.responseError = ''
-                        this.statusUpdated = true
-                    }
-                }, response => {
-                    this.responseError = response.data.error[0].icon
+                this.$http.put(api.website, formData).then(data => {
+                    this.website = Object.assign(this.website, data)
+                    this.responseError = ''
+                    this.statusUpdated = true
+                }, error => {
+                    this.responseError = error
                 })
             }
         },
@@ -329,7 +328,7 @@
 </script>
 <style scoped>
 .list-complete-item {
-  transition: all .5s;
+  transition: all .1s;
   display: inline-block;
   margin-right: 10px;
 }

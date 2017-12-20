@@ -146,33 +146,29 @@ export default {
             let totalBet = ''
             this.busy = true
             this.loading = true
-            this.$http.get(this.next).then(response => {
-                if (response.data.data.total_amount) {
-                    amount = response.data.data.total_amount
+            this.$http.get(this.next).then(data => {
+                if (data.total_amount) {
+                    amount = data.total_amount
                 }
-                if (response.data.data.total_profit) {
-                    profit = response.data.data.total_profit
+                if (data.total_profit) {
+                    profit = data.total_profit
                 }
-                if (response.data.data.total_bet_amount) {
-                    totalBet = response.data.data.total_bet_amount
+                if (data.total_bet_amount) {
+                    totalBet = data.total_bet_amount
                 }
                 this.$emit('amount', amount)
                 this.$emit('profit', profit)
                 this.$emit('totalBet', totalBet)
                 this.busy = false
-                this.count = response.data.data.count
+                this.count = data.count
                 this.getPage()
                 this.myQueryset = []
-                // this.queryset = this.queryset.concat(response.data.results)
-                this.myQueryset = this.myQueryset.concat(response.data.data.results)
-                // this.myQueryset = this.myQueryset.concat(response.data.results)
+                this.myQueryset = this.myQueryset.concat(data.results)
                 this.$emit('query-data', this.myQueryset)
                 this.loading = false
-                this.next = response.data.data.next
-            }, response => {
-                if (response.status === 401) {
-                    this.$router.push('/login?next=' + this.$route.path)
-                }
+                this.next = data.next
+            }, () => {
+                this.$router.push('/login?next=' + this.$route.path)
             })
             this.$emit('query-param', this.myQuery)
         },

@@ -12,8 +12,30 @@
           <tbody>
             <tr v-for="(preference, index) in queryset" :key="index">
                 <td class="text-center align-middle">{{ preference.display_name }}</td>
-                <td v-if="listMode.includes(index)"><div :class="preference.newValue ? '' : 'has-danger'"><input :class="['form-control', preference.newValue ? '' : 'form-control-danger']" v-model="preference.newValue"></div></td>
-                <td v-else>{{ preference.value }}</td>
+                <td v-if="listMode.includes(index)">
+                    <div :class="preference.newValue ? '' : 'has-danger'" v-if="preference.newValue!=='true' && preference.newValue!=='false'">
+                        <input :class="['form-control', preference.newValue ? '' : 'form-control-danger']" v-model="preference.newValue">
+                    </div>
+                    <div class="form-group m-t-sm p-a-0" v-else>
+                        <label class="radio-inline">
+                            <input type="radio" :value="'true'||'True'" v-model="preference.newValue"> True
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" :value="'false'||'False'" v-model="preference.newValue"> False
+                        </label>
+                    </div>
+                </td>
+                <td v-else>
+                    <div v-if="preference.value!=='true' && preference.value!=='false'">{{ preference.value }}</div>
+                    <div class="radio disabled m-t-sm p-a-0" v-else>
+                        <label class="radio-inline disabled">
+                            <input type="radio" :value="'true'||'True'" v-model="preference.value" disabled> True
+                        </label>
+                        <label class="radio-inline disabled">
+                            <input type="radio" :value="'false'||'False'" v-model="preference.value" disabled> False
+                        </label>
+                    </div>
+                </td>
                 <td class="align-middle">
                     <a class="p-l-xs" @click="changeMode(index)">{{ listMode.includes(index) ? $t('action.confirm') : $t('global_parameters.modify') }}</a>
                     <a class="p-l-xs" v-if="listMode.includes(index)" @click="cancel(index)">{{ $t('global_parameters.cancel') }}</a>
@@ -110,16 +132,14 @@ export default {
         },
         updateGlobalPreference () {
             this.$http.patch(this.globalPreferencesApi + this.modal.key + '/', this.modal.globalPreferenceResult)
-            .then(response => {
-                if (response.data.code === 2000) {
-                    this.queryset[this.modal.index].value = response.data.data.value
-                    this.modal.msg = this.$t('game_manage.modify_success')
-                    this.$refs.alertMsg.trigger('success', 1, true)
-                    this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
-                } else {
-                    this.modal.msg = response.data.msg
-                    this.$refs.alertMsg.trigger('danger', 1, true)
-                }
+            .then(data => {
+                this.queryset[this.modal.index].value = data.value
+                this.modal.msg = this.$t('game_manage.modify_success')
+                this.$refs.alertMsg.trigger('success', 1, true)
+                this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
+            }, error => {
+                this.modal.msg = error
+                this.$refs.alertMsg.trigger('danger', 1, true)
             })
         },
         showModal () {

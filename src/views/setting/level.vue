@@ -103,8 +103,8 @@ export default {
     },
     methods: {
         getLevels () {
-            this.$http.get(api.level).then((response) => {
-                this.levels = response.data.data
+            this.$http.get(api.level).then(data => {
+                this.levels = data
             })
         }
     }

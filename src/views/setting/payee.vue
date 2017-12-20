@@ -102,13 +102,13 @@ export default {
         toggleStatus (payee) {
             this.$http.put(api.remitpayee + payee.id + '/', {
                 'status': payee.status === 0 ? 1 : 0
-            }).then((response) => {
-                payee.status = response.data.data.status
+            }).then(data => {
+                payee.status = data.status
             })
         },
         getPayees () {
-            this.$http.get(api.remitpayee + '?opt_expand=1').then((response) => {
-                this.payees = response.data.data
+            this.$http.get(api.remitpayee + '?opt_expand=1').then(data => {
+                this.payees = data
             })
         }
     }

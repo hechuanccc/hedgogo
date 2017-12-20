@@ -23,8 +23,8 @@ export default {
     created () {
         this.$nextTick(() => {
             this.$http.get(api.agentlevel)
-            .then(response => {
-                this.levels = response.data.data
+            .then(data => {
+                this.levels = data
                 if (this.default) {
                     this.agentLevel = this.default
                 }

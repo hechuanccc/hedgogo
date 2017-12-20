@@ -67,10 +67,10 @@
 </template>
 <script>
     import api from '../api'
-    import Vue from 'vue'
     import VueCookie from 'vue-cookie'
     import $ from '../utils/util'
     import INotify from 'title-notify'
+    import axios from 'axios'
 
     export default {
         data () {
@@ -170,17 +170,15 @@
                 this.iNotify.setTitle(true)
             },
             logout () {
-                this.$http.post(api.logout).then((response) => {
+                this.$http.post(api.logout).then(data => {
                     this.$root.dropdown = false
                     this.loading = true
-                    if (response.status === 200) {
-                        this.$router.push('/login')
-                        this.$cookie.delete('access_token')
-                        this.$cookie.delete('refresh_token')
-                    }
-                }, (response) => {
+                    this.$router.push('/login')
+                    this.$cookie.delete('access_token')
+                    this.$cookie.delete('refresh_token')
+                }, error => {
                     this.loading = false
-                    this.errorMsg = response.data.detail
+                    this.errorMsg = error
                 })
             },
             message (num, messageType) {
@@ -210,7 +208,7 @@
             },
             getCount () {
                 if (this.$route.name !== 'login') {
-                    let authenticationCookie = Vue.http.headers.common['Authorization']
+                    let authenticationCookie = axios.defaults.headers.common['Authorization']
                     if (authenticationCookie) {
                         authenticationCookie = authenticationCookie.split(' ').pop()
                     }
@@ -219,13 +217,16 @@
                     if (authenticationCookie === userCookie) {
                         let userType = $.storage.fetch().type
                         if (userType !== 'agent') {
-                            this.$http.get(api.metrics_count).then(response => {
-                                const data = response.data.data
-                                this.remit_count = data.remit_count
-                                this.withdraw_count = data.withdraw_count
-                                this.online_member = data.online_member
-                                this.abnormal_count = data.abnormal_count
-                            }, response => {
+                            this.$http.get(api.metrics_count).then(data => {
+                                if (data) {
+                                    this.remit_count = data.remit_count
+                                    this.withdraw_count = data.withdraw_count
+                                    this.online_member = data.online_member
+                                    this.abnormal_count = data.abnormal_count
+                                } else {
+                                    this.$router.push('/login?next=' + this.$route.path)
+                                }
+                            }, () => {
                                 this.$router.push('/login?next=' + this.$route.path)
                             })
                         }
@@ -240,14 +241,14 @@
             },
             search () {
                 if (this.query.username_q) {
-                    this.$http.get(api.member + '?username_q=' + this.query.username_q).then((response) => {
-                        this.results = response.data
-                        this.results = response.data.slice(0, Number(this.searchlimit))
+                    this.$http.get(api.member + '?username_q=' + this.query.username_q).then(data => {
+                        this.results = data
+                        this.results = data.slice(0, Number(this.searchlimit))
                         if (this.results.length) {
                             this.hasResults = true
                         }
-                    }, response => {
-                        this.searchErr = response.data.error
+                    }, error => {
+                        this.searchErr = error
                     })
                 }
             },

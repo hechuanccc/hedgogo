@@ -167,27 +167,23 @@
                 }
 
                 if (this.payee.id) {
-                    this.$http.put(api.remitpayee + this.payee.id + '/', formData).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/remit_payee/' + response.data.data.id)
-                        } else {
-                            this.responseError = response.data.msg
-                        }
+                    this.$http.put(api.remitpayee + this.payee.id + '/', formData).then(data => {
+                        this.$router.push('/remit_payee/' + data.id)
+                    }, error => {
+                        this.responseError = error
                     })
                 } else {
-                    this.$http.post(api.remitpayee, formData).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/remit_payee/' + response.data.data.id)
-                        } else {
-                            this.responseError = response.data.msg
-                        }
+                    this.$http.post(api.remitpayee, formData).then(data => {
+                        this.$router.push('/remit_payee/' + data.id)
+                    }, error => {
+                        this.responseError = error
                     })
                 }
             },
             getPayee (id) {
-                this.$http.get(api.remitpayee + id + '/').then((response) => {
-                    response.data.data.remit_type += ''
-                    this.payee = response.data.data
+                this.$http.get(api.remitpayee + id + '/').then(data => {
+                    data.remit_type += ''
+                    this.payee = data
                 })
             },
             syncImage (e) {

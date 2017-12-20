@@ -90,7 +90,6 @@
 </template>
 <script>
     import api from '../../../api'
-    import { handleError } from '../../../utils/handleError'
 
     export default {
         data () {
@@ -109,15 +108,6 @@
                     }]
                 },
                 envelopes: [],
-                field_locales: {
-                    'name': '红包名称有误：',
-                    'member_lvl': '会员等级有误：',
-                    'condition': '达成条件有误：',
-                    'deposit_threshold': '存款金额有误：',
-                    'bet_threshold': '下注金额有误：',
-                    'envelope_count': '红包个数有误：',
-                    'min_bonus': ' 红包金额有误：'
-                },
                 errorMsg: '',
                 updated: false
             }
@@ -142,39 +132,33 @@
             },
             onSubmit (e) {
                 if (this.envelope.id) {
-                    this.$http.put(api.envelope_settings + this.envelope.id + '/', this.envelope).then(response => {
-                        if (response.status === 200) {
-                            this.$router.push('/envelope_settings')
-                        }
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                    this.$http.put(api.envelope_settings + this.envelope.id + '/', this.envelope).then(() => {
+                        this.$router.push('/envelope_settings')
+                    }, error => {
+                        this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.envelope_settings, this.envelope).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/envelope_settings')
+                    this.$http.post(api.envelope_settings, this.envelope, {
+                        headers: {
+                            'Content-Type': 'application/json'
                         }
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                    }).then(() => {
+                        this.$router.push('/envelope_settings')
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             },
             getEnvelopeGroup (id) {
-                this.$http.get(api.envelope_settings + id + '/?opt_expand=group').then((response) => {
+                this.$http.get(api.envelope_settings + id + '/?opt_expand=group').then(data => {
                     setTimeout(() => {
-                        this.envelope = response.data.data
+                        this.envelope = data
                     }, 500)
                 })
             },
             getEnvelope () {
-                this.$http.get(api.envelope + '?status=1').then((response) => {
-                    this.envelopes = response.data.data
+                this.$http.get(api.envelope + '?status=1').then(data => {
+                    this.envelopes = data
                 })
             },
             changeFromLevel (val, index) {

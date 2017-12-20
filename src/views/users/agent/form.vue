@@ -318,35 +318,31 @@
                     delete this.initAgent.default_member_lv
                 }
                 if (this.agent.id) {
-                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(response => {
-                        if (response.data.code === 2000) {
-                            this.statusUpdated = true
-                            setTimeout(() => {
-                                this.$router.push('/agent/' + response.data.data.id)
-                            }, 2000)
-                        } else {
-                            this.formError = response.data.msg
-                        }
+                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(data => {
+                        this.statusUpdated = true
+                        setTimeout(() => {
+                            this.$router.push('/agent/' + data.id)
+                        }, 2000)
+                    }, error => {
+                        this.formError = error
                     })
                 } else {
-                    this.$http.post(api.agent, this.initAgent).then(response => {
-                        if (response.status === 2000) {
-                            this.statusUpdated = true
-                            setTimeout(() => {
-                                this.$router.push('/agent/' + response.data.data.id)
-                            }, 2000)
-                        } else {
-                            this.formError = response.data.msg
-                        }
+                    this.$http.post(api.agent, this.initAgent).then(data => {
+                        this.statusUpdated = true
+                        setTimeout(() => {
+                            this.$router.push('/agent/' + data.id)
+                        }, 2000)
+                    }, error => {
+                        this.formError = error
                     })
                 }
             },
             checkAgent () {
                 if (this.query !== '') {
-                    this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then((response) => {
-                        if (response.data.data.length === 1) {
+                    this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
+                        if (data.length === 1) {
                             this.agentValid = true
-                            this.agent.parent_agent = response.data.data[0].id
+                            this.agent.parent_agent = data[0].id
                         } else {
                             this.agentValid = false
                             this.agent.parent_agent = ''
@@ -358,8 +354,7 @@
                 }
             },
             getAgent (id) {
-                this.$http.get(api.agent + id + '/?opt_expand=parent_agent').then((response) => {
-                    let data = response.data.data
+                this.$http.get(api.agent + id + '/?opt_expand=parent_agent').then(data => {
                     if (!data.bank) {
                         data.bank = {bank: '', province: ''}
                     }

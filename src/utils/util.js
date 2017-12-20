@@ -1,21 +1,21 @@
 import Vue from 'vue'
-import VueResource from 'vue-resource'
+// import VueResource from 'vue-resource'
 import urls from '../api'
 
 const STORAGE_KEY = 'data-storage'
 
-Vue.use(VueResource)
+// Vue.use(VueResource)
 export default class $ {
 
     static fetchMember (cb, successCb, errorCb) {
-        return Vue.http.get(urls.member + '?opt_expand=1').then((response) => {
-            cb(response.data)
+        return Vue.http.get(urls.member + '?opt_expand=1').then(data => {
+            cb(data)
             if (successCb) {
-                successCb(response.data)
+                successCb(data)
             }
-        }, (response) => {
+        }, error => {
             if (errorCb) {
-                errorCb(response)
+                errorCb(error)
             }
         })
     }
@@ -70,8 +70,7 @@ export default class $ {
         }
     }
 
-    static handleError (response, field, fields) {
-        let errors = response.data.error
+    static handleError (errors, field, fields) {
         let responseError = ''
         let gettype = Object.prototype.toString
 

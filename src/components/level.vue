@@ -50,8 +50,8 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.level).then(response => {
-            this.levels = response.data.data
+        this.$http.get(api.level).then(data => {
+            this.levels = data
             if (this.default) {
                 this.level = this.default
             }

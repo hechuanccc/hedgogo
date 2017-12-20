@@ -55,13 +55,13 @@ export default {
         toggleStatus (payee) {
             this.$http.put(api.onlinepayee + payee.id + '/', {
                 'status': payee.status === 0 ? 1 : 0
-            }).then((response) => {
-                payee.status = response.data.data.status
+            }).then(data => {
+                payee.status = data.status
             })
         },
         getPayees () {
-            this.$http.get(api.onlinepayee + '?opt_expand=1').then((response) => {
-                this.online_payees = response.data.data
+            this.$http.get(api.onlinepayee + '?opt_expand=1').then(data => {
+                this.online_payees = data
             })
         }
     }

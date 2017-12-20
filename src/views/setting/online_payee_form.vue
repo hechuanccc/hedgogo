@@ -132,32 +132,32 @@
         methods: {
             onSubmit (e) {
                 if (this.payee.id) {
-                    this.$http.put(api.onlinepayee + this.payee.id + '/', this.payee).then(response => {
-                        if (response.data.code === 2000) {
-                            this.$router.push('/online_payee/' + response.data.data.id)
-                        } else {
-                            this.responseError = response.data.msg
-                        }
+                    this.$http.put(api.onlinepayee + this.payee.id + '/', this.payee).then(data => {
+                        this.$router.push('/online_payee/' + data.id)
+                    }, error => {
+                        this.responseError = error
                     })
                 } else {
-                    this.$http.post(api.onlinepayee, this.payee).then(response => {
-                        if (response.status === 201) {
-                            this.$router.push('/online_payee/' + response.data.data.id)
-                        } else {
-                            this.responseError = response.data.msg
+                    this.$http.post(api.onlinepayee, this.payee, {
+                        headers: {
+                            'Content-Type': 'application/json'
                         }
+                    }).then(data => {
+                        this.$router.push('/online_payee/' + data.id)
+                    }, error => {
+                        this.responseError = error
                     })
                 }
             },
             getPaymentTypes () {
-                this.$http.get(api.paymentgateway).then((response) => {
-                    this.paymenttypes = response.data.data
+                this.$http.get(api.paymentgateway).then(data => {
+                    this.paymenttypes = data
                 })
             },
             getPayee (id) {
-                this.$http.get(api.onlinepayee + id + '/').then((response) => {
+                this.$http.get(api.onlinepayee + id + '/').then(data => {
                     setTimeout(() => {
-                        this.payee = Object.assign(this.payee, response.data.data)
+                        this.payee = Object.assign(this.payee, data)
                     }, 300)
                 })
             },

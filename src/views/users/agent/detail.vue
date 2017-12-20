@@ -190,7 +190,7 @@
             </div>
             <div class="col-xs-6">
               <span class="text-muted">{{$t('agent.link')}}</span>
-              <div class="t-red">首页地址?r=推广码 如：https://vnsr186.com/?r={{agent.promo_code}}</div>
+              <div class="t-red">首页地址?r=推广码 如：http://rico-st8ging.azureedge.net/?r={{agent.promo_code}}</div>
             </div>
           </div>
 
@@ -267,14 +267,12 @@
                 this.statusUpdated = false
                 this.$http.put(api.agent + this.agent.id + '/?opt_fields=status', {
                     status: this.agent.status === 1 ? 0 : 1
-                }).then((response) => {
-                    if (response.status === 200) {
-                        this.agent.status = response.data.data.status
-                        this.statusUpdated = true
-                        setTimeout(() => {
-                            this.statusUpdated = false
-                        }, 3000)
-                    }
+                }).then(data => {
+                    this.agent.status = data.status
+                    this.statusUpdated = true
+                    setTimeout(() => {
+                        this.statusUpdated = false
+                    }, 3000)
                 })
             },
             resetPassword (event) {
@@ -283,12 +281,12 @@
                 }))) {
                     return
                 }
-                this.$http.post(api.resetagent, { 'account_id': this.agent.id }, {emulateJSON: true}).then(response => {
+                this.$http.post(api.resetagent, { 'account_id': this.agent.id }, {emulateJSON: true}).then(data => {
                     this.passwordChanged = 1
-                    this.newPassword = response.data.data.new_password
-                }, response => {
+                    this.newPassword = data.new_password
+                }, error => {
                     this.passwordChanged = -1
-                    this.errorMsg = response.data.error
+                    this.errorMsg = error
                 })
             },
             deleteAgent (id, confirm, event) {
@@ -297,15 +295,15 @@
                 }))) {
                     return
                 }
-                this.$http.delete(api.agent + id + '/').then((response) => {
+                this.$http.delete(api.agent + id + '/').then(() => {
                     this.$router.go('/agent')
                 })
             },
             getAgent (id) {
                 let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
-                this.$http.get(api.agent + id + '/?opt_expand=' + fields).then((response) => {
-                    this.agent = response.data.data
-                    this.account_id = {'account_id': response.data.data.id}
+                this.$http.get(api.agent + id + '/?opt_expand=' + fields).then(data => {
+                    this.agent = data
+                    this.account_id = {'account_id': data.id}
                 })
             },
             getAgentPermission (levelId) {

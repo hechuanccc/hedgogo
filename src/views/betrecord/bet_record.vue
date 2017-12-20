@@ -94,7 +94,7 @@
       </div>
       <div class="row">
             <div class="col-xs-12">
-              <div class="pull-left">
+              <div class="pull-left" v-if="pageSelected === 'realtime'">
                 <input type="checkbox" value="1" name="account_type" v-model="account_type">
                 <i class="blue"></i>{{$t('action.filter_trial_account')}}
               </div>
@@ -189,6 +189,7 @@
             <th>{{$t('report.bet_record_number')}}</th>
             <th>{{$t('common.settledat')}}</th>
             <th>{{$t('common.member')}}</th>
+            <th>{{$t('member.account_type')}}</th>
             <th>{{$t('common.game')}}</th>
             <th>{{$t('game_manage.issue_number')}}</th>
             <th>{{$t('game_manage.play')}}</th>
@@ -206,6 +207,9 @@
             </td>
             <td>
               <router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
+            </td>
+            <td>
+              {{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}
             </td>
             <td>
               {{t.game.display_name}}
@@ -247,7 +251,6 @@
     import DatePicker from 'vue2-datepicker'
     import Vue from 'vue'
     import VueCookie from 'vue-cookie'
-    import { handleError } from '../../utils/handleError'
 
     const format = 'YYYY-MM-DD'
     export default {
@@ -269,8 +272,10 @@
                     settlement_lte: '',
                     status: '',
                     category: '',
-                    report_flag: true
+                    report_flag: true,
+                    account_type: '1'
                 },
+                account_type: '1',
                 period: 10000,
                 pageSelected: '',
                 game_category: '0',
@@ -283,7 +288,6 @@
                 total_amount: '',
                 total_profit: '',
                 total_bet_amount: '',
-                account_type: '0',
                 today: Vue.moment().format(format),
                 yesterday: Vue.moment().subtract(1, 'days').format(format)
             }
@@ -292,10 +296,19 @@
             this.getGameList()
             this.$nextTick(() => {
                 this.getPageAccessed()
+                this.submit()
                 this.$refs.pulling.rebase()
             })
         },
         watch: {
+            account_type: function (newObj, old) {
+                if (newObj === true) {
+                    this.query.account_type = '1'
+                } else {
+                    this.query.account_type = ''
+                }
+                this.submit()
+            },
             status: function (newObj, old) {
                 if (this.status === '0') {
                     this.query.status = ''
@@ -390,8 +403,8 @@
                 this.quickFilter()
             },
             getGameList () {
-                this.$http.get(api.game_list).then(response => {
-                    this.gamelist = response.data.data
+                this.$http.get(api.game_list).then(data => {
+                    this.gamelist = data
                 })
             },
             getPageAccessed () {
@@ -430,8 +443,8 @@
                 this.filter_game = this.gamelist.map(game => game.id)
             },
             getGameCategory (game) {
-                this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(response => {
-                    this.categories = response.data.data
+                this.$http.get(api.gamecategory + '?game=' + this.query.game_q).then(data => {
+                    this.categories = data
                 })
             },
             newWindow () {
@@ -476,13 +489,10 @@
                 if (betrecord.id) {
                     this.$http.put(api.cancel_bet + betrecord.id + '/', {
                         status: status
-                    }).then(response => {
-                        betrecord.status = response.data.data.status
-                    }, response => {
-                        this.errorMsg = ''
-                        for (let field in this.field_locales) {
-                            this.errorMsg += handleError(response, field, this.field_locales)
-                        }
+                    }).then(data => {
+                        betrecord.status = data.status
+                    }, error => {
+                        this.errorMsg = error
                     })
                 }
             }

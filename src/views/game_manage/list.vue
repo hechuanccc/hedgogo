@@ -143,17 +143,12 @@ export default {
     },
     methods: {
         getGameList () {
-            this.$http.get(api.game_list).then(response => {
-                this.queryset = response.data.data
+            this.$http.get(api.game_list).then(data => {
+                this.queryset = data
                 const games = {}
-                response.data.data.forEach(game => {
+                data.forEach(game => {
                     games[game.id] = game.display_name
                 })
-                this.$store.dispatch('setGame', games)
-            }, response => {
-                if (response.status === 401) {
-                    this.$router.push('/login?next=' + this.$route.path)
-                }
             })
         },
         toggleEnable (index) {
@@ -163,10 +158,8 @@ export default {
                 code: game.code,
                 to_display: !game.to_display
             }
-            this.$http.put(api.game_list + game.id + '/', params).then(response => {
-                if (response.status === 200) {
-                    this.$set(this.queryset, index, response.data.data)
-                }
+            this.$http.put(api.game_list + game.id + '/', params).then(data => {
+                this.$set(this.queryset, index, data)
             })
         },
         toggleClose (index) {
@@ -176,10 +169,8 @@ export default {
                 code: game.code,
                 status: game.status === 0 ? 1 : 0
             }
-            this.$http.put(api.game_list + game.id + '/', params).then(response => {
-                if (response.status === 200) {
-                    this.$set(this.queryset, index, response.data.data)
-                }
+            this.$http.put(api.game_list + game.id + '/', params).then(data => {
+                this.$set(this.queryset, index, data)
             })
         },
         showModal (index) {
@@ -208,14 +199,12 @@ export default {
                     display_name: this.modal.display_name,
                     start_date: Vue.moment(this.modal.value[0]).format('YYYY-MM-DD HH:mm'),
                     end_date: Vue.moment(this.modal.value[1]).format('YYYY-MM-DD HH:mm')
-                }).then(response => {
-                    if (response.status === 200) {
-                        this.$set(this.queryset, this.modal.index, response.data.data)
-                        this.modal.msg = this.$t('game_manage.modify_success')
-                        this.$refs.alertMsg.trigger('success', 3)
-                    }
-                }, response => {
-                    this.modal.msg = this.$t('game_manage.modify_fail')
+                }).then(data => {
+                    this.$set(this.queryset, this.modal.index, data)
+                    this.modal.msg = this.$t('game_manage.modify_success')
+                    this.$refs.alertMsg.trigger('success', 3)
+                }, error => {
+                    this.modal.msg = this.$t('game_manage.modify_fail') + error.join(' ')
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {
@@ -240,14 +229,12 @@ export default {
                 formData.append('code', this.modal.iconResult.code)
                 formData.append('icon', this.modal.iconResult.icon)
                 this.$http.put(api.game_list + this.modal.id + '/', formData)
-                .then(response => {
-                    if (response.status === 200) {
-                        this.getGameList()
-                        this.modal.msg = this.$t('game_manage.modify_success')
-                        this.$refs.alertMsg.trigger('success', 3)
-                    }
-                }, response => {
-                    this.modal.msg = this.$t('game_manage.modify_fail')
+                .then(() => {
+                    this.getGameList()
+                    this.modal.msg = this.$t('game_manage.modify_success')
+                    this.$refs.alertMsg.trigger('success', 3)
+                }, error => {
+                    this.modal.msg = this.$t('game_manage.modify_fail') + error
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {
@@ -261,15 +248,13 @@ export default {
                     id: game.id,
                     display_name: game.display_name,
                     rank: index + 1
-                }))).then(response => {
-                    if (response.data.code === 2000) {
-                        this.updateRankMsg = this.$t('game_manage.modify_success')
-                        setTimeout(() => {
-                            this.updateRankMsg = ''
-                        }, 3000)
-                    } else {
-                        this.cancelAdjustRank()
-                    }
+                }))).then(data => {
+                    this.updateRankMsg = this.$t('game_manage.modify_success')
+                    setTimeout(() => {
+                        this.updateRankMsg = ''
+                    }, 3000)
+                }, () => {
+                    this.cancelAdjustRank()
                 })
             } else {
                 this.initialQueryset = this.queryset
