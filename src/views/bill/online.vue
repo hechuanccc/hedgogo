@@ -214,7 +214,7 @@
         },
         computed: {
             getReport () {
-                this.href = `${api.report_deposit}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
+                this.href = `${api.report_onlinepay}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
                 return this.queryset.length
             }
         },
