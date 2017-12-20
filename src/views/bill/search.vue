@@ -197,7 +197,7 @@
                 return api.agent + '?opt_fields=username,id,&username_q=' + this.agent_q
             },
             getReport () {
-                this.href = `${api.report_deposit}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                this.href = `${api.report_transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             }
         },
