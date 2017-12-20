@@ -37,7 +37,7 @@
                 let test = this.date_0 !== '' && this.date_1 !== ''
                 this.date_0 = Vue.moment(this.date_0).format(format)
                 this.date_1 = Vue.moment(this.date_1).format(format)
-                this.href = `${api.returnreport}?token=${VueCookie.get('access_token')}&report=commission&date_0=${this.date_0}&date_1=${this.date_1}`
+                this.href = `${api.report_commission}?token=${VueCookie.get('access_token')}&report=commission&date_0=${this.date_0}&date_1=${this.date_1}`
                 return test
             }
         },

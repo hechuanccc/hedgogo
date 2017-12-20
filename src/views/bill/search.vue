@@ -39,11 +39,15 @@
             </div>
         </div>
     </form>
-    <div class="pull-right">
-      <a :href="href" :getReport="getReport" v-if="queryset.length">
-        <span><i class="material-icons">&#xe2c4;</i></span>
-      </a>
-      <span disabled v-else><i class="material-icons">&#xe2c4;</i></span>
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="pull-right">
+            <a :href="href" :getReport="getReport" v-if="queryset.length">
+              <span><i class="material-icons">&#xe2c4;</i></span>
+            </a>
+            <span disabled v-else><i class="material-icons">&#xe2c4;</i></span>
+          </div>
+        </div>
     </div>
     <div class="box">
         <table class="table table-striped">
@@ -193,7 +197,7 @@
                 return api.agent + '?opt_fields=username,id,&username_q=' + this.agent_q
             },
             getReport () {
-                this.href = `${api.report_deposit}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                this.href = `${api.report_transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             }
         },
