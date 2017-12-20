@@ -442,7 +442,7 @@ export default {
         enable: 'Enable',
         disabled: 'Disabled',
         status_updated: 'Status Updated!',
-        no_select_grop: 'Please select a role!'
+        no_select_group: 'Please select a role!'
     },
     game_manage: {
         id: 'Game ID',
