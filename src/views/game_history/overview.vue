@@ -26,7 +26,7 @@
                 <template v-for = "(game, index) in gameDraw">
                 <tr class="v-m text-center" :key="index">
                     <td class="text-left p-l-md" style="text-transform: uppercase;">
-                        <router-link :to="'/game_history/'+game.game_id" class="p-l-0">{{ game.game }}</router-link>
+                        <a class="p-l-0" @click="enterDetailPage(game.game_id, 0)">{{ game.game }}</a>
                     </td>
                     <td><span>{{ game.drawn_periods }}</span></td>
                     <td><span>{{ game.total_periods - game.drawn_periods }}</span></td>
@@ -51,9 +51,9 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-right">
-                                        <router-link :to = "'/game_history/' + game.game_id + '?mode=1'">
+                                        <a @click="enterDetailPage(game.game_id, 1)">
                                         {{ `${$t('game_history.show_all')}${$t('game_history.abnormal_period')}(${game.abnormal_count})`  }}
-                                        </router-link>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -206,6 +206,11 @@ export default{
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')
                 this.$refs.alertMsg.trigger('warning', 3)
             }
+        },
+        enterDetailPage (id, mode) {
+            this.getGameInfo(id).then(game => {
+                this.$router.push(`/game_history/${id}/?code=${game.code}&mode=${mode}`)
+            })
         }
     },
     beforeDestroy () {

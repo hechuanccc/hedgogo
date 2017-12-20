@@ -149,7 +149,6 @@ export default {
                 data.forEach(game => {
                     games[game.id] = game.display_name
                 })
-                this.$store.dispatch('setGame', games)
             })
         },
         toggleEnable (index) {
