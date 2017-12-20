@@ -9,18 +9,18 @@
                 <div class="col-xs-3">
                     <label>{{$t('game_history.periods')}}：</label>
                     <input 
-                    type="number" 
-                    v-model.number="input.period" 
-                    :placeholder="$t('game_history.periods')" 
-                    class="form-control"
+                        type="number" 
+                        v-model.number="input.period" 
+                        :placeholder="$t('game_history.periods')" 
+                        class="form-control"
                     >
                 </div>
                 <div class="col-xs-3" v-if="!mode">
                     <label>{{$t('game_history.date')}}：</label>
                     <date-picker
-                    width='140'
-                    v-model="input.date" 
-                    @input="setDate"
+                        width='140'
+                        v-model="input.date" 
+                        @input="setDate"
                     ></date-picker>
                 </div>
             </div>
@@ -50,13 +50,13 @@
                                 <td v-else>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                                 <td v-show="mode">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str">
-                                    <span>{{ $t('game_history.result_str_tips',{
-                                    num_len: game.rules.num_len,
-                                    unique: game.rules.unique ? $t('game_history.non_repetitive') : $t('game_history.repeatable'),
-                                    range_floor: game.rules.range_value[0],
-                                    range_ceil: game.rules.range_value[1],
-                                    separator: game.rules.separator
-                                })}}</span>
+                                    <span>{{ $t('game_history.result_str_tips', {
+                                        num_len: game.rules.num_len,
+                                        unique: game.rules.unique ? $t('game_history.non_repetitive') : $t('game_history.repeatable'),
+                                        range_floor: game.rules.range_value[0],
+                                        range_ceil: game.rules.range_value[1],
+                                        separator: game.rules.separator
+                                    })}}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -83,7 +83,7 @@
             value="1" 
             name="exception" 
             v-model="mode"
-            >
+        >
             <i class="blue"></i>
             {{$t('game_history.abnormal_period')}}
     </div>
@@ -93,29 +93,33 @@
                 <thead class="text-center">
                     <tr>
                         <th 
-                        width="10%"
-                        :class="twoRow ? 'p-b-md' : ''"
-                        >{{ $t('game_history.periods') }}
+                            width="10%"
+                            :class="twoRow ? 'p-b-md' : ''"
+                        >
+                            {{ $t('game_history.periods') }}
                         </th>
                         <th 
-                        width="15%"
-                        :class="twoRow ? 'p-b-md' : ''"
-                        >{{ $t('game_history.draw_date') }}
+                            width="15%"
+                            :class="twoRow ? 'p-b-md' : ''"
+                        >
+                            {{ $t('game_history.draw_date') }}
                         </th>
                         <th class="text-center" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
                         <th
-                        :width="game.code === 'bjkl8' ? '360' : ''"
-                        :class="twoRow ? 'p-b-md' : ''"
-                        v-else>
+                            :width="game.code === 'bjkl8' ? '360' : ''"
+                            :class="twoRow ? 'p-b-md' : ''"
+                            v-else
+                        >
                             <template 
-                            v-for="col in resultCol" 
-                            v-if="resultCol.length > 1"
+                                v-for="col in resultCol" 
+                                v-if="resultCol.length > 1"
                             >
                                 <span 
-                                class="m-r-xs m-l-xs label btn blue p-a-sm" 
-                                :key="col" 
-                                @click="changeResultColMode(col)"
-                                ><b>{{ `${resultCol.length > 3 ? '' : $t('game_history.show')}${$t('game_history.' + col)}` }}</b>
+                                    class="m-r-xs m-l-xs label btn blue p-a-sm" 
+                                    :key="col" 
+                                    @click="changeResultColMode(col)"
+                                >
+                                    <b>{{ `${resultCol.length > 3 ? '' : $t('game_history.show')}${$t('game_history.' + col)}` }}</b>
                                 </span>
                             </template>
                             <span v-else>
@@ -123,68 +127,72 @@
                             </span>
                         </th>
                         <th
-                        class="p-l-0 p-r-0" 
-                        :width="sumCol.length * 50"
-                        v-if="sumCol.length > 0" 
+                            class="p-l-0 p-r-0" 
+                            :width="sumCol.length * 50"
+                            v-if="sumCol.length > 0" 
                         >
                             <div class="b-b p-b-sm">{{ sumCol1st2nd ? $t('game_history.sum_of_first_second') : $t('game_history.sum') }}</div>
                             <template v-for="col in sumCol" >
                                 <div 
-                                class="m-t-sm"
-                                :key="col"
-                                :style="{
-                                    'display': 'inline-block',
-                                    'width': `${100 / sumCol.length}%`
-                                }"
-                                >{{ $t('game_history.' + col) }}
+                                    class="m-t-sm"
+                                    :key="col"
+                                    :style="{
+                                        'display': 'inline-block',
+                                        'width': `${100 / sumCol.length}%`
+                                    }"
+                                >
+                                    {{ $t('game_history.' + col) }}
                                 </div>
                             </template>
                         </th>
                         <th
-                        :class="['p-l-0 p-r-0', dragonTigerCol.length > 1 ? '' : 'p-b-md']" 
-                        :width="dragonTigerCol.length * 50"
-                        v-if="dragonTigerCol.length > 0" 
+                            :class="['p-l-0 p-r-0', dragonTigerCol.length > 1 ? '' : 'p-b-md']" 
+                            :width="dragonTigerCol.length * 50"
+                            v-if="dragonTigerCol.length > 0" 
                         >
                             <div :class="dragonTigerCol.length > 1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.dragon') + $t('game_history.tiger') }}</div>                        
                             <template
-                            v-for="(col, index) in dragonTigerCol"
-                            v-if="dragonTigerCol.length > 1"
+                                v-for="(col, index) in dragonTigerCol"
+                                v-if="dragonTigerCol.length > 1"
                             >
                                 <div 
-                                class="m-t-sm"
-                                :key="col"
-                                :style="{
-                                    'display': 'inline-block',
-                                    'width' : `${100 / dragonTigerCol.length}%`
-                                }"
-                                >{{ index + 1 }}
+                                    class="m-t-sm"
+                                    :key="col"
+                                    :style="{
+                                        'display': 'inline-block',
+                                        'width' : `${100 / dragonTigerCol.length}%`
+                                    }"
+                                >
+                                    {{ index + 1 }}
                                 </div>
                             </template>
                         </th>
                         <th
-                        class="p-l-0 p-r-0" 
-                        :width="comparisonCol.length * 50"
-                        v-if="comparisonCol.length > 0" 
+                            class="p-l-0 p-r-0" 
+                            :width="comparisonCol.length * 50"
+                            v-if="comparisonCol.length > 0" 
                         >
                             <div :class="comparisonCol.length>1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.comparison') }}</div>                        
                             <template v-for="col in comparisonCol" v-if="comparisonCol.length>1">
                                 <div 
-                                class="m-t-sm"
-                                :key="col"
-                                :style="{
-                                    'display': 'inline-block',
-                                    'width': `${100/comparisonCol.length}%`
-                                }"
-                                >{{ $t('game_history.' + col) }}
+                                    class="m-t-sm"
+                                    :key="col"
+                                    :style="{
+                                        'display': 'inline-block',
+                                        'width': `${100/comparisonCol.length}%`
+                                    }"
+                                >
+                                    {{ $t('game_history.' + col) }}
                                 </div>
                             </template>
                         </th>
                         <th
-                        :class="twoRow ? 'p-b-md' : ''"
-                        v-for="col in otherCol"
-                        :key="col"
-                        v-if="otherCol.length > 0"
-                        >{{ $t('game_history.' + col) }}
+                            :class="twoRow ? 'p-b-md' : ''"
+                            v-for="col in otherCol"
+                            :key="col"
+                            v-if="otherCol.length > 0"
+                        >
+                            {{ $t('game_history.' + col) }}
                         </th>
                         <th :class="twoRow ? 'p-b-md' : ''">
                             {{ mode ? $t('game_history.operating') : $t('game_history.memo')}}
@@ -193,83 +201,87 @@
                 </thead>
                 <tbody class="v-m text-center">
                     <tr 
-                    v-if="isPageOne"
-                    v-for="sched in retreatedScheds"
-                    :key="sched.id"
+                        v-if="isPageOne"
+                        v-for="sched in retreatedScheds"
+                        :key="sched.id"
                     >
                         <td>{{ sched.issue_number }}</td>
                         <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
                             <span
-                            class="label btn blue"
-                            @click="showModal(sched)"
-                            v-show="sched.status !== 'cancelled'"
-                            ><b>{{ $t('game_history.retreat_sched') }}</b>
+                                class="label btn blue"
+                                @click="showModal(sched)"
+                                v-show="sched.status !== 'cancelled'"
+                            >
+                                <b>{{ $t('game_history.retreat_sched') }}</b>
                             </span>
                         </td>
                         <td v-if="sumCol.length > 0"></td>
                         <td v-if="dragonTigerCol.length > 0"></td>
                         <td v-if="comparisonCol.length > 0"></td>
                         <td 
-                        v-for="col in otherCol"
-                        :key="'retreat_'+col"
-                        v-if="otherCol.length>0"
-                        ></td>
+                            v-for="col in otherCol"
+                            :key="'empty_' + col"
+                            v-if="otherCol.length>0"
+                        >
+                        </td>
                         <td>
                             <span v-if="sched.status === 'cancelled'">{{ $t('game_history.cancelled') }}</span>
                         </td>
                     </tr>
                     <tr 
-                    v-for="result in filteredResults"
-                    :key="result.schedule_result">
+                        v-for="result in filteredResults"
+                        :key="result.schedule_result"
+                    >
                         <td>{{ result.issue_number }}</td>
                         <td>{{ result.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode">{{ result.betrecords }}</td>
                         <td v-else class="result-balls">
                             <div v-if="!resultColMode || resultColMode==='ball_num'">
                                 <span
-                                v-show="result.result_str !== undefined"
-                                v-for="(resultball, index) in result.result_str.split(',')"
-                                :class="getResultClass(resultball)"
-                                :key="`${result.issue_number}_resultStr_${index}`">
+                                    v-show="result.result_str !== undefined"
+                                    v-for="(resultball, index) in result.result_str.split(',')"
+                                    :class="getResultClass(resultball)"
+                                    :key="`${result.issue_number}_resultStr_${index}`"
+                                >
                                     <b>{{ resultball }}</b>
                                 </span>
                             </div>
                             <div v-else>
                                 <div id="circle" 
-                                v-for="index in result.result_str.split(',').length" 
-                                :class="['m-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
-                                :key="`${result.issue_number}_${resultColMode}_${index}`"
+                                    v-for="index in result.result_str.split(',').length" 
+                                    :class="['m-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
+                                    :key="`${result.issue_number}_${resultColMode}_${index}`"
                                 >
                                     {{ $t('game_history.' + result.result_category[`${resultColMode}_${index}`]) }}
                                 </div>
                             </div>
                         </td>
                         <td
-                        class="p-l-0 p-r-0"
-                        v-for="(colList, index) in allCol"
-                        :key="'Col_' + index"
+                            class="p-l-0 p-r-0"
+                            v-for="(colList, index) in allCol"
+                            :key="'Col_' + index"
                         >
-                            <template
-                            v-for="col in colList"
-                            >
+                            <template v-for="col in colList">
                                 <div 
-                                :style="{
-                                    'display': 'inline-block',
-                                    'width' : `${100 / colList.length}%`
-                                }"
-                                :class="`text-${result.result_category[col]}`"
-                                :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
-                                >{{ Number.isInteger(result.result_category[col]) ? result.result_category[col] : $t('game_history.' + result.result_category[col]) }}
+                                    :style="{
+                                        'display': 'inline-block',
+                                        'width' : `${100 / colList.length}%`
+                                    }"
+                                    :class="`text-${result.result_category[col]}`"
+                                    :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
+                                >
+                                    {{ Number.isInteger(result.result_category[col]) ? result.result_category[col] : $t('game_history.' + result.result_category[col]) }}
                                 </div>
                             </template>
                         </td>
                         <td
-                        class="p-l-0 p-r-0"
-                        v-for="col in otherCol"
-                        :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
-                        v-if="otherCol.length > 0"
-                        > {{ $t('game_history.' + result.result_category[col]) }}
+                            class="p-l-0 p-r-0"
+                            v-for="col in otherCol"
+                            :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
+                            v-if="otherCol.length > 0"
+                        >
+                            {{ $t('game_history.' + result.result_category[col]) }}
                         </td>
                         <td v-if="mode">
                             <span class="label btn blue" @click="showModal(result)">{{ $t('game_history.manual_draw') }}</span>
@@ -282,13 +294,13 @@
     </div>
     <div class="row m-b-lg m-t">
         <pulling 
-        :queryset="queryset"
-        :query="query"
-        :api="pullingApi"
-        :extra="extra"
-        ref="pulling"
-        @query-data="queryData"
-        @query-param="queryParam"
+            :queryset="queryset"
+            :query="query"
+            :api="pullingApi"
+            :extra="extra"
+            ref="pulling"
+            @query-data="queryData"
+            @query-param="queryParam"
         />
     </div>
 </div>
@@ -413,15 +425,9 @@ export default {
     methods: {
         setDate () {
             const date = Vue.moment(this.input.date).format(dateFormat)
-            this.extra = `game=${this.game.id}&date=${date}${this.mode ? '&abnormal=True' : ''}`
-            if (date !== this.today) {
-                clearInterval(this.timingPulling)
-            } else {
-                this.timingPulling = setInterval(() => {
-                    this.$refs.pulling.rebase()
-                    this.getRetreatedSchedules()
-                }, 20000)
-            }
+            this.pullingApi = api.game_history
+            this.queryset = []
+            this.extra = `game_code=${this.game.code}&date=${date}`
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
             })
@@ -611,8 +617,6 @@ export default {
   width: 32px;
   height: 32px;
   line-height: 34px;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
   border-radius: 50%;
 }
 </style>
