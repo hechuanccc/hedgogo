@@ -179,7 +179,7 @@
                                     :key="col"
                                     :style="{
                                         'display': 'inline-block',
-                                        'width': `${100/comparisonCol.length}%`
+                                        'width': `${100 / comparisonCol.length}%`
                                     }"
                                 >
                                     {{ $t('game_history.' + col) }}
