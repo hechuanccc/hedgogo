@@ -10,7 +10,7 @@
       <div class="box-body">
         <div class="box">
           <div class="box-body">
-            <table class="table table-striped b-t">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th width="20%"></th>
@@ -22,7 +22,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(playset, index) in playsetOrderByName" :key="playset.id">
+                <tr v-for="playset in playsetOrderByName" :key="playset.id">
                   <td>
                     <strong>{{playset.display_name}}</strong>
                   </td>
@@ -47,8 +47,11 @@
           </div>
         </div>
       </div>
-      <div class="box-footer text-center">
-          <button class="btn btn-primary" :disabled="updatedPlaysets.length === 0" @click="updatePlayset">{{$t('action.confirm')}}</button>
+      <div class="box-footer text-left">
+          <button class="md-btn w-sm blue" @click="updatePlayset"><i class="fa fa-check"></i> {{$t('action.confirm')}}</button>
+          <button class="md-btn w-sm" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{$t('action.cancel')}}</button>
+          <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
+          <span class="text-warning m-l-sm" v-show="warningMsg"><i class="fa fa-times"></i> {{ warningMsg }}</span>
       </div>
     </div>
   </div>
@@ -64,7 +67,9 @@ export default {
                 display_name: ''
             },
             playsets: [],
-            playsetBuffer: {}
+            successMsg: '',
+            warningMsg: '',
+            errorMsg: ''
         }
     },
     computed: {
@@ -89,7 +94,11 @@ export default {
     },
     methods: {
         getPlaySet (id) {
-            this.$http.get(api.playset, {params: {game: id}}).then(data => {
+            this.$http.get(api.playset, {
+                params: {
+                    game: id
+                }
+            }).then(data => {
                 this.playsets = data
             })
         },
@@ -97,11 +106,22 @@ export default {
             this.$set(playset, 'updated', true)
         },
         updatePlayset () {
-            this.$http.post(`${api.playset}?game=${this.game.id}`, this.updatedPlaysets).then(data => {
-                this.playsets.forEach(playset => {
-                    this.$set(playset, 'updated', false)
+            if (this.updatedPlaysets.length > 0) {
+                this.$http.post(`${api.playset}?game=${this.game.id}`, this.updatedPlaysets).then(data => {
+                    this.successMsg = `${this.$t('game_manage.modify_success')}`
+                    setTimeout(() => {
+                        this.successMsg = ''
+                    }, 2000)
+                    this.playsets.forEach(playset => {
+                        this.$set(playset, 'updated', false)
+                    })
                 })
-            })
+            } else {
+                this.warningMsg = this.$t('game_manage.no_change')
+                setTimeout(() => {
+                    this.warningMsg = ''
+                }, 2000)
+            }
         }
     }
 }

@@ -481,8 +481,7 @@ export default {
         },
         updateGameResult () {
             if (this.modal.scheduleResult.result_str) {
-                this.$http.post(api.game_result, this.modal.scheduleResult)
-                .then(() => {
+                this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.$refs.pulling.rebase()

@@ -34,6 +34,7 @@
     import api from '../api'
     import $ from '../utils/util'
     import axios from 'axios'
+    import qs from 'qs'
     export default {
         data () {
             return {
@@ -54,7 +55,11 @@
         },
         methods: {
             login () {
-                this.$http.post(api.login, this.user).then(data => {
+                this.$http.post(api.login, qs.stringify(this.user), {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then(data => {
                     $.storage.save({type: data.type})
                     let d = new Date(data.expires_in)
                     // Vue.http.headers.common['Authorization'] = 'Bearer ' + data.access_token

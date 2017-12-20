@@ -1,5 +1,5 @@
 <template>
-    <select class="form-control w-sm c-select" v-model="myCommission">
+    <select class="form-control w-sm c-select" v-model="myCommission" :required="required">
         <option value="0">{{$t('agent.commission_setting')}}</option>
         <option class="form-control" :value="r.id" v-for="r in commissionsettings">{{r.name}}</option>
     </select>
@@ -8,7 +8,7 @@
 <script>
 import api from '../api'
 export default {
-    props: ['commissionsetting', 'default'],
+    props: ['required', 'commissionsetting', 'default'],
     data () {
         return {
             commissionsettings: [],

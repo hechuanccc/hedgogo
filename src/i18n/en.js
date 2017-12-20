@@ -476,7 +476,8 @@ export default {
         no_setting_holiday: 'No Setting Holiday.',
         modify_success: 'Successfully modified!',
         modify_fail: 'Fail to modify!',
-        adjust_rank: 'Adjust Rank'
+        adjust_rank: 'Adjust Rank',
+        no_change: 'No change!'
     },
     game_history: {
         game: 'Game',

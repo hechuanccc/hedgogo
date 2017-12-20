@@ -20,49 +20,54 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="l in levels" >
+              <tr v-for="l in levels">
                 <td><router-link :to="'/level/' + l.id">{{l.name}}</router-link></td>
                 <td>
                     <span v-if="l.status==1" class="label success">安全</span>
                     <span v-else-if="l.status==0" class="label danger">危险</span>
                 </td>
                 <td>
-                    <div v-show="l.remit_limit" v-if="l.remit_limit.lower || l.remit_limit.upper">
-                        <div  v-show="!l.remit_limit.lower">{{l.remit_limit.upper}} 以下</div>
-                        <div  v-show="!l.remit_limit.upper">{{l.remit_limit.lower}} 以上</div>
-                        <div v-show="l.remit_limit.upper && l.remit_limit.lower">{{l.remit_limit.lower}} 至 {{l.remit_limit.upper}}</div>
+                    <div v-if="l.remit_limit && (l.remit_limit.lower || l.remit_limit.upper)">
+                        <div v-if="l.remit_limit.upper && l.remit_limit.lower">{{l.remit_limit.lower}} 至 {{l.remit_limit.upper}}</div>
+                        <div v-else-if="!l.remit_limit.lower">{{l.remit_limit.upper}} 以下</div>
+                        <div v-else-if="!l.remit_limit.upper">{{l.remit_limit.lower}} 以上</div>
                     </div>
                     <div v-else>
                         <span>{{$t('common.not_set')}}</span>
                     </div>
                 </td>
                 <td>
-                    <div v-show="l.online_limit" v-if="l.online_limit.lower || l.online_limit.upper">
-                        <div  v-show="!l.online_limit.lower">{{l.online_limit.upper}} 以下</div>
-                        <div  v-show="!l.online_limit.upper">{{l.online_limit.lower}} 以上</div>
-                        <div v-show="l.online_limit.upper && l.online_limit.lower">{{l.online_limit.lower}} 至 {{l.online_limit.upper}}</div>
+                    <div v-if="l.online_limit && (l.online_limit.lower || l.online_limit.upper)">
+                        <div v-if="l.online_limit.upper && l.online_limit.lower">{{l.online_limit.lower}} 至 {{l.online_limit.upper}}</div>
+                        <div v-else-if="!l.online_limit.lower">{{l.online_limit.upper}} 以下</div>
+                        <div v-else-if="!l.online_limit.upper">{{l.online_limit.lower}} 以上</div>
                     </div>
                     <div v-else>
                         <span>{{$t('common.not_set')}}</span>
                     </div>
                 </td>
                 <td>
-                    <div v-show="l.withdraw_limit" v-if="l.withdraw_limit.lower || l.withdraw_limit.upper">
-                        <div  v-show="!l.withdraw_limit.lower">{{l.withdraw_limit.upper}} 以下</div>
-                        <div  v-show="!l.withdraw_limit.upper">{{l.withdraw_limit.lower}} 以上</div>
-                        <div v-show="l.withdraw_limit.upper && l.withdraw_limit.lower">{{l.withdraw_limit.lower}} 至 {{l.withdraw_limit.upper}}</div>
+                    <div v-if="l.withdraw_limit && (l.withdraw_limit.lower || l.withdraw_limit.upper)">
+                        <div v-if="l.withdraw_limit.upper && l.withdraw_limit.lower">{{l.withdraw_limit.lower}} 至 {{l.withdraw_limit.upper}}</div>
+                        <div v-else-if="!l.withdraw_limit.lower">{{l.withdraw_limit.upper}} 以下</div>
+                        <div v-else-if="!l.withdraw_limit.upper">{{l.withdraw_limit.lower}} 以上</div>
                     </div>
                     <div v-else>
                         <span>{{$t('common.not_set')}}</span>
                     </div>
                 </td>
+                
                 <td>
-                    {{l.withdraw_fee.rate}}
+                    <span v-if="l.withdraw_fee">{{ l.withdraw_fee.rate }}</span>
+                    <span v-else>{{ $t('common.not_set') }}</span>
                 </td>
                 <td>
-                    <div v-if="l.withdraw_fee.type == 2">{{l.withdraw_fee.hour}} {{$t('level.hour')}} {{l.withdraw_fee.times}} {{$t('level.times')}}</div>
-                    <div v-else-if="l.withdraw_fee.type == 0">{{$t('level.free')}}</div>
-                    <div v-else-if="l.withdraw_fee.type == 1">{{$t('level.everytime')}}</div>
+                    <div v-if="l.withdraw_fee">
+                        <div v-if="l.withdraw_fee.type == 2">{{l.withdraw_fee.hour}} {{$t('level.hour')}} {{l.withdraw_fee.times}} {{$t('level.times')}}</div>
+                        <div v-else-if="l.withdraw_fee.type == 0">{{$t('level.free')}}</div>
+                        <div v-else-if="l.withdraw_fee.type == 1">{{$t('level.everytime')}}</div>
+                    </div>
+                    <span v-else>{{$t('common.not_set')}}</span>
                 </td>
                 <td class="text-sm">
                     <router-link tag="div" v-show="l.online_discounts" :to="'/level/' + l.id">{{$t('bill.remit')}}：
@@ -95,7 +100,7 @@ import api from '../../api'
 export default {
     data () {
         return {
-            'levels': []
+            levels: []
         }
     },
     created () {

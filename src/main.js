@@ -9,10 +9,8 @@ import { sync } from 'vuex-router-sync'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
 import axios from 'axios'
-import qs from 'qs'
 
 import App from './views/App'
-import { isArray } from 'util'
 
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
@@ -28,24 +26,10 @@ Vue.use(VueCookie)
 // especially mobile browser
 // @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
 // so we need to set a common header 'Authorization' for sending credentials
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // Vue.http.options.credentials = true
 if (VueCookie.get('access_token')) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + VueCookie.get('access_token')
 }
-
-axios.interceptors.request.use((config) => {
-    if (config.method === 'post') {
-        if (isArray(config.data) || config.headers['Content-Type'] === 'application/json') {
-            config.headers['Content-Type'] = 'application/json'
-        } else {
-            config.data = qs.stringify(config.data)
-        }
-    }
-    return config
-}, error => {
-    return Promise.reject(error)
-})
 
 axios.interceptors.response.use(response => {
     if (response.data.code === 2000) {

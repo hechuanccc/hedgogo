@@ -476,7 +476,8 @@ export default {
         no_setting_holiday: '未设置公休开始结束时间',
         modify_success: '修改成功！',
         modify_fail: '修改失败！',
-        adjust_rank: '调整排序'
+        adjust_rank: '调整排序',
+        no_change: '未侦测到修改'
     },
     game_history: {
         game: '游戏名称',
