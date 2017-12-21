@@ -532,6 +532,7 @@ export default {
         sum_of_ball_great_tiny: '极值',
         sum_of_ball_color_wavelength: '色波',
         sum_of_ball_five_element: '五行',
+        seven_color_wavelength: '7色波',
         balls_odd_even_cp: '单双比',
         balls_front_rear_count_cp: '前后比',
         weird_chinese_dice_rules_1_3: '前三',

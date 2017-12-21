@@ -95,8 +95,8 @@
               <span v-else>-</span>
             </td>
             <td>
-              <span v-if="isArray(agent.domain)">
-                <label class="m-r deamin-label" v-for="deamin in agent.domain">{{deamin}}</label>
+              <span v-if="agent.domain && isArray(agent.domain.split(','))">
+                <label class="m-r-sm deamin-label" v-for="deamin in agent.domain.split(',')">{{deamin}}</label>
               </span>
               <span  v-else-if="agent.domain">{{agent.domain}}</span>
               <span  v-else>-</span>
