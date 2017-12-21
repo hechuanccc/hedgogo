@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <aside-menu :show-nav="showNav"></aside-menu>
-        <div id="content" class="content app-content box-shadow-z2 box-radius-1x">
+        <div id="content" :class="['content app-content box-shadow-z2 box-radius-1x', showNav ? '' : 'm-l-0']">
             <page-header :show-nav="showNav"></page-header>
             <div class="app-body">
                 <div class="padding">
@@ -51,7 +51,7 @@ export default {
     },
     computed: {
         showNav () {
-            return this.$route.name !== 'login'
+            return this.$route.name !== 'login' && this.$route.name !== 'error'
         }
     },
     // created hook: DOM compilation has not been started, so we can

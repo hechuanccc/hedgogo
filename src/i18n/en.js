@@ -414,7 +414,8 @@ export default {
         logout: 'Log Out',
         clear_all: 'Clear All',
         filter_trial_account: 'Filter Test User',
-        no_setting: 'No setting'
+        no_setting: 'No setting',
+        back_page: 'Go Back To The Last Page'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -545,9 +546,9 @@ export default {
         sum: 'Sum',
         bigger: 'B',
         smaller: 'S',
-        equal: 'E',
-        odd: 'O',
-        even: 'E',
+        equal: 'Equal',
+        odd: 'Odd',
+        even: 'Even',
         red: 'Red',
         green: 'Green',
         blue: 'Blue',

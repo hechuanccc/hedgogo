@@ -34,7 +34,7 @@ if (VueCookie.get('access_token')) {
 axios.interceptors.response.use(response => {
     if (response.data.code === 2000) {
         return response.data.data
-    } else if (response.data.code === 9007) {
+    } else if (response.data.code === 9007 || response.data.code === 9011) {
         router.push({
             path: '/login',
             query: {
@@ -44,8 +44,8 @@ axios.interceptors.response.use(response => {
     } else {
         return Promise.reject(response.data.msg)
     }
-}, error => {
-    return Promise.reject(error)
+}, () => {
+    router.push('/error/')
 })
 
 let navLang = navigator.language || navigator.userLanguage
