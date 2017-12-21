@@ -20,7 +20,7 @@
                             <option value="5">{{$t('status.declined')}}</option>
                         </select>
                         <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
-                        <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                        <input type="text" v-model="query.transaction_id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                         <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
                         <input type="text" v-model="query.updated_by" class="form-control inline w-sm" v-bind:placeholder="$t('common.operator')" />
                         <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
@@ -90,7 +90,7 @@
               <tbody v-if="queryset.length >0">
                   <tr v-for="t in queryset" >
                       <td>
-                        <router-link :to="'/transaction/' + t.id">{{t.id}}</router-link>
+                        <router-link :to="'/transaction/' + t.id">{{t.transaction_id}}</router-link>
                       </td>
                       <td>
                         <router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
@@ -235,7 +235,7 @@
                 this.query.updated_at_1 = newObj
             },
             id (newObj, old) {
-                this.query.id = newObj
+                this.query.transaction_id = newObj
             }
         },
         created () {
@@ -278,8 +278,8 @@
                 if (this.query.updated_at_1) {
                     this.updated_at_1 = this.query.updated_at_1
                 }
-                if (this.query.id) {
-                    this.query.id = this.query.id
+                if (this.query.transaction_id) {
+                    this.query.id = this.query.transaction_id
                 }
                 this.queryset = queryset
             },
