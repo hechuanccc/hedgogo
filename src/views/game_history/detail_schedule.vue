@@ -286,7 +286,7 @@
                         <td v-if="mode">
                             <span class="label btn blue" @click="showModal(result)">{{ $t('game_history.manual_draw') }}</span>
                         </td>
-                        <td v-else>{{ result.created_by === null ? '' : '' }}</td>
+                        <td v-else>{{ result.is_manual ? $t('game_history.manual_draw') : '' }}</td>
                     </tr>
                 </tbody>
             </table>
