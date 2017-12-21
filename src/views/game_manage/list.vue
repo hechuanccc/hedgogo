@@ -26,7 +26,7 @@
           <tr v-for="(game, index) in queryset" :key="game.id">
             <td v-show="!mode"><i class="fa fa-reorder blue"></i></td>
             <td>
-              <a @click="$_routerLink(game)">{{game.display_name}}</a>
+              <router-link :to="`/game_detail/${game.id}/?display_name=${game.display_name}`">{{game.display_name}}</router-link>
             </td>
             <td>{{game.holidates.schedule_open | datetimeFilter}}</td>
             <td>{{game.holidates.schedule_close | datetimeFilter}}</td>
@@ -264,14 +264,6 @@ export default {
         cancelAdjustRank () {
             this.queryset = this.initialQueryset
             this.mode = !this.mode
-        },
-        $_routerLink (game) {
-            this.$router.push({
-                path: 'game_detail/' + game.id,
-                query: {
-                    display_name: game.display_name
-                }
-            })
         }
     },
     filters: {
