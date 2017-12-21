@@ -44,8 +44,8 @@ axios.interceptors.response.use(response => {
     } else {
         return Promise.reject(response.data.msg)
     }
-}, () => {
-    router.push('/error/')
+}, error => {
+    router.push('/error/?status=' + error.response.status)
 })
 
 let navLang = navigator.language || navigator.userLanguage

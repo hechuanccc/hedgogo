@@ -1048,7 +1048,7 @@ export default new Router({
         }
     },
     {
-        path: '/error',
+        path: '/error/',
         name: 'error',
         component: function (resolve) {
             require(['./views/error.vue'], resolve)
