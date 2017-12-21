@@ -26,7 +26,7 @@
                     <div class="row m-t">
                         <div class="col-xs-3 text-right">{{$t('bill.order_id')}}</div>
                         <div class="col-xs-8" v-if="transaction.transaction_type.code ==='online_pay'"><span class="text-muted">{{transaction.transaction_id}}</span></div>
-                        <div class="col-xs-8" v-else><span class="text-muted">{{transaction.id}}</span></div>
+                        <div class="col-xs-8" v-else><span class="text-muted">{{transaction.transaction_id}}</span></div>
                     </div>
 
                     <div class="row m-t">

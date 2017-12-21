@@ -14,7 +14,7 @@
                               <option value="5">{{$t('status.declined')}}</option>
                             </select>
                           <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
-                          <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                          <input type="text" v-model="query.transaction_id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                           <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
                           <input type="text" v-model="query.online_payee" class="form-control w-sm" v-bind:placeholder="$t('common.merchant')" />
                           <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
