@@ -184,7 +184,7 @@ export default {
     bill: {
         commission_report: 'Commission Report',
         balance_after: 'Balance after transaction',
-        order_id: 'Order ID',
+        order_id: 'Transaction ID',
         order_detail: 'Order Detail',
         created_at: 'Created at',
         transaction_type: 'Transaction Type',

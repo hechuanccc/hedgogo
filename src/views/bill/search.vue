@@ -18,7 +18,7 @@
                                 <i class="blue">{{t.display_name}}</i>
                             </option>
                         </select>
-                        <input type="text" v-model="query.id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                        <input type="text" v-model="query.transaction_id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                         <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
                         <input type="text" v-model="query.agent_q" class="form-control w-sm" v-bind:placeholder="$t('common.agent')"/>
                         <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
@@ -69,8 +69,8 @@
             <tbody>
                 <tr v-for="t in queryset">
                     <td>
-                        <router-link v-if="$root.$data.userType !== 'agent'" :to="'/transaction/' + t.id + '/'">{{t.id}}</router-link>
-                        <span v-else>{{t.id}}</span>
+                        <router-link v-if="$root.$data.userType !== 'agent'" :to="'/transaction/' + t.id + '/'">{{t.transaction_id}}</router-link>
+                        <span v-else>{{t.transaction_id}}</span>
                     </td>
                     <td>
                         <router-link v-if="$root.$data.userType !== 'agent'" :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
@@ -178,7 +178,7 @@
                 this.query.created_at_1 = newObj
             },
             order_id (newObj, old) {
-                this.query.id = newObj
+                this.query.transaction_id = newObj
             }
         },
         created () {
@@ -214,8 +214,8 @@
                 if (this.query.created_at_1) {
                     this.created_at_1 = this.query.created_at_1
                 }
-                if (this.query.id) {
-                    this.order_id = this.query.id
+                if (this.query.transaction_id) {
+                    this.order_id = this.query.transaction_id
                 }
                 this.queryset = queryset
             },
