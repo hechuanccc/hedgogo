@@ -270,7 +270,6 @@ export default {
     created () {
         this.$nextTick(() => {
             this.getPageAccessed()
-            this.submit()
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
@@ -390,6 +389,9 @@ export default {
                 })
                 this.pageSelected = 'online_member'
             } else {
+                this.$router.push({
+                    path: this.$route.path + '?account_type=1'
+                })
                 this.pageSelected = 'all_members'
             }
         }
