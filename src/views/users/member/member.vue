@@ -270,7 +270,6 @@ export default {
     created () {
         this.$nextTick(() => {
             this.getPageAccessed()
-            this.submit()
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
