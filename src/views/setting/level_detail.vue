@@ -24,7 +24,7 @@
                 <div class="row m-b p-b b-b">
                     <div class="col-md-4">
                         <span class="text-muted">{{$t('level.remit_limit')}}</span>
-                        <div v-if="remit_limit.lower || remit_limit.upper">
+                        <div v-if="remit_limit && (remit_limit.lower || remit_limit.upper)">
                             <div  v-if="remit_limit.lower == ''">不高于{{remit_limit.upper}}</div>
                             <div  v-if="remit_limit.upper == ''">不低于{{remit_limit.lower}}</div>
                             <div v-if="(remit_limit.upper != '') && (remit_limit.lower != '')">{{remit_limit.lower}} 至 {{remit_limit.upper}}</div>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-md-4">
                         <span class="text-muted">{{$t('level.online_pay_limit')}}</span>
-                        <div v-if="online_limit.lower || online_limit.upper">
+                        <div v-if="online_limit && (online_limit.lower || online_limit.upper)">
                             <div  v-if="!online_limit.lower">不高于{{online_limit.upper}}</div>
                             <div  v-if="!online_limit.upper">不低于{{online_limit.lower}}</div>
                             <div v-if="online_limit.upper && online_limit.lower">{{online_limit.lower}} 至 {{online_limit.upper}}</div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-xs-4">
                         <span class="text-muted">{{$t('level.withdraw_limit')}}</span>
-                        <div v-if="withdraw_limit.lower || withdraw_limit.upper">
+                        <div v-if="withdraw_limit && (withdraw_limit.lower || withdraw_limit.upper)">
                             <div  v-if="!withdraw_limit.lower">不高于{{withdraw_limit.upper}}</div>
                             <div  v-if="!withdraw_limit.upper">不低于{{withdraw_limit.lower}}</div>
                             <div v-if="withdraw_limit.upper && withdraw_limit.lower">{{withdraw_limit.lower}} 至 {{withdraw_limit.upper}}</div>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-b p-b b-b">
+                <div class="row m-b p-b b-b" v-if="withdraw_fee">
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('level.withdraw_fee_rate')}}</span>
                         <div>{{'¥' + withdraw_fee.rate}}</div>

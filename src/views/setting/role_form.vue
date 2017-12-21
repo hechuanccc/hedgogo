@@ -106,11 +106,7 @@ export default {
                     this.errorMsg = error
                 })
             } else {
-                this.$http.post(api.managerole + '?opt_expand=group,permissions', roleResult, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(data => {
+                this.$http.post(api.managerole + '?opt_expand=group,permissions', roleResult).then(data => {
                     this.$router.push('/roles/' + data.id)
                 }, error => {
                     this.errorMsg = error

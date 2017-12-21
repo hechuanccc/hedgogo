@@ -38,7 +38,7 @@
                                 <span class="text-success text-sm m-l" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>                                                                                      
                             </div>
                             <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-else>
-                                <button class="btn btn-sm  blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>                                
+                                <button class="btn btn-sm blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>                                
                                 <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
                             </div>
                             <div class="row">

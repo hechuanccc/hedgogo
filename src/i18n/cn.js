@@ -476,7 +476,8 @@ export default {
         no_setting_holiday: '未设置公休开始结束时间',
         modify_success: '修改成功！',
         modify_fail: '修改失败！',
-        adjust_rank: '调整排序'
+        adjust_rank: '调整排序',
+        no_change: '未侦测到修改'
     },
     game_history: {
         game: '游戏名称',
@@ -531,6 +532,7 @@ export default {
         sum_of_ball_great_tiny: '极值',
         sum_of_ball_color_wavelength: '色波',
         sum_of_ball_five_element: '五行',
+        seven_color_wavelength: '7色波',
         balls_odd_even_cp: '单双比',
         balls_front_rear_count_cp: '前后比',
         weird_chinese_dice_rules_1_3: '前三',

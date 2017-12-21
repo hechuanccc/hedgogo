@@ -18,22 +18,22 @@
                                     <input class="form-control w-sm" v-model="level.name" required  id="level-name">
                                 </div>
                             </div>
-                            <div class="form-group p-b">
+                            <div class="form-group p-b" v-if="level.remit_limit">
                                 <label for="agent" class="label-width">{{$t('level.remit_limit')}} </label>
-                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.remit_limit.lower"  >
+                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.remit_limit.lower">
                                 <span> ~ </span>
-                                <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.remit_limit.upper"  >
+                                <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.remit_limit.upper">
                             </div>
 
-                            <div class="form-group p-b">
+                            <div class="form-group p-b" v-if="level.online_limit">
                               <label for="agent" class="label-width">{{$t('level.online_pay_limit')}}</label>
-                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.online_limit.lower"  >
+                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.online_limit.lower">
                                 <span> ~ </span>
                                 <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.online_limit.upper">
                             </div>
-                            <div class="form-group b-b p-b">
+                            <div class="form-group b-b p-b" v-if="level.withdraw_limit">
                               <label for="agent" class="label-width">{{$t('level.withdraw_limit')}} </label>
-                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.withdraw_limit.lower"  >
+                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.withdraw_limit.lower">
                                 <span> ~ </span>
                                 <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.withdraw_limit.upper" >
                             </div>
@@ -53,7 +53,7 @@
                                     </label>
                                 </div>
                                 <div>
-                                    <label class="radio md-check md-check-md m-b text-muted" >
+                                    <label class="radio md-check md-check-md m-b text-muted">
                                         <input type="radio" value="2" name="gender" v-model="level.withdraw_fee.type">
                                         <i class="blue"></i>
                                         {{$t('level.preset')}}
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="radio md-check md-check-md m-b text-muted" >
+                                    <label class="radio md-check md-check-md m-b text-muted">
                                         <input type="radio" value="1" name="gender" v-model="level.withdraw_fee.type">
                                         <i class="blue"></i>
                                         {{$t('level.everytime')}}
@@ -98,7 +98,7 @@
                             </div>
 
 
-                            <div class="form-group" >
+                            <div class="form-group">
                               <label for="memo">{{$t('common.memo')}}</label>
                               <textarea class="form-control" rows="2" v-model="level.memo"></textarea>
                             </div>
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group m-t-md ">
+                            <div class="form-group m-t-md">
                                 <label for="birthday" class="label-width">{{$t('level.reg_present')}}</label>
                                 <div class="row text-muted">
                                     <label class="col-xs-2">{{$t('level.reg_present_status')}}</label>
@@ -211,7 +211,7 @@
                     </div>
                     <div>
                         <div class="alert alert-danger" v-show="level.responseError">
-                            <span v-for="(msg,index) in level.responseError">[{{index}}]  {{msg}} <br/> </span>
+                            <span>{{level.responseError}}<br/> </span>
                         </div>
                         <button :disabled="!$root.permissions.includes('change_level')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
@@ -352,6 +352,9 @@ export default {
                     data.remit_discounts = [{
                         type: 1
                     }]
+                }
+                for (let e in data) {
+                    if (!data[e]) delete data[e]
                 }
                 this.level = Object.assign(this.level, data)
             })

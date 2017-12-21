@@ -142,7 +142,7 @@
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.account')}} </label>
                     <div class="inline-form-control">
-                      <input class="form-control w-lg" type="number" placeholder="比如：张三丰" v-model="member.bank.account" :required="bankFilled">
+                      <input class="form-control w-lg" type="number" placeholder="比如：3345678" v-model="member.bank.account" :required="bankFilled">
                     </div>
                   </div>
                 </div>
@@ -265,11 +265,7 @@
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.member, this.initMember, {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(data => {
+                    this.$http.post(api.member, this.initMember).then(data => {
                         this.$router.push('/member/' + data.id)
                     }, error => {
                         this.errorMsg = error

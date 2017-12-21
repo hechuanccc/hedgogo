@@ -19,8 +19,6 @@
           <div class="row">
             <div class="col-xs-3">
               <h2><strong>{{agent.username}}</strong>
-                <span class="label info text-sm" v-if="agent.account_type==1" >{{$t('agent.affiliated_account')}}</span>
-                <span class="label success text-sm" v-else >{{$t('agent.direct_account')}}</span>
               </h2>
               <span class="text-muted" v-if="agent.created_by">{{agent.created_at | moment( "YYYY-MM-DD HH:mm")}} 加盟</span>
             </div>
@@ -221,7 +219,6 @@
                 memberLevels: [],
                 agent: {
                     id: '',
-                    account_type: '',
                     member_count: '',
                     bank: {
                         bank: {

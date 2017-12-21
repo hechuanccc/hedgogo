@@ -164,11 +164,7 @@
                 } else {
                     this.transaction.is_compensation = true
                 }
-                this.$http.post(api.manual_transaction, this.transaction, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(data => {
+                this.$http.post(api.manual_transaction, this.transaction).then(data => {
                     this.$router.push('/transaction/' + data.id)
                 }, error => {
                     this.errorMsg = error
