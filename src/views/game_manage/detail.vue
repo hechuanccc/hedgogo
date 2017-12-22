@@ -113,9 +113,6 @@ export default {
                     game: id
                 }
             }).then(data => {
-                data.forEach(e => {
-                    e.return_rate = e.return_rate * 100
-                })
                 this.playsets = data
             })
         },
