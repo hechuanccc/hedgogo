@@ -11,9 +11,7 @@
                             <li v-for="error in authErrors" :key="error+index">{{error}}</li>
                         </ul>
                     </div>
-                    <transition name="fade">
-                        <router-view></router-view>
-                    </transition>
+                    <router-view></router-view>
                 </div>
                 <div class="loading-layer" v-show="routerLoading">
                     <div class="icon">
@@ -264,13 +262,5 @@ export default {
     }
     #content{
         margin-left: 7rem;
-    }
-
-    .fade-enter-active, .fade-leave-active{
-    transition: opacity .3s
-    }
-
-    .fade-enter, .fade-leave-to{
-    opacity: 0
     }
 </style>
