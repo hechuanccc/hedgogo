@@ -290,6 +290,7 @@
             quick_select () {
                 this.$refs.pulling.submit()
                 let query = this.filter
+                this.$refs.pulling.getExportQuery()
                 this.$router.push({
                     path: this.$route.path,
                     query: query
