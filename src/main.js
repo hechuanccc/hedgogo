@@ -34,7 +34,7 @@ if (VueCookie.get('access_token')) {
 axios.interceptors.response.use(response => {
     if (response.data.code === 2000) {
         return response.data.data
-    } else if (response.data.code === 9007 || response.data.code === 9011) {
+    } else if (response.data.code === 9007) {
         router.push({
             path: '/login',
             query: {
