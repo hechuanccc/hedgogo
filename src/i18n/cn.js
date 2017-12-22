@@ -335,7 +335,8 @@ export default {
         deselect_all: '清空',
         new_window: '新窗口打开',
         updated_at: '状态更新于',
-        no_permission: '无权限访问'
+        no_permission: '无权限访问',
+        error_occurred_msg: '发生错误。请联系客服人员。'
     },
     bank: {
         bank_title: '银行资讯',
