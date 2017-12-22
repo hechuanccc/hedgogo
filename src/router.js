@@ -1046,6 +1046,16 @@ export default new Router({
             auth: true,
             disable_tabs: true
         }
+    },
+    {
+        path: '/error/',
+        name: 'error',
+        component: function (resolve) {
+            require(['./views/error.vue'], resolve)
+        },
+        meta: {
+            auth: false
+        }
     }
     ]
 })

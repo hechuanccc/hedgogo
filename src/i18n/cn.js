@@ -335,7 +335,8 @@ export default {
         deselect_all: '清空',
         new_window: '新窗口打开',
         updated_at: '状态更新于',
-        no_permission: '无权限访问'
+        no_permission: '无权限访问',
+        error_occurred_msg: '发生错误。请联系客服人员。'
     },
     bank: {
         bank_title: '银行资讯',
@@ -414,7 +415,8 @@ export default {
         logout: '退出登录',
         clear_all: '全部清除',
         filter_trial_account: '过滤试玩用户',
-        no_setting: '未设置'
+        no_setting: '未设置',
+        back_page: '返回上一页'
     },
     staff: {
         roles: '角色 / 权限',

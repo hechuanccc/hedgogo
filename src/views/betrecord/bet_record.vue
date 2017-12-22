@@ -21,22 +21,26 @@
             <div class="box-body clearfix form-inline form-input-sm">
               <div class="row">
                 <div class="col-xs-12">
-                  <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')"/>
-                  <input type="text" v-model="query.id" class="form-control w-sm" v-bind:placeholder="$t('report.bet_record_number')"/>
-                    <select class="form-control c-select" v-model="status" type="search">
-                      <option value="0">{{$t('common.status')}} </option>
-                      <option value="ongoing">{{$t('betrecord.ongoing')}}</option>
-                      <option value="win">{{$t('betrecord.win')}}</option>
-                      <option value="lose">{{$t('betrecord.lose')}}</option>
-                      <option value="cancelled">{{$t('status.cancelled')}}</option>
-                      <option value="tie">{{$t('betrecord.tie')}}</option>
-                    </select>
-                  <input type="text" v-model="query.bet_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/>
-                  <span>~</span>
-                  <input type="text" v-model="query.bet_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
-                  <date-picker width='140' v-model="created_at_0" class="inline"></date-picker>
-                  <span>~</span>
-                  <date-picker width='140' v-model="created_at_1" class="inline w-sm"></date-picker>
+                  <input type="text" v-model="query.member_q" class="form-control w-sm pull-left m-r-xs" v-bind:placeholder="$t('common.member')"/>
+                  <input type="text" v-model="query.id" class="form-control w-sm pull-left m-r-xs" v-bind:placeholder="$t('report.bet_record_number')"/>
+                  <select class="form-control c-select pull-left m-r-xs" v-model="status" type="search">
+                    <option value="0">{{$t('common.status')}} </option>
+                    <option value="ongoing">{{$t('betrecord.ongoing')}}</option>
+                    <option value="win">{{$t('betrecord.win')}}</option>
+                    <option value="lose">{{$t('betrecord.lose')}}</option>
+                    <option value="cancelled">{{$t('status.cancelled')}}</option>
+                    <option value="tie">{{$t('betrecord.tie')}}</option>
+                  </select>
+                  <div class="pull-left m-r-xs">
+                    <input type="text" v-model="query.bet_gte" class="form-control w-sm" v-bind:placeholder="$t('common.min_amount')"/>
+                    <span>~</span>
+                    <input type="text" v-model="query.bet_lte" class="form-control w-sm" v-bind:placeholder="$t('common.max_amount')"/>
+                  </div>
+                  <div class="pull-left m-r-xs" v-if="pageSelected === 'history'">
+                    <date-picker width='140' v-model="created_at_0"></date-picker>
+                    <span>~</span>
+                    <date-picker width='140' v-model="created_at_1"></date-picker>
+                    </div>
                   <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                 </div>
                 <div class="col-xs-12 m-t-sm">
@@ -172,8 +176,6 @@
             <td>
               <span v-if="t.status === 'ongoing'">
               <button type="button" class="btn btn-xs blue-300 sm-btn m-b-sm f-b" @click="cancelBet(t, 'cancelled', true, $event)">{{$t('betrecord.cancel_bet')}}</button> <br>
-              </span>
-              <span v-else-if="t.status === 'cancelled'">{{$t('betrecord.cancelled_bet')}}
               </span>
               <span v-else>-
               </span>

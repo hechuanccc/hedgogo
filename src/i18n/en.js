@@ -335,7 +335,8 @@ export default {
         deselect_all: 'Deselect All',
         new_window: 'New Window',
         updated_at: 'Updated at',
-        no_permission: 'User has no permission to access this page'
+        no_permission: 'User has no permission to access this page',
+        error_occurred_msg: 'An error occurred. Please contact support.'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -414,7 +415,8 @@ export default {
         logout: 'Log Out',
         clear_all: 'Clear All',
         filter_trial_account: 'Filter Test User',
-        no_setting: 'No setting'
+        no_setting: 'No setting',
+        back_page: 'Go Back To The Last Page'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -545,9 +547,9 @@ export default {
         sum: 'Sum',
         bigger: 'B',
         smaller: 'S',
-        equal: 'E',
-        odd: 'O',
-        even: 'E',
+        equal: 'Equal',
+        odd: 'Odd',
+        even: 'Even',
         red: 'Red',
         green: 'Green',
         blue: 'Blue',

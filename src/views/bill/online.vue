@@ -25,16 +25,18 @@
                   </div>
                   <div class="row m-t-sm">
                       <div class="col-xs-12">
-                          <select class="form-control w-sm c-select" v-model="selected" @change="updateDateFilter">
+                          <select class="form-control w-sm c-select pull-left m-r-xs" v-model="selected" @change="updateDateFilter">
                               <option value="0">{{$t('common.applied_at')}}</option>
                               <option value="1">{{$t('common.status_updated_at')}}</option>
                           </select>
+                          <div class="pull-left m-r-xs">
                               <date-picker width='140' v-model="query.created_at_0" v-if="selected == '0'"></date-picker>
                               <date-picker width='140' v-model="query.updated_at_0" v-else></date-picker>
                               <span>~</span>
                               <date-picker width='140' v-model="query.created_at_1" v-if="selected == '0'"></date-picker>
                               <date-picker width='140' v-model="query.updated_at_1" v-else></date-picker>
-                          <div class="btn-group">
+                          </div>
+                          <div class="btn-group pull-left m-r-xs">
                               <button type="button" class="btn btn-sm" :class="dateRange === 0 ? 'blue-500' : 'grey-300'" @click="toggleDate(0, selected)">{{$t('common.today')}}</button>
                               <button type="button" class="btn btn-sm" :class="dateRange === 1 ? 'blue-500' : 'grey-300'" @click="toggleDate(1, selected)">{{$t('common.yesterday')}}</button>
                               <button type="button" class="btn btn-sm" :class="dateRange === 7 ? 'blue-500' : 'grey-300'" @click="toggleDate(7, selected)">{{$t('common.this_week')}}</button>

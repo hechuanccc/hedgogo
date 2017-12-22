@@ -1,61 +1,76 @@
 <template>
-  <div>
-    <div class="m-b">
-        <ol class="breadcrumb">
-            <li class="active"><router-link to="/game_list">{{$t('nav.game_list')}}</router-link></li>
-            <li class="active">{{game.display_name}}</li>
-        </ol>
-    </div>
-    <div class="box">
-      <div class="box-body">
-        <div class="box">
-          <div class="box-body">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th width="20%"></th>
-                  <th width="16%">{{$t('game_manage.odds')}}</th>
-                  <th width="16%">{{$t('game_manage.return_rate')}}</th>
-                  <th width="16%">{{$t('game_manage.min_per_bet')}}</th>
-                  <th width="16%">{{$t('game_manage.max_per_bet')}}</th>
-                  <th width="16%">{{$t('game_manage.max_per_draw')}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="playset in playsetOrderByName" :key="playset.id">
-                  <td>
-                    <strong>{{playset.display_name}}</strong>
-                  </td>
-                  <td>
-                    <input type="text" v-model="playset.odds" @change="changeField(playset)">
-                  </td>
-                  <td>
-                    <input type="text" v-model="playset.return_rate" @change="changeField(playset)">
-                  </td>
-                  <td>
-                    <input type="text" v-model="playset.min_per_bet" @change="changeField(playset)">
-                  </td>
-                  <td>
-                    <input type="text" v-model="playset.max_per_bet" @change="changeField(playset)">
-                  </td>
-                  <td>
-                    <input type="text" v-model="playset.max_per_draw" @change="changeField(playset)">
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <div>
+        <div class="m-b">
+            <ol class="breadcrumb">
+                <li class="active"><router-link to="/game_list">{{ $t('nav.game_list') }}</router-link></li>
+                <li class="active">{{ game.display_name }}</li>
+            </ol>
         </div>
-      </div>
-      <div class="box-footer text-left">
-          <button class="md-btn w-sm blue" @click="updatePlayset"><i class="fa fa-check"></i> {{$t('action.confirm')}}</button>
-          <button class="md-btn w-sm" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{$t('action.cancel')}}</button>
-          <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
-          <span class="text-warning m-l-sm" v-show="warningMsg"><i class="fa fa-times"></i> {{ warningMsg }}</span>
-      </div>
+        <div class="box">
+            <form @submit.prevent="updatePlayset">
+                <div class="box-body">
+                    <table class="table table-striped">
+                        <thead class="text-center">
+                            <tr>
+                                <th width="20%"></th>
+                                <th width="16%">{{ $t('game_manage.odds') }}</th>
+                                <th width="16%">{{ $t('game_manage.return_rate') }}</th>
+                                <th width="16%">{{ $t('game_manage.min_per_bet') }}</th>
+                                <th width="16%">{{ $t('game_manage.max_per_bet') }}</th>
+                                <th width="16%">{{ $t('game_manage.max_per_draw') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="playset in playsetOrderByName" :key="playset.id">
+                                <td>
+                                    <strong>{{ playset.display_name }}</strong>
+                                </td>
+                                <td>
+                                    <div class="form-group m-b-0">
+                                        <input class="form-control" type="text" v-model="playset.odds" @change="changeField(playset)" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group m-b-0">
+                                        <input class="form-control" type="number" min="0" v-model="playset.return_rate" @change="changeField(playset)" required>
+                                        <span class="input-group-addon"><b>%</b></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group m-b-0">
+                                        <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+                                        <input class="form-control" type="number" min="0" v-model="playset.min_per_bet" @change="changeField(playset)" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group m-b-0">
+                                        <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_bet" @change="changeField(playset)" required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group m-b-0">
+                                        <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_draw" @change="changeField(playset)" required>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer text-left">
+                    <button class="md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>
+                    <button class="md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
+                    <transition name="fade">
+                        <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
+                    </transition>
+                    <transition name="fade">                    
+                        <span class="text-warning m-l-sm" v-show="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
+                    </transition>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
-
 </template>
 <script>
 import api from '../../api'
@@ -68,7 +83,6 @@ export default {
             },
             playsets: [],
             successMsg: '',
-            warningMsg: '',
             errorMsg: ''
         }
     },
@@ -80,7 +94,7 @@ export default {
         },
         updatedPlaysets () {
             return this.playsets.filter(playset => {
-                return playset.updated === true
+                return playset.updated
             })
         }
     },
@@ -88,7 +102,7 @@ export default {
         next(vm => {
             let id = to.params.id
             vm.game.id = id
-            vm.game.display_name = vm.$store.getters.getGame[id]
+            vm.game.display_name = to.query.display_name
             vm.getPlaySet(id)
         })
     },
@@ -115,15 +129,27 @@ export default {
                     this.playsets.forEach(playset => {
                         this.$set(playset, 'updated', false)
                     })
+                }, error => {
+                    this.errorMsg = error
                 })
             } else {
-                this.warningMsg = this.$t('game_manage.no_change')
+                this.errorMsg = this.$t('game_manage.no_change')
                 setTimeout(() => {
-                    this.warningMsg = ''
+                    this.errorMsg = ''
                 }, 2000)
             }
         }
     }
 }
 </script>
-
+<style lang="scss" scoped>
+.text-center th {
+    text-align: center;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0
+}
+</style>
