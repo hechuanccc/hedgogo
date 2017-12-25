@@ -336,7 +336,21 @@ export default {
         new_window: '新窗口打开',
         updated_at: '状态更新于',
         no_permission: '无权限访问',
-        error_occurred_msg: '发生错误。请联系客服人员。'
+        error_occurred_msg: '发生错误。请联系客服人员。',
+        overview: {
+            label: {
+                amount: '下注金额',
+                betrecord_count: '注单数量',
+                profit: '损益情况',
+                register_count: '注册人数'
+            },
+            title: {
+                amount: '过去7日下注金额',
+                betrecord_count: '过去7日注单数量',
+                profit: '过去7日营运商损益情况',
+                register_count: '过去7日注册人数'
+            }
+        }
     },
     bank: {
         bank_title: '银行资讯',
@@ -376,7 +390,7 @@ export default {
         sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
         cancelled_bets: '赌注被取消了',
-        total_valid_bet_amount: '有效投注总’笔’数',
+        total_valid_bet_amount: '有效投注总笔数',
         options: '投注选项',
         opts_combos_count: '组合选项计数'
     },
@@ -398,6 +412,7 @@ export default {
         setting: '设定',
         confirm: '确定',
         cancel: '取消',
+        download: '下载报表',
         view_remit_payees: '查看公司入款账号',
         update_remit_payee: '更新',
         add_remit_payee: '增加公司入款账户',
@@ -516,6 +531,7 @@ export default {
         period_bet_record: '当期单量',
         show_all: '显示全部',
         result_str_tips: '请输入%{num_len}个%{unique}数字(%{range_floor}~%{range_ceil})使用\'%{separator}\'分隔',
+        initial_msg: '未开期数可能为官方未开奖，请谨慎使用手动开奖',
         repeatable: '可重复',
         non_repetitive: '不重复',
         ball_num: '号码',

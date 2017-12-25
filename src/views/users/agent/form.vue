@@ -57,7 +57,7 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.dft_member_lv')}}</label>
                   <div class="inline-form-control">
-                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="true"></level>
+                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="true"/>
                   </div>
                 </div>
 

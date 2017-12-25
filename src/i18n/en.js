@@ -336,7 +336,21 @@ export default {
         new_window: 'New Window',
         updated_at: 'Updated at',
         no_permission: 'User has no permission to access this page',
-        error_occurred_msg: 'An error occurred. Please contact support.'
+        error_occurred_msg: 'An error occurred. Please contact support.',
+        overview: {
+            label: {
+                amount: 'Bet Amount',
+                betrecord_count: 'Bet Record Count',
+                profit: 'Profit',
+                register_count: 'Register Count'
+            },
+            title: {
+                amount: 'Bet Amount of past 7 days',
+                betrecord_count: 'Bet Record Count of past 7 days',
+                profit: 'Profit of Agent over the past 7 days',
+                register_count: 'Register Count of past 7 days'
+            }
+        }
     },
     bank: {
         bank_title: 'Bank Information',
@@ -398,6 +412,7 @@ export default {
         setting: 'Setting',
         confirm: 'Confirm',
         cancel: 'Cancel',
+        download: 'Download Report',
         view_remit_payees: 'View remit payees',
         update_remit_payee: 'Update',
         add_remit_payee: 'Add Remit Payee',
@@ -500,6 +515,7 @@ export default {
         manual_draw_success: 'Successfully manual draw!',
         manual_draw_fail: 'Fail to manual draw!',
         sure_manual_draw: 'Please check if manual draw. This operation affects %{bet_record_count} bet record(s).',
+        initial_msg: 'The undrawn game period might result from the error of official website, please check it twice before manually drawing result.',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
         retreat_sched_sure: 'Are you sure to retreat schedule?',

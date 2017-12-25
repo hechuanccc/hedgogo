@@ -66,13 +66,13 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="inline m-r-xs checkbox" v-if="mode">
+                    <div class="inline pull-left m-l-lg m-t-sm checkbox" v-if="mode">
                         <input type="checkbox" v-model="modal.sureDraw">
                         <i class="blue"></i>{{$t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords})}}
                     </div>
-                    <button type="button" class="btn btn-primary" @click="updateGameResult" v-if="mode" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>                    
-                    <button type="button" class="btn btn-primary" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
-                    <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                    <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                    <button type="button" class="inline pull-right btn btn-primary m-r-xs" @click="updateGameResult" v-if="mode" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>                    
+                    <button type="button" class="inline pull-right btn btn-primary m-r-xs" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -446,19 +446,26 @@ export default {
         },
         showModal (sched) {
             if (this.mode) {
-                this.modal.scheduleResult = {
-                    game_schedule: sched.id,
-                    game_code: sched.game_code,
-                    result_str: '',
-                    issue_number: sched.issue_number
+                this.modal = {
+                    scheduleResult: {
+                        game_schedule: sched.id,
+                        game_code: sched.game_code,
+                        result_str: '',
+                        issue_number: sched.issue_number
+                    },
+                    time: sched.schedule_result,
+                    sureDraw: false,
+                    betrecords: sched.betrecords,
+                    msg: this.$t('game_history.initial_msg'),
+                    isShow: true
                 }
-                this.modal.time = sched.schedule_result
-                this.modal.sureDraw = false
-                this.modal.betrecords = sched.betrecords
+                this.$nextTick(() => {
+                    this.$refs.alertMsg.trigger('warning')
+                })
             } else {
                 this.modal.scheduleResult = sched
+                this.modal.isShow = true
             }
-            this.modal.isShow = true
         },
         hideModal () {
             this.modal.isShow = false
@@ -487,11 +494,11 @@ export default {
                     this.$refs.pulling.rebase()
                 }, error => {
                     this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error.join(' ')}）`
-                    this.$refs.alertMsg.trigger('danger', 3)
+                    this.$refs.alertMsg.trigger('danger')
                 })
             } else {
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')
-                this.$refs.alertMsg.trigger('warning', 3)
+                this.$refs.alertMsg.trigger('warning')
             }
         },
         submit () {

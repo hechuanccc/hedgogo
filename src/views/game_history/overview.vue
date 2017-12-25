@@ -104,12 +104,12 @@
                     </div>                
                 </div>
                 <div class="modal-footer">
-                    <div class="inline m-r-xs checkbox">
+                    <div class="inline pull-left m-l-lg m-t-sm checkbox">
                         <input type="checkbox" v-model="modal.sureDraw">
                         <i class="blue"></i>{{$t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords})}}
                     </div>
-                    <button type="button" class="btn btn-primary" @click="updateGameResult" :disabled="!modal.sureDraw">{{ $t('action.create') }}</button>
-                    <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                    <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                    <button type="button" class="inline pull-right btn btn-primary m-r-xs" @click="updateGameResult" :disabled="!modal.sureDraw">{{ $t('action.create') }}</button>
                 </div>
             </div>
         </div>
@@ -185,8 +185,12 @@ export default{
                         result_str: ''
                     },
                     sureDraw: 0,
-                    isShow: true
+                    isShow: true,
+                    msg: this.$t('game_history.initial_msg')
                 }
+                this.$nextTick(() => {
+                    this.$refs.alertMsg.trigger('warning')
+                })
             })
         },
         hideModal () {
@@ -200,11 +204,11 @@ export default{
                     this.getPeriods()
                 }, error => {
                     this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error.join(' ')}）`
-                    this.$refs.alertMsg.trigger('danger', 3)
+                    this.$refs.alertMsg.trigger('danger')
                 })
             } else {
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')
-                this.$refs.alertMsg.trigger('warning', 3)
+                this.$refs.alertMsg.trigger('warning')
             }
         },
         enterDetailPage (id, mode) {

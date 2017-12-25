@@ -43,9 +43,9 @@
         <div class="col-xs-12">
           <div class="pull-right">
             <a :href="href" :getReport="getReport" v-if="queryset.length">
-              <span><i class="material-icons">&#xe2c4;</i></span>
+              <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
             </a>
-            <span disabled v-else><i class="material-icons">&#xe2c4;</i></span>
+            <span disabled v-else>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
           </div>
         </div>
     </div>

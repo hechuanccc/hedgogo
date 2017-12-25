@@ -69,7 +69,7 @@
                 <div class="form-group m-t-md">
                   <label class="label-width">{{$t('agent.commission_setting')}}</label>
                   <div class="inline-form-control">
-                    <commissionsetting :commissionsetting="agent.commission_settings" @myCommission="myCommission"></commissionsetting>
+                    <commissionsetting :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true"/>
                   </div>
                 </div>
 
@@ -77,7 +77,7 @@
                 <div class="form-group m-t-md">
                   <label class="label-width">{{$t('agent.dft_member_lv')}}</label>
                   <div class="inline-form-control">
-                    <level :level="agent.default_member_lv" @level-select="levelSelect"></level>
+                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="true"/>
                   </div>
                 </div>
 
@@ -102,13 +102,13 @@
                 <div class="form-group">
                   <label  class="label-width">{{$t('agent.domain')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" placeholder="1234567.com" v-model="agent.domain" >
+                    <input class="form-control input-lg" placeholder="1234567.com" v-model="agent.domain" required>
                   </div>
                 </div>
                 <div class="form-group" >
                   <label class="label-width">{{$t('common.phone')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" type="number" name="agent" placeholder="比如：13856789876" v-model="agent.phone">
+                    <input class="form-control" type="number" name="agent" placeholder="比如：13856789876" v-model="agent.phone" required>
                   </div>
                 </div>
               </div>
@@ -117,7 +117,7 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.real_name')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name">
+                    <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name" required>
                   </div>
                 </div>
 
@@ -141,7 +141,7 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.email')}}</label>
                   <div class="inline-form-control">
-                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email">
+                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email" required>
                   </div>
                 </div>
 
@@ -155,24 +155,24 @@
                 <h6 class="b-b p-b m-b m-t-lg">{{$t('bank.bank_title')}}</h6>
                 <div class="form-group">
                   <label class="label-width">{{$t('bank.name')}}</label>
-                  <bank :bank="agent.bank.bank" :req="bankFilled" @bank-select="bank"></bank>
+                  <bank :bank="agent.bank.bank" :req="true" @bank-select="bank"/>
                 </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('bank.province')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.province" :required="bankFilled">
+                    <input class="form-control" v-model="agent.bank.province" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('bank.city')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.city" :required="bankFilled">
+                    <input class="form-control" v-model="agent.bank.city" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('bank.account')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" :required="bankFilled">
+                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" required>
                   </div>
                 </div>
                 <div class="form-group" >
@@ -468,10 +468,6 @@
                     return
                 } else {
                     this.formError = ''
-                }
-                if (!this.bankFilled || !this.agent.default_member_lv) {
-                    delete this.agent.bank
-                    delete this.agent.default_member_lv
                 }
                 if (this.agent.id) {
                     for (let x in this.agent) {
