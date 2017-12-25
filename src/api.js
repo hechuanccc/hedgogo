@@ -71,5 +71,6 @@ export default {
     refresh_token: prefix + 'login/refresh/',
     global_preferences: managePrefix + 'global-preferences/',
     website_descriptions: managePrefix + 'website/descriptions/',
-    website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/'
+    website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/',
+    report_overview: managePrefix + 'report/overview/'
 }
