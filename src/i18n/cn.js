@@ -390,7 +390,7 @@ export default {
         sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
         cancelled_bets: '赌注被取消了',
-        total_valid_bet_amount: '有效投注总’笔’数',
+        total_valid_bet_amount: '有效投注总笔数',
         options: '投注选项',
         opts_combos_count: '组合选项计数'
     },
