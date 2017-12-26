@@ -72,5 +72,6 @@ export default {
     global_preferences: managePrefix + 'global-preferences/',
     website_descriptions: managePrefix + 'website/descriptions/',
     website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/',
-    report_overview: managePrefix + 'report/overview/'
+    report_overview: managePrefix + 'report/overview/',
+    member_report: managePrefix + 'report/count/membership/'
 }

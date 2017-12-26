@@ -18,7 +18,7 @@
                                 <i class="blue">{{t.display_name}}</i>
                             </option>
                         </select>
-                        <input type="text" v-model="query.transaction_id" @keyup="removeSpace()" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
+                        <input type="number" v-model.trim="query.transaction_id" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                         <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
                         <input type="text" v-model="query.agent_q" class="form-control w-sm" v-bind:placeholder="$t('common.agent')"/>
                         <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
@@ -235,9 +235,6 @@
                 this.$http.get(api.transactiontype).then(data => {
                     this.trans_type = data
                 })
-            },
-            removeSpace () {
-                this.order_id = this.order_id.replace(/[^\d]+/g, '')
             },
             clearall: function () {
                 this.query = {}

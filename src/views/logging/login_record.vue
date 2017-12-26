@@ -10,8 +10,8 @@
               <span>~</span>
               <date-picker width='140' v-model="query.logindate_1"></date-picker>
               <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('member.account')"/>
-              <input type="text" v-model="query.ipaddr_q" @keyup="removeSpace" class="form-control w-sm" v-bind:placeholder="$t('member.ip')"/>
-              <input type="text" v-model="query.domain" @keyup="removeSpace" class="form-control w-sm" v-bind:placeholder="$t('member.loggedin_domain')"/>
+              <input type="text" v-model.trim="query.ipaddr_q" class="form-control w-sm" v-bind:placeholder="$t('member.ip')"/>
+              <input type="text" v-model.trim="query.domain" class="form-control w-sm" v-bind:placeholder="$t('member.loggedin_domain')"/>
               <button class="pull-right md-btn blue-500 w-xs" type="submit">{{$t('common.search')}}</button>
             </div>
           </div>
@@ -103,9 +103,6 @@ export default {
     methods: {
         submit () {
             this.$refs.pulling.submit()
-        },
-        removeSpace () {
-            this.query.ipaddr_q = this.query.ipaddr_q.replace(/[^\d\.]+/g, '')
         },
         queryData (queryset) {
             this.query = Object.assign({}, this.filter)

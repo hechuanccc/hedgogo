@@ -3,19 +3,22 @@
         <div class="col-md-6 col-xs-12" v-for="item in dataCategory" :key="item">
             <div class="box p-a-sm">
                 <div class="box-header p-b-0"><h6>{{ $t(`common.overview.title.${item}`) }}</h6></div>
-                <div class="box-body" v-if="lineChart.includes(item)">
+                <div class="box-body" v-if="dataCollection[item] && lineChart.includes(item)">
                     <line-chart
                         :chart-data="dataCollection[item]"
                         :options="options[item]"
-                        :height="200"
+                        :height="250"
                     />
                 </div>
-                <div class="box-body" v-if="barChart.includes(item)">
+                <div class="box-body" v-else-if="dataCollection[item] && barChart.includes(item)">
                     <bar-chart
                         :chart-data="dataCollection[item]"
                         :options="options[item]"
-                        :height="200"
+                        :height="250"
                     />
+                </div>
+                <div class="box-body" v-else>
+                    <span>{{ $t('common.no_record') }}</span>
                 </div>
             </div>
         </div>
