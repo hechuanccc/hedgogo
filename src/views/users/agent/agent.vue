@@ -15,7 +15,7 @@
           <div class="box-body clearfix form-inline form-input-sm">
             <div class="row">
               <div class="col-xs-12">
-                <input type="text" v-model="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
+                <input type="text" v-model.trim="query.username_q" class="form-control" v-bind:placeholder="$t('agent.account')"/>
                 <input type="text" v-model="query.promo_code" class="form-control w-sm"  v-bind:placeholder="$t('agent.promo_code')"/>
                 <input type="text" v-model="query.real_name_q" class="form-control w-sm" v-bind:placeholder="$t('common.real_name')" />
                 <input type="text" v-model="query.parent_agent_q" class="form-control w-sm" v-bind:placeholder="$t('agent.parent_agent')" />

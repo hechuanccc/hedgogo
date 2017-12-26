@@ -179,7 +179,11 @@ export default {
         pass: 'Pass',
         failed: 'Failed',
         logout_at: 'Log Out At',
-        isp: 'ISP'
+        isp: 'ISP',
+        real_member_registration: 'Num. of Real Member Register',
+        deposit_member_count: 'Num. of Deposit Member',
+        bet_member_count: 'Num. of Bet Member',
+        trial_member_count: 'Num. of Trial Member'
     },
     bill: {
         commission_report: 'Commission Report',

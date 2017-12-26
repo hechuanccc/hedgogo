@@ -179,7 +179,11 @@ export default {
         pass: '通过',
         failed: '未通过',
         logout_at: '注销时间',
-        isp: 'ISP'
+        isp: 'ISP',
+        real_member_registration: '真实会员注册人数',
+        deposit_member_count: '存款会员人数',
+        bet_member_count: '下注会员人数',
+        trial_member_count: '试用会员人数'
     },
     bill: {
         commission_report: '佣金计算',
