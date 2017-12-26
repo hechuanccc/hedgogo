@@ -73,5 +73,6 @@ export default {
     website_descriptions: managePrefix + 'website/descriptions/',
     website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/',
     report_overview: managePrefix + 'report/overview/',
-    member_report: managePrefix + 'report/count/membership/'
+    member_report: managePrefix + 'report/count/membership/',
+    finance_report: managePrefix + 'report/assets/finance/'
 }
