@@ -180,10 +180,10 @@ export default {
         failed: 'Failed',
         logout_at: 'Log Out At',
         isp: 'ISP',
-        real_member_registration: 'Num. of Real Member Register',
-        deposit_member_count: 'Num. of Deposit Member',
-        bet_member_count: 'Num. of Bet Member',
-        trial_member_count: 'Num. of Trial Member'
+        real_member_registration: 'Num. of Real Member Register per day',
+        deposit_member_count: 'Num. of Member Deposit per day',
+        bet_member_count: 'Num. of Member bet per day',
+        trial_member_count: 'Num. of Trial Member per day'
     },
     bill: {
         commission_report: 'Commission Report',
