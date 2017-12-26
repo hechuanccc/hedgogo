@@ -148,7 +148,6 @@ export default {
     watch: {
         platform (newObj, old) {
             this.query.platform = newObj
-            this.platform = newObj
         },
         date (newObj, old) {
             [this.query.start_date, this.query.end_date] = newObj.map(e => Vue.moment(e).format(format))
