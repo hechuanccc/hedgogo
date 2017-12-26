@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-md-6 col-xs-12" v-for="item in dataCategory" :key="item">
-            <div class="box p-a-sm">
+            <div class="box p-a-sm" @click="routerLinkTo(item)">
                 <div class="box-header p-b-0"><h6>{{ $t(`common.overview.title.${item}`) }}</h6></div>
                 <div class="box-body" v-if="dataCollection[item] && lineChart.includes(item)">
                     <line-chart
@@ -101,6 +101,17 @@ export default {
                     }
                 })
             })
+        },
+        routerLinkTo (item) {
+            if (item === 'amount' || item === 'betrecord_count' || item === 'profit') {
+                this.$router.push({
+                    path: 'report/finance_report'
+                })
+            } else if (item === 'register_count') {
+                this.$router.push({
+                    path: 'report/member_report'
+                })
+            }
         }
     },
     components: {
