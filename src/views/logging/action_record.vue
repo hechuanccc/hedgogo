@@ -27,7 +27,7 @@
             <div class="row m-t">
               <div class="col-xs-2">
                 <label class="text-sm m-r">{{$t('actionrecord.ipaddr')}}</label>
-                <input type="text" v-model="query.ipaddr_q"  @keyup="removeSpace" class="form-control w-sm" />
+                <input type="text" v-model.trim="query.ipaddr_q" class="form-control w-sm" />
               </div>
               <div class="col-xs-2">
                 <label class="text-sm m-r">{{$t('actionrecord.action_type')}}</label>
@@ -176,9 +176,6 @@ export default {
                 this.action_time_1 = this.query.action_time_1
             }
             this.queryset = queryset
-        },
-        removeSpace () {
-            this.query.ipaddr_q = this.query.ipaddr_q.replace(/[^\d\.]+/g, '')
         },
         queryParam (query) {
             this.filter = query
