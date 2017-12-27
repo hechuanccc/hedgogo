@@ -10,6 +10,7 @@
             <div class="col-xs-12">
               <date-picker
                 :not-after="today"
+                :shortcuts="[]"
                 class="pull-left m-r-xs"
                 v-model="date"
                 type="date"

@@ -10,6 +10,7 @@
             <div class="col-xs-12">
               <date-picker
                 :not-after="yesterday"
+                :shortcuts="[]"
                 class="pull-left m-r-xs"
                 v-model="date"
                 type="date"
@@ -79,10 +80,10 @@
         <tbody v-if="queryset.length > 0">
           <tr v-for="data in queryset" :key="data.time">
             <td>{{ data.time | moment('YYYY-MM-DD') }}</td>
-            <td>{{ data.amount }}</td>
+            <td><i class="fa fa-rmb"></i> {{ data.amount }}</td>
             <td>{{ data.betrecord_count }}</td>
-            <td>{{ data.deposit_amount }}</td>
-            <td>{{ data.profit | decimalFilter }}</td>
+            <td><i class="fa fa-rmb"></i> {{ data.deposit_amount }}</td>
+            <td><i class="fa fa-rmb"></i> {{ data.profit | decimalFilter }}</td>
           </tr>
         </tbody>
       </table>
