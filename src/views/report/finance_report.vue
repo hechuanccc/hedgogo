@@ -80,10 +80,10 @@
         <tbody v-if="queryset.length > 0">
           <tr v-for="data in queryset" :key="data.time">
             <td>{{ data.time | moment('YYYY-MM-DD') }}</td>
-            <td><i class="fa fa-rmb"></i> {{ data.amount }}</td>
+            <td><i class="fa fa-rmb"></i> {{ data.amount.toLocaleString() }}</td>
             <td>{{ data.betrecord_count }}</td>
-            <td><i class="fa fa-rmb"></i> {{ data.deposit_amount }}</td>
-            <td><i class="fa fa-rmb"></i> {{ data.profit | decimalFilter }}</td>
+            <td><i class="fa fa-rmb"></i> {{ data.deposit_amount.toLocaleString() }}</td>
+            <td :class="data.profit < 0 ? 'text-danger' : 'text-success'"><span v-if="data.profit<0">-</span> <i class="fa fa-rmb"></i> {{ data.profit | decimalFilter }}</td>
           </tr>
         </tbody>
       </table>
@@ -226,7 +226,7 @@ export default {
     },
     filters: {
         decimalFilter (value) {
-            return value.toFixed(2)
+            return Math.abs(value.toFixed(2)).toLocaleString()
         }
     },
     components: {

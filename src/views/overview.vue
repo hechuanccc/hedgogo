@@ -88,7 +88,7 @@ export default {
                         yAxes: [{
                             ticks: {
                                 callback: (value, index, values) => {
-                                    return this.lineChart.includes(title) ? '¥' + value : value
+                                    return this.lineChart.includes(title) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value
                                 }
                             },
                             gridLines: {
