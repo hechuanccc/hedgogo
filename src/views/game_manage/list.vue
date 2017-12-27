@@ -75,19 +75,39 @@
                         <span>{{ $t('game_manage.setting_icon') }}</span>
                     </div>
                     <div class="row m-b m-l">
-                        <div class="col-xs-3" v-if="modal.image">
-                            <img :src="modal.image" width="108" height="108">
+                        <div class="col-xs-5 text-center" v-if="modal.icon">
+                            <img :src="modal.icon" width="108" height="108">
                         </div>
-                        <div class="col-xs-3 text-center" v-else>
+                        <div class="col-xs-5 text-center" v-else>
                             <div id="circle">
                                 <span>{{ $t('game_manage.no_setting_icon') }}</span>
                             </div>
                         </div>
                         <div class="col-xs-5 inline-form-control m-t-lg">
-                            <input type="file" class="form-control" accept="image/*" @change="syncImg" required>
+                            <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'icon')" required>
                         </div>
-                        <div class="col-xs-2 col-xs-offset-2 text-right m-t-lg">
-                            <button type="button" class="btn btn-sm btn-primary" @click="updateImage">{{$t('action.update')}}</button>
+                        <div class="col-xs-2 text-right m-t-lg">
+                            <button type="button" class="btn btn-sm btn-primary" @click="updateImage('icon')">{{$t('action.update')}}</button>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                    <div class="row m-t m-b">
+                        <span>{{ $t('game_manage.setting_icon_background') }}</span>
+                    </div>
+                    <div class="row m-b m-l">
+                        <div class="col-xs-5 text-center" v-if="modal.bg_icon">
+                            <img :src="modal.bg_icon" width="180" height="180">
+                        </div>
+                        <div class="col-xs-5 text-center" v-else>
+                            <div class="m-l-sm" style="width:180px; height:180px; background:lightgrey; line-height:180px;">
+                                {{ $t('game_manage.no_setting_icon_background') }}
+                            </div>
+                        </div>
+                        <div class="col-xs-5 inline-form-control" style="margin-top:75px;">
+                            <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'bg_icon')" required>
+                        </div>
+                        <div class="col-xs-2 text-right" style="margin-top:75px;">
+                            <button type="button" class="btn btn-sm btn-primary" @click="updateImage('bg_icon')">{{$t('action.update')}}</button>
                         </div>
                     </div>
                     <div class="row m-l m-r">
@@ -126,11 +146,13 @@ export default {
                 id: '',
                 display_name: '',
                 code: '',
-                image: '',
+                icon: '',
+                bg_icon: '',
                 iconResult: {
                     display_name: '',
                     code: '',
                     icon: '',
+                    bg_icon: '',
                     to_display: true
                 },
                 msg: ''
@@ -184,9 +206,11 @@ export default {
                 iconResult: {
                     display_name: game.display_name,
                     code: game.code,
-                    icon: undefined
+                    icon: undefined,
+                    bg_icon: undefined
                 },
-                image: game.icon,
+                icon: game.icon,
+                bg_icon: game.bg_icon,
                 isShow: true
             }
         },
@@ -212,22 +236,21 @@ export default {
                 this.$refs.alertMsg.trigger('warning', 3)
             }
         },
-        syncImg (e) {
+        syncImg (e, attr) {
             var reader = new FileReader()
 
             reader.onload = (e) => {
-                this.modal.image = e.target.result
+                this.modal[attr] = e.target.result
             }
             reader.readAsDataURL(e.target.files[0])
-            this.modal.iconResult.icon = e.target.files[0]
-            this.modal.hasImage = true
+            this.modal.iconResult[attr] = e.target.files[0]
         },
-        updateImage () {
-            if (this.modal.iconResult.icon) {
+        updateImage (attr) {
+            if (this.modal.iconResult[attr]) {
                 let formData = new window.FormData()
                 formData.append('display_name', this.modal.iconResult.display_name)
                 formData.append('code', this.modal.iconResult.code)
-                formData.append('icon', this.modal.iconResult.icon)
+                formData.append(attr, this.modal.iconResult[attr])
                 this.$http.put(api.game_list + this.modal.id + '/', formData)
                 .then(() => {
                     this.getGameList()
@@ -238,7 +261,7 @@ export default {
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {
-                this.modal.msg = this.$t('game_manage.no_setting_icon')
+                this.modal.msg = attr === 'icon' ? this.$t('game_manage.no_setting_icon') : this.$t('game_manage.no_setting_icon_background')
                 this.$refs.alertMsg.trigger('warning', 3)
             }
         },
