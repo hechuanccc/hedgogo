@@ -1,0 +1,56 @@
+<template>
+    <select class="form-control w-sm c-select" v-model="myGame" :required="req" :disabled="!disabled">
+        <option value="">{{ $t('common.game') }}</option>
+        <option
+            class="form-control"
+            :value="e.code"
+            v-for="e in games"
+            :key="e.id"
+        >
+            {{ e.display_name }}
+        </option>
+    </select>
+</template>
+
+<script>
+import api from '../api'
+export default {
+    props: {
+        req: {
+            default: false
+        },
+        game: '',
+        disabled: {
+            default: true
+        },
+        index: {
+            default: 0
+        }
+    },
+    data () {
+        return {
+            games: [],
+            myGame: this.game
+        }
+    },
+    watch: {
+        game (newObj, old) {
+            this.myGame = this.game
+        },
+        myGame (newObj, old) {
+            if (this.myGame !== '0') {
+                if (newObj !== undefined) {
+                    this.$emit('game-select', newObj)
+                }
+            }
+        }
+    },
+    created () {
+        this.$http.get(api.game_list).then(data => {
+            this.games = data
+        })
+        this.myGame = this.game
+    }
+}
+</script>
+

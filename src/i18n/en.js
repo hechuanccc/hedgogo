@@ -73,6 +73,7 @@ export default {
         change_password: 'Change Password',
         agent_report: 'Agent Report',
         member_report: 'Member Report',
+        finance_report: 'Finance Report',
         online_member_report: 'Online Member Report',
         recent_bet_records: 'Today\'s Bet Records',
         bet_record_history: 'Bet Record History',

@@ -36,9 +36,8 @@
                               <span class="nav-icon"><i class="material-icons m-r-xs">&#xe24b;</i>报表管理</span>
                             </a>
                             <ul class="nav-sub">
-                                <li><router-link to="/report/agent_report"><span class="nav-text">{{$t('nav.agent_report')}}</span></router-link></li>
+                                <li><router-link to="/report/finance_report"><span class="nav-text">{{$t('nav.finance_report')}}</span></router-link></li>
                                 <li><router-link to="/report/member_report"><span class="nav-text">{{$t('nav.member_report')}}</span></router-link></li>
-                                <li><router-link to="/report/online_member"><span class="nav-text">{{$t('nav.online_member_report')}}</span></router-link></li>
                             </ul>
                         </li>
 

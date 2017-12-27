@@ -871,42 +871,29 @@ export default new Router({
         }
     },
     {
-        path: '/report/agent_report',
-        name: 'agent_report',
+        path: '/report/finance_report',
+        name: 'finance_report',
         component: function (resolve) {
-            require(['./views/users/agent/agent.vue'], resolve)
+            require(['./views/report/finance_report.vue'], resolve)
         },
         meta: {
             group: 'reporting',
             auth: true,
             agentPermission: 'true',
-            title: Vue.t('nav.agent_report')
+            title: Vue.t('nav.finance_report')
         }
     },
     {
         path: '/report/member_report',
         name: 'member_report',
         component: function (resolve) {
-            require(['./views/users/member/member.vue'], resolve)
+            require(['./views/report/member_report.vue'], resolve)
         },
         meta: {
             group: 'reporting',
             auth: true,
             agentPermission: 'true',
             title: Vue.t('nav.member_report')
-        }
-    },
-    {
-        path: '/report/online_member',
-        name: 'online_member_report',
-        component: function (resolve) {
-            require(['./views/users/member/member.vue'], resolve)
-        },
-        meta: {
-            group: 'reporting',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.online_member_report')
         }
     },
     {
