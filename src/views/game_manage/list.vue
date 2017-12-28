@@ -64,7 +64,15 @@
                     </div>
                     <div class="row m-b m-l">
                         <div class="col-xs-8">
-                            <date-picker v-model="modal.value" type="datetime" format="yyyy-MM-dd HH:mm" :minute-step="1" range></date-picker>
+                            <date-picker
+                                :shortcuts="[]"
+                                v-model="modal.value"
+                                type="datetime"
+                                format="yyyy-MM-dd HH:mm"
+                                :minute-step="1"
+                                range
+                            >
+                            </date-picker>
                         </div>
                         <div class="col-xs-2 col-xs-offset-2 text-right">
                             <button type="button" class="btn btn-sm btn-primary" @click="updateTime">{{$t('action.update')}}</button>
@@ -228,7 +236,7 @@ export default {
                     this.modal.msg = this.$t('game_manage.modify_success')
                     this.$refs.alertMsg.trigger('success', 3)
                 }, error => {
-                    this.modal.msg = this.$t('game_manage.modify_fail') + error.join(' ')
+                    this.modal.msg = this.$t('game_manage.modify_fail') + error
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {

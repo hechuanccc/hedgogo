@@ -278,7 +278,7 @@
                     account_type: '1'
                 },
                 account_type: '1',
-                period: 10000,
+                period: undefined,
                 pageSelected: '',
                 game_category: '0',
                 categories: [],
@@ -433,6 +433,7 @@
                     this.created_at_0 = this.today
                     this.created_at_1 = this.today
                     this.pageSelected = 'realtime'
+                    this.period = 10 * 1000
                 }
             },
             deselectall () {
@@ -467,7 +468,7 @@
             },
             getBetRecord () {
                 if (this.pageSelected === 'realtime') {
-                    let authenticationCookie = Vue.http.headers.common['Authorization']
+                    let authenticationCookie = this.$http.defaults.headers.common['Authorization']
                     if (authenticationCookie) {
                         authenticationCookie = authenticationCookie.split(' ').pop()
                     }
@@ -502,6 +503,11 @@
         components: {
             pulling,
             DatePicker
+        },
+        beforeDestroy () {
+            if (this.pageSelected === 'realtime') {
+                clearInterval(this.interval)
+            }
         }
     }
 </script>

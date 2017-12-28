@@ -89,8 +89,8 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">
-                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span>
+                        <div class="alert alert-danger" v-if="errorMsg">
+                            <span>{{ errorMsg }}</span>
                         </div>
                         <button :disabled="!$root.permissions.includes('change_promotion')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
@@ -127,7 +127,7 @@
                 promotions: [],
                 hasImage: false,
                 hasImageMobile: false,
-                responseError: '',
+                errorMsg: '',
                 selectedPromotion: '',
                 action: 'create'
             }
@@ -193,13 +193,13 @@
                     this.$http.put(api.promotion + this.promotion.id + '/', formData).then(data => {
                         this.$router.push('/promotion/' + data.id)
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 } else {
                     this.$http.post(api.promotion, formData).then(data => {
                         this.$router.push('/promotion/' + data.id)
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 }
             },

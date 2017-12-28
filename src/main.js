@@ -6,6 +6,7 @@ import VueCookie from 'vue-cookie'
 import Moment from 'vue-moment'
 import store from './vuex/store'
 import { sync } from 'vuex-router-sync'
+import { handleError } from './utils/handleError'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
 import axios from 'axios'
@@ -42,7 +43,7 @@ axios.interceptors.response.use(response => {
             }
         })
     } else {
-        return Promise.reject(response.data.msg)
+        return Promise.reject(handleError(response.data.msg))
     }
 }, error => {
     router.push('/error/?status=' + error.response.status)

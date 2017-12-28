@@ -91,8 +91,8 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">
-                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span> 
+                        <div class="alert alert-danger" v-if="errorMsg">
+                            <span>{{ errorMsg }}</span> 
                         </div>
                         <button :disabled="!$root.permissions.includes('change_remitpayee')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
@@ -122,7 +122,7 @@
                 },
                 showLevelError: false,
                 hasImage: false,
-                responseError: ''
+                errorMsg: ''
             }
         },
         computed: {
@@ -170,13 +170,13 @@
                     this.$http.put(api.remitpayee + this.payee.id + '/', formData).then(data => {
                         this.$router.push('/remit_payee/' + data.id)
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 } else {
                     this.$http.post(api.remitpayee, formData).then(data => {
                         this.$router.push('/remit_payee/' + data.id)
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 }
             },

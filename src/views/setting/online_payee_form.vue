@@ -88,8 +88,8 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">
-                            <span v-for="(msg,index) in responseError">[{{index}}]  {{msg}} <br/> </span>
+                        <div class="alert alert-danger" v-if="errorMsg">
+                            <span>{{ errorMsg }}</span>
                         </div>
                         <button :disabled="!$root.permissions.includes('change_onlinepayee')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                      </div>
@@ -116,7 +116,7 @@
                     domain_url: '',
                     display_name: ''
                 },
-                responseError: '',
+                errorMsg: '',
                 paymenttypes: []
             }
         },
@@ -135,13 +135,13 @@
                     this.$http.put(api.onlinepayee + this.payee.id + '/', this.payee).then(data => {
                         this.$router.push('/online_payee/' + data.id)
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 } else {
                     this.$http.post(api.onlinepayee, this.payee).then(data => {
                         this.$router.push('/online_payee/' + data.id)
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 }
             },

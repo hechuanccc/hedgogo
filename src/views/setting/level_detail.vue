@@ -18,7 +18,7 @@
                         <a class="md-btn md-flat" v-if="$root.permissions.includes('change_level')" @click="deleteLevel(id, $event)">{{$t('action.delete_level')}}</a>
                     </div>
                 </div>
-                <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
             </div>
             <div class="box-body">
                 <div class="row m-b p-b b-b">
@@ -289,7 +289,7 @@ export default {
                 card: ''
             },
             remit_payee: [],
-            responseError: '',
+            errorMsg: '',
             online_payee: [],
             report_flag: '',
             member_count: '',
@@ -318,7 +318,7 @@ export default {
             this.$http.delete(api.level + id).then(() => {
                 this.$router.push('/level')
             }, error => {
-                this.responseError = error
+                this.errorMsg = error
             })
         },
         getLevel (id) {

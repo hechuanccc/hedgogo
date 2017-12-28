@@ -165,8 +165,8 @@
 
             </div>
             <div>
-              <div class="alert alert-danger" v-if="formError">
-                <span v-for="(msg,index) in formError">[{{index}}]  {{msg}} <br/> </span>
+              <div class="alert alert-danger" v-if="errorMsg">
+                <span>{{ errorMsg }}</span>
               </div>
               <div class="alert alert-success" v-if="statusUpdated">{{$t('agent.status_update')}}</div>
               <button type="submit" :disabled="!levelPermission" class="md-btn blue w-sm" >{{$t('common.save')}}</button>
@@ -193,7 +193,7 @@
                 limit: 5,
                 minChars: 1,
                 query: '',
-                formError: '',
+                errorMsg: '',
                 birthdayFormat: '',
                 agent: {
                     id: '',
@@ -299,10 +299,10 @@
             },
             onSubmit (e) {
                 if (!this.agent.parent_agent && parseInt(this.agent.level) !== 1) {
-                    this.formError = '请选择正确的上线'
+                    this.errorMsg = '请选择正确的上线'
                     return
                 } else {
-                    this.formError = ''
+                    this.errorMsg = ''
                 }
                 this.initAgent = Object.assign(this.initAgent, this.agent)
                 if (this.agent.id) {
@@ -312,7 +312,7 @@
                             this.$router.push('/agent/' + data.id)
                         }, 2000)
                     }, error => {
-                        this.formError = error
+                        this.errorMsg = error
                     })
                 } else {
                     this.$http.post(api.agent, this.initAgent).then(data => {
@@ -321,7 +321,7 @@
                             this.$router.push('/agent/' + data.id)
                         }, 2000)
                     }, error => {
-                        this.formError = error
+                        this.errorMsg = error
                     })
                 }
             },
