@@ -505,7 +505,7 @@
             DatePicker
         },
         beforeDestroy () {
-            if (this.pageSelected && this.pageSelected === 'realtime') {
+            if (this.pageSelected === 'realtime') {
                 clearInterval(this.interval)
             }
         }
