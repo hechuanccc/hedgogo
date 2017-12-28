@@ -1,9 +1,10 @@
 <template>
     <div class="row">
         <div class="col-md-6 col-xs-12" v-for="item in dataCategory" :key="item">
-            <div class="box p-a-sm" @click="routerLinkTo(item)">
+            <router-link :to="routerLinkTo(item)" tag="div" class="box p-a-sm">
                 <div class="box-header p-b-0"><h6>{{ $t(`common.overview.title.${item}`) }}</h6></div>
-                <div class="box-body" v-if="dataCollection[item] && lineChart.includes(item)">
+                <div class="box-body text-center" v-if="loading"><i class="fa fa-3x fa-spin fa-spinner fa-fw"></i></div>
+                <div class="box-body" v-else-if="dataCollection[item] && lineChart.includes(item)">
                     <line-chart
                         :chart-data="dataCollection[item]"
                         :options="options[item]"
@@ -20,7 +21,7 @@
                 <div class="box-body" v-else>
                     <span>{{ $t('common.no_record') }}</span>
                 </div>
-            </div>
+            </router-link>
         </div>
     </div>
 </template>
@@ -54,16 +55,19 @@ export default {
                 betrecord_count: 45,
                 register_count: 262
             },
+            loading: undefined,
             options: {}
         }
     },
     created () {
+        this.loading = true
         this.getOverviewData()
     },
     methods: {
         getOverviewData () {
             this.$http.get(api.report_overview).then(data => {
                 this.fillData(data)
+                this.loading = false
             })
         },
         fillData (data) {
@@ -104,13 +108,9 @@ export default {
         },
         routerLinkTo (item) {
             if (item === 'amount' || item === 'betrecord_count' || item === 'profit') {
-                this.$router.push({
-                    path: 'report/finance_report'
-                })
+                return 'report/finance_report'
             } else if (item === 'register_count') {
-                this.$router.push({
-                    path: 'report/member_report'
-                })
+                return 'report/member_report'
             }
         }
     },
@@ -120,3 +120,11 @@ export default {
     }
 }
 </script>
+<style scoped>
+div.box:hover,
+div.box:focus,
+div.box:active {
+    transform: scale(1.01);
+    cursor: pointer;
+}
+</style>
