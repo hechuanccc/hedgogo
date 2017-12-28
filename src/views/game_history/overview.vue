@@ -203,7 +203,7 @@ export default{
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.getPeriods()
                 }, error => {
-                    this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error.join(' ')}）`
+                    this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error}）`
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {

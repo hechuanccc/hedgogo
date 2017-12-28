@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+        <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
         <div class="m-b" v-if="userPermission">
             <button class="md-btn w-sm blue" type="button"  @click="showAll=!showAll">
                 <span v-if="!showAll">{{$t('manage.add_announcement')}}</span>
@@ -129,7 +129,7 @@ export default {
             },
             id: '',
             querysetIndex: '',
-            responseError: ''
+            errorMsg: ''
         }
     },
     computed: {
@@ -182,7 +182,7 @@ export default {
                     this.announcement.name = ''
                     this.announcement.announcement = ''
                 }, error => {
-                    this.responseError = error
+                    this.errorMsg = error
                 })
             } else {
                 this.$http.post(this.announcementApi, this.announcement).then(data => {
@@ -190,7 +190,7 @@ export default {
                     this.announcement.announcement = ''
                     this.queryset.unshift(data)
                 }, error => {
-                    this.responseError = error
+                    this.errorMsg = error
                 })
             }
         },

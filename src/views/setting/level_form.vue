@@ -210,8 +210,8 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-show="level.responseError">
-                            <span>{{level.responseError}}<br/> </span>
+                        <div class="alert alert-danger" v-show="level.errorMsg">
+                            <span>{{level.errorMsg}}</span>
                         </div>
                         <button :disabled="!$root.permissions.includes('change_level')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
@@ -260,7 +260,7 @@ export default {
                     'withdraw_limit_upper': '单次取款限额有误：',
                     'service_rate': '行政费用比例：'
                 },
-                responseError: '',
+                errorMsg: '',
                 memo: '',
                 service_rate: '',
                 reg_present: {
@@ -321,7 +321,7 @@ export default {
                 this.$http.put(api.level + this.level.id + '/', this.level).then(data => {
                     this.$router.push('/level/' + data.id)
                 }, error => {
-                    this.level.responseError = error
+                    this.level.errorMsg = error
                 })
             } else {
                 this.verifyDiscounts(this.level.remit_discounts)
@@ -329,7 +329,7 @@ export default {
                 this.$http.post(api.level, this.level).then(data => {
                     this.$router.push('/level/' + data.id)
                 }, error => {
-                    this.level.responseError = error
+                    this.level.errorMsg = error
                 })
             }
         },

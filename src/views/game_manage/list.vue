@@ -236,7 +236,7 @@ export default {
                     this.modal.msg = this.$t('game_manage.modify_success')
                     this.$refs.alertMsg.trigger('success', 3)
                 }, error => {
-                    this.modal.msg = this.$t('game_manage.modify_fail') + error.join(' ')
+                    this.modal.msg = this.$t('game_manage.modify_fail') + error
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {

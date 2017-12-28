@@ -114,7 +114,7 @@
                     <label class="col-sm-2 form-control-label"></label>
                     <div class="col-sm-5">
                         <div class="alert alert-danger" v-if="errorMsg">
-                            <span v-for="(msg,index) in errorMsg"> {{msg}} <br/> </span>
+                            <span> {{errorMsg}} </span>
                         </div>
                         <button class="md-btn blue w-sm" type="submit">{{$t('common.submit')}}</button>
                         <div class="m-t-sm text-sm t-red">{{$t('bill.submit_alert')}}</div>

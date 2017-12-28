@@ -26,7 +26,7 @@
             <div class="m-b text-danger">图片尺寸：电脑端推荐宽高比例为 4 : 1，推荐宽高为 1920 * 454，手机端推荐宽高比例为 3 : 1 ，推荐宽高为 320 * 160</div>
             <div class="loading text-success" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在创建中...</b>   </div>
         </div>
-        <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+        <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped b-t">
                 <thead>
@@ -97,7 +97,7 @@ export default {
                 image: []
             },
             loading: false,
-            responseError: ''
+            errorMsg: ''
         }
     },
     computed: {
@@ -139,7 +139,7 @@ export default {
                 this.queryset.unshift(data)
                 this.loading = false
             }, error => {
-                this.responseError = error
+                this.errorMsg = error
             })
         },
         getImg (e) {

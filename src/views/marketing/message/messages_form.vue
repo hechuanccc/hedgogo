@@ -41,8 +41,8 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="responseError">
-                            <span>{{responseError}} <br/> </span>
+                        <div class="alert alert-danger" v-if="errorMsg">
+                            <span>{{errorMsg}} <br/> </span>
                         </div>
                         <button type="submit" class="md-btn w-sm blue">{{$t('common.send')}}</button>
                     </div>
@@ -65,7 +65,7 @@
                     title: '',
                     member_level: ''
                 },
-                responseError: '',
+                errorMsg: '',
                 checkMembers: true
             }
         },
@@ -79,18 +79,18 @@
                     this.$http.post(api.messages, this.message).then(() => {
                         this.$router.push('/messages/')
                     }, error => {
-                        this.responseError = error
+                        this.errorMsg = error
                     })
                 } else {
-                    this.responseError = '群发或接收人必须填写一个'
+                    this.errorMsg = '群发或接收人必须填写一个'
                 }
             },
             checkMember () {
-                this.responseError = ''
+                this.errorMsg = ''
                 if (this.message.receiver) {
                     this.$http.get(api.checkMember + '?username=' + this.message.receiver).then(data => {
                         if (data.length > 0) {
-                            this.responseError = data + ' 会员名输入有误，请从新填写(接收人请用英文","隔开)'
+                            this.errorMsg = data + ' 会员名输入有误，请从新填写(接收人请用英文","隔开)'
                             this.checkMembers = false
                         } else {
                             this.checkMembers = true

@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="m-t">
-                    <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
+                    <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
                     <button type="" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     <label class="text-success m-l" v-if="success">密码设置成功，需要重新登录，即将跳转至登录页</label>
                 </div>
@@ -46,7 +46,7 @@
                     new_password: '',
                     repeat_password: ''
                 },
-                responseError: '',
+                errorMsg: '',
                 success: false
             }
         },
@@ -60,10 +60,10 @@
         methods: {
             onSubmit (e) {
                 this.$http.post(api.changePassword, this.user).then(data => {
-                    this.responseError = ''
+                    this.errorMsg = ''
                     this.success = true
                 }, error => {
-                    this.responseError = error
+                    this.errorMsg = error
                 })
             }
         }

@@ -151,7 +151,7 @@
             </div>
             <div>
               <div class="alert alert-danger" v-if="errorMsg">
-                <span v-for="(msg,index) in errorMsg">[{{index}}]  {{msg}} <br/> </span> 
+                <span>{{ errorMsg }}</span> 
               </div>
               <button type="submit" :disabled="!$root.permissions.includes('update_member_details')" class="md-btn blue w-sm" >{{$t('common.save')}} </button>
             </div>

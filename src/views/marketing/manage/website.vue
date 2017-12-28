@@ -87,7 +87,7 @@
                                                         <div class="row m-l-xs m-r-xs" v-else-if="box.status===1">
                                                             <textarea class="form-control" rows="15" cols="12" v-model="box.main_description" :disabled="!box.mode" style="resize:none;"></textarea>
                                                         </div>
-                                                        <div class="m-a alert alert-danger" v-if="box.errMsg">{{ box.errMsg }}</div>
+                                                        <div class="m-a alert alert-danger" v-if="box.errorMsg">{{ box.errorMsg }}</div>
                                                         <div class="row m-t-sm">
                                                             <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('action.update')}}</button>
                                                             <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('action.confirm')}}</button>
@@ -161,7 +161,7 @@
                     this.boxes = data.map(box => Object({
                         ...box,
                         mode: 0,
-                        errMsg: '',
+                        errorMsg: '',
                         successMsg: '',
                         loading: false
                     }))
@@ -173,7 +173,7 @@
                     let box = Object({
                         ...data,
                         mode: 1,
-                        errMsg: '',
+                        errorMsg: '',
                         successMsg: '',
                         loading: false
                     })
@@ -211,9 +211,9 @@
                 let formData = new window.FormData()
                 let box = this.boxes[index]
                 let boxResult = this.boxResults[id]
-                const errMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.main')}`
+                const errorMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.main')}`
                 if (!box.header_image) {
-                    box.errMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.header_img')}`
+                    box.errorMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.header_img')}`
                     return
                 } else if (boxResult && boxResult.header_image) {
                     formData.append('header_image', boxResult.header_image)
@@ -222,14 +222,14 @@
                 formData.append('status', box.status)
                 if (box.status === 0) {
                     if (!box.main_image) {
-                        box.errMsg = errMsg
+                        box.errorMsg = errorMsg
                         return
                     } else if (boxResult && boxResult.main_image) {
                         formData.append('main_image', boxResult.main_image)
                     }
                 } else if (box.status === 1) {
                     if (!box.main_description) {
-                        box.errMsg = errMsg
+                        box.errorMsg = errorMsg
                         return
                     } else {
                         formData.append('main_description', box.main_description)
@@ -242,13 +242,13 @@
                         ...this.boxes[index],
                         ...data,
                         mode: 0,
-                        errMsg: '',
+                        errorMsg: '',
                         loading: false
                     })
                     delete this.boxResults[id]
                     delete this.initialBoxes[id]
                 }, error => {
-                    this.boxes[index].errMsg = error
+                    this.boxes[index].errorMsg = error
                 })
             },
             cancelUpdateBox (id, index) {
@@ -256,7 +256,7 @@
                     ...this.boxes[index],
                     ...this.initialBoxes[id],
                     mode: 0,
-                    errMsg: ''
+                    errorMsg: ''
                 })
                 delete this.initialBoxes[id]
             },
