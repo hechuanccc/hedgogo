@@ -12,7 +12,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label">{{$t('bill.deposit_amount')}}</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" v-model="transaction.amount" required />
+                        <input type="number" class="form-control" v-model="transaction.amount" required />
                     </div>
                     <div class="col-xs-2">
                         <span class="t-red">{{$t('bill.deposit_amount_alert')}}</span>
@@ -61,7 +61,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label"></label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="稽核金额" v-model="transaction.audit.amount" :required="transaction.audit.type != 3" :disabled="transaction.audit.type == 0"/>
+                        <input type="number" class="form-control" placeholder="稽核金额" v-model="transaction.audit.amount" :required="transaction.audit.type != 3" :disabled="transaction.audit.type == 0"/>
                     </div>
                 </div>
                 <div class="form-group row">

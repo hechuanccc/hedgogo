@@ -64,7 +64,15 @@
                     </div>
                     <div class="row m-b m-l">
                         <div class="col-xs-8">
-                            <date-picker v-model="modal.value" type="datetime" format="yyyy-MM-dd HH:mm" :minute-step="1" range></date-picker>
+                            <date-picker
+                                :shortcuts="[]"
+                                v-model="modal.value"
+                                type="datetime"
+                                format="yyyy-MM-dd HH:mm"
+                                :minute-step="1"
+                                range
+                            >
+                            </date-picker>
                         </div>
                         <div class="col-xs-2 col-xs-offset-2 text-right">
                             <button type="button" class="btn btn-sm btn-primary" @click="updateTime">{{$t('action.update')}}</button>

@@ -1,27 +1,18 @@
-export function handleError (errors, field, fields) {
-    let responseError = ''
-    let gettype = Object.prototype.toString
-
-    let utility = {
-        isObj: function (o) {
-            return gettype.call(o) === '[object Object]'
-        }
-    }
-
+export function handleError (errors) {
     if (Array.isArray(errors)) {
-        for (let item in errors) {
-            if (errors[item].hasOwnProperty(field)) {
-                responseError += fields[field] + errors[item][field]
-                return responseError
+        return errors.map(error => {
+            if (typeof error === 'string') {
+                return error
+            } else if (typeof error === 'object') {
+                let arr = []
+                Object.keys(error).forEach(key => {
+                    arr = [...arr, `${key} : ${error[key]}`]
+                })
+                return arr.join('\n')
             }
-        }
-    } else if (utility.isObj(errors)) {
-        for (let item in errors.error) {
-            if (item === field) {
-                responseError += fields[field] + errors.error[item]
-                return responseError
-            }
-        }
+        }).join('\n')
+    } else if (typeof errors === 'string') {
+        return errors
     }
     return ''
 }

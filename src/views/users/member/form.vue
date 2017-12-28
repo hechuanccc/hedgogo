@@ -42,7 +42,8 @@
                            @keydown.esc="reset"
                            @blur="checkAgent"
                            @input="update"
-						   required/>
+                           :required="!member.agent.name"
+                    />
                     <div class="dropdown-menu"  v-show="hasItems">
                       <a v-for="(item, $index) in items" class="dropdown-item" :class="activeClass($index)" @click="hit" @mousemove="setActive($index)">
                         <span v-text="item.username"></span>

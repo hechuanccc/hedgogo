@@ -222,8 +222,8 @@
               <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
-            <td>{{member.total_valid_bet_amount | currency('￥')}}</td>
-            <td>{{member.total_bet_amount | currency('￥')}}</td>
+            <td>{{member.total_amount | currency('￥')}}</td>
+            <td>{{member.total_betrecords | currency('￥')}}</td>
             <td>
               <span class="text-success">{{$t('betrecord.win')}}: </span>
               <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link> <br/>

@@ -1,61 +1,59 @@
 <template>
-    <form class="form m-a" @submit.prevent='onSubmit' enctype="multipart/form-data">
+    <div>
         <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
         <div class="m-b" v-if="userPermission">
-            <button class="md-btn w-sm blue"  @click="showAll=!showAll">
+            <button class="md-btn w-sm blue" type="button"  @click="showAll=!showAll">
                 <span v-if="!showAll">{{$t('manage.add_announcement')}}</span>
                 <span v-else>隐藏</span>
             </button>
         </div>
         <div class="box" v-show="showAll">
             <div class="box-body ">
-                <div class="row" >
-                    <div class="col-xs-10">
-                        <div class="clearfix" v-show="false">
-                            <label class="col-xs-1 text-right form-control-label">名称 </label>
-                            <div class="col-xs-6">
-                                <input type="text" v-model="announcement.name" class="form-control" />
-                            </div>
-                        </div>
+                <form 
+                    class="form"
+                    @submit.prevent="onSubmit"
+                >
+                    <div class="row" >
+                        <div class="col-xs-10">
 
-                        <div class="clearfix m-t">
-                            <label class="col-xs-1 text-right form-control-label">{{$t('cms.announcement')}}</label>
-                            <div class="col-xs-6">
-                                <textarea class="form-control" rows="3" placeholder="" required v-model="announcement.announcement"></textarea>
+                            <div class="clearfix m-t">
+                                <label class="col-xs-1 text-right form-control-label">{{$t('cms.announcement')}}</label>
+                                <div class="col-xs-6">
+                                    <textarea class="form-control" rows="3" required v-model="announcement.announcement"></textarea>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="clearfix m-t">
-                            <label class="col-xs-1">{{$t('manage.platform_select')}}</label>
-                            <div class="col-xs-8  m-b">
-                                <label class="md-check md-check-md m-r">
-                                    <input type="radio" value="2" checked name="platform" v-model="announcement.platform">
-                                    <i class="blue"></i>
-                                    {{$t('manage.all')}}
-                                </label>
-                                <label class="md-check m-r">
-                                    <input type="radio" value="1" name="platform" v-model="announcement.platform">
-                                    <i class="blue"></i>
-                                    {{$t('manage.pc')}}
-                                </label>
-                                <label class="md-check m-r">
-                                    <input type="radio" value="0" name="platform" v-model="announcement.platform">
-                                    <i class="blue"></i>
-                                    {{$t('manage.mobile')}}
-                                </label>
+                            <div class="clearfix m-t">
+                                <label class="col-xs-1">{{$t('manage.platform_select')}}</label>
+                                <div class="col-xs-8  m-b form-group">
+                                    <label class="md-check md-check-md m-r">
+                                        <input type="radio" value="2" checked v-model="announcement.platform">
+                                        <i class="blue"></i>
+                                        {{$t('manage.all')}}
+                                    </label>
+                                    <label class="md-check m-r">
+                                        <input type="radio" value="1" v-model="announcement.platform">
+                                        <i class="blue"></i>
+                                        {{$t('manage.pc')}}
+                                    </label>
+                                    <label class="md-check m-r">
+                                        <input type="radio" value="0" v-model="announcement.platform">
+                                        <i class="blue"></i>
+                                        {{$t('manage.mobile')}}
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="clearfix">
-                            <label class="col-xs-1 text-right form-control-label"> </label>
-                            <div class="col-xs-3">
-                                <button class="md-btn w-sm blue " type="onSubmit">{{$t('common.save')}}</button>
+                            <div class="clearfix">
+                                <label class="col-xs-1 text-right form-control-label"> </label>
+                                <div class="col-xs-3">
+                                    <button class="md-btn w-sm blue " type="submit">{{$t('common.save')}}</button>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
-
+                </form>
             </div>
         </div>
 
@@ -109,7 +107,7 @@
         <div class="row m-b-lg">
             <pulling :queryset="queryset" :api="announcementApi" :query="query" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
         </div>
-    </form>
+    </div>
 </template>
 
 <script>
@@ -181,6 +179,8 @@ export default {
                     this.queryset[this.querysetIndex].platform = data.platform
                     this.queryset[this.querysetIndex].announcement = data.announcement
                     this.showAll = false
+                    this.announcement.name = ''
+                    this.announcement.announcement = ''
                 }, error => {
                     this.responseError = error
                 })

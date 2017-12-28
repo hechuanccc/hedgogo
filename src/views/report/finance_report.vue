@@ -31,7 +31,7 @@
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"
-                :transactionType="transactionType"
+                :transactionType="transaction_type"
                 :displayList="[1, 2]"
                 @transaction-type-select="transactionTypeSelect"
                 :placeholder="$t('bill.transaction_type')"
@@ -80,10 +80,10 @@
         <tbody v-if="queryset.length > 0">
           <tr v-for="data in queryset" :key="data.time">
             <td>{{ data.time | moment('YYYY-MM-DD') }}</td>
-            <td><i class="fa fa-rmb"></i> {{ data.amount.toLocaleString() }}</td>
+            <td>{{ data.amount | currency('￥') }}</td>
             <td>{{ data.betrecord_count.toLocaleString() }}</td>
-            <td><i class="fa fa-rmb"></i> {{ data.deposit_amount.toLocaleString() }}</td>
-            <td :class="data.profit < 0 ? 'text-danger' : 'text-success'"><span v-if="data.profit<0">-</span> <i class="fa fa-rmb"></i> {{ data.profit | decimalFilter }}</td>
+            <td>{{ data.deposit_amount | currency('￥') }}</td>
+            <td :class="data.profit < 0 ? 'text-danger' : 'text-success'">{{ data.profit | currency('￥') }}</td>
           </tr>
         </tbody>
       </table>
@@ -124,13 +124,13 @@ export default {
                 end_date: '',
                 agent: '',
                 member_level: '',
-                transactionType: '',
+                transaction_type: '',
                 platform: '',
                 game: ''
             },
             agent: '',
             member_level: '0',
-            transactionType: '',
+            transaction_type: '',
             platform: '',
             game: '',
             filter: {},
@@ -178,8 +178,8 @@ export default {
             this.member_level = val
         },
         transactionTypeSelect (val) {
-            this.query.transactionType = val
-            this.transactionType = val
+            this.query.transaction_type = val
+            this.transaction_type = val
         },
         gameSelect (val) {
             this.query.game = val
@@ -205,14 +205,14 @@ export default {
                 end_date: Vue.moment().subtract(1, 'days').format(format),
                 agent: '',
                 member_level: '',
-                transactionType: '',
+                transaction_type: '',
                 platform: '',
                 game: ''
             }
             this.date = [this.query.start_date, this.query.end_date]
             this.agent = ''
             this.member_level = '0'
-            this.transactionType = ''
+            this.transaction_type = ''
             this.platform = ''
             this.game = ''
             this.$router.push({
@@ -222,11 +222,6 @@ export default {
                     end_date: this.query.end_date
                 }
             })
-        }
-    },
-    filters: {
-        decimalFilter (value) {
-            return Math.abs(value.toFixed(2)).toLocaleString()
         }
     },
     components: {
