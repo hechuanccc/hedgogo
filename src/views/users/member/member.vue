@@ -126,11 +126,12 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td>
-              <div v-if="member.account_type==1">{{$t('member.real_account')}}</div>
+              <div v-if="member.account_type===1">{{$t('member.real_account')}}</div>
               <div v-else>{{$t('member.trial_account')}}</div>
             </td>
             <td>
-              <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
+              <router-link :to="'/member/' + member.id" v-if="member.account_type===1">{{member.username}}</router-link>
+              <span v-else>{{ $t('member.visitor') }}</span>
             </td>
             <td>
               {{member.real_name || '-'}}

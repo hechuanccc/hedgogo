@@ -209,7 +209,7 @@
             </td>
             <td>
               <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type===1">{{t.member.username}}</router-link>
-              <span v-else>{{ $t('betrecord.visitor') }}</span>
+              <span v-else>{{ $t('member.visitor') }}</span>
             </td>
             <td>
               {{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}
