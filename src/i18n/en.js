@@ -397,7 +397,8 @@ export default {
         cancelled_bet: 'Cancelled Bet',
         total_valid_bet_amount: 'Total Valid Bet Amount',
         options: 'Bet Options',
-        opts_combos_count: 'Combo Options Count'
+        opts_combos_count: 'Combo Options Count',
+        visitor: 'Visitor'
     },
     action: {
         view_today_report: 'View today\'s Report',

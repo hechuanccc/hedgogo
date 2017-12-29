@@ -208,7 +208,8 @@
               {{t.created_at | moment("YYYY-MM-DD HH:mm:ss")}}
             </td>
             <td>
-              <router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
+              <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type===1">{{t.member.username}}</router-link>
+              <span v-else>{{ $t('betrecord.visitor') }}</span>
             </td>
             <td>
               {{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}
@@ -346,7 +347,6 @@
             period (newObj, old) {
                 clearInterval(this.interval)
                 this.period = newObj
-                this.getBetRecord()
                 this.interval = setInterval(this.getBetRecord, parseInt(this.period))
             },
             pageSelected (newObj, old) {
