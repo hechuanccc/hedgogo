@@ -11,7 +11,7 @@
               <date-picker width='140' v-model="query.logindate_1"></date-picker>
               <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('member.account')"/>
               <input type="text" v-model.trim="query.ipaddr_q" class="form-control w-sm" v-bind:placeholder="$t('member.ip')"/>
-              <input type="text" v-model.trim="query.domain" class="form-control w-sm" v-bind:placeholder="$t('member.loggedin_domain')"/>
+              <input type="text" v-model.trim="query.domain_q" class="form-control w-sm" v-bind:placeholder="$t('member.loggedin_domain')"/>
               <button class="pull-right md-btn blue-500 w-xs" type="submit">{{$t('common.search')}}</button>
             </div>
           </div>
@@ -82,7 +82,7 @@ export default {
                 logindate_0: '',
                 logindate_1: '',
                 ipaddr_q: '',
-                domain: '',
+                domain_q: '',
                 report_flag: true
             },
             queryset: [],

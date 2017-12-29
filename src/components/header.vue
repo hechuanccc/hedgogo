@@ -247,7 +247,7 @@
                     this.iNotify.setTitle()
                 }
             },
-            search (e) {
+            search () {
                 if (this.query.username_q) {
                     this.results = []
                     this.hasResults = false
