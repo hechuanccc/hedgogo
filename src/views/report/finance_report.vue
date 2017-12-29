@@ -129,7 +129,7 @@ export default {
                 game: ''
             },
             agent: '',
-            member_level: '0',
+            member_level: '',
             transaction_type: '',
             platform: '',
             game: '',
@@ -211,7 +211,7 @@ export default {
             }
             this.date = [this.query.start_date, this.query.end_date]
             this.agent = ''
-            this.member_level = '0'
+            this.member_level = ''
             this.transaction_type = ''
             this.platform = ''
             this.game = ''

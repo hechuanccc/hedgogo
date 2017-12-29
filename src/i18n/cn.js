@@ -397,7 +397,8 @@ export default {
         cancelled_bets: '赌注被取消了',
         total_valid_bet_amount: '有效投注总笔数',
         options: '投注选项',
-        opts_combos_count: '组合选项计数'
+        opts_combos_count: '组合选项计数',
+        visitor: '游客'
     },
     action: {
         view_today_report: '查看今日报表',
@@ -766,10 +767,11 @@ export default {
         number: '编号',
         title: '标题',
         receiver: '接收人',
+        receiver_group: '接收群组',
         members: '群发',
         transaction: '相关交易',
         text: '发送内容',
-        time: '创建时间',
+        time: '发送时间',
         sender: '寄件人'
     },
     promotion: {

@@ -163,7 +163,7 @@
                     updated_at_1: '',
                     report_flag: true
                 },
-                member_level: '0',
+                member_level: '',
                 selected: '0',
                 status: '0',
                 dateRange: -1,
@@ -285,7 +285,7 @@
                 this.query.created_at_1 = ''
                 this.query.updated_at_0 = ''
                 this.query.updated_at_1 = ''
-                this.member_level = 0
+                this.member_level = ''
                 this.selected = '0'
                 this.$router.push({
                     path: this.$route.path + '?report_flag=true'

@@ -74,5 +74,6 @@ export default {
     website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/',
     report_overview: managePrefix + 'report/overview/',
     member_report: managePrefix + 'report/count/membership/',
-    finance_report: managePrefix + 'report/assets/finance/'
+    finance_report: managePrefix + 'report/assets/finance/',
+    check_member: host + '/v1/member/username/'
 }

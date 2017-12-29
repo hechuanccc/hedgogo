@@ -288,7 +288,7 @@ export default {
                 account_type: '1'
             },
             status: '',
-            level: '0',
+            level: '',
             selected: '0',
             filter: {},
             href: '',
