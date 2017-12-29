@@ -18,6 +18,7 @@
                         <tr>
                             <th class="grey-50" width="200">{{ $t('messages.time') }}</th>
                             <td class="word-break" v-if="message.sent_at">{{ message.sent_at | moment("YYYY-MM-DD HH:mm") }}</td>
+                            <td class="word-break" v-else>-</td>
                         </tr>
                         <tr>
                             <th class="grey-50" width="200">{{ $t('messages.sender') }}</th>
