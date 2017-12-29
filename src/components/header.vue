@@ -21,7 +21,7 @@
                                 type="text"
                                 class="form-control p-x b-a rounded"
                                 v-model.lazy.trim="query.username_q"
-                                :plabceholder="$t('common.search_member')+'(按\'Enter\'搜索)'"
+                                :placeholder="$t('common.search_member')+'(按\'Enter\'搜索)'"
                                 @focus="showResults()"
                                 @blur="closeResults()"
                                 @change="search"
