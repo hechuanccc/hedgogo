@@ -26,7 +26,8 @@
                         </tr>
                         <tr>
                             <th class="grey-50" width="200">{{ $t('messages.receiver') }}/{{ $t('messages.receiver_group') }}</th>
-                            <td class="word-break">{{ message.receiver_group }}</td>
+                            <td class="word-break" v-if="message.receiver_group">{{ message.receiver_group.split(',').join(' ') }}</td>
+                            <td class="word-break" v-else>-</td>
                         </tr>
                         <tr>
                             <th class="grey-50" width="200">{{ $t('messages.text') }}</th>

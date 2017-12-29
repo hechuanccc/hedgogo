@@ -21,7 +21,8 @@
                     <!-- <td>{{ message.id }}</td> -->
                     <td><router-link :to="'/messages/'+ message.id">{{ message.title }}</router-link></td>
                     <td class="word-break">{{ message.content }}</td>
-                    <td>{{ message.receiver_group }}</td>
+                    <td v-if="message.receiver_group">{{ message.receiver_group.split(',').join(' ') }}</td>
+                    <td v-else>-</td>
                     <td>{{ message.sent_at | moment("YYYY-MM-DD HH:mm") }}</td>
                     <td>{{ message.sender_displayname }}</td>
                 </tr>
