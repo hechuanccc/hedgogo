@@ -195,7 +195,6 @@ export default {
     },
     created () {
         this.$nextTick(() => {
-            this.level = this.$route.query.level
             this.$refs.pulling.rebase()
         })
     },

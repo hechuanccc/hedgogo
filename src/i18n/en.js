@@ -184,7 +184,8 @@ export default {
         real_member_registration: 'Num. of Real Member Register per day',
         deposit_member_count: 'Num. of Member Deposit per day',
         bet_member_count: 'Num. of Member bet per day',
-        trial_member_count: 'Num. of Trial Member per day'
+        trial_member_count: 'Num. of Trial Member per day',
+        visitor: 'Visitor'
     },
     bill: {
         commission_report: 'Commission Report',

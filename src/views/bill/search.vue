@@ -142,7 +142,7 @@
                     transaction_type: [],
                     report_flag: true
                 },
-                member_level: '0',
+                member_level: '',
                 selected: '0',
                 // use selectd transaction types
                 transaction_type: '0',

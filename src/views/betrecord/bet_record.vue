@@ -195,7 +195,7 @@
             <th>{{$t('common.game')}}</th>
             <th>{{$t('game_manage.issue_number')}}</th>
             <th>{{$t('game_manage.play')}}</th>
-            <th>{{$t('game_manage.return_rate')}}</th>
+            <th>{{$t('game_manage.return_rate')}}(%)</th>
             <th>{{$t('common.betamount')}}</th>
           </tr>
           </thead>
@@ -209,7 +209,7 @@
             </td>
             <td>
               <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type===1">{{t.member.username}}</router-link>
-              <span v-else>{{ $t('betrecord.visitor') }}</span>
+              <span v-else>{{ $t('member.visitor') }}</span>
             </td>
             <td>
               {{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}
@@ -224,7 +224,7 @@
               {{t.play.play_group.display_name}} @ {{t.play.display_name}}
             </td>
             <td>
-              {{t.return_rate}}
+              {{t.return_rate}}%
             </td>
             <td>
               {{t.bet_amount | currency('￥')}}

@@ -184,7 +184,8 @@ export default {
         real_member_registration: '真实会员注册人数',
         deposit_member_count: '存款会员人数',
         bet_member_count: '下注会员人数',
-        trial_member_count: '试用会员人数'
+        trial_member_count: '试用会员人数',
+        visitor: '游客'
     },
     bill: {
         commission_report: '佣金计算',
@@ -397,8 +398,7 @@ export default {
         cancelled_bets: '赌注被取消了',
         total_valid_bet_amount: '有效投注总笔数',
         options: '投注选项',
-        opts_combos_count: '组合选项计数',
-        visitor: '游客'
+        opts_combos_count: '组合选项计数'
     },
     action: {
         view_today_report: '查看今日报表',
