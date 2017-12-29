@@ -195,7 +195,7 @@
             <th>{{$t('common.game')}}</th>
             <th>{{$t('game_manage.issue_number')}}</th>
             <th>{{$t('game_manage.play')}}</th>
-            <th>{{$t('game_manage.return_rate')}}</th>
+            <th>{{$t('game_manage.return_rate')}}(%)</th>
             <th>{{$t('common.betamount')}}</th>
           </tr>
           </thead>
@@ -224,7 +224,7 @@
               {{t.play.play_group.display_name}} @ {{t.play.display_name}}
             </td>
             <td>
-              {{t.return_rate}}
+              {{t.return_rate}}%
             </td>
             <td>
               {{t.bet_amount | currency('￥')}}

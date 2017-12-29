@@ -163,7 +163,6 @@ export default {
     },
     methods: {
         nextTickFetch () {
-            this.queryset = []
             setTimeout(() => {
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
@@ -211,7 +210,7 @@ export default {
             }
             this.date = [this.query.start_date, this.query.end_date]
             this.agent = ''
-            this.member_level = '0'
+            this.member_level = ''
             this.transactionType = ''
             this.platform = ''
             this.game = ''

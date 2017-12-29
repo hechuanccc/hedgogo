@@ -185,7 +185,7 @@
             <th>{{$t('member.status')}}</th>
             <th>{{$t('betrecord.total_valid_bet_amount')}}</th>
             <th>{{$t('betrecord.total_bet_amount')}}</th>
-            <th>{{$t('common.profit')}}</th>
+            <th>{{$t('common.member') + $t('betrecord.win') + $t('betrecord.lose')}}</th>
             <th>{{$t('member.balance')}}</th>
           </tr>
         </thead>
