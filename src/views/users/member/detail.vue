@@ -302,6 +302,9 @@
                 setTimeout(() => {
                     this.passwordChanged = 0
                 }, 8000)
+            },
+            '$route.params' (newObj, old) {
+                this.getMember(this.$route.params.memberId)
             }
         },
         methods: {

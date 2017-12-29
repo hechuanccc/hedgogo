@@ -113,7 +113,7 @@
                     id: '',
                     image: '',
                     description: '',
-                    level: [],
+                    level: '',
                     start_date: '',
                     end_date: '',
                     rank: '',

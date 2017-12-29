@@ -14,14 +14,22 @@
                 </div>
             </div>
             <div class="collapse navbar-toggleable-sm" id="collapse">
-                <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m ng-pristine ng-valid" role="search">
+                <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m" @submit.prevent="search">
                     <div class="form-group l-h m-a-0">
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control p-x b-a rounded" v-model="query.username_q" :placeholder="$t('common.search_member')" @focus="showResults()" @keyup="search" @blur="closeResults()">
-                            <div class="search-results" v-if="hasResults">
+                            <input 
+                                type="text"
+                                class="form-control p-x b-a rounded"
+                                v-model.lazy.trim="query.username_q"
+                                :plabceholder="$t('common.search_member')+'(按\'Enter\'搜索)'"
+                                @focus="showResults()"
+                                @blur="closeResults()"
+                                @change="search"
+                            >
+                            <div class="search-results" v-if="hasResults && query.username_q">
                                 <div class="search-items">
-                                    <div class="search-item" v-for="r in results">
-                                        <router-link :to="'/member/' + r.id">{{r.username}}</router-link>
+                                    <div class="search-item" v-for="r in results" :key="r.id">
+                                        <a @click="routerLinkTo(r.id)">{{r.username}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -239,8 +247,10 @@
                     this.iNotify.setTitle()
                 }
             },
-            search () {
+            search (e) {
                 if (this.query.username_q) {
+                    this.results = []
+                    this.hasResults = false
                     this.$http.get(api.member + '?username_q=' + this.query.username_q).then(data => {
                         this.results = data
                         this.results = data.slice(0, Number(this.searchlimit))
@@ -253,9 +263,7 @@
                 }
             },
             showResults () {
-                if (this.results.length > 0) {
-                    this.hasResults = true
-                }
+                this.hasResults = (this.results.length > 0 && this.query.username_q)
             },
             closeResults () {
                 setTimeout(() => {
@@ -263,6 +271,12 @@
                     this.query.username_q = ''
                     this.hasResults = false
                 }, 300)
+            },
+            routerLinkTo (id) {
+                this.results = []
+                this.query.username_q = ''
+                this.hasResults = false
+                this.$router.push('/member/' + id)
             }
         },
         filters: {

@@ -2,8 +2,8 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/messages">{{$t('nav.message')}}</router-link></li>
-                <li class="active">{{$route.meta.title}}</li>
+                <li class="active"><router-link to="/messages">{{ $t('nav.message') }}</router-link></li>
+                <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
         <div class="box">
@@ -12,21 +12,24 @@
                     <table class="table b-a m-t-sm">
                         <tbody>
                         <tr>
-                            <th class="grey-50" width="200">{{$t('messages.title')}}</th>
-                            <td class="word-break">{{message.title}}</td>
+                            <th class="grey-50" width="200">{{ $t('messages.title') }}</th>
+                            <td class="word-break">{{ message.title }}</td>
                         </tr>
                         <tr>
-                            <th class="grey-50" width="200">{{$t('messages.transaction')}}</th>
-                            <td class="word-break" v-if="message.transaction">{{message.transaction}}</td>
-                            <td v-else>-</td>
+                            <th class="grey-50" width="200">{{ $t('messages.time') }}</th>
+                            <td class="word-break" v-if="message.sent_at">{{ message.sent_at | moment("YYYY-MM-DD HH:mm") }}</td>
                         </tr>
                         <tr>
-                            <th class="grey-50" width="200">{{$t('messages.receiver')}}</th>
-                            <td class="word-break">{{message.receiver}}</td>
+                            <th class="grey-50" width="200">{{ $t('messages.sender') }}</th>
+                            <td class="word-break">{{ message.sender_displayname }}</td>
                         </tr>
                         <tr>
-                            <th class="grey-50" width="200">{{$t('messages.text')}}</th>
-                            <td class="word-break">{{message.content}}</td>
+                            <th class="grey-50" width="200">{{ $t('messages.receiver') }}/{{ $t('messages.receiver_group') }}</th>
+                            <td class="word-break">{{ message.receiver_group }}</td>
+                        </tr>
+                        <tr>
+                            <th class="grey-50" width="200">{{ $t('messages.text') }}</th>
+                            <td class="word-break">{{ message.content }}</td>
                         </tr>
                         </tbody>
                     </table>

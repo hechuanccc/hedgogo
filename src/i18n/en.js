@@ -766,6 +766,7 @@ export default {
         number: 'No.',
         title: 'Title',
         receiver: 'Receiver',
+        receiver_group: 'Group',
         members: 'Members',
         transaction: 'Transaction',
         text: 'Message',

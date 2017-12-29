@@ -116,7 +116,7 @@
                     account: '',
                     address: '',
                     memo: '',
-                    level: [],
+                    level: '',
                     qr_code: [],
                     remit_type: '1'
                 },

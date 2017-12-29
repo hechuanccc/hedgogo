@@ -109,7 +109,7 @@
                     merchant_num: '',
                     certificate: '',
                     board_url: '',
-                    level: [],
+                    level: '',
                     expired_in: '',
                     memo: '',
                     payment_gateway: '',

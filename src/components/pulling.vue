@@ -59,7 +59,7 @@ export default {
             type: String
         },
         optexpand: {
-            default: 1
+            default: ''
         },
         amount: {
             default: ''
@@ -134,7 +134,7 @@ export default {
             this.pageNum = pageNum
         },
         rebase () {
-            this.next = this.buildUrl(this.api, this.extra + '&opt_expand=' + this.optexpand + '&offset=' + this.offset + '&limit=' + this.limit)
+            this.next = this.buildUrl(this.api, this.extra + (this.optexpand ? `&opt_expand=${this.optexpand}` : '') + '&offset=' + this.offset + '&limit=' + this.limit)
             // this.queryset = []
             this.myQueryset = []
             this.pull()
