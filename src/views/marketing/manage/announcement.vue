@@ -203,7 +203,7 @@ export default {
             })
         },
         queryData (queryset) {
-            this.queryset = queryset
+            this.queryset = queryset.sort((a, b) => a.rank - b.rank)
         },
         queryParam (query) {
             this.query = query

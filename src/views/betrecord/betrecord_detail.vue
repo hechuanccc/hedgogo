@@ -77,6 +77,7 @@
                         <span class="label success" v-if="betrecords.status === 'win'">{{$t('betrecord.win')}}</span>
                         <span class="label ongoing" v-if="betrecords.status === 'ongoing'">{{$t('betrecord.ongoing')}}</span>
                         <span class="label ongoing" v-if="betrecords.status === 'tie'">{{$t('betrecord.tie')}}</span>
+                        <span class="label ongoing" v-if="betrecords.status === 'cancelled'">{{$t('status.cancelled')}}</span>
                     </div>
                 </span>
               </div>

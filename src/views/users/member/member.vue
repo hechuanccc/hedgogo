@@ -240,6 +240,7 @@
       <pulling
         :queryset="queryset"
         :query="query"
+        :extra="extra"
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
@@ -288,6 +289,7 @@ export default {
                 is_logged_in: '',
                 account_type: '1'
             },
+            extra: '',
             status: '',
             level: '',
             selected: '0',
@@ -301,8 +303,8 @@ export default {
         }
     },
     created () {
+        this.getPageAccessed()
         this.$nextTick(() => {
-            this.getPageAccessed()
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
         })
@@ -339,8 +341,8 @@ export default {
     methods: {
         nextTickFetch () {
             this.queryset = []
+            this.getPageAccessed()
             setTimeout(() => {
-                this.getPageAccessed()
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
             }, 100)
@@ -417,22 +419,10 @@ export default {
         getPageAccessed () {
             this.router_path = this.$route.path
             if (this.router_path === '/online_member') {
-                this.$router.push({
-                    path: this.$route.path,
-                    query: {
-                        report_flag: true,
-                        logined: 1
-                    }
-                })
+                this.extra = `report_flag=True&logined=1`
                 this.pageSelected = 'online_member'
             } else {
-                this.$router.push({
-                    path: this.$route.path,
-                    query: {
-                        ...this.$route.query,
-                        account_type: 1
-                    }
-                })
+                this.extra = `account_type=1`
                 this.pageSelected = 'all_members'
             }
         }
