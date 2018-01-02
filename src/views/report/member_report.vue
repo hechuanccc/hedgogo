@@ -200,11 +200,12 @@ export default {
         },
         submit () {
             this.$refs.pulling.submit()
+            this.$refs.pulling.getExportQuery()
         },
         clearAll () {
             this.query = {
-                start_date: '',
-                end_date: '',
+                start_date: Vue.moment().subtract(6, 'days').format(format),
+                end_date: Vue.moment().format(format),
                 agent: '',
                 member_level: '',
                 transactionType: '',
