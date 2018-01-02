@@ -17,17 +17,20 @@
                 <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m" @submit.prevent="search">
                     <div class="form-group l-h m-a-0">
                         <div class="input-group input-group-sm">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             <input 
                                 type="text"
                                 class="form-control p-x b-a rounded"
-                                v-model.lazy.trim="query.username_q"
-                                :placeholder="$t('common.search_member')+'(按\'Enter\'搜索)'"
-                                @focus="showResults()"
-                                @blur="closeResults()"
+                                v-model.trim="query.username_q"
+                                :placeholder="$t('common.search_member')"
+                                @focus="focusSearchMemberInput()"
+                                @blur="blurSearchMemberInput()"
                                 @change="search"
                             >
-                            <div class="search-results" v-if="hasResults && query.username_q">
+                            <div class="search-results" v-if="showResults">
                                 <div class="search-items">
+                                    <div class="search-item" v-show="searchLoading"><span class="m-l"><i class="fa fa-spin fa-spinner"></i> {{$t('common.loading')}}</span></div>
+                                    <div class="search-item" v-show="searchNoRecord"><span class="m-l">{{$t('common.no_record')}}</span></div>
                                     <div class="search-item" v-for="r in results" :key="r.id">
                                         <a @click="routerLinkTo(r.id)">{{r.username}}</a>
                                     </div>
@@ -79,6 +82,7 @@
     import $ from '../utils/util'
     import INotify from 'title-notify'
     import axios from 'axios'
+    import _ from 'lodash'
 
     export default {
         data () {
@@ -89,7 +93,7 @@
                 },
                 results: [],
                 searchlimit: 5,
-                hasResults: false,
+                showResults: false,
                 status: [3],
                 members_count: '',
                 iNotify: '',
@@ -98,7 +102,9 @@
                 num: 0,
                 remit_count: '',
                 withdraw_count: '',
-                abnormal_count: ''
+                abnormal_count: '',
+                searchLoading: false,
+                searchNoRecord: false
             }
         },
         props: {
@@ -157,6 +163,11 @@
                 } else if (old !== '') {
                     this.iNotify.setFavicon(newObj)
                 }
+            },
+            'query.username_q' (newObj, old) {
+                this.searchLoading = true
+                this.searchNoRecord = false
+                this.search()
             }
         },
         methods: {
@@ -247,35 +258,36 @@
                     this.iNotify.setTitle()
                 }
             },
-            search () {
-                if (this.query.username_q) {
-                    this.results = []
-                    this.hasResults = false
-                    this.$http.get(api.member + '?username_q=' + this.query.username_q).then(data => {
-                        this.results = data
-                        this.results = data.slice(0, Number(this.searchlimit))
-                        if (this.results.length) {
-                            this.hasResults = true
-                        }
-                    }, error => {
-                        this.searchErr = error
-                    })
+            search:
+                _.debounce(function () {
+                    if (this.query.username_q) {
+                        this.$http.get(api.search_member + '?username_q=' + this.query.username_q).then(data => {
+                            this.searchLoading = false
+                            if (data.length > 0) {
+                                this.results = data.slice(0, Number(this.searchlimit))
+                            } else {
+                                this.searchNoRecord = true
+                                this.results = []
+                            }
+                        }, error => {
+                            this.searchErr = error
+                        })
+                    }
+                },
+            500),
+            focusSearchMemberInput () {
+                this.showResults = true
+                if (!this.results.length || !this.query.username_q) {
+                    this.searchNoRecord = true
                 }
             },
-            showResults () {
-                this.hasResults = (this.results.length > 0 && this.query.username_q)
-            },
-            closeResults () {
+            blurSearchMemberInput () {
                 setTimeout(() => {
-                    this.results = []
-                    this.query.username_q = ''
-                    this.hasResults = false
+                    this.showResults = false
                 }, 300)
             },
             routerLinkTo (id) {
-                this.results = []
-                this.query.username_q = ''
-                this.hasResults = false
+                this.blurSearchMemberInput()
                 this.$router.push('/member/' + id)
             }
         },

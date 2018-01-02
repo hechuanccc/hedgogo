@@ -356,7 +356,8 @@ export default {
                 profit: 'Profit of Agent over the past 7 days',
                 register_count: 'Register Count of past 7 days'
             }
-        }
+        },
+        loading: 'Loading'
     },
     bank: {
         bank_title: 'Bank Information',

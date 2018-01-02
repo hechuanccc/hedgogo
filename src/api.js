@@ -5,6 +5,7 @@ const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.bui
 const host = env.HOST.replace(/"/g, '')
 const prefix = host + '/manage/'
 const managePrefix = host + '/v1/manage/'
+const memberPrefix = host + '/v1/member/'
 
 export default {
     my: prefix + 'my/',
@@ -75,5 +76,6 @@ export default {
     report_overview: managePrefix + 'report/overview/',
     member_report: managePrefix + 'report/count/membership/',
     finance_report: managePrefix + 'report/assets/finance/',
-    check_member: host + '/v1/member/username/'
+    check_member: host + '/v1/member/username/',
+    search_member: memberPrefix + 'search_member/'
 }

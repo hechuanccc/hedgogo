@@ -356,7 +356,8 @@ export default {
                 profit: '过去7日营运商损益情况',
                 register_count: '过去7日注册人数'
             }
-        }
+        },
+        loading: '载入中'
     },
     bank: {
         bank_title: '银行资讯',

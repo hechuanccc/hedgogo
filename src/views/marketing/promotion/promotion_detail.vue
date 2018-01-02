@@ -37,9 +37,10 @@
                                 </tr>
                                 <tr>
                                     <th class="grey-50" width="200">{{$t('promotion.mobileBanner')}}</th>
-                                    <td>
+                                    <td v-if="promotion.image_mobile">
                                         <img :src="promotion.image_mobile" class="promo-image">
                                     </td>
+                                    <td v-else>{{$t('action.no_setting')}}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('promotion.rank')}}</th>

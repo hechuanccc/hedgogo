@@ -51,9 +51,9 @@ export default {
             ],
             color: {
                 amount: 207,
-                profit: 172,
+                profit: 262,
                 betrecord_count: 45,
-                register_count: 262
+                register_count: 18
             },
             loading: undefined,
             options: {}
