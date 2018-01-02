@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-xs-12">
               <date-picker
-                :not-after="yesterday"
+                :not-after="today"
                 :shortcuts="[]"
                 class="pull-left m-r-xs"
                 v-model="date"
@@ -136,11 +136,19 @@ export default {
             filter: {},
             href: '',
             export_query: [],
-            yesterday: Vue.moment().subtract(1, 'days').format(format)
+            today: Vue.moment().format(format)
         }
     },
     created () {
-        this.clearAll()
+        if (this.$route.query.start_date || this.$route.query.end_date) {
+            this.date = [this.$route.query.start_date, this.$route.query.end_date]
+        } else {
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
+        }
+        this.query = {
+            ...this.query,
+            ...this.$route.query
+        }
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
@@ -163,7 +171,11 @@ export default {
     },
     methods: {
         nextTickFetch () {
-            this.queryset = []
+            if (this.$route.query.start_date || this.$route.query.end_date) {
+                this.date = [this.$route.query.start_date, this.$route.query.end_date]
+            } else {
+                this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
+            }
             setTimeout(() => {
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
@@ -201,26 +213,22 @@ export default {
         },
         clearAll () {
             this.query = {
-                start_date: Vue.moment().subtract(7, 'days').format(format),
-                end_date: Vue.moment().subtract(1, 'days').format(format),
+                start_date: '',
+                end_date: '',
                 agent: '',
                 member_level: '',
                 transaction_type: '',
                 platform: '',
                 game: ''
             }
-            this.date = [this.query.start_date, this.query.end_date]
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
             this.agent = ''
             this.member_level = ''
             this.transaction_type = ''
             this.platform = ''
             this.game = ''
             this.$router.push({
-                path: this.$route.path,
-                query: {
-                    start_date: this.query.start_date,
-                    end_date: this.query.end_date
-                }
+                path: this.$route.path
             })
         }
     },

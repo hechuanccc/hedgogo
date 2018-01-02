@@ -92,7 +92,6 @@
       <pulling
         :queryset="queryset"
         :query="query"
-        :extra="extra"
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
@@ -117,21 +116,20 @@ const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            date: [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)],
+            date: ['', ''],
             api: api.member_report,
             queryset: [],
             query: {
-                start_date: Vue.moment().subtract(6, 'days').format(format),
-                end_date: Vue.moment().format(format),
+                start_date: '',
+                end_date: '',
                 agent: '',
                 member_level: '',
                 transactionType: '',
                 platform: '',
                 game: ''
             },
-            extra: '',
             agent: '',
-            member_level: '0',
+            member_level: '',
             transactionType: '',
             platform: '',
             game: '',
@@ -142,7 +140,15 @@ export default {
         }
     },
     created () {
-        this.extra = `start_date=${this.query.start_date}&end_date=${this.query.end_date}`
+        if (this.$route.query.start_date || this.$route.query.end_date) {
+            this.date = [this.$route.query.start_date, this.$route.query.end_date]
+        } else {
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
+        }
+        this.query = {
+            ...this.query,
+            ...this.$route.query
+        }
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
@@ -154,7 +160,6 @@ export default {
         },
         date (newObj, old) {
             [this.query.start_date, this.query.end_date] = newObj.map(e => Vue.moment(e).format(format))
-            this.extra = ''
             this.submit()
         },
         '$route': 'nextTickFetch'
@@ -167,6 +172,11 @@ export default {
     },
     methods: {
         nextTickFetch () {
+            if (this.$route.query.start_date || this.$route.query.end_date) {
+                this.date = [this.$route.query.start_date, this.$route.query.end_date]
+            } else {
+                this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
+            }
             setTimeout(() => {
                 this.$refs.pulling.rebase()
                 this.$refs.pulling.getExportQuery()
@@ -204,16 +214,15 @@ export default {
         },
         clearAll () {
             this.query = {
-                start_date: Vue.moment().subtract(6, 'days').format(format),
-                end_date: Vue.moment().format(format),
+                start_date: '',
+                end_date: '',
                 agent: '',
                 member_level: '',
                 transactionType: '',
                 platform: '',
                 game: ''
             }
-            this.date = [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)]
-            this.extra = `start_date=${this.date[0]}&end_date=${this.date[1]}`
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
             this.agent = ''
             this.member_level = ''
             this.transactionType = ''

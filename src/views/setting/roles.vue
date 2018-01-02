@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-        <div class="pull-right m-r">
+        <div class="pull-left m-l">
             <router-link tag="button" class="md-btn w-sm blue m-b"  to="/roles/add">{{ $t('role_manage.role_add_btn') }}</router-link>
         </div>
     </div>
@@ -11,7 +11,7 @@
                 <tr>
                     <th>{{ $t('role_manage.id') }}</th>
                     <th>{{ $t('role_manage.name') }}</th>
-                    <th>{{$t('role_manage.created_at')}}</th>
+                    <th>{{ $t('role_manage.created_at') }}</th>
                     <th>{{ $t('role_manage.operating') }}</th>
                 </tr>
             </thead>
