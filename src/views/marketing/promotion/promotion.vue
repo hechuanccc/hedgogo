@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="m-b" v-if="$root.permissions.includes('change_promotion')">
-            <router-link tag="button" class="md-btn w-md blue" to="/promotion/add">{{$t('promotion.add')}}</router-link>
+            <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('promotion.add')}}</router-link>
         </div>
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped">

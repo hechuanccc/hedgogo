@@ -1,11 +1,11 @@
 <template>
-    <select class="form-control w-sm c-select" v-model="myLevel" v-if="mode==='select'" :required="req" :disabled="!disabled">
+    <select class="form-control w-sm c-select" v-model="mySelectLevel" v-if="mode==='select'" :required="req" :disabled="!disabled">
         <option value="">{{$t('member.level')}}</option>
         <option class="form-control" :value="l.id" v-for="l in levels">{{l.name}}</option>
     </select>
-    <div v-else>
-        <label class="ui-check ui-check-md m-r"  v-for="l in levels">
-            <input type="checkbox" name="paymenttype" :value="l.id" v-model="myLevel">
+    <div class="checkbox" v-else>
+        <label class="m-r"  v-for="l in levels" :key="l.id">
+            <input type="checkbox" name="paymenttype" v-model="myCheckboxLevel[l.id]">
             <i class="dark-white"></i>
             {{l.name}}
         </label>
@@ -33,28 +33,34 @@ export default {
     data () {
         return {
             levels: [],
-            myLevel: this.level
+            mySelectLevel: '',
+            myCheckboxLevel: {}
         }
     },
     watch: {
         level (newObj, old) {
-            this.myLevel = this.level
+            if (this.mode === 'select') {
+                this.mySelectLevel = this.level
+            } else {
+                this.level.forEach(element => {
+                    this.$set(this.myCheckboxLevel, element, true)
+                })
+            }
         },
-        myLevel (newObj, old) {
+        mySelectLevel (newObj, old) {
             this.$emit('level-select', newObj)
-            this.$emit('level-choose', this.myLevel, this.index)
+            this.$emit('level-choose', this.mySelectLevel, this.index)
+        },
+        myCheckboxLevel: {
+            handler (newObj) {
+                this.$emit('level-select', Object.keys(newObj).filter(e => newObj[e]))
+            },
+            deep: true
         }
     },
     created () {
         this.$http.get(api.level).then(data => {
             this.levels = data
-            if (this.default) {
-                this.level = this.default
-            }
-            let _this = this
-            setTimeout(function () {
-                _this.myLevel = _this.level
-            }, 100)
         })
     }
 }

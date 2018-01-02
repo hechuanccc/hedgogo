@@ -2,7 +2,7 @@
     <div>
         <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
         <div class="m-b" v-if="userPermission">
-            <button class="md-btn w-sm blue" type="button"  @click="showAll=!showAll">
+            <button class="md-btn w-sm blue" type="button" @click="showAll=!showAll">
                 <span v-if="!showAll">{{$t('manage.add_announcement')}}</span>
                 <span v-else>隐藏</span>
             </button>
@@ -70,7 +70,7 @@
                 </tr>
                 </thead>
                 <tbody v-if="queryset.length > 0">
-                <tr v-for="(announcement, key) in queryset">
+                <tr v-for="(announcement, key) in queryset" :key="key">
                     <td>{{announcement.id}}</td>
                     <td class="word-break">
                        {{announcement.announcement}}
@@ -179,6 +179,7 @@ export default {
                     this.queryset[this.querysetIndex].platform = data.platform
                     this.queryset[this.querysetIndex].announcement = data.announcement
                     this.showAll = false
+                    this.id = ''
                     this.announcement.name = ''
                     this.announcement.announcement = ''
                 }, error => {

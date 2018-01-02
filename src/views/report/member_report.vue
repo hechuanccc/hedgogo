@@ -92,6 +92,7 @@
       <pulling
         :queryset="queryset"
         :query="query"
+        :extra="extra"
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
@@ -116,18 +117,19 @@ const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            date: ['', ''],
+            date: [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)],
             api: api.member_report,
             queryset: [],
             query: {
-                start_date: '',
-                end_date: '',
+                start_date: Vue.moment().subtract(6, 'days').format(format),
+                end_date: Vue.moment().format(format),
                 agent: '',
                 member_level: '',
                 transactionType: '',
                 platform: '',
                 game: ''
             },
+            extra: '',
             agent: '',
             member_level: '0',
             transactionType: '',
@@ -140,7 +142,7 @@ export default {
         }
     },
     created () {
-        this.clearAll()
+        this.extra = `start_date=${this.query.start_date}&end_date=${this.query.end_date}`
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
             this.$refs.pulling.getExportQuery()
@@ -152,6 +154,8 @@ export default {
         },
         date (newObj, old) {
             [this.query.start_date, this.query.end_date] = newObj.map(e => Vue.moment(e).format(format))
+            this.extra = ''
+            this.submit()
         },
         '$route': 'nextTickFetch'
     },
@@ -208,18 +212,15 @@ export default {
                 platform: '',
                 game: ''
             }
-            this.date = [this.query.start_date, this.query.end_date]
+            this.date = [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)]
+            this.extra = `start_date=${this.date[0]}&end_date=${this.date[1]}`
             this.agent = ''
             this.member_level = ''
             this.transactionType = ''
             this.platform = ''
             this.game = ''
             this.$router.push({
-                path: this.$route.path,
-                query: {
-                    start_date: this.query.start_date,
-                    end_date: this.query.end_date
-                }
+                path: this.$route.path
             })
         }
     },
