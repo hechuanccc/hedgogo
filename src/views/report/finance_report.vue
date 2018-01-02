@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-xs-12">
               <date-picker
-                :not-after="yesterday"
+                :not-after="today"
                 :shortcuts="[]"
                 class="pull-left m-r-xs"
                 v-model="date"
@@ -116,7 +116,7 @@ const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            date: [Vue.moment().subtract(7, 'days').format(format), Vue.moment().subtract(1, 'days').format(format)],
+            date: ['', ''],
             api: api.finance_report,
             queryset: [],
             query: {
@@ -136,12 +136,14 @@ export default {
             filter: {},
             href: '',
             export_query: [],
-            yesterday: Vue.moment().subtract(1, 'days').format(format)
+            today: Vue.moment().format(format)
         }
     },
     created () {
         if (this.$route.query.start_date || this.$route.query.end_date) {
             this.date = [this.$route.query.start_date, this.$route.query.end_date]
+        } else {
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
         }
         this.query = {
             ...this.query,
@@ -172,7 +174,7 @@ export default {
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
-                this.date = [Vue.moment().subtract(7, 'days').format(format), Vue.moment().subtract(1, 'days').format(format)]
+                this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
             }
             setTimeout(() => {
                 this.$refs.pulling.rebase()
@@ -219,7 +221,7 @@ export default {
                 platform: '',
                 game: ''
             }
-            this.date = [Vue.moment().subtract(7, 'days').format(format), Vue.moment().subtract(1, 'days').format(format)]
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
             this.agent = ''
             this.member_level = ''
             this.transaction_type = ''

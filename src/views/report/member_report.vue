@@ -116,7 +116,7 @@ const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            date: [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)],
+            date: ['', ''],
             api: api.member_report,
             queryset: [],
             query: {
@@ -142,6 +142,8 @@ export default {
     created () {
         if (this.$route.query.start_date || this.$route.query.end_date) {
             this.date = [this.$route.query.start_date, this.$route.query.end_date]
+        } else {
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
         }
         this.query = {
             ...this.query,
@@ -173,7 +175,7 @@ export default {
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
-                this.date = [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)]
+                this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
             }
             setTimeout(() => {
                 this.$refs.pulling.rebase()
@@ -220,7 +222,7 @@ export default {
                 platform: '',
                 game: ''
             }
-            this.date = [Vue.moment().subtract(6, 'days').format(format), Vue.moment().format(format)]
+            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
             this.agent = ''
             this.member_level = ''
             this.transactionType = ''
