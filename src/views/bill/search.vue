@@ -11,7 +11,13 @@
                             <option value="2">{{$t('common.yesterday')}}</option>
                             <option value="3">{{$t('common.specify_date_range')}}</option>
                         </select>
-                        <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
+                        <level
+                            class="inline"
+                            :level="member_level"
+                            @level-select="changeFromLevel"
+                            :disabled="!$route.query.member"
+                        >
+                        </level>
                         <select class="form-control w-sm c-select" v-model="transaction_type">
                             <option value="0">{{$t('bill.transaction_type')}}</option>
                             <option name="transaction_type" v-for="t in trans_type" :value="t.code">
@@ -19,8 +25,10 @@
                             </option>
                         </select>
                         <input type="number" v-model.trim="query.transaction_id" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
-                        <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
-                        <input type="text" v-model="query.agent_q" class="form-control w-sm" v-bind:placeholder="$t('common.agent')"/>
+                        <input type="text" v-model="member.username" class="form-control" disabled v-if="$route.query.member"/>
+                        <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" v-else/>
+                        <input type="text" v-model="member.agent.name" class="form-control" disabled v-if="$route.query.member"/>
+                        <input type="text" v-model="query.agent_q" class="form-control w-sm" v-bind:placeholder="$t('common.agent')" v-else/>
                         <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
                         <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
                         <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
@@ -142,6 +150,11 @@
                     transaction_type: [],
                     report_flag: true
                 },
+                member: {
+                    username: '',
+                    agent: {},
+                    level: {}
+                },
                 member_level: '',
                 selected: '0',
                 // use selectd transaction types
@@ -169,7 +182,6 @@
             '$route' (to, from) {
                 this.queryset = []
                 this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
             },
             created_at_0 (newObj, old) {
                 this.query.created_at_0 = newObj
@@ -184,6 +196,10 @@
         created () {
             this.getTransactionType()
             let transactionType = this.$route.query.transaction_type
+            let member = this.$route.query.member
+            if (this.$route.query.member) {
+                this.getMember(member)
+            }
             if (transactionType) {
                 this.transaction_type = transactionType.split(',')
             }
@@ -197,6 +213,7 @@
                 return api.agent + '?opt_fields=username,id,&username_q=' + this.agent_q
             },
             getReport () {
+                this.$refs.pulling.getExportQuery()
                 this.href = `${api.report_transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             }
@@ -229,11 +246,16 @@
                 // won't pull queryset here, just tell child component to change the route
                 this.query.agent_q ? this.showAgent = true : this.showAgent = false
                 this.$refs.pulling.submit()
-                this.$refs.pulling.getExportQuery()
             },
             getTransactionType () {
                 this.$http.get(api.transactiontype).then(data => {
                     this.trans_type = data
+                })
+            },
+            getMember (username) {
+                this.$http.get(api.member + '?opt_expand=bank&username=' + username).then(data => {
+                    this.member = data[0]
+                    this.member_level = this.member.level.id
                 })
             },
             clearall: function () {
@@ -287,7 +309,6 @@
             quick_select () {
                 this.$refs.pulling.submit()
                 let query = this.filter
-                this.$refs.pulling.getExportQuery()
                 this.$router.push({
                     path: this.$route.path,
                     query: query

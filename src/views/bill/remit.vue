@@ -90,7 +90,7 @@
                   </tr>
               </thead>
               <tbody v-if="queryset.length >0">
-                  <tr v-for="t in queryset" >
+                  <tr v-for="t in queryset" :key="t.id">
                       <td>
                         <router-link :to="'/transaction/' + t.id">{{t.transaction_id}}</router-link>
                       </td>
@@ -249,6 +249,7 @@
         },
         computed: {
             getReport () {
+                this.$refs.pulling.getExportQuery()
                 this.href = `${api.report_deposit}?token=${VueCookie.get('access_token')}&report=remit&${this.export_query}`
                 return this.queryset.length
             }
@@ -257,10 +258,7 @@
             nextTickFetch () {
                 this.setStatus()
                 this.queryset = []
-                setTimeout(() => {
-                    this.$refs.pulling.rebase()
-                    this.$refs.pulling.getExportQuery()
-                }, 100)
+                this.$refs.pulling.rebase()
             },
             changeFromLevel (val) {
                 this.query.member_level = val
@@ -296,12 +294,10 @@
             },
             submit () {
                 this.$refs.pulling.submit()
-                this.$refs.pulling.getExportQuery()
             },
             quick_select () {
                 this.$refs.pulling.submit()
                 let query = this.filter
-                this.$refs.pulling.getExportQuery()
                 this.$router.push({
                     path: this.$route.path,
                     query: query

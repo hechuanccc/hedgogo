@@ -211,23 +211,21 @@
             }
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
             })
         },
         computed: {
             getReport () {
+                this.$refs.pulling.getExportQuery()
                 this.href = `${api.report_onlinepay}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
                 return this.queryset.length
             }
         },
         methods: {
             nextTickFetch () {
-                let _this = this
                 this.queryset = []
-                setTimeout(() => {
-                    _this.$refs.pulling.rebase()
-                    _this.$refs.pulling.getExportQuery()
-                }, 100)
+                this.$nextTick(() => {
+                    this.$refs.pulling.rebase()
+                })
             },
             changeFromLevel (val) {
                 this.query.member_level = val
@@ -266,12 +264,10 @@
             },
             submit () {
                 this.$refs.pulling.submit()
-                this.$refs.pulling.getExportQuery()
             },
             quick_select () {
                 this.$refs.pulling.submit()
                 let query = this.filter
-                this.$refs.pulling.getExportQuery()
                 this.$router.push({
                     path: this.$route.path,
                     query: query
