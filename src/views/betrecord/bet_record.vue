@@ -297,8 +297,9 @@
         },
         created () {
             this.getGameList()
-            this.getPageAccessed()
             this.$nextTick(() => {
+                this.getPageAccessed()
+                this.submit()
                 this.$refs.pulling.rebase()
             })
         },
