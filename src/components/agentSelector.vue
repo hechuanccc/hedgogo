@@ -3,7 +3,7 @@
         <option value="">{{ $t('member.agent') }}</option>
         <option
             class="form-control"
-            :value="e.id"
+            :value="e[attribute]"
             v-for="e in agents"
             :key="e.id"
         >
@@ -25,6 +25,9 @@ export default {
         },
         index: {
             default: 0
+        },
+        attribute: {
+            default: 'id'
         }
     },
     data () {
@@ -40,7 +43,7 @@ export default {
         myAgent (newObj, old) {
             if (this.myAgent !== '0') {
                 if (newObj !== undefined) {
-                    this.$emit('agent-select', newObj)
+                    this.$emit('agent-select', newObj.toString())
                 }
             }
         }

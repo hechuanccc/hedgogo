@@ -48,7 +48,7 @@ export default {
             }
         },
         mySelectLevel (newObj, old) {
-            this.$emit('level-select', newObj)
+            this.$emit('level-select', newObj.toString())
             this.$emit('level-choose', this.mySelectLevel, this.index)
         },
         myCheckboxLevel: {
