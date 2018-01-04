@@ -6,7 +6,7 @@
         <div v-show="pageSelected == 'realtime'">
           <div class="row">
             <div class="col-xs-12">
-              <div class="h6 inline">{{$t('nav.instant_view')}}</div> 
+              <div class="h6 inline">{{$t('nav.instant_view')}}</div>
               <div class="pull-right inline">
                 <button class="md-btn w-sm blue m-r-sm inline" type="submit" @click="refresh">{{$t('common.refresh')}}</button>
                 <button class="md-btn w-sm" type="submit" @click="newWindow">{{$t('common.new_window')}}</button>
@@ -299,8 +299,9 @@
             this.getGameList()
             this.$nextTick(() => {
                 this.getPageAccessed()
-                this.submit()
-                this.$refs.pulling.rebase()
+                this.$nextTick(() => {
+                    this.submit()
+                })
             })
         },
         watch: {
@@ -332,12 +333,27 @@
                 this.query.category = newObj
             },
             filter_game: function (newObj, old) {
-                if (this.filter_game !== []) {
+                if (this.filter_game.length !== 0) {
                     this.query.game_q = newObj
                     this.submit()
                 }
             },
-            '$route': 'nextTickFetch',
+            '$route': function (to, from) {
+                let toFullPath = to.fullPath
+                let roots = ['/report/betrecord/today', '/report/betrecord/history', '/report/betrecord/realtime']
+                if (roots.includes(toFullPath)) {
+                    if (from.fullPath.includes(toFullPath)) {
+                        this.$router.go(-1)
+                    } else {
+                        this.getPageAccessed()
+                        this.$nextTick(() => {
+                            this.submit()
+                        })
+                    }
+                } else {
+                    this.nextTickFetch()
+                }
+            },
             created_at_0 (newObj, old) {
                 this.query.created_at_0 = newObj
             },
@@ -360,10 +376,6 @@
                 this.queryset = []
                 setTimeout(() => {
                     this.getPageAccessed()
-                    this.$router.push({
-                        path: this.$route.path + '?report_flag=true',
-                        query: this.query
-                    })
                     this.$refs.pulling.rebase()
                 }, 100)
             },
