@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="m-b" >
+        <div class="m-b" v-if="$root.permissions.includes('add_red_envelope')">
             <router-link tag="button" class="md-btn blue w-sm" to="/envelope_settings/add">{{$t('envelope.add_envelope')}}</router-link>
         </div>
         <div class="box">
