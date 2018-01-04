@@ -10,7 +10,6 @@ export static_container=static
 
 # Needed to avoid piling up of data in image and Azure file storage
 rm -rf dist
-/root/bin/az storage blob delete-batch --source $static_container
 
 npm install
 npm run build
@@ -22,6 +21,7 @@ npm run build
 /root/bin/az storage container create --public-access blob --name $static_container
 
 # Upload the changes
+/root/bin/az storage blob delete-batch --source $static_container
 /root/bin/az storage blob upload-batch --destination $audio_container --source dist/audio
 /root/bin/az storage blob upload-batch --destination $langs_container --source dist/langs
 /root/bin/az storage blob upload-batch --content-cache-control "public, max-age=$MAX_AGE" --destination $static_container --source dist/static
@@ -31,4 +31,4 @@ npm run build
 # To start purging the CDN
 # CDN is cached and will not reflect any change until purged
 # '/*' value in the content path indicates a 'Purge all'
-/root/bin/az cdn endpoint purge --resource-group dockercloud-bd6da6d7 --name $CDN_ENDPOINT --profile-name $CDN_PROFILE --content-paths '/*'
+/root/bin/az cdn endpoint purge --resource-group dockercloud-bd6da6d7 --name $CDN_ENDPOINT --profile-name $CDN_PROFILE --content-paths '/index.html'
