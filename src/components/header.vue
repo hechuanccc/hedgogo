@@ -103,8 +103,7 @@
                 remit_count: '',
                 withdraw_count: '',
                 abnormal_count: '',
-                searchLoading: false,
-                searchNoRecord: false
+                searchLoading: false
             }
         },
         props: {
@@ -121,6 +120,9 @@
         computed: {
             count: function () {
                 return this.remit_count + this.withdraw_count
+            },
+            searchNoRecord () {
+                return (!this.query.username_q || this.results.length === 0) && !this.searchLoading
             }
         },
         watch: {
@@ -165,9 +167,11 @@
                 }
             },
             'query.username_q' (newObj, old) {
-                this.searchLoading = true
-                this.searchNoRecord = false
-                this.search()
+                this.searchLoading = newObj.length > 0
+                this.results = []
+                if (this.query.username_q) {
+                    this.search()
+                }
             }
         },
         methods: {
@@ -261,13 +265,11 @@
             search:
                 _.debounce(function () {
                     if (this.query.username_q) {
+                        this.results = []
                         this.$http.get(api.search_member + '?username_q=' + this.query.username_q).then(data => {
                             this.searchLoading = false
                             if (data.length > 0) {
                                 this.results = data.slice(0, Number(this.searchlimit))
-                            } else {
-                                this.searchNoRecord = true
-                                this.results = []
                             }
                         }, error => {
                             this.searchErr = error
@@ -277,9 +279,6 @@
             500),
             focusSearchMemberInput () {
                 this.showResults = true
-                if (!this.results.length || !this.query.username_q) {
-                    this.searchNoRecord = true
-                }
             },
             blurSearchMemberInput () {
                 setTimeout(() => {

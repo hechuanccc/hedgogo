@@ -357,7 +357,8 @@ export default {
                 register_count: '过去7日注册人数'
             }
         },
-        loading: '载入中'
+        loading: '载入中',
+        setting: '设置'
     },
     bank: {
         bank_title: '银行资讯',
@@ -524,14 +525,15 @@ export default {
         manual_draw_success: '手动开奖成功！',
         manual_draw_fail: '手动开奖失败！',
         sure_manual_draw: '请确认是否手动开奖，该操作将会影响%{bet_record_count}个注单',
+        inform_no_draw: '寄送系统站内信通知下单会员',
         memo: '备注',
-        no_draw: '未开奖',
+        no_draw: '官方未开奖',
         retreat_sched_sure: '确定撤单吗？',
         retreat_sched: '撤单',
         retreat_sched_fail: '撤单失败！',
         created: '已创建',
         open: '已开放',
-        cancelled: '已撤单',
+        schedule_cancelled: '已撤单',
         operating: '操作',
         try_later: '请稍后再试',
         abnormal_period: '未开期数',
@@ -540,7 +542,8 @@ export default {
         period_bet_record: '当期单量',
         show_all: '显示全部',
         result_str_tips: '请输入%{num_len}个%{unique}数字(%{range_floor}~%{range_ceil})使用\'%{separator}\'分隔',
-        initial_msg: '未开期数可能为官方未开奖，请谨慎使用手动开奖',
+        manual_draw_initial_msg: '未开期数可能为官方未开奖，请谨慎使用手动开奖',
+        no_draw_initial_msg: '将此期注单状态标注为官方未开奖？',
         repeatable: '可重复',
         non_repetitive: '不重复',
         ball_num: '号码',
