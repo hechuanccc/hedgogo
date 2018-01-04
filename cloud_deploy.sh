@@ -15,13 +15,13 @@ npm install
 npm run build
 
 # Take note that the format URL for the storage account is {storage-url}/{blob-container} and $root is the only way to avoid the "blob container" format and the other static holders need to be declared as blobs to maintain the folder structure
-/root/bin/az storage blob delete-batch --source $static_container
 /root/bin/az storage container create --public-access blob --name $root_container
 /root/bin/az storage container create --public-access blob --name $audio_container
 /root/bin/az storage container create --public-access blob --name $langs_container
 /root/bin/az storage container create --public-access blob --name $static_container
 
 # Upload the changes
+/root/bin/az storage blob delete-batch --source $static_container
 /root/bin/az storage blob upload-batch --destination $audio_container --source dist/audio
 /root/bin/az storage blob upload-batch --destination $langs_container --source dist/langs
 /root/bin/az storage blob upload-batch --content-cache-control "public, max-age=$MAX_AGE" --destination $static_container --source dist/static
