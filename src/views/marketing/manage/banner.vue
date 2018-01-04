@@ -1,124 +1,118 @@
 <template>
-    <form class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
-        <div class="row m-b" v-if="userPermission">
-            <div class="col-xs-2">
-                <input type="file" class="md-btn w-sm blue add-file-btn" accept="image/*" @change="getImg">
-                <button class="md-btn w-sm blue" >{{$t('action.create')}}</button>
+    <div>
+        <form class="form m-l m-r" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
+            <div class="row" v-if="userPermission">
+                <div class="pull-left">
+                    <input type="file" class="md-btn w-sm blue add-file-btn" accept="image/*" @change="getImg">
+                    <button class="md-btn w-sm blue" >{{$t('action.create')}}</button>
+                </div>
+                <div class="pull-left form-group">
+                    <label class="form-control-label">{{$t('manage.platform_select')}}</label>
+                    <label class="radio-inline">
+                        <input type="radio" value="2" checked name="platform" v-model="banner.platform">
+                        {{$t('manage.all')}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="1" name="platform" v-model="banner.platform">
+                        <i class="blue"></i>
+                        {{$t('manage.pc')}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="0" name="platform" v-model="banner.platform">
+                        <i class="blue"></i>
+                        {{$t('manage.mobile')}}
+                    </label>
+                </div>
+                <div class="pull-center m-t-sm">
+                    <span class="alert alert-success text-success m-r p-a-sm" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
+                    <span class="alert alert-danger text-danger m-r p-a-sm" v-if="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
+                    <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+                </div>
             </div>
-            <div class="col-xs-4">
-                <label class="text-sm">{{$t('manage.platform_select')}}</label>
-                <label class="md-check md-check-md m-r">
-                    <input type="radio" value="2" checked name="platform" v-model="banner.platform">
-                    <i class="blue"></i>
-                    {{$t('manage.all')}}
-                </label>
-                <label class="md-check m-r">
-                    <input type="radio" value="1" name="platform" v-model="banner.platform">
-                    <i class="blue"></i>
-                    {{$t('manage.pc')}}
-                </label>
-                <label class="md-check m-r">
-                    <input type="radio" value="0" name="platform" v-model="banner.platform">
-                    <i class="blue"></i>
-                    {{$t('manage.mobile')}}
-                </label>
+        </form>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pull-right">
+                    <div class="text-danger">图片尺寸：电脑端推荐宽高比例为 4 : 1，推荐宽高为 1920 * 454，手机端推荐宽高比例为 3 : 1 ，推荐宽高为 320 * 160</div>                
+                </div>
             </div>
-            <div class="m-b text-danger">图片尺寸：电脑端推荐宽高比例为 4 : 1，推荐宽高为 1920 * 454，手机端推荐宽高比例为 3 : 1 ，推荐宽高为 320 * 160</div>
-            <div class="loading text-success" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在创建中...</b>   </div>
         </div>
-        <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped b-t">
                 <thead>
                 <tr>
-                    <th>{{$t('member.list_no')}}</th>
-                    <th>{{$t('manage.img')}}</th>
+                    <th v-show="!mode"></th>
+                    <th><span class="m-l">{{$t('manage.img')}}</span></th>
                     <th>{{$t('manage.platform')}}</th>
                     <th>{{$t('member.status')}}</th>
-                    <th v-if="userPermission">{{$t('manage.sequence')}}</th>
                     <th v-if="userPermission">{{$t('manage.operate')}}</th>
                 </tr>
                 </thead>
-                <tbody v-if="queryset.length > 0">
-                <tr v-for="(banner, key) in queryset">
-                    <td>{{banner.id}}</td>
+                <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
+                <tr v-for="(banner, key) in queryset" :key="key">
+                    <td v-show="!mode" class="v-m text-center"><i class="fa fa-reorder text-blue"></i></td>
                     <td>
-                        <img :src="banner.image" v-if="banner.image !== null" height="100">
+                        <img class="m-l" :src="banner.image" v-if="banner.image !== null" height="100">
                     </td>
-                    <td>
+                    <td class="v-m">
                         <span v-if="banner.platform === 0">{{$t('manage.mobile')}}</span>
                         <span v-if="banner.platform === 1">{{$t('manage.pc')}}</span>
                         <span v-if="banner.platform === 2">{{$t('manage.pc')}}/{{$t('manage.mobile')}}</span>
                     </td>
-                    <td>
+                    <td class="v-m">
                         <span class="label success" v-if="banner.status==1" >{{$t('status.active')}}</span>
                         <span class="label danger" v-if="banner.status==0">{{$t('status.inactive')}}</span>
                         <template v-if="userPermission">
                             <a class="text-sm m-l" @click="toggleStatus(banner)" v-if="banner.status===0" >{{$t('status.active')}}</a>
                             <a class="text-sm m-l" @click="toggleStatus(banner)" v-else >{{$t('status.inactive')}}</a>
-                         </template>
+                            </template>
                     </td>
-                    <td v-if="userPermission">
-                        <a @click="changeUp(banner)" v-if="key!=0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                        </a>
-                        <a @click="changeDown(banner)" v-if="!((key+1) === queryset.length)">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                        </a>
-                    </td>
-                    <td v-if="userPermission">
+                    <td class="v-m" v-if="userPermission">
                         <a class="md-btn md-flat m-r-sm" @click="deleteBanner(banner.id, $event, key)">{{$t('action.delete')}}</a>
                     </td>
                 </tr>
-                </tbody>
+                </draggable>
             </table>
         </div>
-        <div class="row m-b-lg">
-            <pulling :queryset="queryset" :api="bannerApi" :query="query" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
-        </div>
-    </form>
+    </div>
 </template>
 
 <script>
 import api from '../../../api'
-import pulling from '../../../components/pulling'
+import draggable from 'vuedraggable'
 
 export default {
     data () {
         return {
+            mode: true,
             showAll: false,
-            bannerApi: api.banner,
+            api: api.banner,
             queryset: [],
             key: '',
-            query: {
-            },
             banner: {
                 platform: 2,
                 image: []
             },
             loading: false,
-            errorMsg: ''
+            errorMsg: '',
+            successMsg: ''
         }
     },
     computed: {
         userPermission: function () {
-            return this.$root.permissions.includes('change_banner_announcement')
+            return true
         }
     },
     created () {
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
-        })
+        this.getBanners()
     },
     methods: {
-        changeUp (banner) {
-            this.$http.put(this.bannerApi + banner.id + '/', {'rank': banner.rank + 1}).then(() => {
-                this.$refs.pulling.rebase()
-            })
-        },
-        changeDown (banner) {
-            this.$http.put(this.bannerApi + banner.id + '/', {'rank': banner.rank - 1}).then(() => {
-                this.$refs.pulling.rebase()
+        getBanners () {
+            this.$http.get(this.api).then(data => {
+                this.queryset = data.sort((a, b) => a.rank - b.rank)
             })
         },
         deleteBanner (id, event, index) {
@@ -127,17 +121,21 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(this.bannerApi + id + '/').then(() => {
-                this.$refs.pulling.rebase()
+            this.$http.delete(this.api + id + '/').then(() => {
+                this.getBanners()
             })
         },
         onSubmit () {
             let formData = new window.FormData()
             formData.append('image', this.banner.image)
             formData.append('platform', this.banner.platform)
-            this.$http.post(this.bannerApi, formData).then(data => {
-                this.queryset.unshift(data)
+            this.$http.post(this.api, formData).then(data => {
+                this.getBanners()
                 this.loading = false
+                this.successMsg = this.$t('action.create') + this.$t('status.success')
+                setTimeout(() => {
+                    this.successMsg = ''
+                }, 3000)
             }, error => {
                 this.errorMsg = error
             })
@@ -150,21 +148,38 @@ export default {
             }
         },
         toggleStatus (banner) {
-            this.$http.put(this.bannerApi + banner.id + '/', {
+            this.$http.put(this.api + banner.id + '/', {
                 'status': banner.status === 0 ? 1 : 0
             }).then(data => {
                 banner.status = data.status
             })
         },
-        queryData (queryset) {
-            this.queryset = queryset
+        changeMode () {
+            if (!this.mode) {
+                this.$http.post(`${this.api}rank/`, this.queryset.map((element, index) => Object({
+                    id: element.id,
+                    rank: index + 1
+                }))).then(data => {
+                    this.queryset = data.sort((a, b) => a.rank - b.rank)
+                    this.successMsg = this.$t('status.success')
+                    setTimeout(() => {
+                        this.successMsg = ''
+                    }, 3000)
+                    this.mode = true
+                }, error => {
+                    this.errorMsg = `${this.$t('status.failed')} (${error})`
+                })
+            } else {
+                this.mode = false
+            }
         },
-        queryParam (query) {
-            this.query = query
+        cancelAdjustRank () {
+            this.getBanners()
+            this.mode = !this.mode
         }
     },
     components: {
-        pulling
+        draggable
     }
 }
 </script>
