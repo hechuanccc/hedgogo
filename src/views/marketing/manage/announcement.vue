@@ -150,7 +150,6 @@ export default {
                 return
             }
             this.$http.delete(this.api + id + '/').then(() => {
-                this.showSuccessMsg()
                 this.getAnnouncements()
             })
         },
