@@ -11,13 +11,13 @@
                 <div class="clearfix m-b col-xs-4" >
                     <label for="agent"  class="col-xs-5 text-right form-control-label">{{$t('envelope.name')}}</label>
                     <div class="inline-form-control">
-                        <input  class="form-control" v-model="envelope.name"  required>
+                        <input  class="form-control" v-model="envelope.name" :disabled="!userPermission" required>
                     </div>
                 </div>
                 <div class="clearfix m-b col-xs-4" >
                     <label for="agent"  class="col-xs-4 text-right form-control-label">{{$t('envelope.status')}}</label>
                     <div class="inline-form-control">
-                        <select class="form-control w-sm c-select" v-model="envelope.status">
+                        <select class="form-control w-sm c-select" v-model="envelope.status" :disabled="!$root.permissions.includes('update_red_envelope_status')">
                             <option value="1">{{$t('status.active')}}</option>
                             <option value="0">{{$t('status.inactive')}}</option>
                         </select>
@@ -30,19 +30,19 @@
                         <div class="clearfix m-b">
                             <label class="col-xs-5 text-right form-control-label">{{$t('envelope.deposit_threshold')}}</label>
                             <div class="inline-form-control">
-                                <input type="number"  class="form-control" v-model="group.deposit_threshold"  >
+                                <input type="number"  class="form-control" v-model="group.deposit_threshold" :disabled="!userPermission">
                             </div>
                         </div>
                         <div class="clearfix m-b">
                             <label class="col-xs-5 text-right form-control-label">{{$t('envelope.bet_threshold')}}</label>
                             <div class="inline-form-control">
-                                <input type="number"  class="form-control" v-model="group.bet_threshold" >
+                                <input type="number"  class="form-control" v-model="group.bet_threshold" :disabled="!userPermission">
                             </div>
                         </div>
                         <div class="clearfix">
                             <label class="col-xs-5 text-right form-control-label">{{$t('envelope.envelope_count')}}</label>
                             <div class="inline-form-control">
-                                <input type="number"  class="form-control" v-model="group.envelope_count"  required>
+                                <input type="number"  class="form-control" v-model="group.envelope_count" :disabled="!userPermission" required>
                             </div>
                         </div>
                     </div>
@@ -50,13 +50,13 @@
                         <div class="clearfix  m-b">
                             <label for="agent" class="col-xs-4 text-right form-control-label">{{$t('envelope.member_level')}}</label>
                             <div class="inline-form-control">
-                                <level :level="group.member_lvl" :index="index" required @level-choose="changeFromLevel"></level>
+                                <level :level="group.member_lvl" :index="index" required @level-choose="changeFromLevel" :disabled="userPermission"></level>
                             </div>
                         </div>
                         <div class="clearfix  m-b">
                             <label class="col-xs-4 text-right form-control-label">{{$t('envelope.select_envelope')}}</label>
                             <div class="inline-form-control">
-                                <select class="form-control w-sm c-select" v-model="group.envelope" required>
+                                <select class="form-control w-sm c-select" v-model="group.envelope" :disabled="!userPermission" required>
                                     <option value="">{{$t('common.please_select')}}</option>
                                     <option v-for="envelope in envelopes" :value="envelope.id">{{envelope.name}}</option>
                                 </select>
@@ -65,7 +65,7 @@
                         <div class="clearfix  m-b" >
                             <label for="agent"  class="col-xs-4 text-right form-control-label">{{$t('envelope.condition')}}</label>
                             <div class="inline-form-control">
-                                <select class="form-control w-sm c-select" v-model="group.condition" required>
+                                <select class="form-control w-sm c-select" v-model="group.condition" :disabled="!userPermission" required>
                                     <option value="0">{{$t('envelope.and')}}</option>
                                     <option value="1">{{$t('envelope.or')}}</option>
                                 </select>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-xs-4">
-                        <input type="button"  v-if="index === 0" class="md-btn grey-600 w-sm pull-right m-r" @click="addConfig()" value="新增一组"/>
+                        <input type="button"  v-if="index === 0" class="md-btn grey-600 w-sm pull-right m-r" @click="addConfig()" value="新增一组"  :disabled="!userPermission"/>
                         <a v-if="index > 0" class="pull-right m-r" @click="deleteConfig(index)">{{$t('action.delete')}}</a>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
-                    <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                    <button type="submit" class="md-btn w-sm blue" :disabled="!userPermission">{{$t('common.save')}}</button>
                     <span class="text-success m-l-md" v-show="updated">{{$t('common.saved_successfully')}}</span>
                 </div>
             </div>
@@ -122,6 +122,11 @@
         },
         created () {
             this.getEnvelope()
+        },
+        computed: {
+            userPermission: function () {
+                return this.$root.permissions.includes('update_red_envelope')
+            }
         },
         methods: {
             deleteConfig (index) {
