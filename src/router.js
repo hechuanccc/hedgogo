@@ -57,8 +57,7 @@ export default new Router({
             group: 'financing',
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.remit'),
-            permission: 'list_remit_online_withdraw_page'
+            title: Vue.t('nav.remit')
         }
     },
     {
@@ -71,8 +70,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.online_pay_orders'),
-            group: 'financing',
-            permission: 'list_remit_online_withdraw_page'
+            group: 'financing'
         }
     },
     {
@@ -85,8 +83,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.withdraw_request'),
-            group: 'financing',
-            permission: 'list_remit_online_withdraw_page'
+            group: 'financing'
         }
     },
     {
