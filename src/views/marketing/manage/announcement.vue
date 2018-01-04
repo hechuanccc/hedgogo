@@ -191,7 +191,6 @@ export default {
                 'status': announcement.status === 0 ? 1 : 0
             }).then(data => {
                 announcement.status = data.status
-                this.showSuccessMsg
             })
         },
         changeMode () {
