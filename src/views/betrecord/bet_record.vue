@@ -135,7 +135,7 @@
           <tbody>
           <tr v-for="t in queryset">
             <td>
-              <router-link class="betId" :to="'/report/betrecord/' + t.id">{{t.id}}</router-link>
+              <router-link :to="'/report/betrecord/' + t.id">{{t.id}}</router-link>
             </td>
             <td>
               {{t.created_at | moment("YYYY-MM-DD HH:mm:ss")}}
