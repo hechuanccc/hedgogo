@@ -357,7 +357,8 @@ export default {
                 register_count: 'Register Count of past 7 days'
             }
         },
-        loading: 'Loading'
+        loading: 'Loading',
+        setting: 'Setting'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -525,7 +526,9 @@ export default {
         manual_draw_success: 'Successfully manual draw!',
         manual_draw_fail: 'Fail to manual draw!',
         sure_manual_draw: 'Please check if manual draw. This operation affects %{bet_record_count} bet record(s).',
-        initial_msg: 'The undrawn game period might result from the error of official website, please check it twice before manually drawing result.',
+        inform_no_draw: 'Send message to the members who bet',
+        manual_draw_initial_msg: 'The undrawn game period might result from the error of official website, please check it twice before manually drawing result.',
+        no_draw_initial_msg: 'Would you want to set this period status to `No Draw`?',
         memo: 'Memo',
         no_draw: 'No draw number yet!',
         retreat_sched_sure: 'Are you sure to retreat schedule?',
@@ -533,7 +536,7 @@ export default {
         retreat_sched_fail: 'Fail to retreat schedule!',
         created: 'Created',
         open: 'Open',
-        cancelled: 'Cancelled',
+        schedule_cancelled: 'Cancelled',
         operating: 'Operating',
         try_later: 'Please try later',
         abnormal_period: 'Abnormal Period',

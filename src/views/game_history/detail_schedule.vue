@@ -26,57 +26,6 @@
             </div>
         </div>
     </div>
-    <div class="modal" v-if="modal.isShow">
-        <div class="modal-backdrop fade in" @click="hideModal"></div>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span><strong>{{ game.display_name }} - {{ mode ? $t('game_history.manual_draw') : $t('game_history.retreat_sched_sure') }}</strong></span>
-                    <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
-                </div>
-                <div class="modal-body">
-                    <table st-table="rowCollectionBasic" class="table b-t m-t">
-                        <thead>
-                            <tr>
-                                <th>{{ $t('game_history.periods') }}</th>
-                                <th>{{ mode ? $t('game_history.period_bet_record') : $t('game_history.draw_date') }}</th>
-                                <th v-show="mode">{{ $t('game_history.draw_number') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ modal.scheduleResult.issue_number }}</td>
-                                <td v-if="mode">{{ modal.betrecords }}</td>
-                                <td v-else>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                                <td v-show="mode">
-                                    <input class="form-control" v-model="modal.scheduleResult.result_str">
-                                    <span>{{ $t('game_history.result_str_tips', {
-                                        num_len: game.rules.num_len,
-                                        unique: game.rules.unique ? $t('game_history.non_repetitive') : $t('game_history.repeatable'),
-                                        range_floor: game.rules.range_value[0],
-                                        range_ceil: game.rules.range_value[1],
-                                        separator: game.rules.separator
-                                    })}}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="inline pull-left m-l-lg m-t-sm checkbox" v-if="mode">
-                        <input type="checkbox" v-model="modal.sureDraw">
-                        <i class="blue"></i>{{$t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords})}}
-                    </div>
-                    <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
-                    <button type="button" class="inline pull-right btn btn-primary m-r-xs" @click="updateGameResult" v-if="mode" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>                    
-                    <button type="button" class="inline pull-right btn btn-primary m-r-xs" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="text-left">
         <input 
             type="checkbox"
@@ -226,7 +175,7 @@
                         >
                         </td>
                         <td>
-                            <span v-if="sched.status === 'cancelled'">{{ $t('game_history.cancelled') }}</span>
+                            <span v-if="sched.status === 'cancelled'">{{ $t('game_history.schedule_cancelled') }}</span>
                         </td>
                     </tr>
                     <tr 
@@ -284,12 +233,69 @@
                             {{ $t('game_history.' + result.result_category[col]) }}
                         </td>
                         <td v-if="mode">
-                            <span class="label btn blue" @click="showModal(result)">{{ $t('game_history.manual_draw') }}</span>
+                            <span class="label btn blue m-r-xs" @click="showModal(result, 'manual_draw')">{{ $t('game_history.manual_draw') }}</span>
+                            <span class="label btn blue" @click="showModal(result, 'no_draw')">{{ $t('game_history.no_draw') }}</span>
                         </td>
-                        <td v-else>{{ result.is_manual ? $t('game_history.manual_draw') : '' }}</td>
+                        <td v-else>{{ result.remarks ? $t(`game_history.${result.remarks}`) : '' }}</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="modal" v-if="modal.isShow">
+        <div class="modal-backdrop fade in" @click="hideModal"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span><strong>{{ game.display_name }} - {{ mode ? $t(`game_history.${modal.mode}`) : $t('game_history.retreat_sched_sure') }}</strong></span>
+                    <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
+                </div>
+                <div class="modal-body">
+                    <table st-table="rowCollectionBasic" class="table b-t m-t">
+                        <thead>
+                            <tr>
+                                <th class="text-center">{{ $t('game_history.periods') }}</th>
+                                <th class="text-center">{{ mode ? $t('game_history.period_bet_record') : $t('game_history.draw_date') }}</th>
+                                <th class="text-center" v-show="mode && modal.mode ==='manual_draw'">{{ $t('game_history.draw_number') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>{{ modal.scheduleResult.issue_number }}</td>
+                                <td v-if="mode">{{ modal.betrecords }}</td>
+                                <td v-else>{{ modal.scheduleResult.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                                <td v-show="mode && modal.mode === 'manual_draw'">
+                                    <input class="form-control" v-model="modal.scheduleResult.result_str">
+                                    <span>{{ $t('game_history.result_str_tips', {
+                                        num_len: game.rules.num_len,
+                                        unique: game.rules.unique ? $t('game_history.non_repetitive') : $t('game_history.repeatable'),
+                                        range_floor: game.rules.range_value[0],
+                                        range_ceil: game.rules.range_value[1],
+                                        separator: game.rules.separator
+                                    })}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="m-l m-r">
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="inline pull-left m-l-lg m-t-sm checkbox" v-if="mode && modal.mode === 'manual_draw'">
+                        <input type="checkbox" v-model="modal.sureDraw">
+                        <i class="blue"></i>{{$t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords})}}
+                    </div>
+                    <div class="inline pull-left m-l-lg m-t-sm checkbox" v-else-if="mode && modal.mode === 'no_draw'">
+                        <input type="checkbox" v-model="modal.inform">
+                        <i class="blue"></i>{{$t('game_history.inform_no_draw')}}
+                    </div>
+                    <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
+                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="updateGameResult" v-if="mode && modal.mode === 'manual_draw'" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>                    
+                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="noDrawHandler" v-else-if="mode && modal.mode === 'no_draw'">{{ $t('action.confirm') }}</button>                    
+                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row m-b-lg m-t">
@@ -330,10 +336,12 @@ export default {
                 period: ''
             },
             modal: {
+                mode: '',
                 isShow: false,
                 scheduleResult: {},
                 betrecords: '',
                 sureDraw: false,
+                inform: false,
                 time: '',
                 msg: ''
             },
@@ -444,9 +452,10 @@ export default {
                 this.game = data
             })
         },
-        showModal (sched) {
+        showModal (sched, modalMode = 'manual_draw') {
             if (this.mode) {
                 this.modal = {
+                    mode: modalMode,
                     scheduleResult: {
                         game_schedule: sched.id,
                         game_code: sched.game_code,
@@ -456,7 +465,7 @@ export default {
                     time: sched.schedule_result,
                     sureDraw: false,
                     betrecords: sched.betrecords,
-                    msg: this.$t('game_history.initial_msg'),
+                    msg: this.$t(`game_history.${modalMode}_initial_msg`),
                     isShow: true
                 }
                 this.$nextTick(() => {
@@ -478,11 +487,24 @@ export default {
         retreatSchedule () {
             this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.id}/`, { 'status': 'cancelled' })
             .then(data => {
-                this.modal.msg = this.$t('game_history.cancelled')
+                this.modal.msg = this.$t('game_history.schedule_cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
                 this.getRetreatedSchedules()
             }, error => {
                 this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${error}）`
+                this.$refs.alertMsg.trigger('danger')
+            })
+        },
+        noDrawHandler () {
+            this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.game_schedule}/`, {
+                'status': 'no_draw',
+                'inform': this.modal.inform ? 1 : 0
+            }).then(data => {
+                this.modal.msg = this.$t('common.setting') + this.$t('status.success')
+                this.$refs.alertMsg.trigger('success', 1, true)
+                this.$refs.pulling.rebase()
+            }, error => {
+                this.modal.msg = `${this.$t('status.failed')}（${error}）`
                 this.$refs.alertMsg.trigger('danger')
             })
         },
