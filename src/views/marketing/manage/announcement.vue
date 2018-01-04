@@ -1,11 +1,20 @@
 <template>
     <div>
-        <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
-        <div class="m-b" v-if="userPermission">
-            <button class="md-btn w-sm blue" type="button" @click="showAll=!showAll">
-                <span v-if="!showAll">{{$t('manage.add_announcement')}}</span>
-                <span v-else>隐藏</span>
-            </button>
+        <div class="row m-l-xs m-r-xs m-b-xs">
+            <div class="pull-left" v-if="!$root.permissions.includes('change_promotion')">
+                <button class="md-btn w-sm blue" type="button" @click="showAll=!showAll">
+                    <span v-if="!showAll">{{$t('manage.add_announcement')}}</span>
+                    <span v-else>隐藏</span>
+                </button>
+            </div>
+            <div class="pull-center m-t-sm">
+                <span class="alert alert-success text-success m-r p-a-sm" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
+                <span class="alert alert-danger text-danger m-r p-a-sm" v-if="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
+            </div>
+            <div class="pull-right">
+                <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
+                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+            </div>
         </div>
         <div class="box" v-show="showAll">
             <div class="box-body ">
@@ -61,17 +70,16 @@
             <table st-table="rowCollectionBasic" class="table table-striped b-t">
                 <thead>
                 <tr>
-                    <th>{{$t('member.list_no')}}</th>
+                    <th v-show="!mode"></th>
                     <th>{{$t('cms.announcement')}}</th>
                     <th>{{$t('manage.platform')}}</th>
                     <th>{{$t('member.status')}}</th>
-                    <th v-if="$root.permissions.includes('change_banner_announcement')">{{$t('manage.sequence')}}</th>
-                    <th v-if="$root.permissions.includes('change_banner_announcement')">{{$t('manage.operate')}}</th>
+                    <th>{{$t('manage.operate')}}</th>
                 </tr>
                 </thead>
-                <tbody v-if="queryset.length > 0">
+                <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
                 <tr v-for="(announcement, key) in queryset" :key="key">
-                    <td>{{announcement.id}}</td>
+                    <td v-show="!mode" class="text-center"><i class="fa fa-reorder text-blue"></i></td>
                     <td class="word-break">
                        {{announcement.announcement}}
                     </td>
@@ -89,39 +97,27 @@
                         </template>
                     </td>
                     <td v-if="userPermission">
-                        <a @click="changeUp(announcement)" v-if="key!=0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                        </a>
-                        <a @click="changeDown(announcement)" v-if="!((key+1) === queryset.length)">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                        </a>
-                    </td>
-                    <td v-if="userPermission">
                         <a class="md-btn md-flat m-r-sm" @click="deleteAnnouncement(announcement.id, $event, key)">{{$t('action.delete')}}</a>
                         <a class="md-btn md-flat m-r-sm" @click="updateAnnouncement(announcement.id, key)">{{$t('action.update')}}</a>
                     </td>
                 </tr>
-                </tbody>
+                </draggable>
             </table>
-        </div>
-        <div class="row m-b-lg">
-            <pulling :queryset="queryset" :api="announcementApi" :query="query" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
         </div>
     </div>
 </template>
 
 <script>
 import api from '../../../api'
-import pulling from '../../../components/pulling'
+import draggable from 'vuedraggable'
 
 export default {
     data () {
         return {
+            mode: true,
             showAll: false,
-            announcementApi: api.announcement,
+            api: api.announcement,
             queryset: [],
-            query: {
-            },
             announcement: {
                 platform: '2',
                 name: '',
@@ -129,28 +125,22 @@ export default {
             },
             id: '',
             querysetIndex: '',
-            errorMsg: ''
+            errorMsg: '',
+            successMsg: ''
         }
     },
     computed: {
         userPermission: function () {
-            return this.$root.permissions.includes('change_banner_announcement')
+            return true
         }
     },
     created () {
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
-        })
+        this.getAnnouncements()
     },
     methods: {
-        changeUp (announcement) {
-            this.$http.put(this.announcementApi + announcement.id + '/', {'rank': announcement.rank + 1}).then(() => {
-                this.$refs.pulling.rebase()
-            })
-        },
-        changeDown (announcement) {
-            this.$http.put(this.announcementApi + announcement.id + '/', {'rank': announcement.rank - 1}).then(() => {
-                this.$refs.pulling.rebase()
+        getAnnouncements () {
+            this.$http.get(this.api).then(data => {
+                this.queryset = data.sort((a, b) => a.rank - b.rank)
             })
         },
         deleteAnnouncement (id, event, index) {
@@ -159,13 +149,14 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(this.announcementApi + id + '/').then(() => {
-                this.$refs.pulling.rebase()
+            this.$http.delete(this.api + id + '/').then(() => {
+                this.showSuccessMsg()
+                this.getAnnouncements()
             })
         },
         updateAnnouncement (id, key) {
             if (id) {
-                this.$http.get(this.announcementApi + id + '/').then(data => {
+                this.$http.get(this.api + id + '/').then(data => {
                     this.announcement = data
                     this.id = id
                     this.querysetIndex = key
@@ -175,42 +166,63 @@ export default {
         },
         onSubmit () {
             if (this.id) {
-                this.$http.put(this.announcementApi + this.id + '/', this.announcement).then(data => {
-                    this.queryset[this.querysetIndex].platform = data.platform
-                    this.queryset[this.querysetIndex].announcement = data.announcement
+                this.$http.put(this.api + this.id + '/', this.announcement).then(data => {
                     this.showAll = false
                     this.id = ''
                     this.announcement.name = ''
                     this.announcement.announcement = ''
+                    this.getAnnouncements()
                 }, error => {
                     this.errorMsg = error
                 })
             } else {
-                this.$http.post(this.announcementApi, this.announcement).then(data => {
+                this.$http.post(this.api, this.announcement).then(data => {
+                    this.showAll = false
                     this.announcement.name = ''
                     this.announcement.announcement = ''
-                    this.queryset.unshift(data)
+                    this.queryset.push(data)
                 }, error => {
                     this.errorMsg = error
                 })
             }
         },
         toggleStatus (announcement) {
-            this.$http.put(this.announcementApi + announcement.id + '/', {
+            this.$http.put(this.api + announcement.id + '/', {
                 'status': announcement.status === 0 ? 1 : 0
             }).then(data => {
                 announcement.status = data.status
+                this.showSuccessMsg
             })
         },
-        queryData (queryset) {
-            this.queryset = queryset.sort((a, b) => a.rank - b.rank)
+        changeMode () {
+            if (!this.mode) {
+                this.$http.post(`${this.api}rank/`, this.queryset.map((element, index) => Object({
+                    id: element.id,
+                    rank: index + 1
+                }))).then(data => {
+                    this.queryset = data.sort((a, b) => a.rank - b.rank)
+                    this.mode = true
+                    this.showSuccessMsg()
+                }, error => {
+                    this.errorMsg = `${this.$t('status.failed')} (${error})`
+                })
+            } else {
+                this.mode = false
+            }
         },
-        queryParam (query) {
-            this.query = query
+        cancelAdjustRank () {
+            this.getAnnouncements()
+            this.mode = !this.mode
+        },
+        showSuccessMsg () {
+            this.successMsg = this.$t('status.success')
+            setTimeout(() => {
+                this.successMsg = ''
+            }, 3000)
         }
     },
     components: {
-        pulling
+        draggable
     }
 }
 </script>
