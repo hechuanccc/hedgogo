@@ -377,6 +377,7 @@ export default {
         declined: '已拒绝',
         success: '成功',
         cancelled: '已取消',
+        no_draw: '官方未开',
         failed: '失败',
         disabled: '停用'
     },

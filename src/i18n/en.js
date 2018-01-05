@@ -377,6 +377,7 @@ export default {
         declined: 'Declined',
         success: 'Success',
         cancelled: 'Cancelled',
+        no_draw: 'No Draw',
         failed: 'Failed',
         disabled: 'Disabled'
     },
