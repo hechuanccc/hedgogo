@@ -13,9 +13,9 @@
                         <h2 class="v-m  m-t-sm">{{$t('nav.setting_level')}}：{{name}}</h2>
                     </div>
                     <div class="col-md-6 col-md-offset-3 text-right">
-                        <router-link class="md-btn md-flat m-r-sm" to="/level/add"  v-if="$root.permissions.includes('change_level')">{{$t('action.add_level')}}</router-link>
-                        <router-link class="md-btn md-flat" v-if="$root.permissions.includes('change_level')" :to="'/level/' + id + '/edit'">{{$t('action.edit_level')}}</router-link>
-                        <a class="md-btn md-flat" v-if="$root.permissions.includes('change_level')" @click="deleteLevel(id, $event)">{{$t('action.delete_level')}}</a>
+                        <router-link class="md-btn md-flat m-r-sm" to="/level/add" v-if="$root.permissions.includes('add_member_level')">{{$t('action.add_level')}}</router-link>
+                        <router-link class="md-btn md-flat" v-if="$root.permissions.includes('update_member_level')" :to="'/level/' + id + '/edit'">{{$t('action.edit_level')}}</router-link>
+                        <a class="md-btn md-flat" v-if="$root.permissions.includes('delete_member_level')" @click="deleteLevel(id, $event)">{{$t('action.delete_level')}}</a>
                     </div>
                 </div>
                 <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>

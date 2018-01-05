@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="m-b" v-show="$root.permissions.includes('change_level')">
+        <div class="m-b" v-show="$root.permissions.includes('add_member_level')">
             <router-link class="md-btn blue w-sm" tag="button" to="/level/add">{{$t('action.add_level')}}</router-link>
         </div>
         <div class="box">

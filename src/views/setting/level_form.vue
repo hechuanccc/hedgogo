@@ -6,7 +6,7 @@
                     <li class="active">{{$route.meta.title}}</li>
                 </ol>
             </div>
-            <div class="alert alert-danger" v-show="!$root.permissions.includes('change_level')">{{$t('common.errorPermission')}}</div>
+            <div class="alert alert-danger">{{$t('common.errorPermission')}}</div>
             <div class="box">
             <div class="box-body">
                 <form class="form m-a" v-on:submit.prevent="onSubmit">
@@ -213,7 +213,7 @@
                         <div class="alert alert-danger" v-show="level.errorMsg">
                             <span>{{level.errorMsg}}</span>
                         </div>
-                        <button :disabled="!$root.permissions.includes('change_level')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
                 </form>
             </div>

@@ -117,7 +117,8 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('envelope.add_setting')
+            title: Vue.t('envelope.add_setting'),
+            permission: 'add_red_envelope'
         }
     }, {
         path: '/envelope_settings/:envelopeId/edit',
@@ -464,7 +465,8 @@ export default new Router({
         meta: {
             auth: true,
             title: Vue.t('nav.member_level_add'),
-            group: 'setting'
+            group: 'setting',
+            permission: 'add_member_level'
         }
     },
     {
@@ -486,7 +488,8 @@ export default new Router({
         meta: {
             group: 'setting',
             title: Vue.t('nav.member_level_edit'),
-            auth: true
+            auth: true,
+            permission: 'update_member_level'
         }
     },
     {
