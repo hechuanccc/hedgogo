@@ -303,7 +303,12 @@
             this.$nextTick(() => {
                 this.getPageAccessed()
                 this.$nextTick(() => {
-                    this.submit()
+                    let conditions = Object.keys(this.$route.query)
+                    if (conditions.length > 0) {
+                        this.$refs.pulling.rebase()
+                    } else {
+                        this.submit()
+                    }
                 })
             })
         },
