@@ -377,7 +377,6 @@ export default {
         declined: 'Declined',
         success: 'Success',
         cancelled: 'Cancelled',
-        no_draw: 'No Draw',
         failed: 'Failed',
         disabled: 'Disabled'
     },
@@ -531,7 +530,7 @@ export default {
         manual_draw_initial_msg: 'The undrawn game period might result from the error of official website, please check it twice before manually drawing result.',
         no_draw_initial_msg: 'Would you want to set this period status to `No Draw`?',
         memo: 'Memo',
-        no_draw: 'No draw number yet!',
+        no_draw: 'No draw',
         retreat_sched_sure: 'Are you sure to retreat schedule?',
         retreat_sched: 'Retreat Schedule',
         retreat_sched_fail: 'Fail to retreat schedule!',

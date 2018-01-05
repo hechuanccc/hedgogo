@@ -30,7 +30,7 @@
                     <option value="lose">{{$t('betrecord.lose')}}</option>
                     <option value="cancelled">{{$t('status.cancelled')}}</option>
                     <option value="tie">{{$t('betrecord.tie')}}</option>
-                    <option value="no_draw">{{$t('status.no_draw')}}</option>
+                    <option value="no_draw">{{$t('game_history.no_draw')}}</option>
                   </select>
                   <div class="pull-left m-r-xs">
                     <input type="text" v-model="query.bet_gte" class="form-control w-sm" v-bind:placeholder="$t('common.min_amount')"/>
@@ -172,7 +172,7 @@
                 <span class="label ongoing" v-if="t.status === 'ongoing'">{{$t('betrecord.ongoing')}}</span>
                 <span class="label ongoing" v-if="t.status === 'tie'">{{$t('betrecord.tie')}}</span>
                 <span class="label ongoing" v-if="t.status === 'cancelled'">{{$t('status.cancelled')}}</span>
-                <span class="label ongoing" v-if="t.status === 'no_draw'">{{$t('status.no_draw')}}</span>
+                <span class="label ongoing" v-if="t.status === 'no_draw'">{{$t('game_history.no_draw')}}</span>
               </div>
             </td>
             <td>
