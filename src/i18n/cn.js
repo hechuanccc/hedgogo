@@ -527,7 +527,7 @@ export default {
         sure_manual_draw: '请确认是否手动开奖，该操作将会影响%{bet_record_count}个注单',
         inform_no_draw: '寄送系统站内信通知下单会员',
         memo: '备注',
-        no_draw: '官方未开奖',
+        no_draw: '官方未开',
         retreat_sched_sure: '确定撤单吗？',
         retreat_sched: '撤单',
         retreat_sched_fail: '撤单失败！',
