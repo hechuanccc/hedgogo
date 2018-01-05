@@ -555,7 +555,6 @@ export default {
             if (this.inputPeriod) {
                 condition += `&issue_number_q=${this.inputPeriod}`
             }
-            console.log(condition, 'condition')
             return condition
         },
         filteredResults () {
