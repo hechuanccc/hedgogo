@@ -161,8 +161,7 @@
                 hasImage: false,
                 hasImageMobile: false,
                 errorMsg: '',
-                selectedPromotion: '',
-                action: 'create'
+                selectedPromotion: ''
             }
         },
         created () {
