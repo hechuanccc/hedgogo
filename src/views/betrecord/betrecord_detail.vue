@@ -78,6 +78,7 @@
                         <span class="label ongoing" v-if="betrecords.status === 'ongoing'">{{$t('betrecord.ongoing')}}</span>
                         <span class="label ongoing" v-if="betrecords.status === 'tie'">{{$t('betrecord.tie')}}</span>
                         <span class="label ongoing" v-if="betrecords.status === 'cancelled'">{{$t('status.cancelled')}}</span>
+                        <span class="label ongoing" v-if="betrecords.status === 'no_draw'">{{$t('game_history.no_draw')}}</span>
                     </div>
                 </span>
               </div>

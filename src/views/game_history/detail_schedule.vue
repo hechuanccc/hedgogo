@@ -8,10 +8,10 @@
             <div class="row">
                 <div class="col-xs-3">
                     <label>{{$t('game_history.periods')}}：</label>
-                    <input 
-                        type="number" 
-                        v-model.number="input.period" 
-                        :placeholder="$t('game_history.periods')" 
+                    <input
+                        type="number"
+                        v-model.number="input.period"
+                        :placeholder="$t('game_history.periods')"
                         class="form-control"
                     >
                 </div>
@@ -19,18 +19,17 @@
                     <label>{{$t('game_history.date')}}：</label>
                     <date-picker
                         width='140'
-                        v-model="input.date" 
-                        @input="setDate"
+                        v-model="input.date"
                     ></date-picker>
                 </div>
             </div>
         </div>
     </div>
     <div class="text-left">
-        <input 
+        <input
             type="checkbox"
-            value="1" 
-            name="exception" 
+            value="1"
+            name="exception"
             v-model="mode"
         >
             <i class="blue"></i>
@@ -41,13 +40,13 @@
             <table class="table table-striped table-bordered" v-show="queryset.length > 0 || retreatedScheds.length > 0">
                 <thead class="text-center">
                     <tr>
-                        <th 
+                        <th
                             width="10%"
                             :class="{'p-b-md': twoRow}"
                         >
                             {{ $t('game_history.periods') }}
                         </th>
-                        <th 
+                        <th
                             width="15%"
                             :class="{'p-b-md': twoRow}"
                         >
@@ -59,13 +58,13 @@
                             :class="{'p-b-md': twoRow}"
                             v-else
                         >
-                            <template 
-                                v-for="col in resultCol" 
+                            <template
+                                v-for="col in resultCol"
                                 v-if="resultCol.length > 1"
                             >
-                                <span 
-                                    class="m-r-xs m-l-xs label btn blue p-a-sm" 
-                                    :key="col" 
+                                <span
+                                    class="m-r-xs m-l-xs label btn blue p-a-sm"
+                                    :key="col"
                                     @click="changeResultColMode(col)"
                                 >
                                     <b>{{ `${resultCol.length > 3 ? '' : $t('game_history.show')}${$t('game_history.' + col)}` }}</b>
@@ -76,13 +75,13 @@
                             </span>
                         </th>
                         <th
-                            class="p-l-0 p-r-0" 
+                            class="p-l-0 p-r-0"
                             :width="sumCol.length * 50"
-                            v-if="sumCol.length > 0" 
+                            v-if="sumCol.length > 0"
                         >
                             <div class="b-b p-b-sm">{{ sumCol1st2nd ? $t('game_history.sum_of_first_second') : $t('game_history.sum') }}</div>
                             <template v-for="col in sumCol" >
-                                <div 
+                                <div
                                     class="m-t-sm"
                                     :key="col"
                                     :style="{
@@ -95,16 +94,16 @@
                             </template>
                         </th>
                         <th
-                            :class="['p-l-0 p-r-0', dragonTigerCol.length > 1 ? '' : 'p-b-md']" 
+                            :class="['p-l-0 p-r-0', dragonTigerCol.length > 1 ? '' : 'p-b-md']"
                             :width="dragonTigerCol.length * 50"
-                            v-if="dragonTigerCol.length > 0" 
+                            v-if="dragonTigerCol.length > 0"
                         >
-                            <div :class="dragonTigerCol.length > 1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.dragon') + $t('game_history.tiger') }}</div>                        
+                            <div :class="dragonTigerCol.length > 1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.dragon') + $t('game_history.tiger') }}</div>
                             <template
                                 v-for="(col, index) in dragonTigerCol"
                                 v-if="dragonTigerCol.length > 1"
                             >
-                                <div 
+                                <div
                                     class="m-t-sm"
                                     :key="col"
                                     :style="{
@@ -117,13 +116,13 @@
                             </template>
                         </th>
                         <th
-                            class="p-l-0 p-r-0" 
+                            class="p-l-0 p-r-0"
                             :width="comparisonCol.length * 50"
-                            v-if="comparisonCol.length > 0" 
+                            v-if="comparisonCol.length > 0"
                         >
-                            <div :class="comparisonCol.length>1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.comparison') }}</div>                        
+                            <div :class="comparisonCol.length>1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.comparison') }}</div>
                             <template v-for="col in comparisonCol" v-if="comparisonCol.length>1">
-                                <div 
+                                <div
                                     class="m-t-sm"
                                     :key="col"
                                     :style="{
@@ -149,7 +148,7 @@
                     </tr>
                 </thead>
                 <tbody class="v-m text-center">
-                    <tr 
+                    <tr
                         v-if="isPageOne"
                         v-for="sched in retreatedScheds"
                         :key="sched.id"
@@ -168,7 +167,7 @@
                         <td v-if="sumCol.length > 0"></td>
                         <td v-if="dragonTigerCol.length > 0"></td>
                         <td v-if="comparisonCol.length > 0"></td>
-                        <td 
+                        <td
                             v-for="col in otherCol"
                             :key="'empty_' + col"
                             v-if="otherCol.length>0"
@@ -178,7 +177,7 @@
                             <span v-if="sched.status === 'cancelled'">{{ $t('game_history.schedule_cancelled') }}</span>
                         </td>
                     </tr>
-                    <tr 
+                    <tr
                         v-for="result in filteredResults"
                         :key="result.schedule_result"
                     >
@@ -197,8 +196,8 @@
                                 </span>
                             </div>
                             <div v-else>
-                                <div id="circle" 
-                                    v-for="index in result.result_str.split(',').length" 
+                                <div id="circle"
+                                    v-for="index in result.result_str.split(',').length"
                                     :class="['m-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
                                     :key="`${result.issue_number}_${resultColMode}_${index}`"
                                 >
@@ -212,7 +211,7 @@
                             :key="'Col_' + index"
                         >
                             <template v-for="col in colList">
-                                <div 
+                                <div
                                     :style="{
                                         'display': 'inline-block',
                                         'width' : `${100 / colList.length}%`
@@ -291,15 +290,15 @@
                         <i class="blue"></i>{{$t('game_history.inform_no_draw')}}
                     </div>
                     <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
-                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="updateGameResult" v-if="mode && modal.mode === 'manual_draw'" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>                    
-                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="noDrawHandler" v-else-if="mode && modal.mode === 'no_draw'">{{ $t('action.confirm') }}</button>                    
+                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="updateGameResult" v-if="mode && modal.mode === 'manual_draw'" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>
+                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="noDrawHandler" v-else-if="mode && modal.mode === 'no_draw'">{{ $t('action.confirm') }}</button>
                     <button type="button" class="inline pull-right btn blue m-r-xs" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="row m-b-lg m-t">
-        <pulling 
+        <pulling
             :queryset="queryset"
             :query="query"
             :api="pullingApi"
@@ -317,6 +316,7 @@ import pulling from '../../components/pulling'
 import alertMsg from '../../components/alertMsg'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
+import _ from 'lodash'
 
 const dateFormat = 'YYYY-MM-DD'
 
@@ -335,6 +335,7 @@ export default {
                 date: Vue.moment().format(dateFormat),
                 period: ''
             },
+            inputPeriod: '',
             modal: {
                 mode: '',
                 isShow: false,
@@ -428,18 +429,24 @@ export default {
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
             })
-        }
-    },
-    methods: {
-        setDate () {
-            const date = Vue.moment(this.input.date).format(dateFormat)
+        },
+        queryCondition (condition) {
             this.pullingApi = api.game_history
             this.queryset = []
-            this.extra = `game_code=${this.game.code}&date=${date}`
+            clearInterval(this.timingPulling)
+            this.extra = `game_code=${this.game.code}${condition}`
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
+                this.timingPulling = setInterval(() => {
+                    this.$refs.pulling.rebase()
+                }, 20 * 1000)
             })
         },
+        'input.period': _.debounce(function (val) {
+            this.inputPeriod = val
+        }, 1000)
+    },
+    methods: {
         getRetreatedSchedules (gameid) {
             gameid = gameid || this.game.id
             this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
@@ -537,6 +544,19 @@ export default {
         }
     },
     computed: {
+        inputDate () {
+            return Vue.moment(this.input.date).format(dateFormat)
+        },
+        queryCondition () {
+            let condition = ''
+            if (this.inputDate) {
+                condition += `&date=${this.inputDate}`
+            }
+            if (this.inputPeriod) {
+                condition += `&issue_number_q=${this.inputPeriod}`
+            }
+            return condition
+        },
         filteredResults () {
             if (!this.mode) {
                 let category = []
@@ -584,9 +604,7 @@ export default {
                 this.resultCol = this.sumCol = this.dragonTigerCol = this.comparisonCol = this.otherCol = this.allCol = []
                 this.twoRow = false
             }
-            return this.queryset.filter(result => {
-                return result.issue_number.indexOf(this.input.period) !== -1
-            })
+            return this.queryset
         },
         isPageOne () {
             return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.mode
