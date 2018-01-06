@@ -196,7 +196,6 @@
             '$route' (to, from) {
                 this.queryset = []
                 this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
             },
             created_at_0 (newObj, old) {
                 this.query.created_at_0 = newObj
@@ -218,7 +217,6 @@
             this.setStatus()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
             })
         },
         methods: {
@@ -227,7 +225,6 @@
                 this.queryset = []
                 setTimeout(() => {
                     this.$refs.pulling.rebase()
-                    this.$refs.pulling.getExportQuery()
                 }, 100)
             },
             changeFromLevel (val) {
