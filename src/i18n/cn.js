@@ -792,7 +792,8 @@ export default {
         availability: '有效期',
         detail: '优惠活动详情',
         start_date: '起始日期',
-        end_date: '结束日期'
+        end_date: '结束日期',
+        copy_promotion: '复制优惠活动'
     },
     header: {
         deposit: '入款',

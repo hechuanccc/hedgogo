@@ -23,7 +23,7 @@
               <span class="text-muted" v-if="agent.created_by">{{agent.created_at | moment( "YYYY-MM-DD HH:mm")}} 加盟</span>
             </div>
             <div class="col-xs-8 col-md-offset-1 text-right">
-              <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('list_report_betrecord')" :to="'/report/game?agent=' + agent.username + '&created_at_0=' + created_at_0 + '&created_at_1=' + created_at_1 + '&dateRange=today'">{{$t('action.view_today_report')}}</router-link>
+              <router-link class="md-btn md-flat m-r-sm" :to="'/report/finance_report?agent=' + agent.id + '&start_date=' + created_at_0 + '&end_date=' + created_at_1">{{$t('action.view_today_report')}}</router-link>
               <router-link class="md-btn md-flat m-r-sm" :to="'/bill/search?agent_q=' + agent.username">{{$t('action.view_member_record')}}</router-link>
               <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)" v-if="levelPermission">{{$t('action.reset_password')}}</a>
               <router-link class="md-btn md-flat m-r-sm" :to="'/agent/' + agent.id + '/edit'" v-if="levelPermission">{{$t('action.update_agent')}}</router-link>
