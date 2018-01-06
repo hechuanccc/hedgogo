@@ -145,9 +145,6 @@ export default {
         } else {
             this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
         }
-        if (this.$route.query.agent) {
-            this.agent = this.$route.query.agent
-        }
         this.query = {
             ...this.query,
             ...this.$route.query

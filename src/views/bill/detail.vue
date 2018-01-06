@@ -179,9 +179,9 @@
                     <div v-if="transaction.status ===5 " class="t-red">
                         {{$t('bill.deposit_declined')}}
                     </div>
-                    <div v-if="transaction.status === 3 & !$root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
+                    <div v-if="transaction.status === 3 & $root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
                         <button class="md-btn w-sm grey m-r" @click="update('remit', 1, true, $event)">{{$t('bill.audit')}}</button>
-                        <button v-if="!$root.permissions.includes('decline_payment')" class="md-btn w-sm grey-300" @click="update('remit', 5, true, $event)">{{$t('bill.audit_deny')}}</button>
+                        <button v-if="$root.permissions.includes('decline_payment')" class="md-btn w-sm grey-300" @click="update('remit', 5, true, $event)">{{$t('bill.audit_deny')}}</button>
                     </div>
                     <div v-if="transaction.status === 1" class="t-green">
                         {{$t('bill.saved')}}
@@ -190,7 +190,7 @@
                     </div>
                 </div>
 
-                <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && !$root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
+                <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && $root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
                     <div v-if="transaction.status === 3">
                         <div  v-if="loading"><i class='fa fa-spinner'></i>   <b class="">正在加载中...</b></div>
                         <button class="md-btn red" v-else @click="update('onlinepay', 1, true, $event)">{{$t('bill.manual_confirm')}}</button>
@@ -209,9 +209,9 @@
                     <div v-if="transaction.status === 5 " class="t-red">
                         {{$t('bill.withdraw_declined')}}
                     </div>
-                    <div v-if="transaction.status === 3 && !$root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
+                    <div v-if="transaction.status === 3 && $root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
                         <button class="md-btn w-sm grey m-r" @click="update('withdraw', 1, true, $event)">{{$t('bill.audit')}}</button>
-                        <template v-if="!$root.permissions.includes('decline_payment')">
+                        <template v-if="$root.permissions.includes('decline_payment')">
                             <button class="md-btn grey-300 m-r" @click="update('withdraw', 4, true, $event)">{{$t('bill.cancel')}}</button>
                             <button class="md-btn grey-300" @click="update('withdraw', 5, true, $event)">{{$t('bill.declined')}}</button>
                         </template>
