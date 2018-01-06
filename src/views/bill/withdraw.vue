@@ -214,17 +214,11 @@
                 this.query.transaction_id = newObj
             }
         },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                vm.queryset = []
-                vm.$refs.pulling.rebase()
-                vm.$refs.pulling.getExportQuery()
-            })
-        },
         created () {
             this.setStatus()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
+                this.$refs.pulling.getExportQuery()
             })
         },
         methods: {
