@@ -138,24 +138,24 @@
                 <h6 class="b-b p-b m-b m-t-lg">{{$t('bank.bank_title')}}</h6>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.name')}}</label>
-                  <bank :bank="agent.bank.bank" :req="true" @bank-select="bankSelect" :disabled="listUpdateAgentBankPermissions"></bank>
+                  <bank :bank="agent.bank.bank" :req="true" @bank-select="bankSelect" :disabled="listUpdateAgentBankPermission"></bank>
                 </div>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.province')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.province" :disabled="listUpdateAgentBankPermissions" required>
+                    <input class="form-control" v-model="agent.bank.province" :disabled="listUpdateAgentBankPermission" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.city')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.city" :disabled="listUpdateAgentBankPermissions" required>
+                    <input class="form-control" v-model="agent.bank.city" :disabled="listUpdateAgentBankPermission" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('bank.account')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" :disabled="listUpdateAgentBankPermissions" required>
+                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" :disabled="listUpdateAgentBankPermission" required>
                   </div>
                 </div>
 
@@ -234,7 +234,7 @@
             updateAgentNamePhoneMailPermission () {
                 return !this.$root.permissions.includes('update_agent_name_phone_mail')
             },
-            listUpdateAgentBankPermissions () {
+            listUpdateAgentBankPermission () {
                 return !this.$root.permissions.includes('list_update_agent_bank')
             },
             bankFilled () {
@@ -377,10 +377,6 @@
             // for agent field typeahead
             prepareResponseData (data) {
                 return data
-            },
-            getAgentPermission (levelId) {
-                let agentPermissionId = 'change_agent_level_' + levelId
-                return this.$root.permissions.includes(agentPermissionId)
             }
         },
         components: {
