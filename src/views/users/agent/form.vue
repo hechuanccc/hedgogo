@@ -248,14 +248,6 @@
                 let level = this.agent.level - 1
                 level = level <= 0 ? 1 : level
                 return level
-            },
-            levelPermission: function () {
-                let id = this.agent.level
-                if (id) {
-                    return this.getAgentPermission(id)
-                } else {
-                    return this.$root.permissions.includes('change_agent_level_4')
-                }
             }
         },
         beforeRouteEnter (to, from, next) {
