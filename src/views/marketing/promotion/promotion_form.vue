@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="m-t text-danger">上传图片最大宽度320像素！</div>
                             </div>
-                            <div class="form-group" v-if="promotion.description">
+                            <div class="form-group">
                                 <label for="description">{{ $t('promotion.desc') }}</label>
                                 <tinymce
                                     :key="'promo_desc_pc'"
@@ -78,7 +78,7 @@
                                 >
                                 </tinymce>
                             </div>
-                            <div class="form-group" v-if="promotion.mobile_description">
+                            <div class="form-group">
                                 <label for="mobile_description">{{ $t('promotion.desc_mobile') }}</label>
                                 <tinymce
                                     :key="'promo_desc_pc'"
@@ -157,6 +157,8 @@
                     image_mobile: '',
                     mobile_description: ''
                 },
+                randomId: 'pd' + _.random(0, 500),
+                randomIdMobile: 'pd' + _.random(501, 1000),
                 promotions: [],
                 hasImage: false,
                 hasImageMobile: false,
@@ -173,16 +175,6 @@
             },
             'promotion.end_date' (newObj, old) {
                 this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
-            }
-        },
-        computed: {
-            randomId () {
-                // need to add different id to tinymce so it will initiate
-                return 'pd' + _.random(0, 500)
-            },
-            randomIdMobile () {
-                // need to add different id to tinymce so it will initiate
-                return 'pd' + _.random(501, 1000)
             }
         },
         methods: {
@@ -215,7 +207,7 @@
                 formData.append('level', this.promotion.level)
                 formData.append('mobile_description', this.promotion.mobile_description)
 
-                if (this.$route.params.promotionId && this.$route.name === 'promotion_add') {
+                if (this.$route.params.promotionId && this.$route.name === 'promotion_edit') {
                     this.$http.put(`${this.api}${this.$route.params.promotionId}/`, formData).then(data => {
                         this.$router.push('/promotion/' + data.id)
                     }, error => {
