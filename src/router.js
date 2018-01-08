@@ -241,7 +241,8 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.member_add'),
-            group: 'users'
+            group: 'users',
+            permission: 'add_new_member'
         }
     },
     {

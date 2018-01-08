@@ -439,7 +439,8 @@ export default {
         clear_all: '全部清除',
         filter_trial_account: '过滤试玩用户',
         no_setting: '未设置',
-        back_page: '返回上一页'
+        back_page: '返回上一页',
+        hide: '隐藏'
     },
     staff: {
         roles: '角色 / 权限',

@@ -440,7 +440,8 @@ export default {
         clear_all: 'Clear All',
         filter_trial_account: 'Filter Test User',
         no_setting: 'No setting',
-        back_page: 'Go Back To The Last Page'
+        back_page: 'Go Back To The Last Page',
+        hide: 'Hide'
     },
     staff: {
         roles: 'Roles / Permission',

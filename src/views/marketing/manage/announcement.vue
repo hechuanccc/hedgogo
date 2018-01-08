@@ -1,11 +1,23 @@
 <template>
     <div>
         <div class="row m-l-xs m-r-xs m-b-xs">
-            <div class="pull-left" v-if="!$root.permissions.includes('change_promotion')">
-                <button class="md-btn w-sm blue" type="button" @click="showAll=!showAll">
-                    <span v-if="!showAll">{{$t('manage.add_announcement')}}</span>
-                    <span v-else>隐藏</span>
+            <div class="pull-left">
+                <button
+                    class="md-btn w-sm blue"
+                    type="button"
+                    @click="createAnnouncement"
+                    v-if="!showAll"
+                    :disabled="!$root.permissions.includes('add_new_announcement')"
+                >{{ $t('manage.add_announcement') }}
                 </button>
+                <button
+                    class="md-btn w-sm blue"
+                    type="button"
+                    @click="showAll = false"
+                    v-else
+                >
+                    <span>{{ $t('action.hide') }}</span>
+                </button>              
             </div>
             <div class="pull-center m-t-sm">
                 <span class="alert alert-success text-success m-r p-a-sm" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
@@ -52,7 +64,6 @@
                                     </label>
                                 </div>
                             </div>
-
                             <div class="clearfix">
                                 <label class="col-xs-1 text-right form-control-label"> </label>
                                 <div class="col-xs-3">
@@ -71,34 +82,46 @@
                 <thead>
                 <tr>
                     <th v-show="!mode"></th>
-                    <th>{{$t('cms.announcement')}}</th>
-                    <th>{{$t('manage.platform')}}</th>
-                    <th>{{$t('member.status')}}</th>
-                    <th>{{$t('manage.operate')}}</th>
+                    <th>{{ $t('cms.announcement') }}</th>
+                    <th>{{ $t('manage.platform') }}</th>
+                    <th>{{ $t('member.status') }}</th>
+                    <th v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
+                        {{ $t('manage.operate') }}
+                    </th>
                 </tr>
                 </thead>
                 <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
                 <tr v-for="(announcement, key) in queryset" :key="key">
                     <td v-show="!mode" class="text-center"><i class="fa fa-reorder text-blue"></i></td>
                     <td class="word-break">
-                       {{announcement.announcement}}
+                       {{ announcement.announcement }}
                     </td>
                     <td>
-                        <span v-if="announcement.platform === 0">{{$t('manage.mobile')}}</span>
-                        <span v-if="announcement.platform === 1">{{$t('manage.pc')}}</span>
-                        <span v-if="announcement.platform === 2">{{$t('manage.pc')}}/{{$t('manage.mobile')}}</span>
+                        <span v-if="announcement.platform === 0">{{ $t('manage.mobile') }}</span>
+                        <span v-if="announcement.platform === 1">{{ $t('manage.pc') }}</span>
+                        <span v-if="announcement.platform === 2">{{ $t('manage.pc') }}/{{ $t('manage.mobile') }}</span>
                     </td>
                     <td>
-                        <span class="label success" v-if="announcement.status==1" >{{$t('status.active')}}</span>
-                        <span class="label danger" v-if="announcement.status==0">{{$t('status.inactive')}}</span>
-                        <template v-if="userPermission">
-                            <a class="text-sm m-l" @click="toggleStatus(announcement)" v-if="announcement.status===0" >{{$t('status.active')}}</a>
-                            <a class="text-sm m-l" @click="toggleStatus(announcement)" v-else >{{$t('status.inactive')}}</a>
+                        <span class="label success" v-if="announcement.status === 1" >{{ $t('status.active') }}</span>
+                        <span class="label danger" v-else>{{ $t('status.inactive') }}</span>
+                        <template v-if="updateAnnouncementStatusPermission">
+                            <a class="text-sm m-l" @click="toggleStatus(announcement)" v-if="announcement.status === 0">{{ $t('status.active') }}</a>
+                            <a class="text-sm m-l" @click="toggleStatus(announcement)" v-else>{{ $t('status.inactive') }}</a>
                         </template>
                     </td>
-                    <td v-if="userPermission">
-                        <a class="md-btn md-flat m-r-sm" @click="deleteAnnouncement(announcement.id, $event, key)">{{$t('action.delete')}}</a>
-                        <a class="md-btn md-flat m-r-sm" @click="updateAnnouncement(announcement.id, key)">{{$t('action.update')}}</a>
+                    <td v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
+                        <a
+                            class="md-btn md-flat m-r-sm"
+                            @click="deleteAnnouncement(announcement.id, $event)"
+                            v-if="$root.permissions.includes('delete_announcement')"
+                        >{{ $t('action.delete') }}
+                        </a>
+                        <a
+                            class="md-btn md-flat m-r-sm"
+                            @click="updateAnnouncement(announcement)"
+                            v-if="$root.permissions.includes('update_announcement')"
+                        >{{ $t('action.update') }}
+                        </a>
                     </td>
                 </tr>
                 </draggable>
@@ -120,76 +143,96 @@ export default {
             queryset: [],
             announcement: {
                 platform: '2',
-                name: '',
-                announcement: ''
+                announcement: '',
+                status: '1'
             },
             id: '',
-            querysetIndex: '',
             errorMsg: '',
             successMsg: ''
-        }
-    },
-    computed: {
-        userPermission: function () {
-            return true
         }
     },
     created () {
         this.getAnnouncements()
     },
+    computed: {
+        updateAnnouncementStatusPermission () {
+            return this.$root.permissions.includes('update_announcement_status')
+        }
+    },
     methods: {
+        findIndexOfQueryset (id) {
+            return this.queryset.findIndex(element => element.id === id)
+        },
         getAnnouncements () {
             this.$http.get(this.api).then(data => {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
             })
         },
-        deleteAnnouncement (id, event, index) {
+        deleteAnnouncement (id, event) {
             if (!window.confirm(this.$t('common.confirm', {
                 action: event.target.innerText
             }))) {
                 return
             }
-            this.$http.delete(this.api + id + '/').then(() => {
-                this.getAnnouncements()
+            this.$http.delete(`${this.api}${id}/`).then(() => {
+                let index = this.findIndexOfQueryset(id)
+                this.queryset.splice(index, 1)
+                if (this.id === id) {
+                    this.showAll = false
+                    this.id = ''
+                    this.announcement.announcement = ''
+                }
             })
         },
-        updateAnnouncement (id, key) {
-            if (id) {
-                this.$http.get(this.api + id + '/').then(data => {
-                    this.announcement = data
-                    this.id = id
-                    this.querysetIndex = key
-                })
-                this.showAll = true
+        createAnnouncement () {
+            this.id = ''
+            this.announcement = {
+                announcement: '',
+                status: 1,
+                platform: 2
             }
+            this.showAll = true
+        },
+        updateAnnouncement (announcement) {
+            this.id = announcement.id
+            this.announcement = {
+                platform: announcement.platform,
+                announcement: announcement.announcement,
+                status: announcement.status
+            }
+            this.showAll = true
         },
         onSubmit () {
             if (this.id) {
-                this.$http.put(this.api + this.id + '/', this.announcement).then(data => {
+                this.$http.put(`${this.api}${this.id}/`, this.announcement).then(data => {
                     this.showAll = false
                     this.id = ''
-                    this.announcement.name = ''
-                    this.announcement.announcement = ''
-                    this.getAnnouncements()
+                    let index = this.findIndexOfQueryset(data.id)
+                    this.queryset[index] = Object.assign({}, data)
+                    this.showSuccessMsg()
                 }, error => {
                     this.errorMsg = error
                 })
             } else {
                 this.$http.post(this.api, this.announcement).then(data => {
                     this.showAll = false
-                    this.announcement.name = ''
-                    this.announcement.announcement = ''
-                    this.queryset.push(data)
+                    this.queryset = [data, ...this.queryset]
+                    this.showSuccessMsg()
                 }, error => {
                     this.errorMsg = error
                 })
             }
         },
         toggleStatus (announcement) {
-            this.$http.put(this.api + announcement.id + '/', {
+            this.$http.put(`${this.api}${announcement.id}/`, {
                 'status': announcement.status === 0 ? 1 : 0
             }).then(data => {
                 announcement.status = data.status
+                if (data.id === this.id) {
+                    this.announcement.status = data.status
+                }
+            }, error => {
+                this.errorMsg = error
             })
         },
         changeMode () {
