@@ -3,8 +3,7 @@
       <div class="m-b-sm">
         <div class="row">
           <div class="col-xs-12">
-            <div class="h6 inline">{{$t('nav.agent')}}</div>
-            <div class="pull-right inline"  v-if="$root.permissions.includes('add_change_staff')">
+            <div class="pull-left inline"  v-if="$root.permissions.includes('add_new_agent')">
               <router-link tag="button" class="md-btn w-sm blue"  to="/agent/add">{{$t('nav.agent_add')}}</router-link>
             </div>
           </div>

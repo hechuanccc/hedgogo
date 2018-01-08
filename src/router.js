@@ -392,7 +392,8 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent_add'),
-            group: 'users'
+            group: 'users',
+            permission: 'add_new_agent'
         }
     },
     {
