@@ -1,5 +1,5 @@
 <template>
-    <div id="aside" class="app-aside folded md show-text nav-dropdown" v-if="showNav">
+    <div id="aside" class="app-aside md show-text nav-dropdown" v-if="showNav">
         <div class="navside grey dk w-sm full">
             <div class="navbar no-radius text-center">
                 <a class="navbar-brand" href="/">
