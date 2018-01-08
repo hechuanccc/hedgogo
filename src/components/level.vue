@@ -61,6 +61,13 @@ export default {
     created () {
         this.$http.get(api.level).then(data => {
             this.levels = data
+            if (this.mode === 'select') {
+                this.mySelectLevel = this.level
+            } else {
+                this.level.forEach(element => {
+                    this.$set(this.myCheckboxLevel, element, true)
+                })
+            }
         })
     }
 }

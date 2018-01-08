@@ -241,7 +241,9 @@ export default {
                     id: element.id,
                     rank: index + 1
                 }))).then(data => {
-                    this.queryset = data.sort((a, b) => a.rank - b.rank)
+                    this.queryset.forEach((element, index) => {
+                        element.rank = index + 1
+                    })
                     this.mode = true
                     this.showSuccessMsg()
                 }, error => {
