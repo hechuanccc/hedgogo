@@ -57,7 +57,7 @@
                 <div class="form-group" v-if="agent.id!=''">
                   <label class="label-width">{{$t('common.status')}}</label>
                   <div class="inline-form-control">
-                    <select class="form-control w-sm c-select" v-model="agent.status" :disabled="!$root.permissions.includes('reset_member_withdraw_password')">
+                    <select class="form-control w-sm c-select" v-model="agent.status" :disabled="!$root.permissions.includes('review_agent_application')">
                       <option value="0">{{$t('status.rejected')}}</option>
                       <option value="1">{{$t('status.active')}}</option>
                       <option value="2">{{$t('status.inactive')}}</option>
