@@ -793,7 +793,8 @@ export default {
         availability: 'Availability',
         detail: 'Promotion Detail',
         start_date: 'Start Date',
-        end_date: 'End Date'
+        end_date: 'End Date',
+        copy_promotion: 'Copy Promotion'
     },
     header: {
         deposit: 'Deposit',

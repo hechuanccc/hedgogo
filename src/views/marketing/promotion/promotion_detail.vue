@@ -13,9 +13,8 @@
                         <h2 class="v-m m-t-sm">{{promotion.name}} </h2>
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right">
-                        <router-link class="md-btn md-flat m-r-sm" to="/promotion/">{{$t('action.view_promotions')}}</router-link>
-                        <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('change_promotion')" :to="'/promotion/' + promotion.id + '/edit'">{{$t('action.update_promotion')}}</router-link>
-                        <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('change_promotion')" @click="deletePromotion(promotion.id, true, $event)">{{$t('action.delete')}}</a>
+                        <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('update_promotion_activity')" :to="'/promotion/' + promotion.id + '/edit'">{{$t('action.update_promotion')}}</router-link>
+                        <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('delete_promotion_activity')" @click="deletePromotion(promotion.id, true, $event)">{{$t('action.delete')}}</a>
                     </div>
                 </div>
             </div>
@@ -48,11 +47,13 @@
                                 </tr>
                                 <tr>
                                     <th class="grey-50" width="200">{{$t('promotion.desc')}}</th>
-                                    <td v-html="promotion.description"></td>
+                                    <td v-html="promotion.description" v-if="promotion.description"></td>
+                                    <td v-else>-</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50" width="200">{{$t('promotion.desc_mobile')}}</th>
-                                    <td v-html="promotion.mobile_description"></td>
+                                    <td v-html="promotion.mobile_description" v-if="promotion.mobile_description"></td>
+                                    <td v-else>-</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row m-l-xs m-r-xs m-b-xs">
-            <div class="pull-left" v-if="!$root.permissions.includes('change_promotion')">
+            <div class="pull-left" v-if="$root.permissions.includes('add_promotion_activity')">
                 <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('promotion.add')}}</router-link>
             </div>
             <div class="pull-center m-t-sm">
