@@ -6,7 +6,6 @@
                     <li class="active">{{$route.meta.title}}</li>
                 </ol>
             </div>
-            <div class="alert alert-danger">{{$t('common.errorPermission')}}</div>
             <div class="box">
             <div class="box-body">
                 <form class="form m-a" v-on:submit.prevent="onSubmit">

@@ -6,18 +6,27 @@
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
-        <div class="alert alert-danger" v-if="!$root.permissions.includes('change_promotion')">{{$t('common.errorPermission')}}</div>
         <div class="box">
             <div class="box-header b-b">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h2 class="v-m m-t-sm">{{promotion.name}} </h2>
+                <div class="row m-l m-r m-t-sm m-b-0">
+                    <div class="pull-left m-t-xs">
+                        <h2>{{ promotion.name }} </h2>
                     </div>
-                    <div class="col-md-5 col-md-offset-3 text-right" v-if="action !== 'update'">
-                        <label for="promotions" class="m-r">Copy Promotion</label>
-                        <select class="form-control w-sm c-select" name="promotions" @change="selectPromotion">
-                            <option class="form-control" value="">请选择</option>
-                            <option class="form-control" :value="p.id" v-for="p in promotions">{{p.name}}</option>
+                    <div class="pull-right" v-if="$route.name === 'promotion_add'">
+                        <label for="promotions" class="m-r-xs">{{ $t('promotion.copy_promotion') }}</label>
+                        <select
+                            class="form-control w-sm c-select"
+                            name="promotions"
+                            @change="selectPromotionHandler"
+                        >
+                            <option class="form-control" value="">{{ $t('common.please_select') }}</option>
+                            <option 
+                                class="form-control"
+                                :value="promotion.id"
+                                v-for="promotion in promotions"
+                                :key="promotion.id"
+                            >{{ promotion.name }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -27,64 +36,86 @@
                     <div class="row b-b p-b m-b">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label  class="label-width">{{$t('common.name')}}</label>
+                                <label class="label-width">{{ $t('common.name') }}</label>
                                 <div class="inline-form-control">
-                                    <input class="form-control" name="name" v-model="promotion.name" :placeholder="promotion.name!='' ? '':'名称, 必填'" required >
+                                    <input 
+                                        class="form-control"
+                                        v-model="promotion.name"
+                                        :placeholder="$t('common.name')"
+                                        required
+                                    >
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width">{{$t('promotion.rank')}}</label>
-                                <div class="inline-form-control">
-                                    <input type="text" class="form-control" name="rank" v-model="promotion.rank" :placeholder="promotion.rank!='' ? '':'排序, 必填'" required >
+                                <label class="label-width">{{ $t('promotion.banner') }}</label>
+                                <div class="inline-form-control promo-image-container" v-if="promotion.image_url">
+                                    <img :src="promotion.image_url" class="promo-image">
                                 </div>
+                                <div class="inline-form-control v-m">
+                                    <input class="form-control" type="file" accept="image/*" @change="syncImage($event, 'image')">
+                                </div>
+                                <div class="m-t text-danger">上传图片最大宽度1000像素！</div>
                             </div>
                             <div class="form-group">
-                                <label class="label-width">{{$t('promotion.banner')}}</label>
-                                <div class="inline-form-control" :class="{'promo-image-container' : promotion.image_url}" v-if="!hasImage">
-                                    <img :src="promotion.image_url || promotion.image" class="promo-image">
+                                <label class="label-width">{{ $t('promotion.mobileBanner') }}</label>
+                                <div class="inline-form-control promo-image-container" v-if="promotion.image_mobile_url">
+                                    <img :src="promotion.image_mobile_url" class="promo-image">
                                 </div>
                                 <div class="inline-form-control">
-                                    <input type="hidden" name="image_url">
-                                    <input type="file" name="image" accept="image/*" @change="syncImage" >
-                                </div>
-                                <div class="m-t text-danger">上传图片最大宽度930像素！</div>
-                            </div>
-                            <div class="form-group">
-                                <label class="label-width">{{$t('promotion.mobileBanner')}}</label>
-                                <div class="inline-form-control" :class="{'promo-image-container' : promotion.image_url_mobile}" v-if="!hasImageMobile">
-                                    <img :src="promotion.image_url_mobile || promotion.mobileBanner" class="promo-image">
-                                </div>
-                                <div class="inline-form-control">
-                                    <input type="hidden" name="image_url_mobile">
-                                    <input type="file" name="image" accept="image/*" @change="syncImageMobile" >
+                                    <input class="form-control" type="file" name="image" accept="image/*" @change="syncImage($event, 'image_mobile')">
                                 </div>
                                 <div class="m-t text-danger">上传图片最大宽度320像素！</div>
                             </div>
-
                             <div class="form-group">
-                                <label for="description">{{$t('promotion.desc')}}</label>
-                                <tinymce :id="randomId" :model="promotion.description" name="description" :content="promotion.description" @change-model="changeModel"></tinymce>
+                                <label for="description">{{ $t('promotion.desc') }}</label>
+                                <tinymce
+                                    :key="'promo_desc_pc'"
+                                    :id="randomId"
+                                    :model="promotion.description"
+                                    name="description"
+                                    :content="promotion.description"
+                                    @change-model="changeModel"
+                                >
+                                </tinymce>
                             </div>
                             <div class="form-group">
-                                <label for="mobile_description">{{$t('promotion.desc_mobile')}}</label>
-                                <tinymce :id="randomIdMobile" :model="promotion.mobile_description" name="mobile_description" :content="promotion.mobile_description" @change-model="changeModel"></tinymce>
+                                <label for="mobile_description">{{ $t('promotion.desc_mobile') }}</label>
+                                <tinymce
+                                    :key="'promo_desc_pc'"
+                                    :id="randomIdMobile"
+                                    :model="promotion.mobile_description"
+                                    name="mobile_description"
+                                    :content="promotion.mobile_description"
+                                    @change-model="changeModel"
+                                >
+                                </tinymce>
                             </div>
                             <div class="form-group">
-                                <label for="status" class="label-width">{{$t('common.status')}}</label>
-                                <select class="form-control w-sm c-select" name="status" v-model="promotion.status">
-                                    <option class="form-control" value="0">{{$t('status.inactive')}}</option>
-                                    <option class="form-control" value="1">{{$t('status.active')}}</option>
+                                <label for="status" class="label-width">{{ $t('common.status') }}</label>
+                                <select
+                                    class="form-control w-sm c-select"
+                                    name="status"
+                                    v-model="promotion.status" 
+                                    required
+                                >
+                                    <option class="form-control" value="0">{{ $t('status.inactive') }}</option>
+                                    <option class="form-control" value="1">{{ $t('status.active') }}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="label-width">{{$t('promotion.availability')}}</label>
+                                <label class="label-width">{{ $t('promotion.availability') }}</label>
                                 <date-picker v-model="promotion.start_date" width='140'></date-picker>
                                 <span>~</span>
                                 <date-picker v-model="promotion.end_date" width='140'></date-picker>
                             </div>
-                            <div>
-                                <label class="text-sm">{{$t('member.level')}}</label>
-                                <level :level="promotion.level" :mode="'checkbox'" @level-select="levelSelect"></level>
+                            <div class="form-group">
+                                <label class="text-sm">{{ $t('member.level') }}</label>
+                                <level
+                                    :level="promotion.level"
+                                    :mode="'checkbox'"
+                                    @level-select="levelSelect"
+                                >
+                                </level>
                             </div>
                         </div>
                     </div>
@@ -92,7 +123,7 @@
                         <div class="alert alert-danger" v-if="errorMsg">
                             <span>{{ errorMsg }}</span>
                         </div>
-                        <button :disabled="!$root.permissions.includes('change_promotion')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{ $t('common.save') }}</button>
                     </div>
                 </form>
             </div>
@@ -104,11 +135,13 @@
     import tinymce from '../../../components/tinymce'
     import Vue from 'vue'
     import DatePicker from 'vue2-datepicker'
+    import _ from 'lodash'
     const format = 'YYYY-MM-DD'
 
     export default {
         data () {
             return {
+                api: api.promotion,
                 promotion: {
                     id: '',
                     image: '',
@@ -116,37 +149,25 @@
                     level: [],
                     start_date: '',
                     end_date: '',
-                    rank: '',
+                    rank: '1',
                     name: '',
                     status: '',
                     image_url: '',
-                    image_url_mobile: '',
+                    image_mobile_url: '',
                     image_mobile: '',
                     mobile_description: ''
                 },
+                randomId: 'pd' + _.random(0, 500),
+                randomIdMobile: 'pd' + _.random(501, 1000),
                 promotions: [],
                 hasImage: false,
                 hasImageMobile: false,
                 errorMsg: '',
-                selectedPromotion: '',
-                action: 'create'
+                selectedPromotion: ''
             }
         },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                let id = to.params.promotionId
-                if (id) {
-                    vm.getPromotion(id)
-                }
-                vm.getPromotions()
-                vm.randomId
-                vm.randomIdMobile
-            })
-        },
-        ready () {
-            let route = this.$route.name
-            this.promotion.status = 1
-            route === 'promotion_add' ? this.action = 'create' : this.action = 'update'
+        created () {
+            this.getPromotions()
         },
         watch: {
             'promotion.start_date' (newObj, old) {
@@ -156,95 +177,79 @@
                 this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
             }
         },
-        computed: {
-            randomId () {
-                // need to add different id to tinymce so it will initiate
-                let max = 1000
-                let min = 10
-                return 'pd' + Math.floor(Math.random() * min + max)
-            },
-            randomIdMobile () {
-                // need to add different id to tinymce so it will initiate
-                let max = 1000
-                let min = 10
-                return 'pd' + Math.floor(Math.random() * min + max)
-            }
-        },
         methods: {
+            getPromotions () {
+                this.$http.get(this.api).then(data => {
+                    this.promotions = data
+                    if (this.$route.params.promotionId) {
+                        this.selectPromotion(this.$route.params.promotionId)
+                    }
+                })
+            },
             onSubmit (e) {
                 let formData = new window.FormData()
                 formData.append('name', this.promotion.name)
                 formData.append('rank', this.promotion.rank)
                 if (this.hasImage) {
                     formData.append('image', this.promotion.image)
+                } else {
+                    formData.append('image_url', this.promotion.image_url)
                 }
                 if (this.hasImageMobile) {
                     formData.append('image_mobile', this.promotion.image_mobile)
+                } else {
+                    formData.append('image_url_mobile', this.promotion.image_mobile_url)
                 }
                 formData.append('description', this.promotion.description)
                 formData.append('status', this.promotion.status)
                 formData.append('start_date', this.promotion.start_date)
                 formData.append('end_date', this.promotion.end_date)
                 formData.append('level', this.promotion.level)
-                formData.append('image_url', this.promotion.image_url)
                 formData.append('mobile_description', this.promotion.mobile_description)
 
-                if (this.promotion.id) {
-                    this.$http.put(api.promotion + this.promotion.id + '/', formData).then(data => {
+                if (this.$route.params.promotionId && this.$route.name === 'promotion_edit') {
+                    this.$http.put(`${this.api}${this.$route.params.promotionId}/`, formData).then(data => {
                         this.$router.push('/promotion/' + data.id)
                     }, error => {
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.promotion, formData).then(data => {
+                    this.$http.post(this.api, formData).then(data => {
                         this.$router.push('/promotion/' + data.id)
                     }, error => {
                         this.errorMsg = error
                     })
                 }
             },
-            syncImage (e) {
-                this.promotion.image = e.target.files[0]
-                this.hasImage = true
+            syncImage (e, target) {
+                var reader = new FileReader()
+
+                reader.onload = (e) => {
+                    this.promotion[target + '_url'] = e.target.result
+                }
+                reader.readAsDataURL(e.target.files[0])
+                this.promotion[target] = e.target.files[0]
+                if (target === 'image') {
+                    this.hasImage = true
+                } else if (target === 'image_mobile') {
+                    this.hasImageMobile = true
+                }
             },
-            syncImageMobile (e) {
-                this.promotion.image_mobile = e.target.files[0]
-                this.hasImageMobile = true
-            },
-            getPromotion (id) {
-                this.$http.get(api.promotion + id + '/').then(data => {
-                    this.promotion = data
-                    this.selectedPromotion = this.promotion
-                    // add image_url so we can pass a image url instead
-                    // of image file while copying
-                    this.selectedPromotion.image_url = this.promotion.image
-                    this.selectedPromotion.image_url_mobile = this.promotion.image_mobile
-                    if (this.action === 'copy') {
-                        delete this.selectedPromotion.image
-                        delete this.selectedPromotion.image_mobile
-                        delete this.selectedPromotion.id
-                    }
-                })
-            },
-            getPromotions () {
-                this.$http.get(api.promotion).then(data => {
-                    this.promotions = data
-                })
-            },
-            selectPromotion (event) {
+            selectPromotionHandler (event) {
                 let value = event.target.value
-                this.action = 'copy'
-                this.getPromotion(value)
+                this.selectPromotion(value)
+            },
+            selectPromotion (id) {
+                this.promotion = Object.assign(this.promotion, this.promotions.find(element => element.id === parseInt(id)))
+                if (this.promotion.image) {
+                    this.promotion.image_url = this.promotion.image
+                }
+                if (this.promotion.image_mobile) {
+                    this.promotion.image_mobile_url = this.promotion.image_mobile
+                }
             },
             changeModel (val, name) {
                 this.promotion[name] = val
-            },
-            dateFrom (flag) {
-                if (flag === 'from') {
-
-                } else {
-                    this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
-                }
             },
             levelSelect (val) {
                 this.promotion.level = val

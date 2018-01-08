@@ -830,7 +830,8 @@ export default new Router({
         meta: {
             group: 'marketing',
             auth: true,
-            title: Vue.t('promotion.add')
+            title: Vue.t('promotion.add'),
+            permission: 'add_promotion_activity'
         }
     },
     {
@@ -854,7 +855,8 @@ export default new Router({
         meta: {
             group: 'marketing',
             auth: true,
-            title: Vue.t('promotion.update')
+            title: Vue.t('promotion.update'),
+            permission: 'update_promotion_activity'
         }
     },
     {
