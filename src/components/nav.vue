@@ -1,10 +1,9 @@
 <template>
-    <div id="aside" class="app-aside modal fade folded md show-text nav-dropdown" v-if="showNav">
-        <div class="left navside grey dk w-sm">
-            <div class="navbar no-radius">
+    <div id="aside" class="app-aside md show-text nav-dropdown" v-if="showNav">
+        <div class="navside grey dk w-sm full">
+            <div class="navbar no-radius text-center">
                 <a class="navbar-brand" href="/">
                   <img src="../../static/images/logo.png" />
-                  <span class="hidden-folded inline">$t{{'app_name'}}</span>
                 </a>
             </div>
 
@@ -92,7 +91,7 @@
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>游戏管理</span>
                             </router-link>
                         </li>
-                        
+
                         <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
                             <router-link to="/game_history">
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE889;</i>历史开奖</span>
@@ -164,3 +163,24 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.full{
+  top: 0;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+}
+.full .nav > li > a .nav-icon {
+    float: none;
+    line-height: 2.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    position: relative;
+}
+.full .nav > li > a {
+    text-align: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+</style>
