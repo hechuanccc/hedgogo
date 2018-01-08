@@ -291,10 +291,6 @@
                     this.account_id = {'account_id': data.id}
                 })
             },
-            getAgentPermission (levelId) {
-                let agentPermissionId = 'change_agent_level_' + levelId
-                return this.$root.permissions.includes(agentPermissionId)
-            },
             isArray (o) {
                 return Object.prototype.toString.call(o) === '[object Array]'
             }
