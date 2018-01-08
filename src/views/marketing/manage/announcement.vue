@@ -104,7 +104,7 @@
                     <td>
                         <span class="label success" v-if="announcement.status === 1" >{{ $t('status.active') }}</span>
                         <span class="label danger" v-else>{{ $t('status.inactive') }}</span>
-                        <template v-if="$root.permissions.includes('update_announcement_status')">
+                        <template v-if="updateAnnouncementStatusPermission">
                             <a class="text-sm m-l" @click="toggleStatus(announcement)" v-if="announcement.status === 0">{{ $t('status.active') }}</a>
                             <a class="text-sm m-l" @click="toggleStatus(announcement)" v-else>{{ $t('status.inactive') }}</a>
                         </template>
@@ -153,6 +153,11 @@ export default {
     },
     created () {
         this.getAnnouncements()
+    },
+    computed: {
+        updateAnnouncementStatusPermission () {
+            return this.$root.permissions.includes('update_announcement_status')
+        }
     },
     methods: {
         findIndexOfQueryset (id) {

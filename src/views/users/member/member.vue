@@ -4,9 +4,6 @@
       <div class="inline m-r-xs" v-if="$root.permissions.includes('add_new_member')">
         <router-link tag="button" class="md-btn w-sm blue pull-right" to="/member/add">{{$t('action.add_member')}}</router-link>
       </div>
-      <div class="alert alert-danger" v-else>
-        {{$t('common.errorPermission')}}
-      </div>
     </div>
     <div class="row" v-else>
       <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>

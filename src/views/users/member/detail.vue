@@ -34,7 +34,7 @@
                 <template>
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('action.reset_password')}}</a>
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword(2, $event)">{{$t('action.reset_withdraw_password')}}</a>
-                  <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'" v-if="$root.permissions.includes('update_member_details')">{{$t('action.update_member')}}</router-link>
+                  <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'">{{$t('action.update_member')}}</router-link>
                   <a class="md-btn md-flat" @click="changeAudit" v-if="$root.permissions.includes('update_member_audit')">{{$t('action.change_audit_status')}}</a>
                 </template>
               </div>
@@ -196,22 +196,18 @@
               </div>
             </div>
           </div>
-          <div class="row m-b b-b p-b"  v-if="$root.permissions.includes('list_update_member_bank')">
+          <div class="row m-b b-b p-b">
             <div class="col-xs-5">
               <span class="text-muted">{{$t('bank.bank_title')}}</span>
               <div v-if="!member.bank">
                 <span class="label">{{$t('common.unfilled')}}</span>
               </div>
               <div class="grey-50 p-a m-t" v-else>
-                <div>{{$t('bank.name')}}：<span >{{member.bank.bank.name}}</span></div>
-                <div>{{$t('bank.province')}}：<span >{{member.bank.province}}</span></div>
-                <div>{{$t('bank.city')}}：<span >{{member.bank.city}}</span></div>
-                <div>{{$t('bank.account')}}：<span >{{member.bank.account}}</span></div>
+                <div>{{$t('bank.name')}}：<span>{{member.bank.bank.name}}</span></div>
+                <div>{{$t('bank.province')}}：<span>{{member.bank.province}}</span></div>
+                <div>{{$t('bank.city')}}：<span>{{member.bank.city}}</span></div>
+                <div>{{$t('bank.account')}}：<span>{{member.bank.account}}</span></div>
               </div>
-            </div>
-            <div class="col-xs-4">
-              <router-link :to="'/member/' + member.id + '/edit'" v-if="!member.bank">{{$t('common.add_bank_information')}}</router-link>
-              <router-link :to="'/member/' + member.id + '/edit'" v-else>{{$t('common.edit_bank_information')}}</router-link>
             </div>
           </div>
 
