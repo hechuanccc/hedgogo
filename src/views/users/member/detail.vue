@@ -20,19 +20,22 @@
           <div class="row">
             <div class="col-xs-4">
               <h2><strong>{{member.username}}</strong>
-                <span class="label success text-sm" v-if="member.account_type==1" >{{$t('member.real_account')}}</span>
-                <span class="label warning text-sm" v-else >{{$t('member.trial_account')}}</span>
+                <span class="label success text-sm" v-if="member.account_type === 1" >{{$t('member.real_account')}}</span>
               </h2>
               <span class="text-muted text-sm" v-if="member.created_at">于 {{ member.created_at | moment("YYYY-MM-DD HH:mm")}} {{$t('common.register')}}</span>
             </div>
             <div class="col-xs-8 text-right">
               <div>
-                <router-link class="md-btn md-flat m-r-sm"  :to="'/report/betrecord/today?member=' + member.username + '&created_at_0=' + today + '&created_at_1=' + today">{{$t('action.view_todays_bet_record')}}</router-link>
-                <template v-if="$root.permissions.includes('update_member_details')">
+                <router-link
+                  class="md-btn md-flat m-r-sm"
+                  :to="`/report/betrecord/today?member=${member.username}&created_at_0=${today}&created_at_1=${today}`"
+                >{{$t('action.view_todays_bet_record')}}
+                </router-link>
+                <template>
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('action.reset_password')}}</a>
                   <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword(2, $event)">{{$t('action.reset_withdraw_password')}}</a>
-                  <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'">{{$t('action.update_member')}}</router-link>
-                  <a class="md-btn md-flat" @click="changeAudit">{{$t('action.change_audit_status')}}</a>
+                  <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'" v-if="$root.permissions.includes('update_member_details')">{{$t('action.update_member')}}</router-link>
+                  <a class="md-btn md-flat" @click="changeAudit" v-if="$root.permissions.includes('update_member_audit')">{{$t('action.change_audit_status')}}</a>
                 </template>
               </div>
             </div>
@@ -105,11 +108,11 @@
             <div class="col-xs-5">
               <span class="text-muted title">{{$t('member.status')}}</span>
               <div>
-                <span class="label success" v-if="member.status==1" >{{$t('status.active')}}</span>
+                <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
                 <span class="label" v-else >{{$t('status.inactive')}}</span>
-                <template v-if="$root.permissions.includes('update_member_details')">
-                  <a class="text-sm m-l" @click="toggleStatus" v-if="member.status==1" >禁用</a>
-                  <a class="text-sm m-l" @click="toggleStatus" v-else >启用</a>
+                <template v-if="$root.permissions.includes('update_member_status')">
+                  <a class="text-sm m-l" @click="toggleStatus" v-if="member.status === 1">禁用</a>
+                  <a class="text-sm m-l" @click="toggleStatus" v-else>启用</a>
                   <span class="text-success text-sm m-l" v-show="statusUpdated" @click="toggleStatus">状态已更新</span>
                 </template>
               </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="m-l-xs row" v-if="pageSelected == 'all_members'">
-      <div class="inline m-r-xs" v-if="$root.permissions.includes('update_member_details')">
+      <div class="inline m-r-xs" v-if="$root.permissions.includes('add_new_member')">
         <router-link tag="button" class="md-btn w-sm blue pull-right" to="/member/add">{{$t('action.add_member')}}</router-link>
       </div>
       <div class="alert alert-danger" v-else>

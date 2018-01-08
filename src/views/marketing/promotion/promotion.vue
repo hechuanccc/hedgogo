@@ -69,11 +69,13 @@
             },
             changeMode () {
                 if (!this.mode) {
-                    this.$http.post(`${this.api}rank/`, this.queryset.map((element, index) => Object({
+                    this.$http.post(`${this.api}rank/?opt_expand=level`, this.queryset.map((element, index) => Object({
                         id: element.id,
                         rank: index + 1
                     }))).then(data => {
-                        this.queryset = data.sort((a, b) => a.rank - b.rank)
+                        this.queryset.forEach((element, index) => {
+                            element.rank = index + 1
+                        })
                         this.successMsg = this.$t('status.success')
                         this.mode = true
                         setTimeout(() => {
