@@ -959,7 +959,7 @@ export default new Router({
             require(['./views/permission_manage/list.vue'], resolve)
         },
         meta: {
-            group: 'permission_manage',
+            group: 'setting',
             auth: true,
             agentPermission: 'true',
             title: Vue.t('nav.permissions')
