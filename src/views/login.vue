@@ -13,9 +13,9 @@
                     <div class="m-b text-sm ng-binding">
                     管理后台 · 登录
                     </div>
-                    <form v-on:submit.prevent="login">
+                    <form @submit.prevent="login" class="form">
                         <div class="md-form-group">
-                            <input type="text" class="md-input" v-model="user.username" name="username">
+                            <input type="text" class="md-input" v-model="user.username" name="username" ref="input">
                             <label>Username</label>
                         </div>
                         <div class="md-form-group">
@@ -23,7 +23,7 @@
                             <label>Password</label>
                         </div>
                         <div v-show="errorMsg" class="text-danger m-b-sm"> {{errorMsg}} </div>
-                        <button type="submit" class="btn primary btn-block p-x-md">登录</button>
+                        <button type="submit" class="btn primary btn-block p-x-md" @keyup.enter="login">登录</button>
                     </form>
                 </div>
             </div>
@@ -52,6 +52,11 @@
                 },
                 deep: true
             }
+        },
+        created () {
+            this.$nextTick(() => {
+                this.$refs.input.focus()
+            })
         },
         methods: {
             login () {

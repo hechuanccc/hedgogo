@@ -392,7 +392,8 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.agent_add'),
-            group: 'users'
+            group: 'users',
+            permission: 'add_new_agent'
         }
     },
     {
@@ -958,7 +959,7 @@ export default new Router({
             require(['./views/permission_manage/list.vue'], resolve)
         },
         meta: {
-            group: 'permission_manage',
+            group: 'setting',
             auth: true,
             agentPermission: 'true',
             title: Vue.t('nav.permissions')

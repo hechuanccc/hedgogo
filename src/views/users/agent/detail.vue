@@ -25,8 +25,8 @@
             <div class="col-xs-8 col-md-offset-1 text-right">
               <router-link class="md-btn md-flat m-r-sm" :to="'/report/finance_report?agent=' + agent.id + '&start_date=' + created_at_0 + '&end_date=' + created_at_1">{{$t('action.view_today_report')}}</router-link>
               <router-link class="md-btn md-flat m-r-sm" :to="'/bill/search?agent_q=' + agent.username">{{$t('action.view_member_record')}}</router-link>
-              <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)" v-if="levelPermission">{{$t('action.reset_password')}}</a>
-              <router-link class="md-btn md-flat m-r-sm" :to="'/agent/' + agent.id + '/edit'" v-if="levelPermission">{{$t('action.update_agent')}}</router-link>
+              <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)" v-if="this.$root.permissions.includes('reset_agent_password')">{{$t('action.reset_password')}}</a>
+              <router-link class="md-btn md-flat m-r-sm" :to="'/agent/' + agent.id + '/edit'">{{$t('action.update_agent')}}</router-link>
               <!--<a class="md-btn md-flat m-r-sm" @click="deleteAgent(agent.id,true,$event)" v-if="">{{$t('action.delete')}}</a>-->
             </div>
           </div>
@@ -51,7 +51,7 @@
               <div>
                 <span class="label success" v-if="agent.status==1" @click="toggleStatus">{{$t('status.active')}}</span>
                 <span class="label" v-else  @click="toggleStatus">{{$t('status.inactive')}}</span>
-                <template v-if="levelPermission">
+                <template v-if="$root.permissions.includes('update_agent_status')">
                   <a class="text-sm m-l" @click="toggleStatus" v-if="agent.status==1" >{{$t('status.inactive')}}</a>
                   <a class="text-sm m-l" @click="toggleStatus" v-else >{{$t('status.active')}}</a>
                 </template>
@@ -171,10 +171,6 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-4">
-              <router-link :to="'/agent/' + agent.id + '/edit'" v-if="!agent.bank & levelPermission">{{$t('common.add_bank_information')}}</router-link>
-              <router-link :to="'/agent/' + agent.id + '/edit'" v-if="levelPermission & !(!agent.bank)">{{$t('common.edit_bank_information')}}</router-link>
-            </div>
           </div>
 
           <div class="row m-b b-b p-b">
@@ -232,14 +228,6 @@
                 },
                 created_at_0: Vue.moment().format(format),
                 created_at_1: Vue.moment().format(format)
-            }
-        },
-        computed: {
-            levelPermission: function () {
-                let id = this.agent.level.id
-                if (id) {
-                    return this.getAgentPermission(id)
-                }
             }
         },
         beforeRouteEnter (to, from, next) {
@@ -302,10 +290,6 @@
                     this.agent = data
                     this.account_id = {'account_id': data.id}
                 })
-            },
-            getAgentPermission (levelId) {
-                let agentPermissionId = 'change_agent_level_' + levelId
-                return this.$root.permissions.includes(agentPermissionId)
             },
             isArray (o) {
                 return Object.prototype.toString.call(o) === '[object Array]'

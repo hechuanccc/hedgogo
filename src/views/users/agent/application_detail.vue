@@ -6,7 +6,6 @@
           <li class="active">{{$route.meta.title}}</li>
         </ol>
       </div>
-      <div class="alert alert-danger" v-if="!$root.permissions.includes('audit_agent_application')">{{$t('common.errorPermission')}}</div>
       <div class="box" v-if="agent.status !== 1">
         <div class="box-header b-b">
           <h3>注意：</h3>
@@ -58,7 +57,7 @@
                 <div class="form-group" v-if="agent.id!=''">
                   <label class="label-width">{{$t('common.status')}}</label>
                   <div class="inline-form-control">
-                    <select class="form-control w-sm c-select" v-model="agent.status">
+                    <select class="form-control w-sm c-select" v-model="agent.status" :disabled="!$root.permissions.includes('review_agent_application')">
                       <option value="0">{{$t('status.rejected')}}</option>
                       <option value="1">{{$t('status.active')}}</option>
                       <option value="2">{{$t('status.inactive')}}</option>
@@ -186,7 +185,7 @@
               <div class="alert alert-danger" v-if="formError">
                 <span v-for="(msg,index) in formError">[{{index}}]  {{msg}} <br/> </span>
               </div>
-              <button :disabled="!$root.permissions.includes('audit_agent_application')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+              <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
             </div>
           </form>
         </div>
