@@ -1,9 +1,10 @@
 <template>
-    <div id="aside" class="app-aside md show-text nav-dropdown" v-if="showNav">
-        <div class="navside grey dk w-sm full">
-            <div class="navbar no-radius text-center">
+    <div id="aside" class="app-aside modal fade folded md show-text nav-dropdown" v-if="showNav">
+        <div class="left navside grey dk w-sm">
+            <div class="navbar no-radius">
                 <a class="navbar-brand" href="/">
                   <img src="../../static/images/logo.png" />
+                  <span class="hidden-folded inline">$t{{'app_name'}}</span>
                 </a>
             </div>
 
@@ -91,7 +92,7 @@
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>游戏管理</span>
                             </router-link>
                         </li>
-
+                        
                         <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
                             <router-link to="/game_history">
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE889;</i>历史开奖</span>
@@ -163,72 +164,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-$dark-black: rgba(0, 0, 0, 0.87);
-$dark-white: rgba(255, 255, 255, 0.87);
-
-.full{
-  top: 0;
-  bottom: 0;
-  left: 0;
-  position: fixed;
-}
-.full .nav > li > a .nav-icon {
-    float: none;
-    line-height: 2.5rem;
-    margin-left: 0;
-    margin-right: 0;
-    position: relative;
-}
-.full .nav > li > a {
-    text-align: center;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-.nav-dropdown{
-  .nav > li {
-    &:hover,
-    &:focus{
-      > ul {
-        display: block;
-      }
-    }
-    > ul {
-      display: none;
-      overflow: visible;
-      max-height: 999px;
-      color: $dark-white;
-      background-color: $dark-black;
-      border-radius: 2px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-      position: absolute;
-      left: 100%;
-      top: 0;
-      padding: 6px 0;
-      a {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-        min-width: 160px;
-      }
-      li.active ul {
-        display: block;
-      }
-      .nav-text{
-        padding: 6px 0 !important;
-      }
-    }
-    .nav-mega{
-      width: 320px;
-      > li{
-        width: 160px;
-        float: left;
-      }
-      &.nav-mega-3{
-        width: 480px;
-      }
-    }
-  }
-}
-
-</style>
