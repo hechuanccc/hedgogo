@@ -13,8 +13,8 @@
                         <h2 class="v-m m-t-sm">{{ role.name }}</h2>
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right">
-                        <router-link class="md-btn md-flat m-r-sm" :to="`/roles/${role.id}/edit`">{{ $t('action.update') }}</router-link>
-                        <a class="md-btn md-flat m-r-sm" @click="deleteRole(role.id)" v-if="role.id!==4">{{ $t('action.delete') }}</a>
+                        <router-link class="md-btn md-flat m-r-sm" :to="`/roles/${role.id}/edit`" v-if="$root.permissions.includes('update_role_name_advpermission')">{{ $t('action.update') }}</router-link>
+                        <a class="md-btn md-flat m-r-sm" @click="deleteRole(role.id)" v-if="role.id!==4 && $root.permissions.includes('remove_role')">{{ $t('action.delete') }}</a>
                     </div>
                 </div>
             </div>

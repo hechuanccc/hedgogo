@@ -6,7 +6,6 @@
                 <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
-        <div class="alert alert-danger" v-if="!$root.permissions.includes('add_change_staff')">{{ $t('common.errorPermission') }}</div>
         <div class="box">
             <div class="box-body">
                 <form class="form m-a" v-on:submit.prevent="onSubmit">
@@ -18,24 +17,47 @@
                                     <input type="text" class="form-control" name="username" :placeholder="$t('common.username')" v-model="staff.username" required>
                                 </div>
                             </div>
-                            <div class="form-group" v-if="!staff.id">
-                                <label for="password" class="label-width">{{$t('staff.password')}}</label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control" name="password" :placeholder="$t('staff.password')" v-model="staff.password">
-                                </div>
-                            </div>
                             <div class="form-group">
-                                <label for="role" class="label-width">{{$t('staff.role')}}</label>
+                                <label for="password" class="label-width">{{ (staff.id ? $t('action.update') : '') + $t('staff.password')}}</label>
                                 <div class="inline-form-control">
-                                    <select class="form-control w-sm c-select" name="role" v-model="staff.user_group.id" @change="changeRole">
-                                        <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{ r.name }}</option>
-                                    </select>
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        name="password"
+                                        :placeholder="$t('staff.password')"
+                                        v-model="staff.password"
+                                        :disabled="!$root.permissions.includes('update_staff_password')"
+                                        :required="!staff.id"
+                                    >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="label-width">{{$t('staff.email')}}</label>
                                 <div class="inline-form-control">
-                                    <input type="email" class="form-control" name="email" :placeholder="$t('staff.email')" v-model="staff.email">
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        name="email"
+                                        :placeholder="$t('staff.email')"
+                                        v-model="staff.email"
+                                        :disabled="!$root.permissions.includes('update_staff_role_mail')"
+                                    >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="role" class="label-width">{{$t('staff.role')}}</label>
+                                <div class="inline-form-control">
+                                    <select
+                                        class="form-control w-sm c-select"
+                                        name="role"
+                                        v-model="staff.user_group.id"
+                                        @change="changeRole"
+                                        :placeholder="$t('common.please_select') + $t('staff.role')"
+                                        :disabled="!$root.permissions.includes('update_staff_role_mail')"
+                                    >
+                                        <option class="form-control" value=''>{{ $t('common.please_select') + $t('staff.role') }}</option>                                        
+                                        <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{ r.name }}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -50,7 +72,7 @@
                                                 <i v-if="permission.checked" class="fa fa-check text-success"></i>   
                                                 <i v-else class="fa fa-times text-danger"></i>
                                                 <span>{{ permission.display_name }}</span>
-                                                <span class="text-muted ">- {{ permission.description }}</span>
+                                                <span class="text-muted" v-if="permission.description">- {{ permission.description }}</span>
                                             </div>
                                         </div>
                                     </template>
@@ -67,7 +89,7 @@
                     </div>
                     <div>
                         <div class="alert alert-danger" v-if="errorMsg">{{ errorMsg }}</div>
-                        <button :disabled="!$root.permissions.includes('add_change_staff')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     </div>
                 </form>
             </div>
@@ -85,7 +107,7 @@ export default {
                 password: '',
                 email: '',
                 user_group: {
-                    id: undefined,
+                    id: '',
                     name: ''
                 }
             },
@@ -110,6 +132,12 @@ export default {
                 email: this.staff.email,
                 memo: this.staff.memo
             })
+            if (this.staff.password) {
+                staffResult = Object({
+                    ...staffResult,
+                    password: this.staff.password
+                })
+            }
             if (this.staff.id) {
                 this.$http.put(api.staff + this.staff.id + '/', staffResult).then(data => {
                     this.$router.push('/staff/' + data.id)
@@ -121,10 +149,7 @@ export default {
                     this.errorMsg = this.$t('staff.no_select_group')
                     return
                 }
-                this.$http.post(api.staff, Object({
-                    ...staffResult,
-                    password: this.staff.password
-                })).then(data => {
+                this.$http.post(api.staff, staffResult).then(data => {
                     this.$router.push('/staff/' + data.id)
                 }, error => {
                     this.errorMsg = error
