@@ -78,7 +78,7 @@
                                         <span class="nav-text">{{$t("nav.online_member_list")}}</span>
                                     </router-link>
                                 </li>
-                                <li>
+                                <li v-if="$root.permissions.includes('view_staff_management_page')">
                                     <router-link to="/staff">
                                         <span class="nav-text">{{$t("nav.staff")}}</span>
                                     </router-link>

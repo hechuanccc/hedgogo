@@ -1,11 +1,11 @@
 <template>
     <div>
       <div class="row">
-        <div class="pull-right m-r">
-            <router-link tag="button" class="md-btn w-sm blue m-b"  to="/staff/add">{{$t('action.add_staff')}}</router-link>
+        <div class="pull-left m-l" v-if="$root.permissions.includes('add_new_staff')">
+            <router-link tag="button" class="md-btn w-sm blue m-b" to="/staff/add">{{$t('action.add_staff')}}</router-link>
         </div>
       </div>
-        <div class="box m-t-sm">
+        <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>

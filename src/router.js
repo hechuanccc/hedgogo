@@ -332,7 +332,8 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.staff')
+            title: Vue.t('nav.staff'),
+            permission: 'view_staff_management_page'
         }
     },
     {
@@ -344,7 +345,8 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.add_staff')
+            title: Vue.t('nav.add_staff'),
+            permission: 'add_new_staff'
         }
     },
     {
@@ -356,7 +358,8 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.staff_detail')
+            title: Vue.t('nav.staff_detail'),
+            permission: 'view_staff_management_page'
         }
     },
     {
@@ -368,7 +371,8 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('staff.update_staff')
+            title: Vue.t('staff.update_staff'),
+            permission: 'view_staff_management_page'
         }
     },
     {
@@ -989,7 +993,8 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.role_add')
+            title: Vue.t('nav.role_add'),
+            permission: 'add_new_role'
         }
     },
     {
@@ -1013,7 +1018,8 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.role_edit')
+            title: Vue.t('nav.role_edit'),
+            permission: 'update_role_name_advpermission'
         }
     },
     {

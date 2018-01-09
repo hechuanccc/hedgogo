@@ -19,11 +19,20 @@
                     <div class="col-md-4">
                         <h2 class="v-m m-t-sm">{{ staff.username }}</h2>
                     </div>
-                    <div class="col-md-5 col-md-offset-3 text-right" v-if="$root.permissions.includes('add_change_staff')">
-                        <router-link class="md-btn md-flat m-r-sm" to="/staff/add">{{ $t('action.create') }}</router-link>
+                    <div class="col-md-5 col-md-offset-3 text-right">
                         <router-link class="md-btn md-flat m-r-sm" :to="'/staff/'+staff.id+'/edit'">{{ $t('action.update') }}</router-link>
-                        <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)">{{ $t('action.reset_password') }}</a>
-                        <a class="md-btn md-flat m-r-sm" @click="deleteStaff(staff.id, true, $event)">{{ $t('action.delete') }}</a>
+                        <a
+                            class="md-btn md-flat m-r-sm"
+                            @click="resetPassword($event)"
+                            v-if="$root.permissions.includes('update_staff_password')"
+                        >{{ $t('action.reset_password') }}
+                        </a>
+                        <a
+                            class="md-btn md-flat m-r-sm"
+                            @click="deleteStaff(staff.id, true, $event)"
+                            v-if="$root.permissions.includes('remove_staff')"
+                        >{{ $t('action.delete') }}
+                        </a>
                     </div>
                 </div>
             </div>

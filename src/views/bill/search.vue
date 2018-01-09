@@ -256,7 +256,7 @@
                 this.query.created_at_0 = ''
                 this.query.created_at_1 = ''
                 this.member_level = ''
-                this.transaction_type = '0'
+                this.transaction_type = ''
                 this.selected = '0'
                 this.$router.push({
                     path: this.$route.path + '?report_flag=true'
