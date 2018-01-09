@@ -3,7 +3,7 @@
         <option value="">{{ $t('bill.transaction_type') }}</option>
         <option
             class="form-control"
-            :value="e.name"
+            :value="e[attribute]"
             v-for="e in transactionTypes"
             :key="e.id"
         >
@@ -27,13 +27,17 @@ export default {
             default: 0
         },
         displayList: {
-            default: []
+            default: ''
+        },
+        attribute: {
+            default: 'name'
         }
     },
     data () {
         return {
             transactionTypes: [],
-            myTransactionType: this.transactionType
+            myTransactionType: this.transactionType,
+            noViewPermissions: []
         }
     },
     watch: {
@@ -41,20 +45,23 @@ export default {
             this.myTransactionType = this.transactionType
         },
         myTransactionType (newObj, old) {
-            if (this.myTransactionType !== '0') {
-                if (newObj !== undefined) {
-                    this.$emit('transaction-type-select', newObj)
-                }
-            }
+            this.$emit('transaction-type-select', newObj)
         }
     },
     created () {
         this.$http.get(api.transactiontype).then(data => {
+            if (!this.$root.permissions.includes('view_remit_transaction_page')) {
+                this.noViewPermissions.push(1)
+            }
+            if (!this.$root.permissions.includes('view_remit_transaction_page')) {
+                this.noViewPermissions.push(8)
+            }
             if (this.displayList.length > 0) {
                 this.transactionTypes = data.filter(e => this.displayList.includes(e.id))
             } else {
                 this.transactionTypes = data
             }
+            this.transactionTypes = this.transactionTypes.filter(e => !this.noViewPermissions.includes(e.id))
         })
         this.myTransactionType = this.transactionType
     }

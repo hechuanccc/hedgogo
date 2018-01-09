@@ -49,7 +49,7 @@
                             <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
                             <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
                         </div>
-                        <button class="md-btn w-xs pull-right grey-400" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                        <button class="md-btn w-xs pull-right btn" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                       </div>
                 </div>
             </div>
@@ -128,11 +128,24 @@
                       </td>
                       <td>
                           <span class="label success" v-if="t.status===1">{{$t('status.success')}}</span>
-                          <span class="label danger" v-if="t.status===5">{{$t('status.declined')}}</span>
-                          <span v-if="t.status===3">
-                              <button type="button" class="btn btn-xs blue sm-btn m-b-sm f-b" @click="update(t, 1, true, $event)">{{$t('bill.audit')}}</button> <br>
-                              <button type="button" class="btn btn-xs  sm-btn f-b" v-if="$root.permissions.includes('decline_payment')" @click="update(t, 5, true, $event)">{{$t('bill.audit_deny')}}</button>
+                          <span class="label danger" v-else-if="t.status===5">{{$t('status.declined')}}</span>
+                          <span v-else-if="t.status === 3 && ($root.permissions.includes('allow_remit_transaction') || $root.permissions.includes('refuse_remit_transaction'))">
+                              <button 
+                                type="button"
+                                class="btn btn-xs blue sm-btn m-b-sm f-b"
+                                @click="update(t, 1, true, $event)"
+                                v-if="$root.permissions.includes('allow_remit_transaction')"
+                              >{{$t('bill.audit')}}
+                              </button> <br>
+                              <button
+                                type="button"
+                                class="btn btn-xs sm-btn f-b"
+                                @click="update(t, 5, true, $event)"
+                                v-if="$root.permissions.includes('refuse_remit_transaction')"
+                              >{{$t('bill.audit_deny')}}
+                              </button>
                           </span>
+                          <span v-else>-</span>
                       </td>
                   </tr>
               </tbody>

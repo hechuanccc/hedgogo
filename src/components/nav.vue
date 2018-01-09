@@ -24,9 +24,9 @@
                                 <span class="nav-icon" ><i class="material-icons m-r-xs">&#xE227;</i>财务管理</span>
                             </a>
                             <ul class="nav-sub">
-                                <li><router-link to="/bill/remit?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.remit')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('view_remit_transaction_page')"><router-link to="/bill/remit?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.remit')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('view_withdraw_application_page')"><router-link to="/bill/withdraw?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.withdraw_request')}}</span></router-link></li>
                                 <li><router-link to="/bill/online?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.online_pay_orders')}}</span></router-link></li>
-                                <li><router-link to="/bill/withdraw?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.withdraw_request')}}</span></router-link></li>
                                 <li><router-link to="/bill/search?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.transaction')}}</span></router-link></li>
                             </ul>
                         </li>

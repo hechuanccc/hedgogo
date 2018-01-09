@@ -18,12 +18,12 @@
                             :disabled="!$route.query.member"
                         >
                         </level>
-                        <select class="form-control w-sm c-select" v-model="transaction_type">
-                            <option value="0">{{$t('bill.transaction_type')}}</option>
-                            <option name="transaction_type" v-for="t in trans_type" :value="t.code">
-                                <i class="blue">{{t.display_name}}</i>
-                            </option>
-                        </select>
+                        <transaction-type-selector
+                            :transactionType="transaction_type"
+                            :attribute="'code'"
+                            :placeholder="$t('bill.transaction_type')"
+                            @transaction-type-select="transactionTypeSelect"
+                        />
                         <input type="number" v-model.trim="query.transaction_id" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                         <input type="text" v-model="member.username" class="form-control" disabled v-if="$route.query.member"/>
                         <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" v-else/>
@@ -41,7 +41,7 @@
                             <span>~</span>
                             <date-picker width='140' v-model="query.created_at_1"></date-picker>
                         </div>
-                    <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                    <button class="md-btn w-xs btn pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                     </div>
                 </div>
             </div>
@@ -123,6 +123,7 @@
     import api from '../../api'
     import DatePicker from 'vue2-datepicker'
     import transactionStatus from '../../components/transaction_status'
+    import transactionTypeSelector from '../../components/transactionTypeSelector'
     import pulling from '../../components/pulling'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
@@ -158,7 +159,7 @@
                 member_level: '',
                 selected: '0',
                 // use selectd transaction types
-                transaction_type: '0',
+                transaction_type: '',
                 // all of the transaction types
                 trans_type: [],
                 showAgent: false,
@@ -172,13 +173,6 @@
             }
         },
         watch: {
-            transaction_type: function (newObj, old) {
-                if (newObj === '0') {
-                    this.query.transaction_type = ''
-                } else {
-                    this.query.transaction_type = newObj
-                }
-            },
             '$route' (to, from) {
                 this.queryset = []
                 this.$refs.pulling.rebase()
@@ -194,7 +188,6 @@
             }
         },
         created () {
-            this.getTransactionType()
             let transactionType = this.$route.query.transaction_type
             let member = this.$route.query.member
             if (this.$route.query.member) {
@@ -204,7 +197,7 @@
                 this.transaction_type = transactionType.split(',')
             }
             this.$nextTick(() => {
-                this.transaction_type = this.$route.query.transaction_type || '0'
+                this.transaction_type = this.$route.query.transaction_type || ''
                 this.$refs.pulling.rebase()
             })
         },
@@ -247,10 +240,9 @@
                 this.query.agent_q ? this.showAgent = true : this.showAgent = false
                 this.$refs.pulling.submit()
             },
-            getTransactionType () {
-                this.$http.get(api.transactiontype).then(data => {
-                    this.trans_type = data
-                })
+            transactionTypeSelect (val) {
+                this.query.transaction_type = val
+                this.transaction_type = val
             },
             getMember (username) {
                 this.$http.get(api.member + '?opt_expand=bank&username=' + username).then(data => {
@@ -319,6 +311,7 @@
             DatePicker,
             pulling,
             transactionStatus,
+            transactionTypeSelector,
             level: require('../../components/level')
         }
     }

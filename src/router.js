@@ -57,7 +57,8 @@ export default new Router({
             group: 'financing',
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.remit')
+            title: Vue.t('nav.remit'),
+            permission: 'view_remit_transaction_page'
         }
     },
     {
@@ -83,7 +84,8 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.withdraw_request'),
-            group: 'financing'
+            group: 'financing',
+            permission: 'view_withdraw_application_page'
         }
     },
     {

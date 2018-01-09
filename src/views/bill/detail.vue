@@ -179,9 +179,19 @@
                     <div v-if="transaction.status ===5 " class="t-red">
                         {{$t('bill.deposit_declined')}}
                     </div>
-                    <div v-if="transaction.status === 3 & $root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
-                        <button class="md-btn w-sm grey m-r" @click="update('remit', 1, true, $event)">{{$t('bill.audit')}}</button>
-                        <button v-if="$root.permissions.includes('decline_payment')" class="md-btn w-sm grey-300" @click="update('remit', 5, true, $event)">{{$t('bill.audit_deny')}}</button>
+                    <div v-if="transaction.status === 3">
+                        <button
+                            class="btn md-btn w-sm blue m-r"
+                            @click="update('remit', 1, true, $event)"
+                            v-if="$root.permissions.includes('allow_remit_transaction')"
+                        >{{$t('bill.audit')}}
+                        </button>
+                        <button
+                            class="md-btn w-sm btn"
+                            @click="update('remit', 5, true, $event)"
+                            v-if="$root.permissions.includes('refuse_remit_transaction')"
+                        >{{$t('bill.audit_deny')}}
+                        </button>
                     </div>
                     <div v-if="transaction.status === 1" class="t-green">
                         {{$t('bill.saved')}}
@@ -190,10 +200,10 @@
                     </div>
                 </div>
 
-                <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && $root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
+                <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && $root.permissions.includes('manual_confirm_onlinepayment')">
                     <div v-if="transaction.status === 3">
                         <div  v-if="loading"><i class='fa fa-spinner'></i>   <b class="">正在加载中...</b></div>
-                        <button class="md-btn red" v-else @click="update('onlinepay', 1, true, $event)">{{$t('bill.manual_confirm')}}</button>
+                        <button class="btn w-sm md-btn blue" v-else @click="update('onlinepay', 1, true, $event)">{{$t('bill.manual_confirm')}}</button>
                         <div  v-if="!loading && !errorMsg" class="text-muted m-t-sm">请求状态需要时间，请耐心等待</div>
 
                     </div>
@@ -209,11 +219,11 @@
                     <div v-if="transaction.status === 5 " class="t-red">
                         {{$t('bill.withdraw_declined')}}
                     </div>
-                    <div v-if="transaction.status === 3 && $root.permissions.includes('approve_remit_online_withdraw_update_auditing')">
-                        <button class="md-btn w-sm grey m-r" @click="update('withdraw', 1, true, $event)">{{$t('bill.audit')}}</button>
-                        <template v-if="$root.permissions.includes('decline_payment')">
-                            <button class="md-btn grey-300 m-r" @click="update('withdraw', 4, true, $event)">{{$t('bill.cancel')}}</button>
-                            <button class="md-btn grey-300" @click="update('withdraw', 5, true, $event)">{{$t('bill.declined')}}</button>
+                    <div v-if="transaction.status === 3">
+                        <button class="btn md-btn w-sm blue m-r" @click="update('withdraw', 1, true, $event)" v-if="$root.permissions.includes('allow_withdraw_transaction')">{{$t('bill.audit')}}</button>
+                        <template v-if="$root.permissions.includes('refuse_withdraw_transaction')">
+                            <button class="btn md-btn m-r" @click="update('withdraw', 4, true, $event)">{{$t('bill.cancel')}}</button>
+                            <button class="btn md-btn" @click="update('withdraw', 5, true, $event)">{{$t('bill.declined')}}</button>
                         </template>
                     </div>
                 </div>
