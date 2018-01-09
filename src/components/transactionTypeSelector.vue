@@ -53,7 +53,7 @@ export default {
             if (!this.$root.permissions.includes('view_remit_transaction_page')) {
                 this.noViewPermissions.push(1)
             }
-            if (!this.$root.permissions.includes('view_remit_transaction_page')) {
+            if (!this.$root.permissions.includes('view_withdraw_application_page')) {
                 this.noViewPermissions.push(8)
             }
             if (this.displayList.length > 0) {
