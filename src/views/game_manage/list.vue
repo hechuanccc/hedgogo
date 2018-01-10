@@ -44,13 +44,13 @@
               <a
                 class="p-l-xs"
                 @click="toggleEnable(index)"
-                v-if="updateGameStatusHolidaysPermission"
+                v-if="updateGameStatusPermission"
               >{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
               </a>
               <a
                 class="p-l-xs"
                 @click="toggleClose(index)"
-                v-if="updateGameStatusHolidaysPermission"
+                v-if="updateGameStatusPermission"
               >{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}
               </a>
               <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
@@ -69,10 +69,10 @@
                     </button>
                 </div>
                 <div class="modal-body m-r m-l">
-                    <div class="row m-b" v-if="updateGameStatusHolidaysPermission">
+                    <div class="row m-b" v-if="updateGameStatusPermission">
                         <span>{{ $t('game_manage.setting_holiday') }}</span>
                     </div>
-                    <div class="row m-b m-l" v-if="updateGameStatusHolidaysPermission">
+                    <div class="row m-b m-l" v-if="updateGameStatusPermission">
                         <div class="col-xs-8">
                             <date-picker
                                 :shortcuts="[]"
@@ -182,8 +182,8 @@ export default {
         this.getGameList()
     },
     computed: {
-        updateGameStatusHolidaysPermission () {
-            return this.$root.permissions.includes('update_game_status_holidays')
+        updateGameStatusPermission () {
+            return this.$root.permissions.includes('update_game_status')
         }
     },
     methods: {

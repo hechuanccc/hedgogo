@@ -70,7 +70,7 @@
                             <a class="text-sm m-l" @click="toggleStatus(banner)" v-else >{{$t('status.inactive')}}</a>
                             </template>
                     </td>
-                    <td class="v-m" v-if="$root.permissions.includes('delete_banner')">
+                    <td class="v-m" v-if="deleteBannerPermission">
                         <a class="md-btn md-flat m-r-sm" @click="deleteBanner(banner.id, $event, key)">{{$t('action.delete')}}</a>
                     </td>
                 </tr>
