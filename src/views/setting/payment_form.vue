@@ -6,7 +6,6 @@
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
-        <div class="alert alert-danger" v-if="!$root.permissions.includes('change_paymenttype')">{{$t('common.errorPermission')}}</div>
         <div class="box">
             <div class="box-body">
                 <form class="form m-a" v-on:submit.prevent="onSubmit">
@@ -30,10 +29,10 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <label class="label-width">{{$t('setting.payment_gateway')}}</label>
-                                <div v-if="payment.detail.length > 0">
-                                    <label class="ui-check ui-check-md m-r"   v-for="(detail, index) in payment.detail">
-                                        <input :disabled="!$root.permissions.includes('change_paymenttype')" type="checkbox" name="payees"  :value="detail.payee_id" :diu="detail.activate" :checked="detail.activate" @click="changePayee(detail.payee_id, index)">
-                                        <i class="dark-white"></i>
+                                <div v-if="payment.detail.length > 0" class="m-t-sm">
+                                    <label class="m-l-lg checkbox inline" v-for="(detail, index) in payment.detail">
+                                        <input type="checkbox" name="payees"  :value="detail.payee_id" :diu="detail.activate" :checked="detail.activate" @click="changePayee(detail.payee_id, index)">
+                                        <i class="blue"></i>
                                         {{detail.name}}
                                     </label>
                                 </div>
@@ -41,12 +40,12 @@
                             </div>
                             <div class="form-group" >
                                 <label for="memo">{{$t('common.memo')}}</label>
-                                <textarea :disabled="!$root.permissions.includes('change_paymenttype')" class="form-control" name="memo" rows="2" cols="4" v-model="payment.description"></textarea>
+                                <textarea class="form-control" name="memo" rows="2" cols="4" v-model="payment.description"></textarea>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <button :disabled="!$root.permissions.includes('change_paymenttype')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                         <span class="text-success m-l-md" v-show="updated">{{$t('common.saved_successfully')}}</span>
                     </div>
                 </form>

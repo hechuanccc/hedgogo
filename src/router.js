@@ -519,7 +519,8 @@ export default new Router({
         meta: {
             group: 'setting',
             title: Vue.t('setting.create_online_payee'),
-            auth: true
+            auth: true,
+            permission: 'add_online_payee'
         }
     },
     {
@@ -541,7 +542,8 @@ export default new Router({
         meta: {
             group: 'setting',
             title: Vue.t('nav.online_payee_detail_edit'),
-            auth: true
+            auth: true,
+            permission: 'update_online_payee'
         }
     },
     {
@@ -563,7 +565,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            permission: 'change_paymenttype',
+            permission: 'update_onlinepayment',
             title: Vue.t('nav.payment_type_setting_detail')
         }
     },
@@ -586,7 +588,8 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.remit_payee_add')
+            title: Vue.t('nav.remit_payee_add'),
+            permission: 'add_remit_account'
         }
     },
     {
@@ -608,7 +611,8 @@ export default new Router({
         meta: {
             group: 'setting',
             title: Vue.t('nav.remit_payee_update'),
-            auth: true
+            auth: true,
+            permission: 'update_remit_account'
         }
     },
     {
@@ -630,7 +634,8 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.setting_commission_add')
+            title: Vue.t('nav.setting_commission_add'),
+            permission: 'add_commission_setting'
         }
     },
     {

@@ -6,7 +6,6 @@
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
-        <div class="alert alert-danger" v-if="!$root.permissions.includes('change_commission')">{{$t('common.errorPermission')}}</div>
         <form @submit.prevent='onSubmit'>
             <div class="alert alert-success" v-if="deleted === 1">
                 <span>{{$t('setting.deleted_commission_setting')}}</span>
@@ -18,7 +17,14 @@
 
             <div class="row m-b-sm">
                 <div class="col-xs-12" v-if="commissionsetting.id">
-                    <button type="button" class="md-btn md-flat pull-right t-red" @click="deleteCommission" :disabled="commissionsetting.agent_count > 0">{{$t('setting.delete_commission_setting')}}</button>
+                    <button
+                        type="button"
+                        class="md-btn md-flat pull-right t-red"
+                        @click="deleteCommission"
+                        :disabled="commissionsetting.agent_count > 0"
+                        v-if="$root.permissions.includes('delete_commission_setting')"
+                    >{{$t('setting.delete_commission_setting')}}
+                    </button>
                     <span class="text-muted v-m pull-right count-label">{{$t('common.agent_count')}}：{{commissionsetting.agent_count || 0}}</span>
                 </div>
             </div>
@@ -27,82 +33,158 @@
                     <div class="col-xs-4">
                         <div class="clearfix">
                             <label class="col-xs-6 text-right form-control-label">{{$t('common.name')}} </label>
-                            <div class="col-xs-6">
-                                <input class="form-control" v-model="commissionsetting.name" required >
+                            <div class="col-xs-3">
+                                <input
+                                    class="form-control"
+                                    v-model="commissionsetting.name"
+                                    required
+                                    :disabled="!updateCommissionSettingPermission"
+                                >
                             </div>
                         </div>
 
                         <div class="clearfix m-t">
                             <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_deposit_max')}} </label>
-                            <div class="col-xs-6">
-                                <input type="number" min="0"  class="form-control" v-model="commissionsetting.deposit_fee_max" required  >
+                            <div class="col-xs-3">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="commissionsetting.deposit_fee_max"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-4">
                         <div class="clearfix">
                             <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_min_bet')}} </label>
-                            <div class="col-xs-6">
-                                <input type="number" min="0"  class="form-control" v-model="commissionsetting.invest_least" required  >
+                            <div class="col-xs-3">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="commissionsetting.invest_least"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
 
                         <div class="clearfix m-t">
                             <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_withdraw_fee')}} </label>
-                            <div class="col-xs-6">
-                                <input type="number" min="0" class="form-control" v-model="commissionsetting.withdraw_fee" required  >
+                            <div class="col-xs-3">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="commissionsetting.withdraw_fee"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-4">
                         <div class="clearfix">
                             <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_deposit_fee')}} </label>
-                            <div class="col-xs-6">
-                                <input type="number" min="0" class="form-control" v-model="commissionsetting.deposit_fee" required  >
+                            <div class="col-xs-3">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="commissionsetting.deposit_fee"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
 
                         <div class="clearfix m-t">
                             <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_withdraw_max')}} </label>
-                            <div class="col-xs-6">
-                                <input  type="number" min="0"  class="form-control" v-model="commissionsetting.withdraw_fee_max" required  >
+                            <div class="col-xs-3">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="commissionsetting.withdraw_fee_max"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="box p-t m-b clearfix" v-for="(group, index) in commissionsetting.groups">
-                <div class="clearfix b-b">
+            <div class="box p-t p-b m-b clearfix" v-for="(group, index) in commissionsetting.groups" :key="index">
+                <div class="clearfix b-b box-body">
                     <div class="col-xs-4">
                         <div class="form-group">
-                            <label class="col-xs-3 text-right form-control-label">{{$t('setting.com_group_threshold')}}</label>
+                            <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_group_threshold')}}</label>
                             <div class="inline-form-control">
-                                <input type="number" min="0"  class="form-control" v-model="group.threshold" required >
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="group.threshold"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-3 text-right form-control-label">{{$t('setting.com_discount_rate')}}</label>
+                            <label class="col-xs-6 text-right form-control-label">{{$t('setting.com_discount_rate')}}</label>
                             <div class="inline-form-control">
-                                <input type="number" min="0" step="0.1" class="form-control" v-model="group.discount_rate" required>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="0.1"
+                                    class="form-control"
+                                    v-model="group.discount_rate"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-4">
                         <div class="form-group">
-                            <label class="col-xs-3 text-right form-control-label">{{$t('setting.valid_member')}}</label>
+                            <label class="col-xs-6 text-right form-control-label">{{$t('setting.valid_member')}}</label>
                             <div class="inline-form-control">
-                                <input type="number" min="0"  class="form-control" v-model="group.member_num" required>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="group.member_num"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-3 text-right form-control-label">{{$t('nav.returnrate')}}</label>
+                            <label class="col-xs-6 text-right form-control-label">{{$t('nav.returnrate')}}</label>
                             <div class="inline-form-control">
-                                <input type="number" min="0" step="0.1" class="form-control" v-model="group.return_rate"  required>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="0.1"
+                                    class="form-control"
+                                    v-model="group.return_rate"
+                                    :disabled="!updateCommissionSettingPermission"
+                                    required
+                                >
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-4">
-                        <input type="button" v-if="index == 0 & $root.permissions.includes('change_commission')" class="md-btn grey-600 w-sm pull-right m-r" @click="addConfig()" value="新增一组"/>
+                        <input
+                            type="button"
+                            v-if="index === 0 && updateCommissionSettingPermission"
+                            class="md-btn grey-600 w-sm pull-right m-r"
+                            @click="addConfig()"
+                            value="新增一组"
+                        />
                         <a v-if="index > 0" class="pull-right m-r" @click="deleteConfig(index)">{{$t('action.delete')}}</a>
                     </div>
                 </div>
@@ -110,16 +192,25 @@
                     退佣比 %
                 </div>
 
-                <div v-for="rateconfig in group.rates" class="p-r m-b-sm" >
+                <div v-for="rateconfig in group.rates" class="p-r" >
                     <div class="col-xs-3">
-                        <label class="m-t label success" >{{rateconfig.game || rateconfig.display_name}}</label>
-                        <input class="md-input" type="number" step="0.1" v-model="rateconfig.rate" required min="0" max="100"/>
+                        <label class="m-t">{{rateconfig.game || rateconfig.display_name}}</label>
+                        <input
+                            class="form-control"
+                            type="number"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            v-model="rateconfig.rate"
+                            :disabled="!updateCommissionSettingPermission"
+                            required
+                        />
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="updateCommissionSettingPermission">
                 <div class="col-xs-12">
-                    <button :disabled="!$root.permissions.includes('change_commission')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                    <button :disabled="!updateCommissionSettingPermission" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                     <span class="text-success m-l-md" v-show="updated">{{$t('common.saved_successfully')}}</span>
                 </div>
             </div>
@@ -163,6 +254,11 @@
         },
         created () {
             this.getGameList()
+        },
+        computed: {
+            updateCommissionSettingPermission () {
+                return this.$root.permissions.includes('update_commission_setting')
+            }
         },
         methods: {
             deleteConfig (index) {

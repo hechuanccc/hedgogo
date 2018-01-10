@@ -15,10 +15,19 @@
                             <span v-else>{{remit_payee.nickname}}</span>
                         </h2>
                     </div>
-                    <div class="col-md-5 col-md-offset-3 text-right" v-if="$root.permissions.includes('change_remitpayee')" >
-                        <router-link class="md-btn md-flat m-r-sm" to="/remit_payee/">{{$t('action.view_remit_payees')}}</router-link>
-                        <router-link class="md-btn md-flat m-r-sm" :to="'/remit_payee/' + remit_payee.id + '/edit'">{{$t('action.update_remit_payee')}}</router-link>
-                        <a class="md-btn md-flat m-r-sm" @click="deletePayee(remit_payee.id, true, $event)">{{$t('action.delete')}}</a>
+                    <div class="col-md-5 col-md-offset-3 text-right">
+                        <router-link
+                            class="md-btn md-flat m-r-sm"
+                            :to="'/remit_payee/' + remit_payee.id + '/edit'"
+                            v-if="$root.permissions.includes('update_remit_account')"
+                        >{{$t('action.update')}}
+                        </router-link>
+                        <a
+                            class="md-btn md-flat m-r-sm"
+                            @click="deletePayee(remit_payee.id, true, $event)"
+                            v-if="$root.permissions.includes('delete_remit_account')"
+                        >{{$t('action.delete')}}
+                        </a>
                     </div>
                 </div>
                 <div class="alert alert-danger" v-if="showDeleteError">{{$t('common.activeremit')}}</div>

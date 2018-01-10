@@ -6,7 +6,6 @@
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
-        <div class="alert alert-danger" v-if="!$root.permissions.includes('change_onlinepayee')">{{$t('common.errorPermission')}}</div>
         <div class="box">
             <div class="box-body">
                 <form class="form m-a" v-on:submit.prevent="onSubmit">
