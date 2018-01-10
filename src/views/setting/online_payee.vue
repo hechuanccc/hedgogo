@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="p-b m-b-sm" v-if="$root.permissions.includes('change_onlinepayee')" >
+        <div class="p-b m-b-sm" v-if="$root.permissions.includes('add_online_payee')" >
             <router-link tag="button" class="md-btn blue" to="/online_payee/add">{{$t('setting.create_online_payee')}}</router-link>
         </div>
         <div class="box">
@@ -26,9 +26,9 @@
                         <td>
                             <span class="label success m-r" v-if="payee.status==1">{{$t('status.active')}}</span>
                             <span class="label danger m-r" v-else>{{$t('status.disabled')}}</span>
-                            <template v-if="$root.permissions.includes('change_onlinepayee')">
-                                <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('setting.disable')}}</a>
-                                <a @click="toggleStatus(payee)" v-else>{{$t('setting.enable')}}</a>
+                            <template v-if="$root.permissions.includes('update_onlinepayee_status')">
+                                <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('status.disabled')}}</a>
+                                <a @click="toggleStatus(payee)" v-else>{{$t('status.active')}}</a>
                             </template>
                         </td>
                         <td>
@@ -61,7 +61,7 @@ export default {
         },
         getPayees () {
             this.$http.get(api.onlinepayee + '?opt_expand=1').then(data => {
-                this.online_payees = data
+                this.online_payees = data.sort((a, b) => a.id - b.id)
             })
         }
     }

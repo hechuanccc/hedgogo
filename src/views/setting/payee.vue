@@ -9,7 +9,7 @@
               <option value="2">{{$t('setting.payment_wechat')}} / {{$t('setting.payment_alipay')}}</option>
             </select>
           </div>
-          <div v-if="$root.permissions.includes('change_remitpayee')">
+          <div v-if="$root.permissions.includes('add_remit_account')">
             <router-link tag="button" class="md-btn blue inline" to="/remit_payee/add">{{$t('action.add_remit_payee')}}</router-link>
           </div>
         </div>
@@ -45,16 +45,16 @@
                         <span v-else>-</span>
                       </td>
                       <td>
-                        <span v-if="payee.sum_fund !== null">{{payee.sum_fund}}</span>
+                        <span v-if="payee.sum_fund !== null">{{payee.sum_fund | currency('￥')}}</span>
                         <span v-else>-</span>
                       </td>
                       <td><router-link class="m-r" v-for="l in payee.level" :to="'/level/' + l.id">{{l.name}}</router-link></td>
                       <td>
                         <span class="label success m-r" v-if="payee.status==1" @click="toggleStatus(payee)">{{$t('status.active')}}</span>
                         <span class="label danger m-r" v-if="payee.status==0" @click="toggleStatus(payee)">{{$t('status.disabled')}}</span>
-                        <template v-if="$root.permissions.includes('change_remitpayee')">
-                            <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('setting.disable')}}</a>
-                            <a @click="toggleStatus(payee)" v-else>{{$t('setting.enable')}}</a>
+                        <template v-if="updateRemitAccountStatus">
+                            <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('status.disabled')}}</a>
+                            <a @click="toggleStatus(payee)" v-else>{{$t('status.active')}}</a>
                         </template>
                       </td>
                     </tr>
@@ -67,16 +67,16 @@
                         <span v-else>-</span>
                       </td>
                       <td>
-                        <span v-if="payee.sum_fund !== null">{{payee.sum_fund}}</span>
+                        <span v-if="payee.sum_fund !== null">{{payee.sum_fund | currency('￥')}}</span>
                         <span v-else>-</span>
                       </td>
                       <td><router-link class="m-r" v-for="l in payee.level" :to="'/level/' + l.id">{{l.name}}</router-link></td>
                       <td>
                         <span class="label success m-r" v-if="payee.status==1" @click="toggleStatus(payee)">{{$t('status.active')}}</span>
                         <span class="label danger m-r" v-if="payee.status==0" @click="toggleStatus(payee)">{{$t('status.disabled')}}</span>
-                        <template v-if="$root.permissions.includes('change_remitpayee')">
-                            <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('setting.disable')}}</a>
-                            <a @click="toggleStatus(payee)" v-else>{{$t('setting.enable')}}</a>
+                        <template v-if="updateRemitAccountStatus">
+                            <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('status.disabled')}}</a>
+                            <a @click="toggleStatus(payee)" v-else>{{$t('status.active')}}</a>
                         </template>
                       </td>
                   </tr>
@@ -97,6 +97,11 @@ export default {
     },
     created () {
         this.getPayees()
+    },
+    computed: {
+        updateRemitAccountStatus () {
+            return this.$root.permissions.includes('update_remit_account_status')
+        }
     },
     methods: {
         toggleStatus (payee) {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="m-b" v-if="$root.permissions.includes('change_commission')">
+        <div class="m-b" v-if="$root.permissions.includes('add_commission_setting')">
             <router-link tag="button" class="md-btn blue w-sm" to="/commission/add">{{$t('setting.setting_commission_add_btn')}}</router-link>
         </div>
         <div class="box">
@@ -21,7 +21,7 @@
                         <td>
                             <span class="label success" v-if="setting.status==1">{{$t('status.active')}}</span>
                             <span class="label danger" v-if="setting.status==0">{{$t('status.disabled')}}</span>
-                            <template v-if="$root.permissions.includes('change_commission')">
+                            <template v-if="$root.permissions.includes('update_commission_setting_status')">
                                 <a class="text-sm m-l" @click="toggleStatus(setting)" v-if="setting.status==1" >{{$t('status.inactive')}}</a>
                                 <a class="text-sm m-l" @click="toggleStatus(setting)" v-else >{{$t('status.active')}}</a>
                             </template>
