@@ -176,8 +176,8 @@
               </div>
             </td>
             <td>
-              <span v-if="t.status === 'ongoing' || t.status === 'no_draw'">
-              <button type="button" class="btn btn-xs blue-300 sm-btn m-b-sm f-b" @click="cancelBet(t, 'cancelled', true, $event)">{{$t('betrecord.cancel_bet')}}</button> <br>
+              <span v-if="(t.status === 'ongoing' || t.status === 'no_draw') && $root.permissions.includes('cancel_bet')">
+                <button type="button" class="btn btn-xs blue-300 sm-btn m-b-sm f-b" @click="cancelBet(t, 'cancelled', true, $event)">{{$t('betrecord.cancel_bet')}}</button> <br>
               </span>
               <span v-else>-
               </span>

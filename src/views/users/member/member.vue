@@ -89,7 +89,7 @@
     </form>
     <div class="row m-t-md" v-if="pageSelected === 'all_members'">
         <div class="col-xs-12">
-        <div class="pull-right">
+        <div class="pull-right" v-if="$root.permissions.includes('export_member_report')">
             <a :href="href" :getReport="getReport" v-if="queryset.length">
             <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
             </a>

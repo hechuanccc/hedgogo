@@ -36,18 +36,30 @@
                                 <tr>
                                     <th class="text-center" width="33%">{{ $t('game_history.abnormal_period') }}</th>
                                     <th class="text-center" width="33%">{{ $t('game_history.period_bet_record') }}</th>
-                                    <th class="text-center" width="33%">{{ $t('game_history.operating') }}</th>
+                                    <th
+                                        class="text-center"
+                                        width="33%"
+                                        v-if="$root.permissions.includes('manually_draw_game_result') || $root.permissions.includes('official_no_draw')"
+                                    >{{ $t('game_history.operating') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="sched in game.abnormal_scheds" :key="sched.id">
                                     <td>{{ sched.issue_number }}</td>
                                     <td>{{ sched.betrecords }}</td>
-                                    <td class="p-b-sm p-t-sm">
-                                        <span class="label btn blue m-r-xs" @click="showModal(game, sched)">
+                                    <td class="p-b-sm p-t-sm" v-if="$root.permissions.includes('manually_draw_game_result') || $root.permissions.includes('official_no_draw')">
+                                        <span
+                                            class="label btn blue m-r-xs"
+                                            @click="showModal(game, sched)"
+                                            v-if="$root.permissions.includes('manually_draw_game_result')"
+                                        >
                                             {{ $t('game_history.manual_draw') }}
                                         </span>
-                                        <span class="label btn blue" @click="showModal(game, sched, 'no_draw')">
+                                        <span
+                                            class="label btn blue"
+                                            @click="showModal(game, sched, 'no_draw')"
+                                            v-if="$root.permissions.includes('official_no_draw')"
+                                        >
                                             {{ $t('game_history.no_draw') }}
                                         </span>
                                     </td>
@@ -90,7 +102,7 @@
                                 <td>{{ modal.scheduleResult.issue_number }}</td>
                                 <td>{{ modal.betrecords }}</td>
                                 <td v-if="modal.mode === 'manual_draw'">
-                                    <input class="form-control" v-model="modal.scheduleResult.result_str">
+                                    <input class="form-control" v-model="modal.scheduleResult.result_str" :disabled="!$root.permissions.includes('manually_draw_game_result')">
                                     <span>{{ $t('game_history.result_str_tips',{
                                             num_len: modal.game.rules.num_len,
                                             unique: modal.game.rules.unique?$t('game_history.non_repetitive'):$t('game_history.repeatable'),
@@ -103,16 +115,23 @@
                         </tbody>
                     </table>
                     <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
+                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
                     </div>                
                 </div>
                 <div class="modal-footer">
                     <div class="inline pull-left m-l-lg m-t-sm checkbox" v-if="modal.mode === 'manual_draw'">
-                        <input type="checkbox" v-model="modal.sureDraw">
+                        <input
+                            type="checkbox"
+                            v-model="modal.sureDraw"
+                            :disabled="!$root.permissions.includes('manually_draw_game_result')"
+                        >
                         <i class="blue"></i>{{ $t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords}) }}
                     </div>
                     <div class="inline pull-left m-l-lg m-t-sm checkbox" v-else>
-                        <input type="checkbox" v-model="modal.inform">
+                        <input
+                            type="checkbox"
+                            v-model="modal.inform"
+                            :disabled="!$root.permissions.includes('official_no_draw')">
                         <i class="blue"></i>{{ $t('game_history.inform_no_draw') }}
                     </div>
                     <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
@@ -120,16 +139,17 @@
                         type="button"
                         class="inline pull-right btn btn-primary m-r-xs blue"
                         @click="updateScheduleResult"
-                        :disabled="!modal.sureDraw"
                         v-if="modal.mode === 'manual_draw'"
+                        :disabled="!$root.permissions.includes('manually_draw_game_result') || !modal.sureDraw"
                     >
                         {{ $t('action.confirm') }}
                     </button>
-                    <button 
+                    <button
                         type="button"
                         class="inline pull-right btn btn-primary m-r-xs blue"
                         @click="noDrawHandler"
                         v-else
+                        :disabled="!$root.permissions.includes('official_no_draw')"
                     >
                         {{ $t('action.confirm') }}
                     </button>

@@ -27,40 +27,40 @@
                                 </td>
                                 <td>
                                     <div class="form-group m-b-0">
-                                        <input class="form-control" type="text" v-model="playset.odds" @change="changeField(playset)" required>
+                                        <input class="form-control" type="text" v-model="playset.odds" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
-                                        <input class="form-control" type="number" min="0" v-model="playset.return_rate" @change="changeField(playset)" required>
+                                        <input class="form-control" type="number" min="0" v-model="playset.return_rate" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
                                         <span class="input-group-addon"><b>%</b></span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
                                         <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
-                                        <input class="form-control" type="number" min="0" v-model="playset.min_per_bet" @change="changeField(playset)" required>
+                                        <input class="form-control" type="number" min="0" v-model="playset.min_per_bet" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
                                         <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
-                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_bet" @change="changeField(playset)" required>
+                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_bet" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
                                         <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
-                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_draw" @change="changeField(playset)" required>
+                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_draw" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="box-footer text-left">
-                    <button class="md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>
-                    <button class="md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
+                <div class="box-footer text-center" v-if="updatePlaysetDetailsPermission">
+                    <button class="btn md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>
+                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
                     <transition name="fade">
                         <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
                     </transition>
@@ -96,6 +96,9 @@ export default {
             return this.playsets.filter(playset => {
                 return playset.updated
             })
+        },
+        updatePlaysetDetailsPermission () {
+            return this.$root.permissions.includes('update_playset_details')
         }
     },
     beforeRouteEnter (to, from, next) {

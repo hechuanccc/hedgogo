@@ -107,7 +107,7 @@
                             <ul class="nav-sub">
                                 <li><router-link to="/permissions"><span class="nav-text">{{$t("nav.permissions")}}</span></router-link></li>
                                 <li><router-link to="/roles"><span class="nav-text">{{$t("nav.roles")}}</span></router-link></li>
-                                <li><router-link to="/global_parameters"><span class="nav-text">{{$t("nav.global_parameters")}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('view_global_parameters_setting')"><router-link to="/global_parameters"><span class="nav-text">{{$t("nav.global_parameters")}}</span></router-link></li>
                                 <li><router-link to="/level"><span class="nav-text">{{$t("nav.setting_level")}}</span></router-link></li>
                                 <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>
                                 <li><router-link to="/paymenttype"><span class="nav-text">{{$t("nav.payment_type_setting")}}</span></router-link></li>
@@ -127,12 +127,12 @@
                                 <li><router-link to="/errors"><span class="nav-text">{{$t("nav.errors")}}</span></router-link></li>
                             </ul>
                         </li>
-                        <li :class="$route.meta.group == 'agent' ? 'active' : ''">
+                        <li :class="$route.meta.group == 'agent' ? 'active' : ''" v-if="$root.permissions.includes('export_agent_commission_report')">
                             <a>
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FB;</i>代理结算</span>
                             </a>
                             <ul class="nav-sub">
-                                <li v-if="$root.permissions.includes('calculate_commission')"><router-link to="/agent/commission?report_flag=True"><span class="nav-text">{{$t('nav.commission_report')}}</span></router-link></li>
+                                <li><router-link to="/agent/commission?report_flag=True"><span class="nav-text">{{$t('nav.commission_report')}}</span></router-link></li>
                             </ul>
                         </li>
                         <li :class="$route.meta.group == 'manage' ? 'active' : ''">

@@ -1,12 +1,12 @@
 <template>
     <div>
         <form class="form m-l m-r" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
-            <div class="row" v-if="userPermission">
-                <div class="pull-left">
+            <div class="row">
+                <div class="pull-left" v-if="$root.permissions.includes('add_new_banner')">
                     <input type="file" class="md-btn w-sm blue add-file-btn" accept="image/*" @change="getImg">
                     <button class="md-btn w-sm blue" >{{$t('action.create')}}</button>
                 </div>
-                <div class="pull-left form-group">
+                <div class="pull-left form-group" v-if="$root.permissions.includes('add_new_banner')">
                     <label class="form-control-label">{{$t('manage.platform_select')}}</label>
                     <label class="radio-inline">
                         <input type="radio" value="2" checked name="platform" v-model="banner.platform">
@@ -27,7 +27,7 @@
                     <span class="alert alert-success text-success m-r p-a-sm" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
                     <span class="alert alert-danger text-danger m-r p-a-sm" v-if="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
                 </div>
-                <div class="pull-right">
+                <div class="pull-right" v-if="$root.permissions.includes('update_banner_order')">
                     <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
                     <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
                 </div>
@@ -48,7 +48,7 @@
                     <th><span class="m-l">{{$t('manage.img')}}</span></th>
                     <th>{{$t('manage.platform')}}</th>
                     <th>{{$t('member.status')}}</th>
-                    <th v-if="userPermission">{{$t('manage.operate')}}</th>
+                    <th v-if="$root.permissions.includes('delete_banner')">{{$t('manage.operate')}}</th>
                 </tr>
                 </thead>
                 <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
@@ -65,12 +65,12 @@
                     <td class="v-m">
                         <span class="label success" v-if="banner.status==1" >{{$t('status.active')}}</span>
                         <span class="label danger" v-if="banner.status==0">{{$t('status.inactive')}}</span>
-                        <template v-if="userPermission">
+                        <template v-if="updateBannerStatusPermission">
                             <a class="text-sm m-l" @click="toggleStatus(banner)" v-if="banner.status===0" >{{$t('status.active')}}</a>
                             <a class="text-sm m-l" @click="toggleStatus(banner)" v-else >{{$t('status.inactive')}}</a>
                             </template>
                     </td>
-                    <td class="v-m" v-if="userPermission">
+                    <td class="v-m" v-if="deleteBannerPermission">
                         <a class="md-btn md-flat m-r-sm" @click="deleteBanner(banner.id, $event, key)">{{$t('action.delete')}}</a>
                     </td>
                 </tr>
@@ -102,8 +102,11 @@ export default {
         }
     },
     computed: {
-        userPermission: function () {
-            return true
+        updateBannerStatusPermission () {
+            return this.$root.permissions.includes('update_banner_status')
+        },
+        deleteBannerPermission () {
+            return this.$root.permissions.includes('delete_banner')
         }
     },
     created () {

@@ -41,8 +41,18 @@
               </div>
             </td>
             <td>
-              <a class="p-l-xs" @click="toggleEnable(index)">{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}</a>
-              <a class="p-l-xs" @click="toggleClose(index)">{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}</a>
+              <a
+                class="p-l-xs"
+                @click="toggleEnable(index)"
+                v-if="updateGameStatusPermission"
+              >{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
+              </a>
+              <a
+                class="p-l-xs"
+                @click="toggleClose(index)"
+                v-if="updateGameStatusPermission"
+              >{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}
+              </a>
               <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
             </td>
           </tr>
@@ -59,10 +69,10 @@
                     </button>
                 </div>
                 <div class="modal-body m-r m-l">
-                    <div class="row m-b">
+                    <div class="row m-b" v-if="updateGameStatusPermission">
                         <span>{{ $t('game_manage.setting_holiday') }}</span>
                     </div>
-                    <div class="row m-b m-l">
+                    <div class="row m-b m-l" v-if="updateGameStatusPermission">
                         <div class="col-xs-8">
                             <date-picker
                                 :shortcuts="[]"
@@ -91,10 +101,10 @@
                                 <span>{{ $t('game_manage.no_setting_icon') }}</span>
                             </div>
                         </div>
-                        <div class="col-xs-5 inline-form-control m-t-lg">
+                        <div class="col-xs-5 inline-form-control m-t-lg" v-if="$root.permissions.includes('update_game_icon')">
                             <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'icon')" required>
                         </div>
-                        <div class="col-xs-2 text-right m-t-lg">
+                        <div class="col-xs-2 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
                             <button type="button" class="btn btn-sm btn-primary" @click="updateImage('icon')">{{$t('action.update')}}</button>
                         </div>
                     </div>
@@ -111,10 +121,10 @@
                                 {{ $t('game_manage.no_setting_icon_background') }}
                             </div>
                         </div>
-                        <div class="col-xs-5 inline-form-control" style="margin-top:75px;">
+                        <div class="col-xs-5 inline-form-control" style="margin-top:75px;" v-if="$root.permissions.includes('update_game_icon_background')">
                             <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'bg_icon')" required>
                         </div>
-                        <div class="col-xs-2 text-right" style="margin-top:75px;">
+                        <div class="col-xs-2 text-right" style="margin-top:75px;" v-if="$root.permissions.includes('update_game_icon_background')">
                             <button type="button" class="btn btn-sm btn-primary" @click="updateImage('bg_icon')">{{$t('action.update')}}</button>
                         </div>
                     </div>
@@ -170,6 +180,11 @@ export default {
     },
     created () {
         this.getGameList()
+    },
+    computed: {
+        updateGameStatusPermission () {
+            return this.$root.permissions.includes('update_game_status')
+        }
     },
     methods: {
         getGameList () {
