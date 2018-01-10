@@ -49,7 +49,7 @@
     </form>
     <div class="row">
         <div class="col-xs-12">
-          <div class="pull-right">
+          <div class="pull-right" v-if="$root.permissions.includes('export_transaction_report')">
             <a :href="href" :getReport="getReport" v-if="queryset.length">
               <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
             </a>

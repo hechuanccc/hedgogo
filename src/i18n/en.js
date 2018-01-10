@@ -532,6 +532,7 @@ export default {
         no_draw_initial_msg: 'Would you want to set this period status to `No Draw`?',
         memo: 'Memo',
         no_draw: 'No draw',
+        ongoing: 'Ongoing',
         retreat_sched_sure: 'Are you sure to retreat schedule?',
         retreat_sched: 'Retreat Schedule',
         retreat_sched_fail: 'Fail to retreat schedule!',

@@ -58,12 +58,12 @@
     </form>
     <div class="row m-t-md">
         <div class="col-xs-12">
-        <div class="pull-right">
-            <a :href="href" :getReport="getReport" v-if="queryset.length">
-                <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
-            </a>
-            <span disabled v-else>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
-        </div>
+            <div class="pull-right" v-if="$root.permissions.includes('export_finance_report')">
+                <a :href="href" :getReport="getReport" v-if="queryset.length">
+                    <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
+                </a>
+                <span disabled v-else>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
+            </div>
         </div>
     </div>
     <div class="box m-t-xs" v-if="queryset.length > 0">

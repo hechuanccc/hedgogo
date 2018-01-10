@@ -200,8 +200,8 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.commission_report'),
-            permission: 'calculate_commission',
             agentPermission: 'true',
+            permission: 'export_agent_commission_report',
             group: 'agent'
         }
     },
@@ -802,7 +802,8 @@ export default new Router({
         meta: {
             group: 'marketing',
             title: Vue.t('nav.add_message'),
-            auth: true
+            auth: true,
+            permission: 'add_new_message'
         }
     },
     {
@@ -1032,7 +1033,8 @@ export default new Router({
             group: 'setting',
             auth: true,
             agentPermission: 'true',
-            title: Vue.t('nav.global_parameters')
+            title: Vue.t('nav.global_parameters'),
+            permission: 'view_global_parameters_setting'
         }
     },
     {

@@ -50,30 +50,38 @@
                             <span v-else class="label label-sm up ">{{abnormal_count}}</span>
                         </a>
                     </router-link>
-                    <router-link
-                        tag="li"
-                        class="nav-item dropdown pos-stc-xs pointer"
-                        :to="'/bill/remit?status=' + status"
-                        v-if="$root.permissions.includes('view_remit_transaction_page')"
-                    >
-                        <a class="nav-link" >
-                            <label class="pointer label">{{$t('header.deposit')}}</label>
-                            <span v-if="remit_count" class="label label-sm up warn">{{remit_count}}</span>
-                            <span v-else class="label label-sm up ">{{remit_count}}</span>
-                        </a>
-                    </router-link>
-                    <router-link
-                        tag="li"
-                        class="nav-item dropdown pos-stc-xs pointer"
-                        :to="'/bill/withdraw?status=' + status"
-                        v-if="$root.permissions.includes('view_withdraw_application_page')"
+                    <li class="nav-item dropdown pos-stc-xs pointer" >
+                        <router-link
+                            class="nav-link"
+                            :to="'/bill/remit?status=' + status"
+                            v-if="$root.permissions.includes('view_remit_transaction_page')"
                         >
-                        <a class="nav-link" >
-                            <label class="pointer label">{{$t('header.withdraw')}}</label>
+                            <label class="label pointer">{{$t('header.deposit')}}</label>
+                            <span v-if="remit_count" class="label label-sm up warn">{{remit_count}}</span>
+                            <span v-else class="label label-sm up">{{remit_count}} </span>
+                        </router-link>
+                        <div class="nav-link disabled" v-else>
+                            <label class="label">{{$t('header.deposit')}}</label>
+                            <span v-if="remit_count" class="label label-sm up warn">{{remit_count}}</span>
+                            <span v-else class="label label-sm up">{{remit_count}} </span>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown pos-stc-xs pointer" >
+                        <router-link
+                            class="nav-link"
+                            :to="'/bill/withdraw?status=' + status"
+                            v-if="$root.permissions.includes('view_withdraw_application_page')"
+                        >
+                            <label class="label pointer">{{$t('header.withdraw')}}</label>
                             <span v-if="withdraw_count" class="label label-sm up warn">{{withdraw_count}}</span>
-                            <span v-else class="label label-sm up">{{withdraw_count}}</span>
-                        </a>
-                    </router-link>
+                            <span v-else class="label label-sm up">{{withdraw_count}} </span>
+                        </router-link>
+                        <div class="nav-link disabled" v-else>
+                            <label class="label">{{$t('header.withdraw')}}</label>
+                            <span v-if="withdraw_count" class="label label-sm up warn">{{withdraw_count}}</span>
+                            <span v-else class="label label-sm up">{{withdraw_count}} </span>
+                        </div>
+                    </li>
                     <li class="nav-item dropdown pos-stc-xs pointer" >
                         <router-link class="nav-link" to="/online_member">
                             <label class=" label pointer" >{{$t('common.onlinemembers')}}</label>

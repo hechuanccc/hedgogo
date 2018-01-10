@@ -5,27 +5,42 @@
                     <div class="col-md-12">
                         <div>
                             <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('manage.name')}} </label>
+                                <label class="label-width col-xs-1">{{$t('manage.name')}} </label>
                                 <div class="inline-form-control">
-                                    <input class="form-control" placeholder="Name" v-model="website.name" required/>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Name"
+                                        v-model="website.name"
+                                        v-if="updateWebsiteManagementPermission"
+                                        required
+                                    />
+                                    <span v-else>{{ website.name }}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('manage.second_name')}} </label>
+                                <label class="label-width col-xs-1">{{$t('manage.second_name')}} </label>
                                 <div class="inline-form-control">
-                                    <input class="form-control" placeholder="Name" v-model="website.second_name" required/>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Name"
+                                        v-model="website.second_name"
+                                        v-if="updateWebsiteManagementPermission"
+                                        required
+                                    />
+                                    <span v-else>{{ website.second_name }}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('manage.logo')}}</label>
+                                <label class="label-width col-xs-1">{{$t('manage.logo')}}</label>
                                 <div class="inline-form-control" v-if="!hasImage">
                                     <img :src="website.icon" width="60">
                                 </div>
-                                <div class="inline-form-control">
+                                <span v-else>{{ $t('action.no_setting') }}</span>
+                                <div class="inline-form-control" v-if="updateWebsiteManagementPermission">
                                     <input type="file" class="form-control" accept="image/*" @change="syncImg">
                                 </div>
                             </div>
-                            <div class="b-b p-b m-t">
+                            <div class="b-b p-b m-t" v-if="updateWebsiteManagementPermission">
                                 <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
                                 <div class="alert alert-success" v-if="statusUpdated">{{$t('agent.status_update')}}</div>
                                 <button type="" class="md-btn w-sm blue" @click="onSubmit">{{$t('common.save')}}</button>
@@ -33,11 +48,11 @@
                             <div class="row m-t">
                                 <label class="m-l-sm label-width col-xs-1">{{$t('manage.advertisement')}} </label>
                             </div>
-                            <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-if="!mode">
+                            <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-if="!mode && updateWebsiteManagementPermission">
                                 <button class="md-btn w-sm blue" @click="mode=1"><i class="fa fa-arrows-h"></i> {{ $t('manage.adjust_rank') }}</button>
                                 <span class="text-success text-sm m-l" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>                                                                                      
                             </div>
-                            <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-else>
+                            <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-else-if="updateWebsiteManagementPermission">
                                 <button class="btn btn-sm blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>                                
                                 <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
                             </div>
@@ -47,7 +62,7 @@
                                         <transition-group name="list-complete">
                                             <div :class="[`col-xs-${12/boxes.length}`, 'list-complete-item m-a-0']" v-for="(box, index) in boxes" :key="box.id">
                                                 <div :class="['box', mode?'b-a b-dashed b-3x':'']">
-                                                    <div class="box-tool">
+                                                    <div class="box-tool" v-if="updateWebsiteManagementPermission">
                                                         <ul class="nav">
                                                             <li class="nav-item inline" v-if="boxes.length>2">
                                                                 <button type="button" class="close" aria-hidden="true" @click="deleteBox(box.id, index)"><i class="fa fa-times"></i>
@@ -56,7 +71,7 @@
                                                         </ul>
                                                     </div>
                                                     <div class="box-body text-center">
-                                                        <div class="m-a-sm">{{ $t('manage.header_img') }}</div>
+                                                        <div class="m-a-sm" v-if="box.mode">{{ $t('manage.header_img') }}</div>
                                                         <div v-if="box.header_image">
                                                             <img :src="box.header_image" width="250" height="50">
                                                         </div>
@@ -64,13 +79,13 @@
                                                         <div class="inline-form-control m-t-xs" v-if="box.mode">
                                                             <input type="file" class="form-control" accept="image/*" @change="syncBoxImg($event, box, index, 'header_image')" style="width:250px;">
                                                         </div>
-                                                        <div class="form-group m-b-xs m-t-sm">
+                                                        <div class="form-group m-b-xs m-t-sm" v-if="box.mode">
                                                             <label class="form-control-label">{{ $t('manage.main') }}</label>
-                                                            <label class="radio-inline" v-if="box.mode">
-                                                            <input type="radio" :value="0" v-model="box.status">{{ $t('manage.img') }}
+                                                            <label class="radio-inline">
+                                                                <input type="radio" :value="0" v-model="box.status">{{ $t('manage.img') }}
                                                             </label>
-                                                            <label class="radio-inline" v-if="box.mode">
-                                                            <input type="radio" :value="1" v-model="box.status">{{ $t('manage.text') }}
+                                                            <label class="radio-inline">
+                                                                <input type="radio" :value="1" v-model="box.status">{{ $t('manage.text') }}
                                                             </label>
                                                         </div>
                                                         <div class="row m-l-xs m-r-xs" v-if="box.status===0">
@@ -88,7 +103,7 @@
                                                             <textarea class="form-control" rows="15" cols="12" v-model="box.main_description" :disabled="!box.mode" style="resize:none;"></textarea>
                                                         </div>
                                                         <div class="m-a alert alert-danger" v-if="box.errorMsg">{{ box.errorMsg }}</div>
-                                                        <div class="row m-t-sm">
+                                                        <div class="row m-t-sm" v-if="updateWebsiteManagementPermission">
                                                             <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('action.update')}}</button>
                                                             <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('action.confirm')}}</button>
                                                             <button class="btn btn-sm" @click="cancelUpdateBox(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('action.cancel')}}</button>  
@@ -100,7 +115,7 @@
                                         </transition-group>
                                     </draggable>
                                 </div>
-                                <div class="col-xs-1" v-if="boxes.length<4">
+                                <div class="col-xs-1" v-if="boxes.length<4 && updateWebsiteManagementPermission">
                                     <button class="md-btn md-fab m-b-sm blue" @click="createBox"><i class="material-icons md-24">&#xe145;</i></button>
                                 </div>
                             </div>
@@ -132,6 +147,11 @@
                 statusUpdated: false,
                 responseError: '',
                 successMsg: ''
+            }
+        },
+        computed: {
+            updateWebsiteManagementPermission () {
+                return this.$root.permissions.includes('update_website_management')
             }
         },
         created () {

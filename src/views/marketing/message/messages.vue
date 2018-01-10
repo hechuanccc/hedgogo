@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="m-b" >
+        <div class="m-b" v-if="$root.permissions.includes('add_new_message')">
             <router-link tag="button" class="md-btn blue w-sm" to="/messages/add">{{ $t('nav.add_message') }}</router-link>
         </div>
 

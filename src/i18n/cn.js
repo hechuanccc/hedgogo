@@ -529,6 +529,7 @@ export default {
         inform_no_draw: '寄送系统站内信通知下单会员',
         memo: '备注',
         no_draw: '官方未开',
+        ongoing: '进行中',
         retreat_sched_sure: '确定撤单吗？',
         retreat_sched: '撤单',
         retreat_sched_fail: '撤单失败！',

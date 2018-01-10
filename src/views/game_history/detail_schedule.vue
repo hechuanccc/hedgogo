@@ -155,14 +155,15 @@
                     >
                         <td>{{ sched.issue_number }}</td>
                         <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                        <td>
+                        <td v-if="sched.status !== 'cancelled'">
                             <span
                                 class="label btn blue"
                                 @click="showModal(sched)"
-                                v-show="sched.status !== 'cancelled'"
+                                v-if="$root.permissions.includes('retrieve_ongoing_bets')"
                             >
                                 <b>{{ $t('game_history.retreat_sched') }}</b>
                             </span>
+                            <span class="label" v-else>{{ $t('game_history.ongoing') }}</span>
                         </td>
                         <td v-if="sumCol.length > 0"></td>
                         <td v-if="dragonTigerCol.length > 0"></td>
@@ -196,7 +197,8 @@
                                 </span>
                             </div>
                             <div v-else>
-                                <div id="circle"
+                                <div
+                                    id="circle"
                                     v-for="index in result.result_str.split(',').length"
                                     :class="['m-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
                                     :key="`${result.issue_number}_${resultColMode}_${index}`"
@@ -232,8 +234,20 @@
                             {{ $t('game_history.' + result.result_category[col]) }}
                         </td>
                         <td v-if="mode">
-                            <span class="label btn blue m-r-xs" @click="showModal(result, 'manual_draw')">{{ $t('game_history.manual_draw') }}</span>
-                            <span class="label btn blue" @click="showModal(result, 'no_draw')">{{ $t('game_history.no_draw') }}</span>
+                            <span
+                                class="label btn blue m-r-xs"
+                                @click="showModal(result, 'manual_draw')"
+                                v-if="$root.permissions.includes('manually_draw_game_result')"
+                            >{{ $t('game_history.manual_draw') }}
+                            </span>
+                            <span
+                                class="label btn blue"
+                                @click="showModal(result, 'no_draw')"
+                                v-if="$root.permissions.includes('official_no_draw')"
+                            >{{ $t('game_history.no_draw') }}</span>
+                            <span v-if="!$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
+                                {{ $t('common.errorPermission') }}
+                            </span>
                         </td>
                         <td v-else>{{ result.remarks ? $t(`game_history.${result.remarks}`) : '' }}</td>
                     </tr>
@@ -290,7 +304,14 @@
                         <i class="blue"></i>{{$t('game_history.inform_no_draw')}}
                     </div>
                     <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
-                    <button type="button" class="inline pull-right btn blue m-r-xs" @click="updateGameResult" v-if="mode && modal.mode === 'manual_draw'" :disabled="!modal.sureDraw">{{ $t('action.confirm') }}</button>
+                    <button
+                        type="button"
+                        class="inline pull-right btn blue m-r-xs"
+                        @click="updateGameResult"
+                        v-if="mode && modal.mode === 'manual_draw' && $root.permissions.includes('manually_draw_game_result')"
+                        :disabled="!modal.sureDraw"
+                    >{{ $t('action.confirm') }}
+                    </button>
                     <button type="button" class="inline pull-right btn blue m-r-xs" @click="noDrawHandler" v-else-if="mode && modal.mode === 'no_draw'">{{ $t('action.confirm') }}</button>
                     <button type="button" class="inline pull-right btn blue m-r-xs" @click="retreatSchedule" v-else>{{ $t('action.confirm') }}</button>
                 </div>

@@ -5,8 +5,13 @@
           <thead>
           <tr>
             <th width="20%" class="text-center align-middle">{{ $t('global_parameters.name') }}</th>
-            <th valign="middle">{{ $t('global_parameters.value') }}</th>
-            <th width="10%" class="align-middle">{{ $t('global_parameters.operating') }}</th>
+            <th class="v-m">{{ $t('global_parameters.value') }}</th>
+            <th
+                width="10%"
+                class="v-m"
+                v-if="$root.permissions.includes('update_global_parameters_setting')"
+            >{{ $t('global_parameters.operating') }}
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -36,7 +41,7 @@
                         </label>
                     </div>
                 </td>
-                <td class="align-middle">
+                <td class="align-middle" v-if="$root.permissions.includes('update_global_parameters_setting')">
                     <a class="p-l-xs" @click="changeMode(index)">{{ listMode.includes(index) ? $t('action.confirm') : $t('global_parameters.modify') }}</a>
                     <a class="p-l-xs" v-if="listMode.includes(index)" @click="cancel(index)">{{ $t('global_parameters.cancel') }}</a>
                 </td>
