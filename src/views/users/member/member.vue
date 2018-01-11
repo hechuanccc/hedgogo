@@ -144,12 +144,10 @@
               <span v-else>-</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{member.last_login.loggedin_domain || '-'}}</span>
-              <span v-else>-</span>
+              <span>{{member.loggedin_domain || '-'}}</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{member.last_login.ipaddr}}</span>
-              <span v-else>-</span>
+              <span>{{member.loggedin_ip || '-'}}</span>
             </td>
             <td>
               <span v-if="member.last_login">{{member.last_login.platform}}</span>
