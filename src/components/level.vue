@@ -28,6 +28,10 @@ export default {
         },
         index: {
             default: 0
+        },
+        noShowList: {
+            type: [Array, Object],
+            default: () => [19]
         }
     },
     data () {
@@ -60,7 +64,7 @@ export default {
     },
     created () {
         this.$http.get(api.level).then(data => {
-            this.levels = data
+            this.levels = data.filter(e => !this.noShowList.includes(e.id))
             if (this.mode === 'select') {
                 this.mySelectLevel = this.level
             } else {

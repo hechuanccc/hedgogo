@@ -109,7 +109,7 @@ export default {
     methods: {
         getLevels () {
             this.$http.get(api.level).then(data => {
-                this.levels = data
+                this.levels = data.filter(element => element.id !== 19)
             })
         }
     }

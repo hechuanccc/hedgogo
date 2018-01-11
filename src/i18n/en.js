@@ -625,8 +625,6 @@ export default {
         unDomain: 'No agent domain name',
         link: 'Promotion address',
         account_type: 'Account Type',
-        direct_account: 'Direct',
-        affiliated_account: 'Affiliated',
         reset_agent_password: 'The agent password has been modified to:',
         domain_label: 'Multiple Domains should be separated by "comma".'
     },

@@ -113,6 +113,7 @@
                                 <level
                                     :level="promotion.level"
                                     :mode="'checkbox'"
+                                    :noShowList="[]"
                                     @level-select="levelSelect"
                                 >
                                 </level>

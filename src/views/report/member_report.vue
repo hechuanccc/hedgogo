@@ -151,7 +151,6 @@ export default {
         }
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
-            this.$refs.pulling.getExportQuery()
         })
     },
     watch: {
@@ -160,12 +159,12 @@ export default {
         },
         date (newObj, old) {
             [this.query.start_date, this.query.end_date] = newObj.map(e => Vue.moment(e).format(format))
-            this.submit()
         },
         '$route': 'nextTickFetch'
     },
     computed: {
         getReport () {
+            this.$refs.pulling.getExportQuery()
             this.href = `${this.api}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
             return this.queryset.length
         }
