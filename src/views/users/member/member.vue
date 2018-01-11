@@ -5,7 +5,7 @@
         <router-link tag="button" class="md-btn w-sm blue pull-right" to="/member/add">{{$t('action.add_member')}}</router-link>
       </div>
     </div>
-    <div class="row" v-else>
+    <div class="row m-b-sm" v-else>
       <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>
       </div>
       <button class="md-btn blue w-xs pull-right m-r" type="button" @click="refresh">{{$t('common.refresh')}}</button>
@@ -111,7 +111,7 @@
             <th>{{$t('member.login_platform')}}</th>
             <th>{{$t('member.area')}}</th>
             <th>{{$t('member.agent')}}</th>
-            <th>{{$t('member.level')}}</th>
+            <th class="text-center">{{$t('member.level')}}</th>
             <th>{{$t('member.status')}}</th>
             <th>{{$t('member.balance')}}</th>
           </tr>
@@ -123,28 +123,31 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td>
-              <div v-if="member.account_type===1">{{$t('member.real_account')}}</div>
-              <div v-else>{{$t('member.trial_account')}}</div>
+              <span v-if="member.account_type === 1">{{$t('member.real_account')}}</span>
+              <span v-else>{{$t('member.trial_account')}}</span>
             </td>
             <td>
-              <router-link :to="'/member/' + member.id" v-if="member.account_type===1">{{member.username}}</router-link>
+              <router-link :to="'/member/' + member.id" v-if="member.account_type === 1">{{member.username}}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
             </td>
             <td>
-              {{member.real_name || '-'}}
-              <div v-if="member.realname_repeated">
-                <span class="label danger">{{$t('common.repeat')}}</span>
+              <div v-if="member.account_type === 1">
+                {{member.real_name || '-'}}
+                <div v-if="member.realname_repeated">
+                  <span class="label danger">{{$t('common.repeat')}}</span>
+                </div>
               </div>
+              <span v-else>-</span>
             </td>
             <td>
               <span v-if="member.last_login">{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm")}}</span>
               <span v-else>-</span>
             </td>
             <td>
-              <div>{{member.loggedin_domain || '-'}}</div>
+              <span>{{member.loggedin_domain || '-'}}</span>
             </td>
             <td>
-              <div>{{member.loggedin_ip || '-'}}</div>
+              <span>{{member.loggedin_ip || '-'}}</span>
             </td>
             <td>
               <span v-if="member.last_login">{{member.last_login.platform}}</span>
@@ -158,8 +161,9 @@
             <td v-if="member.agent.name">
               <span>{{member.agent.name}}</span>
             </td>
-            <td>
-              <router-link v-if="member.level" :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
+            <td class="text-center">
+              <router-link v-if="member.level && member.account_type === 1" :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
+              <span v-else>-</span>
             </td>
             <td>
               <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>

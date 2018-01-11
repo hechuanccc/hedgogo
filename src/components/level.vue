@@ -28,6 +28,10 @@ export default {
         },
         index: {
             default: 0
+        },
+        noShowTrialMember: {
+            type: Boolean,
+            default: true
         }
     },
     data () {
@@ -59,7 +63,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.level).then(data => {
+        this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1' : ''}`).then(data => {
             this.levels = data
             if (this.mode === 'select') {
                 this.mySelectLevel = this.level

@@ -224,7 +224,7 @@
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('common.member_count')}}：{{member_count}} </span>
                         <div>
-                            <router-link to="/member?level=1">{{$t('level.view_all_members')}}</router-link>
+                            <router-link :to="`/member?level=${id}`">{{$t('level.view_all_members')}}</router-link>
                         </div>
                     </div>
                     <div class="col-xs-5">

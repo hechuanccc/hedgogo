@@ -108,7 +108,7 @@ export default {
     },
     methods: {
         getLevels () {
-            this.$http.get(api.level).then(data => {
+            this.$http.get(`${api.level}?account_type=1`).then(data => {
                 this.levels = data
             })
         }

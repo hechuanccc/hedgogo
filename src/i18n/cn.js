@@ -175,7 +175,7 @@ export default {
         recent_action: '最近操作',
         current_audit: '当前稽核：',
         account_type: '帐户类型',
-        trial_account: '试用账户',
+        trial_account: '试玩账户',
         real_account: '真实账户',
         pass: '通过',
         failed: '未通过',
@@ -184,7 +184,7 @@ export default {
         real_member_registration: '真实会员注册人数',
         deposit_member_count: '存款会员人数',
         bet_member_count: '下注会员人数',
-        trial_member_count: '试用会员人数',
+        trial_member_count: '试玩会员人数',
         visitor: '游客'
     },
     bill: {
@@ -624,8 +624,6 @@ export default {
         unDomain: '暂无代理域名',
         link: '推广地址',
         account_type: '帐户类型',
-        direct_account: '试用账户',
-        affiliated_account: '真实账户',
         reset_agent_password: '代理登录密码已修改为:',
         domain_label: '多个域名请用 “英文逗号” 隔开'
     },
