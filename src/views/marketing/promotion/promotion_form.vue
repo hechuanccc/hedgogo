@@ -113,7 +113,7 @@
                                 <level
                                     :level="promotion.level"
                                     :mode="'checkbox'"
-                                    :noShowList="[]"
+                                    :noShowTrialMember="false"
                                     @level-select="levelSelect"
                                 >
                                 </level>

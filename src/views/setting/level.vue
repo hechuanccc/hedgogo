@@ -108,8 +108,8 @@ export default {
     },
     methods: {
         getLevels () {
-            this.$http.get(api.level).then(data => {
-                this.levels = data.filter(element => element.id !== 19)
+            this.$http.get(`${api.level}?account_type=1`).then(data => {
+                this.levels = data
             })
         }
     }

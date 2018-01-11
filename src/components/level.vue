@@ -29,9 +29,9 @@ export default {
         index: {
             default: 0
         },
-        noShowList: {
-            type: [Array, Object],
-            default: () => [19]
+        noShowTrialMember: {
+            type: Boolean,
+            default: true
         }
     },
     data () {
@@ -63,8 +63,8 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.level).then(data => {
-            this.levels = data.filter(e => !this.noShowList.includes(e.id))
+        this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1' : ''}`).then(data => {
+            this.levels = data
             if (this.mode === 'select') {
                 this.mySelectLevel = this.level
             } else {

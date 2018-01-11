@@ -106,6 +106,7 @@
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
             <th>{{$t('member.last_login')}}</th>
+            <th>{{$t('member.loggedin_domain')}}</th>
             <th>{{$t('member.loggedin_ip')}}</th>
             <th>{{$t('member.login_platform')}}</th>
             <th>{{$t('member.area')}}</th>
@@ -140,6 +141,10 @@
             </td>
             <td>
               <span v-if="member.last_login">{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm")}}</span>
+              <span v-else>-</span>
+            </td>
+            <td>
+              <span v-if="member.last_login">{{member.last_login.loggedin_domain || '-'}}</span>
               <span v-else>-</span>
             </td>
             <td>
