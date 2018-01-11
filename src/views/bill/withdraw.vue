@@ -73,7 +73,6 @@
                       <th>{{$t('common.status_updated_at')}}</th>
                       <th>{{$t('common.operator')}}</th>
                       <th>{{$t('bank.bank_title')}}</th>
-                      <th>{{$t('common.ip_info')}}</th>
                       <th>{{$t('common.status')}}</th>
                       <th>{{$t('common.memo')}}</th>
                   </tr>
@@ -102,13 +101,6 @@
                             <span>{{$t('bank.name')}}: {{t.member.bank.name}}</span> <br/>
                             <span>{{$t('bank.account')}}: {{t.member.bank.account}}</span> <br/>
                             <span>{{$t('bank.address')}}: {{t.member.bank.city}} , {{t.member.bank.province}}</span> <br/>
-                      </td>
-                      <td>
-                            <span v-if='t.member.ip_info'>{{$t('member.ip')}}: {{t.member.ip_info.ip}}</span> <span v-else>-</span> <br/>
-                            <span v-if='t.member.ip_info'>
-                              {{$t('member.area')}}: {{t.member.ip_info.address.country}} {{t.member.ip_info.address.region}} {{t.member.ip_info.address.city}}
-                            </span> <br/>
-
                       </td>
                       <td>
                           <span class="label success" v-if="t.status===1">{{$t('status.success')}}</span>

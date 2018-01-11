@@ -11,7 +11,7 @@
             <div>
                 <nav class="nav-active-blue" >
                     <ul class="nav" ui-nav="">
-                        <template v-if="$root.permissions.includes('list_report_betrecord')">
+                        <template>
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
                                 <router-link to="/" >
@@ -25,10 +25,10 @@
                                 <span class="nav-icon" ><i class="material-icons m-r-xs">&#xE227;</i>财务管理</span>
                             </a>
                             <ul class="nav-sub">
-                                <li v-if="$root.permissions.includes('view_remit_transaction_page')"><router-link to="/bill/remit?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.remit')}}</span></router-link></li>
-                                <li v-if="$root.permissions.includes('view_withdraw_application_page')"><router-link to="/bill/withdraw?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.withdraw_request')}}</span></router-link></li>
-                                <li><router-link to="/bill/online?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.online_pay_orders')}}</span></router-link></li>
-                                <li><router-link to="/bill/search?report_flag=True&account_type=1"><span class="nav-text">{{$t('nav.transaction')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('view_remit_transaction_page')"><router-link to="/bill/remit/"><span class="nav-text">{{$t('nav.remit')}}</span></router-link></li>
+                                <li v-if="$root.permissions.includes('view_withdraw_application_page')"><router-link to="/bill/withdraw/"><span class="nav-text">{{$t('nav.withdraw_request')}}</span></router-link></li>
+                                <li><router-link to="/bill/online/"><span class="nav-text">{{$t('nav.online_pay_orders')}}</span></router-link></li>
+                                <li><router-link to="/bill/search/"><span class="nav-text">{{$t('nav.transaction')}}</span></router-link></li>
                             </ul>
                         </li>
                         <li :class="$route.meta.group == 'reporting' ? 'active' : ''">
@@ -68,17 +68,17 @@
                                         <span class="nav-text">{{$t("nav.agent_list")}}</span>
                                     </router-link>
                                 </li>
-                                <li v-if="$root.permissions.includes('update_member_details')">
+                                <li>
                                     <router-link  to="/member?report_flag=True">
                                         <span class="nav-text">{{$t("nav.member_list")}}</span>
                                     </router-link>
                                 </li>
-                                <li v-if="$root.permissions.includes('update_member_details')">
+                                <li>
                                     <router-link  to="/online_member">
                                         <span class="nav-text">{{$t("nav.online_member_list")}}</span>
                                     </router-link>
                                 </li>
-                                <li v-if="$root.permissions.includes('view_staff_management_page')">
+                                <li>
                                     <router-link to="/staff">
                                         <span class="nav-text">{{$t("nav.staff")}}</span>
                                     </router-link>

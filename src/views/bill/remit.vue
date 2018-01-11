@@ -1,6 +1,6 @@
 <template>
     <div>
-      <form class="form" v-on:submit.prevent="submit">
+      <form class="form" v-on:submit.prevent="submit" ref="form">
         <div class="box">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
@@ -26,29 +26,38 @@
                         <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
                         <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
                         <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
-                        <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
+                        <button class="md-btn w-xs blue pull-right" type="submit" ref="submitButton">{{$t('common.search')}}</button>
                     </div>
                 </div>
                 <div class="row m-t-sm">
                       <div class="col-xs-12">
-                        <select class="pull-left form-control w-sm c-select m-r-xs" v-model="selected" @change="updateDateFilter">
+                        <select class="pull-left form-control w-sm c-select m-r-xs" v-model="selected" @change="updateDateFilter" ref="selected">
                             <option value="0">{{$t('common.applied_at')}}</option>
                             <option value="1">{{$t('common.status_updated_at')}}</option>
                         </select>
-                        <div class="pull-left m-r-xs">
-                            <date-picker width='140' v-model="query.created_at_0" v-if="selected == '0'"></date-picker>
-                            <date-picker width='140' v-model="query.updated_at_0" v-else></date-picker>
-                            <span>~</span>
-                            <date-picker width='140' v-model="query.created_at_1" v-if="selected == '0'"></date-picker>
-                            <date-picker width='140' v-model="query.updated_at_1" v-else></date-picker>
-                        </div>
-                        <div class="btn-group pull-left m-r-xs">
-                            <button type="button" class="btn btn-sm" :class="dateRange === 0 ? 'blue-500' : 'grey-300'" @click="toggleDate(0, selected)">{{$t('common.today')}}</button>
-                            <button type="button" class="btn btn-sm" :class="dateRange === 1 ? 'blue-500' : 'grey-300'" @click="toggleDate(1, selected)">{{$t('common.yesterday')}}</button>
-                            <button type="button" class="btn btn-sm" :class="dateRange === 7 ? 'blue-500' : 'grey-300'" @click="toggleDate(7, selected)">{{$t('common.this_week')}}</button>
-                            <button type="button" class="btn btn-sm" :class="dateRange === 31 ? 'blue-500' : 'grey-300'" @click="toggleDate(31, selected)">{{$t('common.this_month')}}</button>
-                            <button type="button" class="btn btn-sm" :class="dateRange === 32 ? 'blue-500' : 'grey-300'" @click="toggleDate(32, selected)">{{$t('common.last_month')}}</button>
-                        </div>
+                        <date-picker
+                            :ref="created_at"
+                            width='222'
+                            :not-after="today"
+                            :shortcuts="shortcuts"
+                            class="pull-left m-r-xs"
+                            type="date"
+                            v-model="created_at"
+                            v-if="selected === '0'"
+                            format="yyyy-MM-dd"
+                            range
+                        />
+                        <date-picker
+                            width='222'
+                            :not-after="today"
+                            :shortcuts="shortcuts"
+                            class="pull-left m-r-xs"
+                            type="date"
+                            v-model="updated_at"
+                            v-else
+                            format="yyyy-MM-dd"
+                            range
+                        />
                         <button class="md-btn w-xs pull-right btn" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
                       </div>
                 </div>
@@ -200,11 +209,12 @@
                     updated_at_1: '',
                     report_flag: true
                 },
+                created_at: ['', ''],
+                updated_at: ['', ''],
                 member_level: '',
                 selected: '0',
                 status: '',
                 remit_type: '0',
-                dateRange: -1,
                 memo: '',
                 total_amount: '',
                 href: '',
@@ -215,7 +225,8 @@
                     updated_at_0: Vue.moment().subtract(7, 'days').format(format),
                     updated_at_1: Vue.moment().subtract(1, 'days').format(format),
                     report_flag: 'True'
-                }
+                },
+                today: Vue.moment().format(format)
             }
         },
         watch: {
@@ -236,28 +247,29 @@
             '$root.remit_count' (newObj, old) {
                 this.$refs.pulling.rebase()
             },
-            '$route': 'nextTickFetch',
-            created_at_0 (newObj, old) {
-                this.query.created_at_0 = newObj
-            },
-            created_at_1 (newObj, old) {
-                this.query.created_at_1 = newObj
-            },
-            updated_at_0 (newObj, old) {
-                this.query.updated_at_0 = newObj
-            },
-            updated_at_1 (newObj, old) {
-                this.query.updated_at_1 = newObj
+            '$route': {
+                handler () {
+                    this.checkRouteQuery()
+                    this.queryset = []
+                    this.$refs.pulling.rebase()
+                },
+                deep: true
             },
             id (newObj, old) {
                 this.query.transaction_id = newObj
+            },
+            created_at (newObj) {
+                [this.query.created_at_0, this.query.created_at_1] = newObj.map(e => e && Vue.moment(e).format(format))
+            },
+            updated_at (newObj) {
+                [this.query.updated_at_0, this.query.updated_at_1] = newObj.map(e => e && Vue.moment(e).format(format))
             }
         },
         created () {
             this.setStatus()
+            this.checkRouteQuery()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
             })
         },
         computed: {
@@ -265,6 +277,13 @@
                 this.$refs.pulling.getExportQuery()
                 this.href = `${api.report_deposit}?token=${VueCookie.get('access_token')}&report=remit&${this.export_query}`
                 return this.queryset.length
+            },
+            shortcuts () {
+                return ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                    text: this.$t(`common.${element}`),
+                    start: date[element][0],
+                    end: date[element][1]
+                }))
             }
         },
         methods: {
@@ -273,24 +292,16 @@
                 this.queryset = []
                 this.$refs.pulling.rebase()
             },
+            checkRouteQuery () {
+                this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
+                this.updated_at = [this.$route.query.updated_at_0, this.$route.query.updated_at_1]
+            },
             changeFromLevel (val) {
                 this.query.member_level = val
                 this.member_level = val
             },
             queryData (queryset) {
                 this.query = Object.assign({}, this.filter)
-                if (this.query.created_at_0) {
-                    this.created_at_0 = this.query.created_at_0
-                }
-                if (this.query.created_at_1) {
-                    this.created_at_1 = this.query.created_at_1
-                }
-                if (this.query.updated_at_0) {
-                    this.updated_at_0 = this.query.updated_at_0
-                }
-                if (this.query.updated_at_1) {
-                    this.updated_at_1 = this.query.updated_at_1
-                }
                 if (this.query.transaction_id) {
                     this.query.id = this.query.transaction_id
                 }
@@ -308,27 +319,14 @@
             submit () {
                 this.$refs.pulling.submit()
             },
-            quick_select () {
-                this.$refs.pulling.submit()
-                let query = this.filter
-                this.$router.push({
-                    path: this.$route.path,
-                    query: query
-                })
-            },
             clearall: function () {
                 this.query = {}
                 this.status = '0'
                 this.remit_type = '0'
-                this.dateRange = -1
-                this.query.created_at_0 = ''
-                this.query.created_at_1 = ''
-                this.query.updated_at_0 = ''
-                this.query.updated_at_1 = ''
                 this.member_level = ''
                 this.selected = '0'
                 this.$router.push({
-                    path: this.$route.path + '?report_flag=true'
+                    path: this.$route.path
                 })
             },
             updateDateFilter: function () {
@@ -336,80 +334,19 @@
                 return this.selected
             },
             clearDateFilter () {
-                if (this.selected === '0') {
-                    this.updated_at_0 = ''
-                    this.updated_at_1 = ''
-                    this.query.updated_at_0 = ''
-                    this.query.updated_at_1 = ''
-                } else {
-                    this.created_at_0 = ''
-                    this.created_at_1 = ''
-                    this.query.created_at_0 = ''
-                    this.query.created_at_1 = ''
+                this.query = {
+                    ...this.query,
+                    created_at_0: '',
+                    created_at_1: '',
+                    updated_at_0: '',
+                    updated_at_1: ''
                 }
-                this.$router.push({
-                    path: this.$route.path + '?report_flag=true',
-                    query: this.query
+                this.$nextTick(() => {
+                    this.$router.push({
+                        path: this.$route.path,
+                        query: this.query
+                    })
                 })
-            },
-            getDateRange (flag) {
-                switch (flag) {
-                case 'today':
-                    this.dateRange = 0
-                    break
-                case 'yesterday':
-                    this.dateRange = 1
-                    break
-                case 'this_week':
-                    this.dateRange = 7
-                    break
-                case 'last_week':
-                    this.dateRange = 8
-                    break
-                case 'this_month':
-                    this.dateRange = 31
-                    break
-                case 'last_month':
-                    this.dateRange = 32
-                    break
-                }
-            },
-            toggleDate (flag, filterDateType) {
-                this.dateRange = flag
-                switch (flag) {
-                case 0:
-                    this.startDate = date.today[0]
-                    this.endDate = date.today[1]
-                    break
-                case 1:
-                    this.startDate = date.yesterday[0]
-                    this.endDate = date.yesterday[1]
-                    break
-                case 7:
-                    this.startDate = date.this_week[0]
-                    this.endDate = date.this_week[1]
-                    break
-                case 8:
-                    this.startDate = date.last_week[0]
-                    this.endDate = date.last_week[1]
-                    break
-                case 31:
-                    this.startDate = date.this_month[0]
-                    this.endDate = date.this_month[1]
-                    break
-                case 32:
-                    this.startDate = date.last_month[0]
-                    this.endDate = date.last_month[1]
-                    break
-                }
-                if (filterDateType === '0') {
-                    this.filter.created_at_0 = this.startDate
-                    this.filter.created_at_1 = this.endDate
-                } else {
-                    this.filter.updated_at_0 = this.startDate
-                    this.filter.updated_at_1 = this.endDate
-                }
-                this.quick_select()
             },
             update (transaction, status, confirm, event) {
                 // type remit, onlinepay, withdraw
@@ -433,11 +370,7 @@
             },
             setStatus () {
                 let status = this.$route.query.status
-                if (status) {
-                    this.status = status
-                } else {
-                    this.status = '0'
-                }
+                this.status = status || '0'
             }
         },
         components: {
