@@ -1,6 +1,6 @@
 <template>
     <div>
-      <form class="form" v-on:submit.prevent="submit" ref="form">
+      <form class="form" v-on:submit.prevent="submit">
         <div class="box">
             <div class="box-body clearfix form-inline form-input-sm">
                 <div class="row">
@@ -26,17 +26,16 @@
                         <input type="text" class="form-control inline w-sm" v-model="query.real_name_q" v-bind:placeholder="$t('common.real_name')" />
                         <input type="text" v-model="query.amount_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
                         <input type="text" v-model="query.amount_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
-                        <button class="md-btn w-xs blue pull-right" type="submit" ref="submitButton">{{$t('common.search')}}</button>
+                        <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
                     </div>
                 </div>
                 <div class="row m-t-sm">
                       <div class="col-xs-12">
-                        <select class="pull-left form-control w-sm c-select m-r-xs" v-model="selected" @change="updateDateFilter" ref="selected">
+                        <select class="pull-left form-control w-sm c-select m-r-xs" v-model="selected" @change="updateDateFilter">
                             <option value="0">{{$t('common.applied_at')}}</option>
                             <option value="1">{{$t('common.status_updated_at')}}</option>
                         </select>
                         <date-picker
-                            :ref="created_at"
                             width='222'
                             :not-after="today"
                             :shortcuts="shortcuts"
