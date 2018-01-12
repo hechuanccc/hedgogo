@@ -1,7 +1,7 @@
 <template>
     <select class="form-control w-sm c-select" v-model="mySelectLevel" v-if="mode==='select'" :required="req" :disabled="!disabled">
         <option value="">{{$t('member.level')}}</option>
-        <option class="form-control" :value="l.id" v-for="l in levels">{{l.name}}</option>
+        <option class="form-control" :value="l.id" v-for="l in levels" :key="l.id">{{l.name}}</option>
     </select>
     <div class="checkbox" v-else>
         <label class="m-r"  v-for="l in levels" :key="l.id">
@@ -44,7 +44,7 @@ export default {
     watch: {
         level (newObj, old) {
             if (this.mode === 'select') {
-                this.mySelectLevel = this.level
+                this.mySelectLevel = this.level || ''
             } else {
                 this.level.forEach(element => {
                     this.$set(this.myCheckboxLevel, element, true)
@@ -52,7 +52,7 @@ export default {
             }
         },
         mySelectLevel (newObj, old) {
-            this.$emit('level-select', newObj.toString())
+            this.$emit('level-select', newObj && newObj.toString())
             this.$emit('level-choose', this.mySelectLevel, this.index)
         },
         myCheckboxLevel: {
@@ -66,7 +66,7 @@ export default {
         this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1' : ''}`).then(data => {
             this.levels = data
             if (this.mode === 'select') {
-                this.mySelectLevel = this.level
+                this.mySelectLevel = this.level || ''
             } else {
                 this.level.forEach(element => {
                     this.$set(this.myCheckboxLevel, element, true)
