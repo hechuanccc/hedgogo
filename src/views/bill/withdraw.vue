@@ -5,7 +5,7 @@
                 <div class="box-body clearfix form-inline form-input-sm">
                     <div class="row">
                         <div class="col-xs-12">
-                            <select class="form-control w-sm c-select" v-model="query.status">
+                            <select class="form-control w-sm c-select" v-model="status">
                                 <option value="">{{ $t('common.status') }}</option>
                                 <option value="1">{{ $t('status.success') }}</option>
                                 <option value="2">{{ $t('status.failed') }}</option>
@@ -16,7 +16,7 @@
                             <level
                                 class="inline"
                                 :level="query.member_level"
-                                @level-select="changeFromLevel"
+                                @level-select="levelSelect"
                             />
                             <input
                                 type="text"
@@ -59,7 +59,7 @@
                                 <option value="1">{{ $t('common.status_updated_at') }}</option>
                             </select>
                             <date-picker
-                                width="222"
+                                width="223"
                                 :not-after="today"
                                 :shortcuts="shortcuts"
                                 class="pull-left m-r-xs"
@@ -70,7 +70,7 @@
                                 range
                             />
                             <date-picker
-                                width="222"
+                                width="223"
                                 :not-after="today"
                                 :shortcuts="shortcuts"
                                 class="pull-left m-r-xs"
@@ -81,7 +81,7 @@
                                 range
                             />
                             <input
-                                style="width: 222px;"
+                                style="width: 223px;"
                                 type="number"
                                 v-model.trim="query.transaction_id"
                                 class="form-control w-sm"
@@ -106,7 +106,6 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>{{ $t('bill.order_id') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('member.level') }}</th>
                         <th>{{ $t('common.applied_at') }}</th>
@@ -114,15 +113,13 @@
                         <th>{{ $t('common.balance_after') }}</th>
                         <th>{{ $t('common.amount') }}</th>
                         <th>{{ $t('common.status_updated_at') }}</th>
-                        <th>{{ $t('common.operator') }}</th>
                         <th>{{ $t('bank.bank_title') }}</th>
-                        <th>{{ $t('common.status') }}</th>
-                        <th>{{ $t('common.memo') }}</th>
+                        <th class="text-center">{{ $t('common.status') }}</th>
+                        <th class="text-center">{{$t('bill.order_detail')}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="t in queryset" :key="t.id">
-                        <td><router-link :to="'/transaction/' + t.id">{{ t.transaction_id }}</router-link></td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
                         <td><router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link></td>
                         <td>{{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}</td>
@@ -137,29 +134,27 @@
                         <td>{{ t.amount | currency('￥') }}</td>
                         <td>{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
-                            <span v-if="t.updated_by">{{ t.updated_by.username }}</span>
-                            <span v-else>-</span>
-                        </td>
-                        <td>
                             <span>{{ `${$t('bank.name')}: ${t.member.bank.name}` }}</span><br/>
                             <span>{{ `${$t('bank.account')}: ${t.member.bank.account}` }} </span><br/>
                             <span>{{ `${$t('bank.address')}: ${t.member.bank.city}, ${t.member.bank.province}` }}</span>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <span class="label success" v-if="t.status === 1">{{ $t('status.success') }}</span>
-                            <span class="label danger" v-if="t.status === 2">{{ $t('status.failed') }}</span>
-                            <router-link v-if="t.status === 3" :to="`/transaction/${t.id}`">{{ $t('status.ongoing') }}</router-link>
-                            <span class="label" v-if="t.status === 4">{{ $t('status.cancelled') }}</span>
-                            <span class="label danger" v-if="t.status === 5">{{ $t('status.declined') }}</span>
+                            <span class="label danger" v-else-if="t.status === 2">{{ $t('status.failed') }}</span>
+                            <span class="label warn" v-else-if="t.status === 3">{{ $t('status.ongoing') }}</span>
+                            <span class="label" v-else-if="t.status === 4">{{ $t('status.cancelled') }}</span>
+                            <span class="label danger" v-else-if="t.status === 5">{{ $t('status.declined') }}</span>
                         </td>
-                        <td>{{ t.memo || '-' }}</td>
+                        <td class="text-center">
+                            <router-link :to="'/transaction/' + t.id">{{$t('action.view')}}</router-link>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="row m-b-lg">
             <pulling
-                :extra="'transaction_type=withdraw'"
+                :extra="'transaction_type=withdraw&report_flag=true'"
                 :api="billApi"
                 :queryset="queryset"
                 :query="query"
@@ -188,7 +183,7 @@
                 billApi: api.bill,
                 query: {
                     status: '',
-                    id: '',
+                    transaction_id: '',
                     member_q: '',
                     amount_lte: '',
                     amount_gte: '',
@@ -200,11 +195,17 @@
                     updated_at_1: '',
                     report_flag: true
                 },
+                status: '',
                 created_at: ['', ''],
                 updated_at: ['', ''],
                 selected: '0',
                 total_amount: '',
-                today: Vue.moment().format(format)
+                today: Vue.moment().format(format),
+                shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                    text: this.$t(`common.${element}`),
+                    start: date[element][0],
+                    end: date[element][1]
+                }))
             }
         },
         watch: {
@@ -218,6 +219,9 @@
                     this.$refs.pulling.rebase()
                 },
                 deep: true
+            },
+            status (newObj) {
+                this.query.status = newObj
             },
             created_at (newObj) {
                 [this.query.created_at_0, this.query.created_at_1] = [...newObj]
@@ -235,15 +239,6 @@
                 this.$refs.pulling.rebase()
             })
         },
-        computed: {
-            shortcuts () {
-                return ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                    text: this.$t(`common.${element}`),
-                    start: date[element][0],
-                    end: date[element][1]
-                }))
-            }
-        },
         methods: {
             setQueryAll () {
                 if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
@@ -253,22 +248,10 @@
                     this.selected = '1'
                     this.updated_at = [this.$route.query.updated_at_0, this.$route.query.updated_at_1]
                 }
-                this.query = Object.assign({
-                    status: '',
-                    id: '',
-                    member_q: '',
-                    amount_lte: '',
-                    amount_gte: '',
-                    member_level: '',
-                    operator: '',
-                    created_at_0: '',
-                    created_at_1: '',
-                    updated_at_0: '',
-                    updated_at_1: '',
-                    report_flag: true
-                }, this.$route.query)
+                this.status = this.$route.query.status || ''
+                this.query = Object.assign({}, this.$route.query)
             },
-            changeFromLevel (val) {
+            levelSelect (val) {
                 this.query.member_level = val
             },
             queryData (queryset) {
@@ -284,13 +267,10 @@
                 this.$refs.pulling.submit()
             },
             clearall () {
-                this.$router.push({
-                    path: this.$route.path + '?report_flag=true'
+                this.query = {}
+                this.$nextTick(() => {
+                    this.submit()
                 })
-            },
-            updateDateFilter: function () {
-                this.clearDateFilter()
-                return this.selected
             },
             clearDateFilter () {
                 this.query = Object.assign(this.query, {
