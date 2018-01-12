@@ -378,6 +378,7 @@
                     }).then(data => {
                         transaction.status = data.status
                         transaction.balance_after = data.balance_after
+                        transaction.updated_at = data.updated_at
                     }, error => {
                         this.errorMsg = error
                     })
