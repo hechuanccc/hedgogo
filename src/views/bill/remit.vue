@@ -243,7 +243,7 @@
                 queryset: [],
                 billApi: api.bill,
                 query: {
-                    id: '',
+                    transaction_id: '',
                     remit_type: '',
                     member_q: '',
                     amount_gte: '',
