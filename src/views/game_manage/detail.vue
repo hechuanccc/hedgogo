@@ -91,7 +91,7 @@
                                             @change="changeField(playset)"
                                             required
                                             :disabled="!updatePlaysetDetailsPermission"
-                                        >
+                                        />
                                     </div>
                                 </td>
                             </tr>
