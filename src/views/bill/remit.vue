@@ -115,9 +115,9 @@
         <div class="col-xs-12">
             <div class="pull-right" v-if="$root.permissions.includes('export_remit_report')">
                 <a :href="href" :getReport="getReport" v-if="queryset.length">
-                    <span>{{  $t('action.download')  }}<i class="material-icons">&#xe2c4;</i></span>
+                    <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
                 </a>
-                <span disabled v-else>{{  $t('action.download')  }}<i class="material-icons">&#xe2c4;</i>
+                <span disabled v-else>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i>
                 </span>
             </div>
             <div class="pull-right total-amount m-r">
