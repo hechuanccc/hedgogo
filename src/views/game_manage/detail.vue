@@ -27,31 +27,71 @@
                                 </td>
                                 <td>
                                     <div class="form-group m-b-0">
-                                        <input class="form-control" type="text" v-model="playset.odds" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            step="0.0001"
+                                            min="0"
+                                            v-model="playset.odds"
+                                            @change="changeField(playset)"
+                                            required
+                                            :disabled="!updatePlaysetDetailsPermission"
+                                        />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
-                                        <input class="form-control" type="number" min="0" v-model="playset.return_rate" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            v-model="playset.return_rate"
+                                            @change="changeField(playset)"
+                                            required :disabled="!updatePlaysetDetailsPermission"
+                                        />
                                         <span class="input-group-addon"><b>%</b></span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
                                         <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
-                                        <input class="form-control" type="number" min="0" v-model="playset.min_per_bet" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            min="0"
+                                            v-model="playset.min_per_bet"
+                                            @change="changeField(playset)"
+                                            required :disabled="!updatePlaysetDetailsPermission"
+                                        />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
                                         <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
-                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_bet" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            min="0"
+                                            v-model="playset.max_per_bet"
+                                            @change="changeField(playset)"
+                                            required
+                                            :disabled="!updatePlaysetDetailsPermission"
+                                        />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
                                         <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
-                                        <input class="form-control" type="number" min="0" v-model="playset.max_per_draw" @change="changeField(playset)" required :disabled="!updatePlaysetDetailsPermission">
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            min="0"
+                                            v-model="playset.max_per_draw"
+                                            @change="changeField(playset)"
+                                            required
+                                            :disabled="!updatePlaysetDetailsPermission"
+                                        >
                                     </div>
                                 </td>
                             </tr>
