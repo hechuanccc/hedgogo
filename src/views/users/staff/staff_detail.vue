@@ -39,24 +39,27 @@
             <div class="box-body">
                 <div class="row m-b p-b b-b">
                     <div class="col-xs-9">
-                        <span class="text-muted">{{$t('staff.staff_info')}}</span>
+                        <span class="text-muted">{{ $t('staff.staff_info') }}</span>
                         <table class="table b-a m-t-sm">
                             <tbody>
                                 <tr>
-                                    <th class="grey-50" width="130">{{$t('staff.account')}}</th>
+                                    <th class="grey-50" width="130">{{ $t('staff.account') }}</th>
                                     <td>{{ staff.username }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50" width="130">{{$t('staff.role')}}</th>
-                                    <td>{{ staff.user_group.name }}</td>
+                                    <th class="grey-50" width="130">{{ $t('staff.role') }}</th>
+                                    <td>
+                                        <span v-if="staff.user_group">{{ staff.user_group.name }}</span>
+                                        <span v-else>{{ $t('action.no_setting') }}</span>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50" width="130">{{$t('staff.email')}}</th>
+                                    <th class="grey-50" width="130">{{ $t('staff.email') }}</th>
                                     <td>{{ staff.email ? staff.email : $t('staff.no_setting') }}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('staff.permission')}}</th>
-                                    <td>
+                                    <td v-if="staff.user_group">
                                         <template v-for="(list, index) in staff.user_group.permissions">
                                             <div class="row">
                                                 <div class="col-sm-12 p-b"> 
@@ -73,6 +76,7 @@
                                             </div>
                                         </template>
                                     </td>
+                                    <td v-else>{{ $t('action.no_setting') }}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('common.memo')}}</th>

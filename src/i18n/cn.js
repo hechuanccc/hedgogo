@@ -171,6 +171,7 @@ export default {
         balance_providers: '娱乐城总余额',
         loggedin_domain: '登录网址',
         loggedin_ip: '登录IP',
+        loggedin_infos: '登录信息',
         sug_balance: '估算额度',
         recent_action: '最近操作',
         current_audit: '当前稽核：',

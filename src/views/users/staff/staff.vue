@@ -26,10 +26,13 @@
                         </td>
                         <td><router-link :to="'/staff/' + staff.id">{{staff.username}}</router-link></td>
                         <td>
-                            <span class="label success" v-if="staff.status==1">{{$t('status.active')}}</span>
+                            <span class="label success" v-if="staff.status === 1">{{$t('status.active')}}</span>
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
                         </td>
-                        <td>{{staff.user_group.name}}</td>
+                        <td>
+                            <span v-if="staff.user_group">{{staff.user_group.name}}</span>
+                            <span v-else>{{$t('action.no_setting')}}</span>
+                        </td>
                         <td>{{staff.created_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.updated_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.memo}}</td>

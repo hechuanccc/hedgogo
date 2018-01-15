@@ -158,8 +158,12 @@ export default {
         },
         getStaff (id) {
             this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then(data => {
-                this.staff = data
-                this.permissions = data.user_group.permissions
+                this.staff = Object.assign(this.staff, data)
+                if (data.user_group) {
+                    this.permissions = data.user_group.permissions
+                } else {
+                    this.staff.user_group.id = ''
+                }
             }, error => {
                 this.errorMsg = error
             })
