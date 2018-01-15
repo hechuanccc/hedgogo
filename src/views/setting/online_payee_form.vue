@@ -90,7 +90,7 @@
                         <div class="alert alert-danger" v-if="errorMsg">
                             <span>{{ errorMsg }}</span>
                         </div>
-                        <button :disabled="!$root.permissions.includes('change_onlinepayee')" type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
                      </div>
                 </form>
             </div>

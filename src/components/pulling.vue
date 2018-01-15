@@ -147,8 +147,9 @@ export default {
             this.busy = true
             this.loading = true
             this.$http.get(this.next).then(data => {
-                if (!data.results.length && data.count && this.showPageGo > 1) {
+                if (data.results.length === 0 && data.count && this.showPageGo > 1) {
                     this.prevPage()
+                    return
                 }
                 if (data.total_amount) {
                     amount = data.total_amount

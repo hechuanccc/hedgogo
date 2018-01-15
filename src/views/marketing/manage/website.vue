@@ -77,7 +77,14 @@
                                                         </div>
                                                         <div v-else style="height:50px; background:lightgrey; line-height:50px;">{{ $t('action.no_setting') }}</div>
                                                         <div class="inline-form-control m-t-xs" v-if="box.mode">
-                                                            <input type="file" class="form-control" accept="image/*" @change="syncBoxImg($event, box, index, 'header_image')" style="width:250px;">
+                                                            <input
+                                                                type="file"
+                                                                class="form-control"
+                                                                accept="image/*"
+                                                                @change="syncBoxImg($event, box, index, 'header_image')"
+                                                                style="width:250px;"
+                                                                ref="header_image"
+                                                            >
                                                         </div>
                                                         <div class="form-group m-b-xs m-t-sm" v-if="box.mode">
                                                             <label class="form-control-label">{{ $t('manage.main') }}</label>
@@ -96,7 +103,14 @@
                                                                 {{ $t('action.no_setting') }}
                                                             </div>
                                                             <div class="inline-form-control m-t-xs" v-if="box.mode">
-                                                                <input type="file" class="form-control" accept="image/*" @change="syncBoxImg($event, box, index, 'main_image')" style="width:250px;">
+                                                                <input
+                                                                    type="file"
+                                                                    class="form-control"
+                                                                    accept="image/*"
+                                                                    @change="syncBoxImg($event, box, index, 'main_image')"
+                                                                    style="width:250px;"
+                                                                    ref="main_image"
+                                                                >
                                                             </div>
                                                         </div>
                                                         <div class="row m-l-xs m-r-xs" v-else-if="box.status===1">
@@ -313,6 +327,13 @@
                 this.hasImage = true
             },
             syncBoxImg (e, box, index, attr) {
+                if (!this.checkFileSize(e.target.files[0])) {
+                    e.target.value = ''
+                    this.boxes[index].errorMsg = this.$t('common.file_size_too_large')
+                    return
+                } else {
+                    this.boxes[index].errorMsg = ''
+                }
                 var reader = new FileReader()
 
                 reader.onload = (e) => {
@@ -323,6 +344,10 @@
                     this.boxResults[box.id] = {}
                 }
                 this.boxResults[box.id][attr] = e.target.files[0]
+            },
+            checkFileSize (file) {
+                // 500 KB
+                return file.size < 500 * 1000
             },
             onSubmit (e) {
                 let formData = new window.FormData()

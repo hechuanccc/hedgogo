@@ -31,7 +31,7 @@
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"
-                :transactionType="transactionType"
+                :transactionType="transaction_type"
                 :displayList="[1, 2]"
                 @transaction-type-select="transactionTypeSelect"
                 :placeholder="$t('bill.transaction_type')"
@@ -124,13 +124,13 @@ export default {
                 end_date: '',
                 agent: '',
                 member_level: '',
-                transactionType: '',
+                transaction_type: '',
                 platform: '',
                 game: ''
             },
             agent: '',
             member_level: '',
-            transactionType: '',
+            transaction_type: '',
             platform: '',
             game: '',
             filter: {},
@@ -190,8 +190,8 @@ export default {
             this.member_level = val
         },
         transactionTypeSelect (val) {
-            this.query.transactionType = val
-            this.transactionType = val
+            this.query.transaction_type = val
+            this.transaction_type = val
         },
         gameSelect (val) {
             this.query.game = val

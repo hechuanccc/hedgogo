@@ -358,7 +358,8 @@ export default {
             }
         },
         loading: '载入中',
-        setting: '设置'
+        setting: '设置',
+        file_size_too_large: '文件太大，请选择另一个'
     },
     bank: {
         bank_title: '银行资讯',
