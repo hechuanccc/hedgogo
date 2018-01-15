@@ -49,7 +49,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.agent).then(data => {
+        this.$http.get(api.agent_filter).then(data => {
             this.agents = data
         })
         this.myAgent = this.agent
