@@ -48,7 +48,7 @@
                             <ul class="nav-sub">
                                 <li><router-link to="/report/betrecord/today"><span class="nav-text">{{$t('nav.recent_bet_records')}}</span></router-link></li>
                                 <li><router-link to="/report/betrecord/history"><span class="nav-text">{{$t('nav.bet_record_history')}}</span></router-link></li>
-                                <li><router-link to="/report/betrecord/realtime"><span class="nav-text">{{$t('nav.instant_view')}}</span></router-link></li>
+                                <li><router-link to="/report/betrecord/realtime?account_type=1"><span class="nav-text">{{$t('nav.instant_view')}}</span></router-link></li>
                             </ul>
                         </li>
 

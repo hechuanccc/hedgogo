@@ -710,7 +710,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.bet_record'),
+            title: `${Vue.t('nav.bet_record')} - ${Vue.t('nav.recent_bet_records')}`,
             group: 'betrecord'
         }
     },
@@ -723,7 +723,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.bet_record'),
+            title: `${Vue.t('nav.bet_record')} - ${Vue.t('nav.bet_record_history')}`,
             group: 'betrecord'
         }
     },
@@ -736,7 +736,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.bet_record'),
+            title: `${Vue.t('nav.bet_record')} - ${Vue.t('nav.instant_view')}`,
             group: 'betrecord'
         }
     },

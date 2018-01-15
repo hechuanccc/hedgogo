@@ -181,20 +181,7 @@
             return {
                 queryset: [],
                 billApi: api.bill,
-                query: {
-                    status: '',
-                    transaction_id: '',
-                    member_q: '',
-                    amount_lte: '',
-                    amount_gte: '',
-                    member_level: '',
-                    operator: '',
-                    created_at_0: '',
-                    created_at_1: '',
-                    updated_at_0: '',
-                    updated_at_1: '',
-                    report_flag: true
-                },
+                query: {},
                 status: '',
                 created_at: ['', ''],
                 updated_at: ['', ''],
@@ -225,9 +212,15 @@
             },
             created_at (newObj) {
                 [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                if (this.query.created_at_0 !== this.$route.query.created_at_0 || this.query.created_at_1 !== this.$route.query.created_at_1) {
+                    this.submit()
+                }
             },
             updated_at (newObj) {
                 [this.query.updated_at_0, this.query.updated_at_1] = [...newObj]
+                if (this.query.updated_at_0 !== this.$route.query.updated_at_0 || this.query.updated_at_1 !== this.$route.query.updated_at_1) {
+                    this.submit()
+                }
             },
             selected () {
                 this.clearDateFilter()
@@ -245,8 +238,13 @@
                     this.selected = '0'
                     this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
                 } else {
+                    this.created_at = [undefined, undefined]
+                }
+                if (this.$route.query.updated_at_0 || this.$route.query.updated_at_1) {
                     this.selected = '1'
                     this.updated_at = [this.$route.query.updated_at_0, this.$route.query.updated_at_1]
+                } else {
+                    this.updated_at = [undefined, undefined]
                 }
                 this.status = this.$route.query.status || ''
                 this.query = Object.assign({}, this.$route.query)

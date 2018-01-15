@@ -358,7 +358,8 @@ export default {
             }
         },
         loading: 'Loading',
-        setting: 'Setting'
+        setting: 'Setting',
+        file_size_too_large: 'File size is too large, please select another one.'
     },
     bank: {
         bank_title: 'Bank Information',

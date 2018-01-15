@@ -82,7 +82,7 @@ export default {
                         backgroundColor: `hsl(${this.color[title]}, 88%, 80%)`,
                         borderColor: `hsl(${this.color[title]}, 88%, 55%)`,
                         borderWidth: 2,
-                        data: data.map(e => e[title])
+                        data: data.map(e => e[title].toFixed(2))
                     }]
                 })
                 this.$set(this.options, title, {
@@ -104,6 +104,9 @@ export default {
                         xAxes: [{
                             barPercentage: 1.0
                         }]
+                    },
+                    legend: {
+                        onClick () {}
                     }
                 })
             })
