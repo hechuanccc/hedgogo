@@ -32,7 +32,7 @@ export default {
         noShowTrialMember: {
             type: Boolean,
             default: true
-         }
+        }
     },
     data () {
         return {
