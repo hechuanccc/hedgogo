@@ -182,7 +182,7 @@
             <th>{{$t('betrecord.total_valid_bet_amount')}}</th>
             <th>{{$t('betrecord.total_bet_amount')}}</th>
             <th>{{$t('common.member') + $t('betrecord.win') + $t('betrecord.lose')}}</th>
-            <th width="50">{{$t('member.balance')}}</th>
+            <th>{{$t('member.balance')}}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
