@@ -194,7 +194,7 @@
             <td>
               <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
               <br/>
-              <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
+              <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
               <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
             <td>
