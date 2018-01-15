@@ -7,10 +7,6 @@
         </ol>
       </div>
       <div class="box" v-if="agent.status !== 1">
-        <div class="box-header b-b">
-          <h3>注意：</h3>
-          <small >代理商登录密码预设：123456</small>
-        </div>
         <div class="box-body">
           <form class="form m-a" v-on:submit.prevent="onSubmit">
             <div class="row b-b p-b m-b">

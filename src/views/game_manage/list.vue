@@ -225,7 +225,7 @@ export default {
                 display_name: game.display_name,
                 id: game.id,
                 index: index,
-                value: [],
+                value: [game.holidates.schedule_open, game.holidates.schedule_close],
                 iconResult: {
                     display_name: game.display_name,
                     code: game.code,
@@ -241,23 +241,29 @@ export default {
             this.modal.isShow = false
         },
         updateTime () {
-            if (this.modal.value.length > 0) {
-                this.$http.put(api.game_list + this.modal.id + '/', {
-                    display_name: this.modal.display_name,
-                    start_date: Vue.moment(this.modal.value[0]).format('YYYY-MM-DD HH:mm'),
-                    end_date: Vue.moment(this.modal.value[1]).format('YYYY-MM-DD HH:mm')
-                }).then(data => {
-                    this.$set(this.queryset, this.modal.index, data)
-                    this.modal.msg = this.$t('game_manage.modify_success')
-                    this.$refs.alertMsg.trigger('success', 3)
-                }, error => {
-                    this.modal.msg = this.$t('game_manage.modify_fail') + error
-                    this.$refs.alertMsg.trigger('danger')
-                })
+            let [startDate, endDate] = [...this.modal.value]
+            if (startDate) {
+                startDate = Vue.moment(startDate).format('YYYY-MM-DD HH:mm')
             } else {
-                this.modal.msg = this.$t('game_manage.no_setting_holiday')
-                this.$refs.alertMsg.trigger('warning', 3)
+                startDate = ''
             }
+            if (endDate) {
+                endDate = Vue.moment(endDate).format('YYYY-MM-DD HH:mm')
+            } else {
+                endDate = ''
+            }
+            this.$http.put(api.game_list + this.modal.id + '/', {
+                display_name: this.modal.display_name,
+                start_date: startDate,
+                end_date: endDate
+            }).then(data => {
+                this.$set(this.queryset, this.modal.index, data)
+                this.modal.msg = this.$t('game_manage.modify_success')
+                this.$refs.alertMsg.trigger('success', 3)
+            }, error => {
+                this.modal.msg = this.$t('game_manage.modify_fail') + error
+                this.$refs.alertMsg.trigger('danger')
+            })
         },
         syncImg (e, attr) {
             var reader = new FileReader()

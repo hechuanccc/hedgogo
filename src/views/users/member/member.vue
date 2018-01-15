@@ -100,20 +100,18 @@
     <div class="box m-t-xs" v-if="queryset.length > 0">
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'online_member'">
         <thead>
-          <tr >
-            <th class="text-center">{{$t('common.login_status')}}</th>
-            <th>{{$t('member.account_type')}}</th>
-            <th>{{$t('member.account')}}</th>
-            <th>{{$t('common.real_name')}}</th>
-            <th>{{$t('member.last_login')}}</th>
-            <th>{{$t('member.loggedin_domain')}}</th>
-            <th>{{$t('member.loggedin_ip')}}</th>
-            <th>{{$t('member.login_platform')}}</th>
-            <th>{{$t('member.area')}}</th>
-            <th>{{$t('member.agent')}}</th>
-            <th class="text-center">{{$t('member.level')}}</th>
-            <th>{{$t('member.status')}}</th>
-            <th>{{$t('member.balance')}}</th>
+          <tr class="text-center">
+            <th width="7%" class="text-center">{{$t('common.login_status')}}</th>
+            <th width="7%">{{$t('member.account_type')}}</th>
+            <th width="7%">{{$t('member.account')}}</th>
+            <th width="10%">{{$t('common.real_name')}}</th>
+            <th width="15%">{{$t('member.last_login')}}</th>
+            <th width="15%">{{$t('member.loggedin_infos')}}</th>
+            <th width="10%">{{$t('member.login_platform')}}</th>
+            <th width="15%">{{$t('member.area')}}</th>
+            <th width="10%">{{$t('member.agent')}}</th>
+            <th width="7%" class="text-center">{{$t('member.level')}}</th>
+            <th width="5%">{{$t('member.balance')}}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -129,6 +127,9 @@
             <td>
               <router-link :to="'/member/' + member.id" v-if="member.account_type === 1">{{member.username}}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
+              <br/>
+              <span class="label success" v-if="member.status===1">{{$t('status.active')}}</span>
+              <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
             <td>
               <div v-if="member.account_type === 1">
@@ -145,9 +146,8 @@
             </td>
             <td>
               <span>{{member.loggedin_domain || '-'}}</span>
-            </td>
-            <td>
-              <span>{{member.loggedin_ip || '-'}}</span>
+              <br/>
+              <span class="text-muted">{{member.loggedin_ip || '-'}}</span>
             </td>
             <td>
               <span v-if="member.last_login">{{member.last_login.platform}}</span>
@@ -165,10 +165,6 @@
               <router-link v-if="member.level && member.account_type === 1" :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
               <span v-else>-</span>
             </td>
-            <td>
-              <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
-              <span class="label" v-else>{{$t('status.inactive')}}</span>
-            </td>
             <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
           </tr>
         </tbody>
@@ -176,18 +172,17 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
         <thead>
           <tr>
-            <th class="text-center">{{$t('common.login_status')}}</th>
+            <th width="5%" class="text-center">{{$t('common.login_status')}}</th>
             <th>{{$t('member.account')}}</th>
             <th>{{$t('common.real_name')}}</th>
             <th>{{$t('member.created_ip')}}</th>
             <th>{{$t('member.last_login')}}</th>
             <th>{{$t('member.agent')}}</th>
-            <th>{{$t('member.level')}}</th>
-            <th>{{$t('member.status')}}</th>
+            <th width="5%">{{$t('member.level')}}</th>
             <th>{{$t('betrecord.total_valid_bet_amount')}}</th>
             <th>{{$t('betrecord.total_bet_amount')}}</th>
             <th>{{$t('common.member') + $t('betrecord.win') + $t('betrecord.lose')}}</th>
-            <th>{{$t('member.balance')}}</th>
+            <th width="50">{{$t('member.balance')}}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -198,6 +193,9 @@
             </td>
             <td>
               <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
+              <br/>
+              <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
+              <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
             <td>
               {{member.real_name || '-'}}
@@ -219,10 +217,6 @@
             </td>
             <td>
               <router-link v-if="member.level" :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
-            </td>
-            <td>
-              <span class="label success" v-if="member.status==1">{{$t('status.active')}}</span>
-              <span class="label" v-else>{{$t('status.inactive')}}</span>
             </td>
             <td>{{member.total_amount | currency('￥')}}</td>
             <td>{{member.total_betrecords | currency('￥')}}</td>
@@ -435,3 +429,6 @@ export default {
     }
 }
 </script>
+
+<style lang="sass" scoped>
+</style>

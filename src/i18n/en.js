@@ -171,6 +171,7 @@ export default {
         balance_providers: 'Balance providers',
         loggedin_domain: 'Logged In Domain',
         loggedin_ip: 'Logged In Ip',
+        loggedin_infos: 'Logged In Information',
         sug_balance: 'Suggestion Balance',
         recent_action: 'Recent Actions',
         current_audit: 'Current Audit:',
