@@ -35,7 +35,7 @@ export default {
     },
     watch: {
         game (newObj, old) {
-            this.myGame = this.game
+            this.myGame = newObj || ''
         },
         myGame (newObj, old) {
             if (this.myGame !== '0') {
