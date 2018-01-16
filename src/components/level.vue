@@ -39,14 +39,14 @@ export default {
     data () {
         return {
             levels: [],
-            mySelectLevel: this.level,
+            mySelectLevel: '',
             myCheckboxLevel: {}
         }
     },
     watch: {
         level (newObj, old) {
             if (this.mode === 'select') {
-                this.mySelectLevel = this.level
+                this.mySelectLevel = this.level || ''
             } else {
                 this.level.forEach(element => {
                     this.$set(this.myCheckboxLevel, element, true)
