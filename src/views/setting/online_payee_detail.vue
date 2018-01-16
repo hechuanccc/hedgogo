@@ -48,15 +48,15 @@
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('setting.certificate')}}</th>
-                                    <td>{{certificate}}</td>
+                                    <td>{{certificate || $t('action.no_setting')}}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('setting.board_url')}}</th>
-                                    <td>{{board_url || '未填写'}}</td>
+                                    <td>{{board_url || $t('action.no_setting')}}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('setting.payment_domain')}}</th>
-                                    <td>{{domain_url || '未填写'}}</td>
+                                    <td>{{domain_url || $t('action.no_setting')}}</td>
                                 </tr>
                             </tbody>
                         </table>

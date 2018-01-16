@@ -20,7 +20,6 @@
                         </level>
                         <transaction-type-selector
                             :transactionType="transaction_type"
-                            :attribute="'code'"
                             :placeholder="$t('bill.transaction_type')"
                             @transaction-type-select="transactionTypeSelect"
                         />
