@@ -46,7 +46,7 @@
                             <tbody>
                                 <tr v-for="sched in game.abnormal_scheds" :key="sched.id">
                                     <td>{{ sched.issue_number }}</td>
-                                    <td>{{ sched.betrecords }}</td>
+                                    <td>{{ sched.bets_count }}</td>
                                     <td class="p-b-sm p-t-sm" v-if="$root.permissions.includes('manually_draw_game_result') || $root.permissions.includes('official_no_draw')">
                                         <span
                                             class="label btn blue m-r-xs"
@@ -100,7 +100,7 @@
                         <tbody class="text-center">
                             <tr>
                                 <td>{{ modal.scheduleResult.issue_number }}</td>
-                                <td>{{ modal.betrecords }}</td>
+                                <td>{{ modal.bets_count }}</td>
                                 <td v-if="modal.mode === 'manual_draw'">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str" :disabled="!$root.permissions.includes('manually_draw_game_result')">
                                     <span>{{ $t('game_history.result_str_tips',{
@@ -125,7 +125,7 @@
                             v-model="modal.sureDraw"
                             :disabled="!$root.permissions.includes('manually_draw_game_result')"
                         >
-                        <i class="blue"></i>{{ $t('game_history.sure_manual_draw', {bet_record_count: modal.betrecords}) }}
+                        <i class="blue"></i>{{ $t('game_history.sure_manual_draw', {bet_record_count: modal.bets_count}) }}
                     </div>
                     <div class="inline pull-left m-l-lg m-t-sm checkbox" v-else>
                         <input
@@ -216,7 +216,7 @@ export default{
                 this.modal = {
                     ...this.modal,
                     mode: mode,
-                    betrecords: schedule.betrecords,
+                    bets_count: schedule.bets_count,
                     game: {
                         game_id: game.game_id,
                         display_name: game.game,

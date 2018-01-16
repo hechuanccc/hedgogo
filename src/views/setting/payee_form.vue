@@ -8,7 +8,7 @@
         </div>
         <div class="box">
             <div class="box-body">
-                <form name="myform" class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data" novalidate>
+                <form name="myform" class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-12 b-b m-b">
                             <div class="form-group">
@@ -43,38 +43,68 @@
                                 <div class="form-group">
                                     <label class="label-width">{{$t('common.real_name')}}</label>
                                     <div class="inline-form-control">
-                                        <input class="form-control" placeholder="比如：张三丰" v-model="payee.payee_name" :required="payee.remit_type==='1'" />
+                                        <input
+                                            class="form-control"
+                                            placeholder="比如：张三丰"
+                                            v-model="payee.payee_name"
+                                            :required="payee.remit_type === '1'"
+                                        />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="label-width">{{$t('bank.address')}}</label>
                                     <div class="inline-form-control">
-                                        <input class="form-control" placeholder="例如：黑龙江黑河" v-model="payee.address" :required="payee.remit_type==='1'" />
+                                        <input
+                                            class="form-control"
+                                            placeholder="例如：黑龙江黑河"
+                                            v-model="payee.address"
+                                            :required="payee.remit_type === '1'"
+                                        />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="label-width">{{$t('bank.account')}}</label>
                                     <div class="inline-form-control">
-                                        <input type="number" class="form-control" placeholder="比如：6256768987765442" v-model="payee.account"  :required="payee.remit_type==='1'" />
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            placeholder="比如：6256768987765442"
+                                            v-model="payee.account"
+                                            :required="payee.remit_type === '1'"
+                                        />
                                     </div>
                                 </div>
                             </div>
 
                             <div v-show="payee.remit_type === '2' || payee.remit_type === '3'">
                                 <div class="form-group">
-                                    <label  class="label-width">{{$t('common.nickname')}} </label>
+                                    <label class="label-width">{{$t('common.nickname')}} </label>
                                     <div class="inline-form-control">
-                                        <input class="form-control" placeholder="例如：中国银行" v-model="payee.nickname"/>
+                                        <input
+                                            class="form-control"
+                                            placeholder="例如：中国银行"
+                                            v-model="payee.nickname"
+                                            :required="payee.remit_type === '2' || payee.remit_type === '3'"
+                                        />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label  class="label-width">{{$t('common.qr_code')}}</label>
-                                    <div class="inline-form-control qr-image" v-if="!hasImage">
-                                        <img :src="payee.qr_code" class="qr-code">
+                                    <div class="inline-form-control" v-if="hasImage">
+                                        <img :src="qr_code_image" width="112" class="qr-code">
+                                    </div>
+                                    <div v-else>
+                                        {{ $t('action.no_setting')}}
                                     </div>
                                     <div class="inline-form-control">
-                                        <input type="file" accept="image/*" @change="syncImage">
+                                        <input
+                                            class="form-control"
+                                            type="file"
+                                            accept="image/*"
+                                            @change="syncImage"
+                                            :required="payee.remit_type === '2' || payee.remit_type === '3'"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -120,6 +150,7 @@
                     remit_type: '1'
                 },
                 showLevelError: false,
+                qr_code_image: '',
                 hasImage: false,
                 errorMsg: ''
             }
@@ -186,6 +217,12 @@
                 })
             },
             syncImage (e) {
+                var reader = new FileReader()
+
+                reader.onload = (e) => {
+                    this.qr_code_image = e.target.result
+                }
+                reader.readAsDataURL(e.target.files[0])
                 this.payee.qr_code = e.target.files[0]
                 this.hasImage = true
             },
@@ -203,9 +240,3 @@
     }
 
 </script>
-
-<style>
-    .qr-image {
-        margin-right: 15px;
-    }
-</style>

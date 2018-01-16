@@ -68,9 +68,11 @@ export default {
             if (this.mode === 'select') {
                 this.mySelectLevel = this.level || ''
             } else {
-                this.level.forEach(element => {
-                    this.$set(this.myCheckboxLevel, element, true)
-                })
+                if (this.level.length) {
+                    this.level.forEach(element => {
+                        this.$set(this.myCheckboxLevel, element, true)
+                    })
+                }
             }
         })
     }

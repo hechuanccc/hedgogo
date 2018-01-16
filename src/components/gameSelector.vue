@@ -3,7 +3,7 @@
         <option value="">{{ $t('common.game') }}</option>
         <option
             class="form-control"
-            :value="e.code"
+            :value="e[attribute]"
             v-for="e in games"
             :key="e.id"
         >
@@ -23,8 +23,8 @@ export default {
         disabled: {
             default: true
         },
-        index: {
-            default: 0
+        attribute: {
+            default: 'code'
         }
     },
     data () {
@@ -35,7 +35,7 @@ export default {
     },
     watch: {
         game (newObj, old) {
-            this.myGame = this.game
+            this.myGame = newObj || ''
         },
         myGame (newObj, old) {
             if (this.myGame !== '0') {

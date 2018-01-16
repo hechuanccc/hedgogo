@@ -107,6 +107,15 @@ export default {
                     },
                     legend: {
                         onClick () {}
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: (tooltipItem, data) => {
+                                let _data = data.datasets[0]
+                                let value = tooltipItem.yLabel
+                                return this.lineChart.includes(title) ? `${_data.label}${value < 0 ? '-' : ''} ¥ ${Math.abs(value).toLocaleString()}` : `${_data.label} : ${value}`
+                            }
+                        }
                     }
                 })
             })
