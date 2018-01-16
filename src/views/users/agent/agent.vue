@@ -8,7 +8,7 @@
                         tag="button"
                         class="md-btn w-sm blue"
                         to="/agent/add"
-                    >{{$t('nav.agent_add')}}
+                    >{{ $t('nav.agent_add') }}
                     </router-link>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                                 class="pull-left m-r-xs form-control c-select w-sm"
                                 v-model="level"
                             >
-                                <option value="">{{$t('agent.level')}}</option>
+                                <option value="">{{ $t('agent.level') }}</option>
                                 <option value="1">大股东</option>
                                 <option value="2">股东</option>
                                 <option value="3">总代理</option>
@@ -58,10 +58,10 @@
                                 :commissionsetting="commission_settings"
                                 @myCommission="myCommission"
                             />
-                            <button class="md-btn w-xs blue pull-right" type="submit">{{$t('common.search')}}</button>
+                            <button class="md-btn w-xs blue pull-right" type="submit">{{ $t('common.search') }}</button>
                             <button class="md-btn grey-100 pull-right m-r" @click="showAll=!showAll">
-                                <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
-                                <span v-else>{{$t('member.collapse_options')}} <i class="fa fa-angle-double-up"></i></span>
+                                <span v-if="!showAll">{{ $t('member.more_options') }} <i class="fa fa-angle-double-down"></i></span>
+                                <span v-else>{{ $t('member.collapse_options') }} <i class="fa fa-angle-double-up"></i></span>
                             </button>
                         </div>
                     </div>
@@ -71,11 +71,11 @@
                                 class="pull-left m-r-xs form-control w-sm c-select inline"
                                 v-model="selected"
                             >
-                                <option value="">{{$t('common.please_select')}}</option>
-                                <option value="0">{{$t('common.phone')}}</option>
-                                <option value="1">{{$t('common.email')}}</option>
-                                <option value="2">{{$t('common.qq')}}</option>
-                                <option value="3">{{$t('common.wechat')}}</option>
+                                <option value="">{{ $t('common.please_select') }}</option>
+                                <option value="0">{{ $t('common.phone') }}</option>
+                                <option value="1">{{ $t('common.email') }}</option>
+                                <option value="2">{{ $t('common.qq') }}</option>
+                                <option value="3">{{ $t('common.wechat') }}</option>
                             </select>
                             <input
                                 v-if="!selected"
@@ -92,9 +92,9 @@
                                 ref="detailInput"
                             />
                             <select class="pull-left m-r-xs form-control c-select w-sm" v-model="status">
-                                <option value="">{{$t('common.status')}}</option>
-                                <option value="1">{{$t('status.active')}}</option>
-                                <option value="0">{{$t('status.inactive')}}</option>
+                                <option value="">{{ $t('common.status') }}</option>
+                                <option value="1">{{ $t('status.active') }}</option>
+                                <option value="0">{{ $t('status.inactive') }}</option>
                             </select>
                             <input
                                 type="text"
@@ -113,7 +113,7 @@
                                 format="yyyy-MM-dd"
                                 range
                             />
-                            <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear_all')}}</button>
+                            <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{ $t('action.clear_all') }}</button>
                         </div>
                     </div>
                 </div>
@@ -123,15 +123,15 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th width="7%" class="text-center">{{$t("common.login_status")}}</th>
-                        <th>{{$t("agent.parent_agent")}}</th>
-                        <th>{{$t("agent.account")}}</th>
-                        <th>{{$t('common.real_name')}}</th>
-                        <th>{{$t("agent.member_count")}}</th>
-                        <th>{{$t("agent.joined_at")}}</th>
-                        <th width="240">{{$t("agent.domain")}}</th>
-                        <th>{{$t("agent.level")}}</th>
-                        <th>{{$t("common.memo")}}</th>
+                        <th width="7%" class="text-center">{{ $t("common.login_status") }}</th>
+                        <th>{{ $t("agent.parent_agent") }}</th>
+                        <th>{{ $t("agent.account") }}</th>
+                        <th>{{ $t('common.real_name') }}</th>
+                        <th>{{ $t("agent.member_count") }}</th>
+                        <th>{{ $t("agent.joined_at") }}</th>
+                        <th width="240">{{ $t("agent.domain") }}</th>
+                        <th>{{ $t("agent.level") }}</th>
+                        <th>{{ $t("common.memo") }}</th>
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length">
@@ -141,28 +141,28 @@
                             <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
                         </td>
                         <td>
-                            <span v-if="agent.parent_agent">{{agent.parent_agent.name}}</span>
+                            <span v-if="agent.parent_agent">{{ agent.parent_agent.name }}</span>
                             <span v-else>-</span>
                         </td>
                         <td>
                             <router-link :to="'/agent/' + agent.id">
-                                {{agent.username}}
+                                {{ agent.username }}
                             </router-link>
                             <br/>
-                            <span class="label success" v-if="agent.status===1">{{$t('status.active')}}</span>
-                            <span class="label" v-else>{{$t('status.inactive')}}</span>
+                            <span class="label success" v-if="agent.status===1">{{ $t('status.active') }}</span>
+                            <span class="label" v-else>{{ $t('status.inactive') }}</span>
                         </td>
                         <td>
-                            <span v-if="agent.real_name">{{agent.real_name}}</span>
+                            <span v-if="agent.real_name">{{ agent.real_name }}</span>
                             <span v-else>-</span>
                         </td>
                         <td>
                             <router-link :to="'/member/?agent=' + agent.username">
-                                {{agent.member_count}}
+                                {{ agent.member_count }}
                             </router-link>
                         </td>
                         <td>
-                            <span v-if="agent.created_at">{{agent.created_at | moment("YYYY-MM-DD HH:mm")}}</span>
+                            <span v-if="agent.created_at">{{ agent.created_at | moment("YYYY-MM-DD HH:mm") }}</span>
                             <span v-else>-</span>
                         </td>
                         <td>
@@ -172,18 +172,18 @@
                                     v-for="deamin in agent.domain.split(',')"
                                     :key="deamin"
                                 >
-                                    {{deamin}}
+                                    {{ deamin }}
                                 </label>
                             </span>
-                            <span v-else-if="agent.domain">{{agent.domain}}</span>
+                            <span v-else-if="agent.domain">{{ agent.domain }}</span>
                             <span v-else>-</span>
                         </td>
                         <td>
-                            <span v-if="agent.level">{{agent.level.name}}</span>
+                            <span v-if="agent.level">{{ agent.level.name }}</span>
                             <span v-else>-</span>
                         </td>
                         <td>
-                            <span v-if="agent.memo">{{agent.memo}}</span>
+                            <span v-if="agent.memo">{{ agent.memo }}</span>
                             <span v-else>-</span>
                         </td>
                     </tr>
