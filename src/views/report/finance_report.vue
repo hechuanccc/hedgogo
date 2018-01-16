@@ -120,13 +120,13 @@ const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
+            agentReport: false,
             date: ['', ''],
             api: api.finance_report,
             queryset: [],
             query: {},
             extra: '',
             agent: '',
-            agentReport: false,
             member_level: '',
             transaction_type: '',
             platform: '',
@@ -187,6 +187,7 @@ export default {
                 this.agent = this.$route.params.agentId
             } else {
                 this.agentReport = false
+                this.extra = ''
                 this.agent = this.$route.query.agent || ''
             }
             if (this.$route.query.start_date || this.$route.query.end_date) {
@@ -227,7 +228,6 @@ export default {
         },
         submit () {
             this.$refs.pulling.submit()
-            this.$refs.pulling.getExportQuery()
         },
         clearAll () {
             this.query = {}
