@@ -46,7 +46,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.game_list).then(data => {
+        this.$http.get(api.game_filter).then(data => {
             this.games = data
         })
         this.myGame = this.game
