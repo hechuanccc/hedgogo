@@ -113,7 +113,6 @@ export default {
                             label: (tooltipItem, data) => {
                                 let _data = data.datasets[0]
                                 let value = tooltipItem.yLabel
-                                console.log(tooltipItem, _data)
                                 return this.lineChart.includes(title) ? `${_data.label}${value < 0 ? '-' : ''} ¥ ${Math.abs(value).toLocaleString()}` : `${_data.label} : ${value}`
                             }
                         }
