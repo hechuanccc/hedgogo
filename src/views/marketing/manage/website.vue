@@ -40,12 +40,12 @@
                                     <input type="file" class="form-control" accept="image/*" @change="syncImg">
                                 </div>
                             </div>
-                            <div class="b-b p-b m-t" v-if="updateWebsiteManagementPermission">
+                            <div class="p-b m-t" v-if="updateWebsiteManagementPermission">
                                 <div class="alert alert-danger" v-if="responseError">{{responseError}}</div>
                                 <div class="alert alert-success" v-if="statusUpdated">{{$t('agent.status_update')}}</div>
                                 <button type="" class="md-btn w-sm blue" @click="onSubmit">{{$t('common.save')}}</button>
                             </div>
-                            <div class="row m-t">
+                            <div class="row b-t p-t m-t">
                                 <label class="m-l-sm label-width col-xs-1">{{$t('manage.advertisement')}} </label>
                             </div>
                             <div :class="['row text-center m-b-sm', ` col-xs-${boxes.length<4?'11':'12'}`]" v-if="!mode && updateWebsiteManagementPermission">
@@ -56,7 +56,7 @@
                                 <button class="btn btn-sm blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>                                
                                 <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
                             </div>
-                            <div class="row">
+                            <div class="row b-b p-b">
                                 <div :class="`col-xs-${boxes.length<4?'11':'12'}`">
                                     <draggable v-model="boxes" class="row" :options="{disabled:!mode}">
                                         <transition-group name="list-complete">
@@ -133,6 +133,27 @@
                                     <button class="md-btn md-fab m-b-sm blue" @click="createBox"><i class="material-icons md-24">&#xe145;</i></button>
                                 </div>
                             </div>
+                            <div class="row m-t">
+                                <label class="m-l-sm col-xs-2">{{$t('manage.agent_joining_agreement')}} </label>
+                            </div>
+                            <div class="row m-t-xs">
+                                <div class="col-md-12">
+                                    <textarea style="width: 930px;" rows="50" class="m-l form-control" v-model="website_agreement" :disabled="!updateWebsiteManagementPermission"></textarea>
+                                </div>
+                            </div>
+                            <div class="row b-b p-b m-t">
+                                <div class="col-md-12" v-if="updateWebsiteManagementPermission">
+                                    <button
+                                        type="button"
+                                        class="m-l md-btn w-sm blue m-r-sm"
+                                        @click="updateWebsiteAgreement"
+                                        :disabled="!updateWebsiteManagementPermission"
+                                    >{{$t('common.save')}}
+                                    </button>
+                                    <i class="fa fa-check text-success" v-if="updateWebsiteAgreementStatus === 'success'"></i>
+                                    <i class="fa fa-times text-danger" v-if="updateWebsiteAgreementStatus === 'failed'"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,6 +179,8 @@
                 initialBoxes: {},
                 boxResults: {},
                 hasImage: false,
+                website_agreement: '',
+                updateWebsiteAgreementStatus: '',
                 statusUpdated: false,
                 responseError: '',
                 successMsg: ''
@@ -171,11 +194,17 @@
         created () {
             this.getWebsite()
             this.getWebsiteDescription()
+            this.getWebsiteAgreement()
         },
         watch: {
             statusUpdated (newObj, old) {
                 setTimeout(() => {
                     this.statusUpdated = false
+                }, 2500)
+            },
+            updateWebsiteAgreementStatus () {
+                setTimeout(() => {
+                    this.updateWebsiteAgreementStatus = ''
                 }, 2500)
             },
             responseError (newObj, old) {
@@ -199,6 +228,11 @@
                         successMsg: '',
                         loading: false
                     }))
+                })
+            },
+            getWebsiteAgreement () {
+                this.$http.get(api.website_agreement).then(data => {
+                    this.website_agreement = data.description
                 })
             },
             createBox () {
@@ -317,6 +351,16 @@
                 setTimeout(() => {
                     this.successMsg = ''
                 }, 2000)
+            },
+            updateWebsiteAgreement () {
+                this.$http.put(api.website_agreement, {
+                    description: this.website_agreement
+                }).then(data => {
+                    this.website_agreement = data.description
+                    this.updateWebsiteAgreementStatus = 'success'
+                }, () => {
+                    this.updateWebsiteAgreementStatus = 'failed'
+                })
             },
             cancelUpdateRank () {
                 this.boxes.sort((a, b) => a.rank - b.rank)

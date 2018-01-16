@@ -26,7 +26,7 @@
               />
               <level 
                 class="pull-left m-r-xs"
-                :level="member_level"
+                :level="query.member_level"
                 @level-select="levelSelect"
                 :placeholder="$t('member.level')"
                 :disabled="!agentReport"
@@ -127,7 +127,6 @@ export default {
             query: {},
             extra: '',
             agent: '',
-            member_level: '',
             transaction_type: '',
             platform: '',
             game: '',
@@ -195,7 +194,6 @@ export default {
             } else {
                 this.date = this.defaultDate
             }
-            this.member_level = this.$route.query.member_level || ''
             this.transaction_type = this.$route.query.transaction_type || ''
             this.platform = this.$route.query.platform || ''
             this.game = this.$route.query.game || ''
@@ -207,7 +205,6 @@ export default {
         },
         levelSelect (val) {
             this.query.member_level = val
-            this.member_level = val
         },
         transactionTypeSelect (val) {
             this.query.transaction_type = val
