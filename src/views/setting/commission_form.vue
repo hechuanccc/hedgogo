@@ -257,7 +257,7 @@
         },
         computed: {
             updateCommissionSettingPermission () {
-                return this.$root.permissions.includes('update_commission_setting')
+                return this.$route.params.commissionId ? this.$root.permissions.includes('update_commission_setting') : this.$root.permissions.includes('add_commission_setting')
             }
         },
         methods: {
