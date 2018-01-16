@@ -72,7 +72,7 @@
                             <option value="1">{{ $t('common.status_updated_at') }}</option>
                         </select>
                         <date-picker
-                            width='223'
+                            width='224'
                             :not-after="today"
                             :shortcuts="shortcuts"
                             class="pull-left m-r-xs"
@@ -83,7 +83,7 @@
                             range
                         />
                         <date-picker
-                            width='223'
+                            width='224'
                             :not-after="today"
                             :shortcuts="shortcuts"
                             class="pull-left m-r-xs"
@@ -94,7 +94,7 @@
                             range
                         />
                         <input
-                            style="width: 223px;"
+                            style="width: 224px;"
                             type="number"
                             v-model.trim="query.transaction_id"
                             class="form-control w-sm"

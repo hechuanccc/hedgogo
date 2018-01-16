@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="pull-left m-r-xs" v-if="pageSelected === 'history'">
                                     <date-picker
-                                        width='223'
+                                        width='224'
                                         :not-after="yesterday"
                                         :shortcuts="shortcuts"
                                         class="pull-left m-r-xs"
@@ -83,23 +83,16 @@
                                 </button>
                             </div>
                             <div class="col-xs-12 m-t-sm">
+                                <game-selector
+                                    class="pull-left m-r-xs"
+                                    :attribute="'id'"
+                                    :game="game"
+                                    @game-select="gameSelect"
+                                    :placeholder="$t('common.game')"
+                                />
                                 <select
-                                    class="c-select m-r-xs"
-                                    style="width: 223px;"
-                                    v-model="game"
-                                >
-                                    <option value="">{{ $t('common.game') }}</option>
-                                    <option
-                                        name="game"
-                                        :value="game.id"
-                                        v-for="game in gamelist"
-                                        :key="game.id"
-                                    ><i class="blue">{{ game.display_name }}</i>
-                                    </option>
-                                </select>
-                                <select
-                                    class="form-control c-select"
-                                    style="width: 223px;"
+                                    class="form-control pull-left c-select"
+                                    style="width: 224px;"
                                     v-model="game_category" 
                                     :disabled="!game || categories.length === 0"
                                 >
@@ -313,6 +306,7 @@
 <script>
     import api from '../../api'
     import pulling from '../../components/pulling'
+    import gameSelector from '../../components/gameSelector'
     import DatePicker from 'vue2-datepicker'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
@@ -368,18 +362,18 @@
                     this.submit()
                 }
             },
-            game (newObj, old) {
-                this.query.game_q = newObj
-                this.game_category = ''
+            game (newObj) {
                 this.categories = []
                 if (newObj) {
                     this.getGameCategory()
+                } else {
+                    this.game_category = ''
                 }
             },
-            game_category: function (newObj, old) {
+            game_category (newObj) {
                 this.query.category = newObj
             },
-            filter_game (newObj, old) {
+            filter_game (newObj) {
                 if (newObj.length === 0) {
                     this.query.game_q = ''
                     if (this.$route.query.game_q) {
@@ -433,6 +427,10 @@
                     this.categories = data
                 })
             },
+            gameSelect (val) {
+                this.query.game_q = val
+                this.game = val
+            },
             queryData (queryset) {
                 this.queryset = queryset
             },
@@ -451,8 +449,8 @@
             getPageAccessed () {
                 if (this.$route.path === '/report/betrecord/today') {
                     this.extra = `report_flag=true&account_type=1&created_at_0=${this.today}&created_at_1=${this.today}`
-                    this.game_category = this.$route.query.category || ''
                     this.game = this.$route.query.game_q || ''
+                    this.game_category = this.$route.query.category || ''
                     this.status = this.$route.query.status || ''
                     this.pageSelected = 'today'
                 } else if (this.$route.path === '/report/betrecord/history') {
@@ -462,8 +460,8 @@
                         this.created_at = [undefined, undefined]
                     }
                     this.extra = `report_flag=true&account_type=1&created_at_1=${this.yesterday}`
-                    this.game_category = this.$route.query.category || ''
                     this.game = this.$route.query.game_q || ''
+                    this.game_category = this.$route.query.category || ''
                     this.status = this.$route.query.status || ''
                     this.pageSelected = 'history'
                 } else if (this.$route.path === '/report/betrecord/realtime') {
@@ -545,7 +543,8 @@
         },
         components: {
             pulling,
-            DatePicker
+            DatePicker,
+            gameSelector
         },
         beforeDestroy () {
             if (this.pageSelected === 'realtime') {

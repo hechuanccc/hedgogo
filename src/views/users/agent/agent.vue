@@ -103,7 +103,7 @@
                                 :placeholder="$t('agent.bank_account')"
                             />
                             <date-picker
-                                width='223'
+                                width='224'
                                 :not-after="today"
                                 :shortcuts="shortcuts"
                                 :placeholder="$t('agent.joined_at')"
