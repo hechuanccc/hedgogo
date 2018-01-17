@@ -33,14 +33,15 @@ export default {
             default: 'name'
         },
         opt_fields: {
-            default: 'id,name,display_name'
+            default: ''
         }
     },
     data () {
         return {
             transactionTypes: [],
             myTransactionType: this.transactionType,
-            noViewPermissions: []
+            noViewPermissions: [],
+            default_opt_fields: 'id,display_name'
         }
     },
     watch: {
@@ -52,7 +53,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.transactiontype}${this.opt_fields !== '' ? '?opt_fields=' + this.opt_fields : ''}`).then(data => {
+        this.$http.get(`${api.transactiontype}?opt_fields=${this.opt_fields}${this.attribute},${this.default_opt_fields}`).then(data => {
             if (!this.$root.permissions.includes('view_remit_transaction_page')) {
                 this.noViewPermissions.push(1)
             }

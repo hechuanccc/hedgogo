@@ -27,13 +27,14 @@ export default {
             default: 'code'
         },
         opt_fields: {
-            default: 'id,display_name,code'
+            default: ''
         }
     },
     data () {
         return {
             games: [],
-            myGame: this.game
+            myGame: this.game,
+            default_opt_fields: 'id,display_name'
         }
     },
     watch: {
@@ -49,7 +50,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.game_list}${this.opt_fields !== '' ? '?opt_fields=' + this.opt_fields : ''}`).then(data => {
+        this.$http.get(`${api.game_list}?opt_fields=${this.opt_fields}${this.attribute},${this.default_opt_fields}`).then(data => {
             this.games = data
         })
         this.myGame = this.game

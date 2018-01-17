@@ -36,14 +36,15 @@ export default {
             default: true
         },
         opt_fields: {
-            default: 'id,name'
+            default: ''
         }
     },
     data () {
         return {
             levels: [],
             mySelectLevel: '',
-            myCheckboxLevel: {}
+            myCheckboxLevel: {},
+            default_opt_fields: 'id,name'
         }
     },
     watch: {
@@ -72,7 +73,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1' : ''}${this.opt_fields !== '' ? '&opt_fields=' + this.opt_fields : ''}`).then(data => {
+        this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1' : ''}&opt_fields=${this.opt_fields},${this.default_opt_fields}`).then(data => {
             this.levels = data
         })
         if (this.mode === 'select') {
