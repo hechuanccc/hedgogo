@@ -89,7 +89,6 @@
                                     :game="game"
                                     @game-select="gameSelect"
                                     :placeholder="$t('common.game')"
-                                    opt_fields="id,display_name,code"
                                 />
                                 <select
                                     class="form-control pull-left c-select"

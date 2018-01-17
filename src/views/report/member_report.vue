@@ -22,14 +22,12 @@
                 :agent="agent"
                 @agent-select="agentSelect"
                 :placeholder="$t('member.agent')"
-                opt_fields="id,username"
               />
               <level 
                 class="pull-left m-r-xs"
                 :level="member_level"
                 @level-select="levelSelect"
                 :placeholder="$t('member.level')"
-                opt_fields="id,name"
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"

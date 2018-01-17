@@ -16,14 +16,12 @@
                             :level="member_level"
                             @level-select="changeFromLevel"
                             :disabled="!$route.query.member"
-                            opt_fields="id,name"
                         >
                         </level>
                         <transaction-type-selector
                             :transactionType="transaction_type"
                             :placeholder="$t('bill.transaction_type')"
                             @transaction-type-select="transactionTypeSelect"
-                            opt_fields="id,display_name,name"
                         />
                         <input type="number" v-model.trim="query.transaction_id" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                         <input type="text" v-model="member.username" class="form-control" disabled v-if="$route.query.member"/>

@@ -27,7 +27,7 @@ export default {
             default: 'code'
         },
         opt_fields: {
-            default: ''
+            default: 'id,display_name,code'
         }
     },
     data () {

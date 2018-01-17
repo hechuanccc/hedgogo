@@ -17,7 +17,6 @@
                                 class="inline"
                                 :level="query.member_level"
                                 @level-select="levelSelect"
-                                opt_fields="id,name"
                             />
                             <input
                                 type="text"
