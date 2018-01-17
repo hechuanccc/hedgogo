@@ -53,7 +53,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.transactiontype}?opt_fields=${this.opt_fields}${this.attribute},${this.default_opt_fields}`).then(data => {
+        this.$http.get(`${api.transactiontype}?opt_fields=${this.opt_fields},${this.attribute},${this.default_opt_fields}`).then(data => {
             if (!this.$root.permissions.includes('view_remit_transaction_page')) {
                 this.noViewPermissions.push(1)
             }
