@@ -85,7 +85,7 @@
                 </div>
                 <div class="form-group">
                   <label for="birthday" class="label-width">{{$t('common.birthday')}} </label>
-                  <div class="inline-form-control" v-if="!!updateMemberDetailsPermission">
+                  <div class="inline-form-control" v-if="updateMemberDetailsPermission">
                     <date-picker width='153' v-model="member.birthday"></date-picker>
                   </div>
                   <div class="inline-form-control" v-else>
