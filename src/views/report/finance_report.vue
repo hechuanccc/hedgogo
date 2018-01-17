@@ -32,7 +32,6 @@
                 :placeholder="$t('member.level')"
                 :disabled="!agentReport"
                 opt_fields="id,name"
-                :disabled="!agentReport"
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"
@@ -180,12 +179,8 @@ export default {
     },
     computed: {
         getReport () {
-<<<<<<< HEAD
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}&opt_expand=download_report`
-=======
             this.$refs.pulling.getExportQuery()
             this.href = `${this.api}?token=${VueCookie.get('access_token')}${this.agentReport ? `&agent=${this.agent}` : ''}&opt_expand=download_report&${this.export_query}`
->>>>>>> da54208c914b42ed781eb27c7be7f2b33d440d58
             return this.queryset.length
         }
     },

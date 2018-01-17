@@ -32,7 +32,7 @@ export default {
         attribute: {
             default: 'name'
         },
-        opt_fields:{
+        opt_fields: {
             default: ''
         }
     },
