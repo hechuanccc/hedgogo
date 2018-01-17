@@ -166,7 +166,9 @@ export default {
             handler () {
                 this.setQueryAll()
                 this.queryset = []
-                this.$refs.pulling.rebase()
+                this.$nextTick(() => {
+                    this.$refs.pulling.rebase()
+                })
             },
             deep: true
         }
@@ -227,8 +229,16 @@ export default {
             this.$refs.pulling.submit()
         },
         clearAll () {
-            this.query = {}
-            this.submit()
+            if (this.agentReport) {
+                this.query = {
+                    member_level: this.query.member_level
+                }
+            } else {
+                this.query = {}
+            }
+            this.$nextTick(() => {
+                this.submit()
+            })
         }
     },
     components: {

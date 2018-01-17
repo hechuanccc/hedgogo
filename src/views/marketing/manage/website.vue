@@ -138,7 +138,14 @@
                             </div>
                             <div class="row m-t-xs">
                                 <div class="col-md-12">
-                                    <textarea style="width: 930px;" rows="50" class="m-l form-control" v-model="website_agreement" :disabled="!updateWebsiteManagementPermission"></textarea>
+                                    <textarea
+                                        style="width: 930px;"
+                                        rows="50"
+                                        class="m-l form-control"
+                                        v-model="websiteAgreement"
+                                        :disabled="!updateWebsiteManagementPermission"
+                                    >
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="row b-b p-b m-t">
@@ -179,7 +186,7 @@
                 initialBoxes: {},
                 boxResults: {},
                 hasImage: false,
-                website_agreement: '',
+                websiteAgreement: '',
                 updateWebsiteAgreementStatus: '',
                 statusUpdated: false,
                 responseError: '',
@@ -188,7 +195,7 @@
         },
         computed: {
             updateWebsiteManagementPermission () {
-                return this.$root.permissions.includes('update_website_management')
+                return !this.$root.permissions.includes('update_website_management')
             }
         },
         created () {
@@ -232,7 +239,7 @@
             },
             getWebsiteAgreement () {
                 this.$http.get(api.website_agreement).then(data => {
-                    this.website_agreement = data.description
+                    this.websiteAgreement = data.description
                 })
             },
             createBox () {
@@ -354,7 +361,7 @@
             },
             updateWebsiteAgreement () {
                 this.$http.put(api.website_agreement, {
-                    description: this.website_agreement
+                    description: this.websiteAgreement
                 }).then(data => {
                     this.website_agreement = data.description
                     this.updateWebsiteAgreementStatus = 'success'
