@@ -93,7 +93,7 @@ export default {
                             ticks: {
                                 callback: (value, index, values) => {
                                     if (Number.isInteger(value)) {
-                                        return this.lineChart.includes(title) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value
+                                        return this.lineChart.includes(title) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value.toLocaleString()
                                     }
                                 }
                             },
