@@ -50,7 +50,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.game_list}?opt_fields=${this.opt_fields},${this.attribute},${this.default_opt_fields}`).then(data => {
+        this.$http.get(`${api.game_list}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
             this.games = data
         })
         this.myGame = this.game

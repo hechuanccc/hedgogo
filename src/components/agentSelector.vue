@@ -53,7 +53,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.agent}?opt_fields=${this.opt_fields},${this.attribute},${this.default_opt_fields}`).then(data => {
+        this.$http.get(`${api.agent}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
             this.agents = data
         })
         this.myAgent = this.agent
