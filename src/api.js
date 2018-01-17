@@ -73,6 +73,7 @@ export default {
     global_preferences: managePrefix + 'global-preferences/',
     website_descriptions: managePrefix + 'website/descriptions/',
     website_descriptions_ranks: managePrefix + 'website/descriptions_ranks/',
+    website_agreement: managePrefix + 'website/franchising-program-page/',
     report_overview: managePrefix + 'report/overview/',
     member_report: managePrefix + 'report/count/membership/',
     finance_report: managePrefix + 'report/assets/finance/',

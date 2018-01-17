@@ -406,6 +406,7 @@ export default {
     },
     action: {
         view_today_report: '查看今日报表',
+        view_agent_report: '查看代理報表',
         update_agent: '修改代理商资料',
         update_member: '修改会员资料',
         view_member_record: '查看所有会员交易记录',
@@ -762,7 +763,8 @@ export default {
         header_img: '标题图片',
         main: '描述内容',
         advertisement: '网站广告',
-        adjust_rank: '调整排序'
+        adjust_rank: '调整排序',
+        agent_joining_agreement: '代理加盟协议'
     },
     cms: {
         pctitle: '电脑网页管理',

@@ -407,6 +407,7 @@ export default {
     },
     action: {
         view_today_report: 'View today\'s Report',
+        view_agent_report: 'View Agent\'s Report',
         update_agent: 'Update agent\'s info',
         update_member: 'Update member\'s info',
         view_member_record: 'View all members\' record',
@@ -763,7 +764,8 @@ export default {
         header_img: 'Header Image',
         main: 'Main box',
         advertisement: 'Advertisement',
-        adjust_rank: 'Adjust Rank'
+        adjust_rank: 'Adjust Rank',
+        agent_joining_agreement: 'Agent Joining Agreement'
     },
     cms: {
         pctitle: 'PC Website Management',

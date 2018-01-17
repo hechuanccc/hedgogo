@@ -887,6 +887,19 @@ export default new Router({
         }
     },
     {
+        path: '/report/finance_report/:agentId',
+        name: 'agent_report',
+        component: function (resolve) {
+            require(['./views/report/finance_report.vue'], resolve)
+        },
+        meta: {
+            group: 'reporting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.agent_report')
+        }
+    },
+    {
         path: '/report/finance_report',
         name: 'finance_report',
         component: function (resolve) {
