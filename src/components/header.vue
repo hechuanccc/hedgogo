@@ -255,7 +255,6 @@
                     url = '/game_history' + vm.status
                     title = this.$t('game_history.abnormal_period') + this.$t('action.inform')
                 }
-                // console.trace()
                 let titleD = vm.iNotify.setTitle()
                 this.oldTitle = titleD.title
                 vm.iNotify.setTitle('有消息啦！' + title)
