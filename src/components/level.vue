@@ -36,7 +36,7 @@ export default {
             default: true
         },
         opt_fields: {
-            default: ''
+            default: 'id,name'
         }
     },
     data () {
