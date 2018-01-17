@@ -195,7 +195,7 @@
         },
         computed: {
             updateWebsiteManagementPermission () {
-                return !this.$root.permissions.includes('update_website_management')
+                return this.$root.permissions.includes('update_website_management')
             }
         },
         created () {
@@ -363,7 +363,7 @@
                 this.$http.put(api.website_agreement, {
                     description: this.websiteAgreement
                 }).then(data => {
-                    this.website_agreement = data.description
+                    this.websiteAgreement = data.description
                     this.updateWebsiteAgreementStatus = 'success'
                 }, () => {
                     this.updateWebsiteAgreementStatus = 'failed'
