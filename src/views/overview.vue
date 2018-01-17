@@ -93,7 +93,7 @@ export default {
                             ticks: {
                                 callback: (value, index, values) => {
                                     if (Number.isInteger(value)) {
-                                        return this.lineChart.includes(title) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value
+                                        return this.lineChart.includes(title) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value.toLocaleString()
                                     }
                                 }
                             },
@@ -113,7 +113,7 @@ export default {
                             label: (tooltipItem, data) => {
                                 let _data = data.datasets[0]
                                 let value = tooltipItem.yLabel
-                                return this.lineChart.includes(title) ? `${_data.label}${value < 0 ? '-' : ''} ¥ ${Math.abs(value).toLocaleString()}` : `${_data.label} : ${value}`
+                                return this.lineChart.includes(title) ? `${_data.label}：${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}` : `${_data.label} : ${value.toLocaleString()}`
                             }
                         }
                     }

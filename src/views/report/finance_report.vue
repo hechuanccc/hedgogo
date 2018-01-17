@@ -10,7 +10,7 @@
             <div class="col-xs-12">
               <date-picker
                 :not-after="today"
-                :shortcuts="[]"
+                :shortcuts="shortcuts"
                 class="pull-left m-r-xs"
                 v-model="date"
                 type="date"
@@ -22,12 +22,14 @@
                 :agent="agent"
                 @agent-select="agentSelect"
                 :placeholder="$t('member.agent')"
+                :disabled="!agentReport"
               />
               <level 
                 class="pull-left m-r-xs"
-                :level="member_level"
+                :level="query.member_level"
                 @level-select="levelSelect"
                 :placeholder="$t('member.level')"
+                :disabled="!agentReport"
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"
@@ -48,8 +50,8 @@
                 :placeholder="$t('common.game')"
               />
               <div class="pull-right">
-                <button type="submit" class="md-btn w-xs blue" @keyup.enter="submit">{{$t('common.search')}}</button>
-                <button class="md-btn w-xs" type="button" @click="clearAll">{{$t('action.clear_all')}}</button>
+                <button type="submit" class="md-btn w-xs blue" @keyup.enter="submit">{{ $t('common.search') }}</button>
+                <button class="md-btn w-xs" type="button" @click="clearAll">{{ $t('action.clear_all') }}</button>
               </div>
             </div>
           </div>
@@ -90,12 +92,13 @@
     </div>
     <div class="row m-b-lg">
       <pulling
+        :api="api"
         :queryset="queryset"
         :query="query"
+        :extra="extra"
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
-        :api="api"
         ref="pulling"
       />
     </div>
@@ -111,47 +114,38 @@ import gameSelector from '../../components/gameSelector'
 import agentSelector from '../../components/agentSelector'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
+import date from '../../utils/date'
 
 const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
+            agentReport: false,
             date: ['', ''],
             api: api.finance_report,
             queryset: [],
-            query: {
-                start_date: '',
-                end_date: '',
-                agent: '',
-                member_level: '',
-                transaction_type: '',
-                platform: '',
-                game: ''
-            },
+            query: {},
+            extra: '',
             agent: '',
-            member_level: '',
             transaction_type: '',
             platform: '',
             game: '',
-            filter: {},
             href: '',
             export_query: [],
-            today: Vue.moment().format(format)
+            today: Vue.moment().format(format),
+            shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                text: this.$t(`common.${element}`),
+                start: date[element][0],
+                end: date[element][1]
+            })),
+            defaultDate: ['', '']
         }
     },
     created () {
-        if (this.$route.query.start_date || this.$route.query.end_date) {
-            this.date = [this.$route.query.start_date, this.$route.query.end_date]
-        } else {
-            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
-        }
-        this.query = {
-            ...this.query,
-            ...this.$route.query
-        }
+        this.defaultDate = [Vue.moment(this.today).subtract(6, 'days').format(format), this.today]
+        this.setQueryAll()
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
-            this.$refs.pulling.getExportQuery()
         })
     },
     watch: {
@@ -159,27 +153,53 @@ export default {
             this.query.platform = newObj
         },
         date (newObj, old) {
-            [this.query.start_date, this.query.end_date] = newObj.map(e => Vue.moment(e).format(format))
+            if (`${newObj}` === `${this.defaultDate}`) {
+                [this.query.start_date, this.query.end_date] = [undefined, undefined]
+            } else {
+                [this.query.start_date, this.query.end_date] = [...newObj]
+            }
+            if (this.query.start_date !== this.$route.query.start_date || this.query.end_date !== this.$route.query.end_date) {
+                this.submit()
+            }
         },
-        '$route': 'nextTickFetch'
+        '$route': {
+            handler () {
+                this.setQueryAll()
+                this.queryset = []
+                this.$nextTick(() => {
+                    this.$refs.pulling.rebase()
+                })
+            },
+            deep: true
+        }
     },
     computed: {
         getReport () {
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
+            this.$refs.pulling.getExportQuery()
+            this.href = `${this.api}?token=${VueCookie.get('access_token')}${this.agentReport ? `&agent=${this.agent}` : ''}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
         }
     },
     methods: {
-        nextTickFetch () {
+        setQueryAll () {
+            if (this.$route.params.agentId) {
+                this.agentReport = true
+                this.extra = `agent=${this.$route.params.agentId}`
+                this.agent = this.$route.params.agentId
+            } else {
+                this.agentReport = false
+                this.extra = ''
+                this.agent = this.$route.query.agent || ''
+            }
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
-                this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
+                this.date = this.defaultDate
             }
-            setTimeout(() => {
-                this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
-            }, 100)
+            this.transaction_type = this.$route.query.transaction_type || ''
+            this.platform = this.$route.query.platform || ''
+            this.game = this.$route.query.game || ''
+            this.query = Object.assign({}, this.$route.query)
         },
         agentSelect (val) {
             this.query.agent = val
@@ -187,7 +207,6 @@ export default {
         },
         levelSelect (val) {
             this.query.member_level = val
-            this.member_level = val
         },
         transactionTypeSelect (val) {
             this.query.transaction_type = val
@@ -198,37 +217,27 @@ export default {
             this.game = val
         },
         queryData (queryset) {
-            this.query = Object.assign({}, this.filter)
             this.queryset = queryset
         },
         queryParam (query) {
-            this.filter = query
+            this.query = Object.assign(this.query, query)
         },
         exportQuery (expor) {
             this.export_query = expor
         },
         submit () {
             this.$refs.pulling.submit()
-            this.$refs.pulling.getExportQuery()
         },
         clearAll () {
-            this.query = {
-                start_date: '',
-                end_date: '',
-                agent: '',
-                member_level: '',
-                transaction_type: '',
-                platform: '',
-                game: ''
+            if (this.agentReport) {
+                this.query = {
+                    member_level: this.query.member_level
+                }
+            } else {
+                this.query = {}
             }
-            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
-            this.agent = ''
-            this.member_level = ''
-            this.transaction_type = ''
-            this.platform = ''
-            this.game = ''
-            this.$router.push({
-                path: this.$route.path
+            this.$nextTick(() => {
+                this.submit()
             })
         }
     },

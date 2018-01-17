@@ -19,7 +19,9 @@ export default {
         req: {
             default: false
         },
-        level: '',
+        level: {
+            default: ''
+        },
         mode: {
             default: 'select'
         },
@@ -52,7 +54,11 @@ export default {
             }
         },
         mySelectLevel (newObj, old) {
-            this.$emit('level-select', newObj && newObj.toString())
+            if (newObj) {
+                this.$emit('level-select', newObj.toString())
+            } else {
+                this.$emit('level-select', newObj)
+            }
             this.$emit('level-choose', this.mySelectLevel, this.index)
         },
         myCheckboxLevel: {
@@ -65,16 +71,16 @@ export default {
     created () {
         this.$http.get(`${api.level_filter}${this.noShowTrialMember ? '?account_type=1' : ''}`).then(data => {
             this.levels = data
-            if (this.mode === 'select') {
-                this.mySelectLevel = this.level || ''
-            } else {
-                if (this.level.length) {
-                    this.level.forEach(element => {
-                        this.$set(this.myCheckboxLevel, element, true)
-                    })
-                }
-            }
         })
+        if (this.mode === 'select') {
+            this.mySelectLevel = this.level
+        } else {
+            if (this.level.length) {
+                this.level.forEach(element => {
+                    this.$set(this.myCheckboxLevel, element, true)
+                })
+            }
+        }
     }
 }
 </script>

@@ -8,7 +8,7 @@
         <p>
             Thanks!
         </p>
-        <button class="m-t-lg md-btn w-sm blue" @click="$router.go(-1)"><i class="fa fa-long-arrow-left"></i> {{ $t('action.back_page') }}</button>
+        <button class="m-t-lg md-btn w-sm blue" @click="$router.go(-2)"><i class="fa fa-long-arrow-left"></i> {{ $t('action.back_page') }}</button>
     </div>
     </div>
 </template>
