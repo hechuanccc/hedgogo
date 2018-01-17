@@ -28,12 +28,16 @@ export default {
         },
         attribute: {
             default: 'id'
+        },
+        opt_fields: {
+            default: ''
         }
     },
     data () {
         return {
             agents: [],
-            myAgent: this.agent
+            myAgent: this.agent,
+            default_opt_fields: 'username'
         }
     },
     watch: {
@@ -49,7 +53,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.agent_filter).then(data => {
+        this.$http.get(`${api.agent}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
             this.agents = data
         })
         this.myAgent = this.agent
