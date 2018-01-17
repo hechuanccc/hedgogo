@@ -224,7 +224,7 @@ export default {
             for (let x in query) {
                 if (query[x] === '' || query[x] === undefined) {
                     delete query[x]
-                } else if (x === 'created_at_0' || x === 'created_at_1' || x === 'logindate_0' || x === 'logindate_1' || x === 'action_time_0' || x === 'action_time_1' || x === 'updated_at_0' || x === 'updated_at_1') {
+                } else if (Vue.moment.isDate(query[x])) {
                     query[x] = Vue.moment(query[x]).format(format)
                 }
                 if (query[x] instanceof Array) {
