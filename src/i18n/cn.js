@@ -444,7 +444,8 @@ export default {
         no_setting: '未设置',
         back_page: '返回上一页',
         hide: '隐藏',
-        view: '查看'
+        view: '查看',
+        inform: '通知'
     },
     staff: {
         roles: '角色 / 权限',

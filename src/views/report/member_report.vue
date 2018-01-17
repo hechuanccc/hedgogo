@@ -165,7 +165,7 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}&report_flag=true&opt_expand=download_report&${this.export_query}`
+            this.href = `${this.api}?token=${VueCookie.get('access_token')}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
         }
     },

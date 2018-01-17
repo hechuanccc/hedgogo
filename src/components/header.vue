@@ -112,7 +112,7 @@
                 results: [],
                 searchlimit: 5,
                 showResults: false,
-                status: [3],
+                status: '3',
                 members_count: '',
                 iNotify: '',
                 oldTitle: '',
@@ -160,28 +160,47 @@
                     vm.iNotify.faviconClear()
                 }
             },
-            remit_count (newObj, old) {
+            abnormal_count (newObj, old) {
                 if (this.iNotify) {
                     if (newObj > old) {
                         if (old) {
-                            this.$root.$data.remit_count = this.remit_count
+                            this.$root.$data.abnormal_count = this.abnormal_count
                         }
-                        this.message(newObj, 'remit')
+                        this.message(newObj, 'abnormal')
                         this.iNotify.player()
                     } else if (old !== '') {
                         this.iNotify.setFavicon(newObj)
                     }
                 }
             },
-            withdraw_count (newObj, old) {
-                if (newObj > old) {
-                    if (old) {
-                        this.$root.$data.withdraw_count = this.withdraw_count
+            remit_count (newObj, old) {
+                if (this.iNotify) {
+                    if (newObj > old) {
+                        if (old) {
+                            this.$root.$data.remit_count = this.remit_count
+                        }
+                        if (this.$root.permissions.includes('view_remit_transaction_page')) {
+                            this.message(newObj, 'remit')
+                            this.iNotify.player()
+                        }
+                    } else if (old !== '') {
+                        this.iNotify.setFavicon(newObj)
                     }
-                    this.message(newObj, 'withdraw')
-                    this.iNotify.player()
-                } else if (old !== '') {
-                    this.iNotify.setFavicon(newObj)
+                }
+            },
+            withdraw_count (newObj, old) {
+                if (this.iNotify) {
+                    if (newObj > old) {
+                        if (old) {
+                            this.$root.$data.withdraw_count = this.withdraw_count
+                        }
+                        if (this.$root.permissions.includes('view_withdraw_application_page')) {
+                            this.message(newObj, 'withdraw')
+                            this.iNotify.player()
+                        }
+                    } else if (old !== '') {
+                        this.iNotify.setFavicon(newObj)
+                    }
                 }
             },
             'query.username_q' (newObj, old) {
@@ -227,13 +246,15 @@
                 let url = ''
                 let title = ''
                 if (messageType === 'remit') {
-                    url = '/bill/remit?status[]=' + vm.status
+                    url = '/bill/remit?status=' + vm.status
                     title = '公司入款通知'
                 } else if (messageType === 'withdraw') {
-                    url = '/bill/withdraw?status[]=' + vm.status
+                    url = '/bill/withdraw?status=' + vm.status
                     title = '取款通知'
+                } else if (messageType === 'abnormal') {
+                    url = '/game_history' + vm.status
+                    title = this.$t('game_history.abnormal_period') + this.$t('action.inform')
                 }
-
                 let titleD = vm.iNotify.setTitle()
                 this.oldTitle = titleD.title
                 vm.iNotify.setTitle('有消息啦！' + title)

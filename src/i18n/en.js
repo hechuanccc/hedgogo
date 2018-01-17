@@ -445,7 +445,8 @@ export default {
         no_setting: 'No setting',
         back_page: 'Go Back To The Last Page',
         hide: 'Hide',
-        view: 'View'
+        view: 'View',
+        inform: 'Inform'
     },
     staff: {
         roles: 'Roles / Permission',
