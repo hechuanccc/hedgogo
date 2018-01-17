@@ -22,12 +22,14 @@
                 :agent="agent"
                 @agent-select="agentSelect"
                 :placeholder="$t('member.agent')"
+                opt_fields="id,username"
               />
               <level 
                 class="pull-left m-r-xs"
                 :level="member_level"
                 @level-select="levelSelect"
                 :placeholder="$t('member.level')"
+                opt_fields="id,name"
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"
@@ -35,6 +37,7 @@
                 :displayList="[1, 2]"
                 @transaction-type-select="transactionTypeSelect"
                 :placeholder="$t('bill.transaction_type')"
+                opt_fields="id,name,display_name"
               />
               <select class="pull-left m-r-xs form-control w-sm c-select" v-model="platform">
                 <option value="">{{ $t('manage.platform') }}</option>
@@ -46,6 +49,7 @@
                 :game="game"
                 @game-select="gameSelect"
                 :placeholder="$t('common.game')"
+                opt_fields="id,display_name,code"
               />
               <div class="pull-right">
                 <button type="submit" class="md-btn w-xs blue" @keyup.enter="submit">{{$t('common.search')}}</button>
@@ -165,7 +169,7 @@ export default {
     },
     computed: {
         getReport () {
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
+            this.href = `${this.api}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}&opt_expand=download_report`
             return this.queryset.length
         }
     },

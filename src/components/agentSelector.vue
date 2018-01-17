@@ -28,6 +28,9 @@ export default {
         },
         attribute: {
             default: 'id'
+        },
+        opt_fields: {
+            default: ''
         }
     },
     data () {
@@ -49,7 +52,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.agent_filter).then(data => {
+        this.$http.get(`${api.agent}${this.opt_fields !== '' ? '?opt_fields=' + this.opt_fields : ''}`).then(data => {
             this.agents = data
         })
         this.myAgent = this.agent

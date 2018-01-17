@@ -25,6 +25,9 @@ export default {
         },
         attribute: {
             default: 'code'
+        },
+        opt_fields: {
+            default: ''
         }
     },
     data () {
@@ -46,7 +49,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.game_filter).then(data => {
+        this.$http.get(`${api.game_list}${this.opt_fields !== '' ? '?opt_fields=' + this.opt_fields : ''}`).then(data => {
             this.games = data
         })
         this.myGame = this.game

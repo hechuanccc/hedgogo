@@ -31,6 +31,9 @@ export default {
         },
         attribute: {
             default: 'name'
+        },
+        opt_fields:{
+            default: ''
         }
     },
     data () {
@@ -49,7 +52,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.transactiontype).then(data => {
+        this.$http.get(`${api.transactiontype}${this.opt_fields !== '' ? '?opt_fields=' + this.opt_fields : ''}`).then(data => {
             if (!this.$root.permissions.includes('view_remit_transaction_page')) {
                 this.noViewPermissions.push(1)
             }

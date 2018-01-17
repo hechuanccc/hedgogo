@@ -13,7 +13,7 @@
                               <option value="4">{{$t('status.cancelled')}}</option>
                               <option value="5">{{$t('status.declined')}}</option>
                             </select>
-                          <level class="inline" :level="member_level" @level-select="changeFromLevel"></level>
+                          <level class="inline" :level="member_level" @level-select="changeFromLevel" opt_fields="id,name"></level>
                           <input type="number" v-model.trim="query.transaction_id" class="form-control w-sm" v-bind:placeholder="$t('bill.order_id')"/>
                           <input type="text" v-model="query.member_q" class="form-control w-sm" v-bind:placeholder="$t('common.member')" />
                           <input type="text" v-model="query.online_payee" class="form-control w-sm" v-bind:placeholder="$t('common.merchant')" />
