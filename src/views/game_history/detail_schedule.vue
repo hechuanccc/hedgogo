@@ -483,7 +483,7 @@ export default {
             gameid = gameid || this.game.id
             this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
             .then(data => {
-                this.retreatedScheds = []
+                this.retreatedScheds = data
             })
         },
         getGameInfo (gameid) {
