@@ -138,7 +138,6 @@ export default {
     methods: {
         setQueryAll () {
             if (this.$route.query.action_time_0 || this.$route.query.action_time_1) {
-                this.selected = '0'
                 this.action_time = [this.$route.query.action_time_0, this.$route.query.action_time_1]
             } else {
                 this.action_time = [undefined, undefined]
