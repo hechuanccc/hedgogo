@@ -26,7 +26,7 @@ export default {
             default: 'select'
         },
         disabled: {
-            default: 'true'
+            default: true
         },
         index: {
             default: 0
