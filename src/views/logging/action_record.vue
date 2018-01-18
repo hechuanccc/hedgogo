@@ -43,27 +43,27 @@
             <table class="table table-striped b-t">
                 <thead>
                     <tr>
-                        <th>{{$t('actionrecord.action_time')}}</th>
-                        <th>{{$t('actionrecord.action_user')}}</th>
-                        <th>{{$t('actionrecord.action_user_type')}}</th>
-                        <th>{{$t('actionrecord.action_ip')}}</th>
-                        <th>{{$t('actionrecord.action_type')}}</th>
-                        <th>{{$t('actionrecord.description')}}</th>
-                        <th>{{$t('actionrecord.action_result')}}</th>
+                        <th>{{ $t('actionrecord.action_time') }}</th>
+                        <th>{{ $t('actionrecord.action_user') }}</th>
+                        <th>{{ $t('actionrecord.action_user_type') }}</th>
+                        <th>{{ $t('actionrecord.action_ip') }}</th>
+                        <th>{{ $t('actionrecord.action_type') }}</th>
+                        <th>{{ $t('actionrecord.description') }}</th>
+                        <th>{{ $t('actionrecord.action_result') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(report, index) in queryset" :key="index">
-                        <td>{{report.action_time | moment("YYYY-MM-DD HH:mm:ss")}}</td>
-                        <td>{{report.action_user || '-'}}</td>
-                        <td>{{report.action_user_type || '-'}}</td>
-                        <td>{{report.action_ip || '-'}}</td>
-                        <td>{{report.action_type || '-'}}</td>
+                        <td>{{ report.action_time | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td>{{ report.action_user || '-' }}</td>
+                        <td>{{ report.action_user_type || '-' }}</td>
+                        <td>{{ report.action_ip || '-' }}</td>
+                        <td>{{ report.action_type || '-' }}</td>
                         <td v-if="report.description" v-html="report.description"></td>
                         <td v-else>-</td>
                         <td>
-                            <span v-if="report.action_result" class="label success">{{$t('status.success')}}</span>
-                            <span v-else class="label  danger">{{$t('status.failed')}}</span>
+                            <span v-if="report.action_result" class="label success">{{ $t('status.success') }}</span>
+                            <span v-else class="label  danger">{{ $t('status.failed') }}</span>
                         </td>
                     </tr>
                 </tbody>
