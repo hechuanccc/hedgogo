@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <label  class="label-width">{{ $t('messages.members') }} </label>
                                 <div class="inline-form-control">
-                                    <level :level="message.member_level" :disabled="!message.receiver" @level-choose="changeFromLevel"></level>
+                                    <level :level="message.member_level" :disabled="!(!message.receiver)" @level-choose="changeFromLevel"></level>
                                 </div>
                             </div>
                         </div>

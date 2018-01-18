@@ -29,7 +29,7 @@
                 :level="query.member_level"
                 @level-select="levelSelect"
                 :placeholder="$t('member.level')"
-                :disabled="!agentReport"
+                :disabled="agentReport"
               />
               <transaction-type-selector
                 class="pull-left m-r-xs"
