@@ -67,10 +67,10 @@
                         </td>
                     </tr>
                 </tbody>
-			</table>
-		</div>
-		<div class="row m-b-lg">
-			<pulling
+            </table>
+        </div>
+        <div class="row m-b-lg">
+            <pulling
                 :queryset="queryset"
                 :query="query"
                 @query-data="queryData"
@@ -78,7 +78,7 @@
                 :api="actionrecordApi"
                 ref="pulling"
             />
-		</div>
+        </div>
     </div>
 </template>
 
@@ -150,7 +150,6 @@ export default {
             this.queryset = queryset
             this.queryset.forEach(element => {
                 element.description = element.description.replace(/(\r\n|\r|\n)/g, '<br/>')
-                console.log(element.description)
             })
         },
         queryParam (query) {
