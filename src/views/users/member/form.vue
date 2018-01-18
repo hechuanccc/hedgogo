@@ -115,7 +115,11 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.real_name')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" :placeholder="member.id!='' ? '' : '比如：张三丰'" v-model="member.real_name" :disabled="!$root.permissions.includes('update_member_name')" required>
+                    <input class="form-control"
+                      :placeholder="member.id!='' ? '' : '比如：张三丰'"
+                      v-model="member.real_name"
+                      :disabled="!updateMemberNamePermission"
+                      required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -127,10 +131,15 @@
                 <div class="form-group">
                   <label for="agent" class="label-width">{{$t('member.level')}} </label>
                   <div class="inline-form-control">
-                    <level :level="member.level" @level-select="levelSelect" :req="true" :disabled="$root.permissions.includes('update_member_level')"></level>
+                    <level
+                      :level="member.level"
+                      @level-select="levelSelect"
+                      :req="true"
+                      :disabled="!updateMemberLevelPermission">
+                    </level>
                   </div>
                 </div>
-                <div v-if="$root.permissions.includes('list_update_member_bank')">
+                <div v-if="listUpdateMemberBankPermission">
                   <h5 class="m-b">{{$t('bank.bank_title')}} </h5>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.name')}}</label>
@@ -161,7 +170,7 @@
               <div class="alert alert-danger" v-if="errorMsg">
                 <span>{{ errorMsg }}</span> 
               </div>
-              <button type="submit" :disabled="!$root.permissions.includes('update_member_details')" class="md-btn blue w-sm" >{{$t('common.save')}} </button>
+              <button type="submit" class="md-btn blue w-sm" >{{$t('common.save')}} </button>
             </div>
           </form>
         </div>
@@ -211,6 +220,12 @@
         computed: {
             updateMemberDetailsPermission () {
                 return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_details') : this.$root.permissions.includes('add_new_member')
+            },
+            updateMemberNamePermission () {
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_name') : this.$root.permissions.includes('add_new_member')
+            },
+            updateMemberLevelPermission () {
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_level') : this.$root.permissions.includes('add_new_member')
             },
             listUpdateMemberBankPermission () {
                 return this.$route.name === 'member-edit' ? this.$root.permissions.includes('list_update_member_bank') : this.$root.permissions.includes('add_new_member')
