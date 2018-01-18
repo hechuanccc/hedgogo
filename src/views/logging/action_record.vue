@@ -38,9 +38,9 @@
                     </div>
                 </div>
             </div>
-		</form>
+        </form>
         <div class="box">
-		    <table class="table table-striped b-t">
+            <table class="table table-striped b-t">
                 <thead>
                     <tr>
                         <th>{{$t('actionrecord.action_time')}}</th>
