@@ -1,42 +1,42 @@
 <template>
     <div>
 		<form class="form text-sm" v-on:submit.prevent="submit">
-			<div class="box">
-				<div class="box-body clearfix form-inline form-input-sm">
-					<div class="row m-l-xs m-r-xs">
-						<date-picker
-							width='227'
-							:not-after="today"
-							:shortcuts="shortcuts"
-							:placeholder="$t('common.please_select') + $t('actionrecord.action_time')"
-							class="pull-left m-r-xs"
-							type="date"
-							v-model="action_time"
-							format="yyyy-MM-dd"
-							range
-						/>
-						<div class="form-group pull-left m-r-xs p-t-xs">
-							<label class="form-control-label">
-								{{ $t('actionrecord.action_result') }}
-							</label>
-							<label class="sm-check m-r">
-								<input type="radio" value="" v-model="action_result">
+            <div class="box">
+                <div class="box-body clearfix form-inline form-input-sm">
+                    <div class="row m-l-xs m-r-xs">
+                        <date-picker
+                            width='227'
+                            :not-after="today"
+                            :shortcuts="shortcuts"
+                            :placeholder="$t('common.please_select') + $t('actionrecord.action_time')"
+                            class="pull-left m-r-xs"
+                            type="date"
+                            v-model="action_time"
+                            format="yyyy-MM-dd"
+                            range
+                        />
+                        <div class="form-group pull-left m-r-xs p-t-xs">
+                            <label class="form-control-label">
+                                {{ $t('actionrecord.action_result') }}
+                            </label>
+                            <label class="sm-check m-r">
+                                <input type="radio" value="" v-model="action_result">
                                 <i class="blue m-r-xs"></i>
                                 {{ $t('common.show_all') }}
-							</label>
-							<label class="sm-check m-r">
-								<input type="radio" value="1" v-model="action_result">
+                            </label>
+                            <label class="sm-check m-r">
+                                <input type="radio" value="1" v-model="action_result">
                                 <i class="blue m-r-xs"></i>
                                 {{ $t('status.success') }}
-							</label>
-							<label class="sm-check m-r">
-								<input type="radio" value="0" v-model="action_result">
+                            </label>
+                            <label class="sm-check m-r">
+                                <input type="radio" value="0" v-model="action_result">
                                 <i class="blue m-r-xs"></i>
                                 {{ $t('status.failed') }}
-							</label>
-						</div>
-					</div>
-				</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</form>
 		<div class="box">
