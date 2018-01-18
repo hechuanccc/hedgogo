@@ -1,6 +1,6 @@
 <template>
     <div>
-		<form class="form text-sm" v-on:submit.prevent="submit">
+        <form class="form text-sm" v-on:submit.prevent="submit">
             <div class="box">
                 <div class="box-body clearfix form-inline form-input-sm">
                     <div class="row m-l-xs m-r-xs">
@@ -37,10 +37,10 @@
                         </div>
                     </div>
                 </div>
-			</div>
+            </div>
 		</form>
-		<div class="box">
-			<table class="table table-striped b-t">
+        <div class="box">
+		    <table class="table table-striped b-t">
                 <thead>
                     <tr>
                         <th>{{$t('actionrecord.action_time')}}</th>
@@ -69,16 +69,15 @@
                 </tbody>
 			</table>
 		</div>
-
 		<div class="row m-b-lg">
 			<pulling
-			:queryset="queryset"
-			:query="query"
-			@query-data="queryData"
-			@query-param="queryParam"
-			:api="actionrecordApi"
-			ref="pulling">
-			</pulling>
+                :queryset="queryset"
+                :query="query"
+                @query-data="queryData"
+                @query-param="queryParam"
+                :api="actionrecordApi"
+                ref="pulling"
+            />
 		</div>
     </div>
 </template>
