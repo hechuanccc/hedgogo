@@ -727,18 +727,14 @@ export default {
     },
     actionrecord: {
         id: 'ID',
-        action_username: 'Staff Name',
-        username: 'Member Name',
         action_time: 'Action Time',
-        ipaddr: 'IP',
+        action_user: 'User',
+        action_user_type: 'User Group',
+        action_ip: 'IP',
         action_type: 'Action Type',
-        provider: 'Provider',
-        game_name: 'Game Name',
-        action_result: 'Action Result',
-        login: 'Log in',
-        change_password: 'Change Password',
-        change_withdraw_password: 'Change Withdraw Password',
-        launch_game: 'Launch Game'
+        action_result: 'Status',
+        description: 'Description',
+        username: 'Username'
     },
     manage: {
         platform: 'Platform',

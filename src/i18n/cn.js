@@ -726,18 +726,14 @@ export default {
     },
     actionrecord: {
         id: '序号',
-        action_username: '操作账户',
-        username: '用户名',
         action_time: '操作时间',
-        ipaddr: 'IP',
+        action_user: '操作账户',
+        action_user_type: '角色',
+        action_ip: 'IP',
         action_type: '操作类型',
-        provider: '娱乐城',
-        game_name: '游戏名称',
         action_result: '状态',
-        login: '登入',
-        change_password: '修改密码',
-        change_withdraw_password: '修改取款密码',
-        launch_game: '登入游戏'
+        description: '操作说明',
+        username: '用户名'
     },
     manage: {
         platform: '平台',
