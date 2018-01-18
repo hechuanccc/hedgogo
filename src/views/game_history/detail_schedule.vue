@@ -254,7 +254,7 @@
                                 v-if="mode && $root.permissions.includes('official_no_draw')"
                             ><b>{{ $t('game_history.no_draw') }}</b>
                             </span>
-                            <span v-if="!$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
+                            <span v-if="!mode && !$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
                                 {{ $t('common.errorPermission') }}
                             </span>
                         </td>
