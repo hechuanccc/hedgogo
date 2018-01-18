@@ -119,20 +119,28 @@
                     </div>                
                 </div>
                 <div class="modal-footer">
-                    <div class="inline pull-left m-l-lg m-t-sm checkbox" v-if="modal.mode === 'manual_draw'">
-                        <input
-                            type="checkbox"
-                            v-model="modal.sureDraw"
-                            :disabled="!$root.permissions.includes('manually_draw_game_result')"
-                        >
-                        <i class="blue"></i>{{ $t('game_history.sure_manual_draw', {bet_record_count: modal.bets_count}) }}
+                    <div class="inline pull-left m-l-sm m-t-sm checkbox" v-if="modal.mode === 'manual_draw'">
+                        <label class="check">
+                            <input
+                                type="checkbox"
+                                v-model="modal.sureDraw"
+                                :disabled="!$root.permissions.includes('manually_draw_game_result')"
+                            >
+                            <i class="blue"></i>
+                            {{ $t('game_history.sure_manual_draw', {
+                                bet_record_count: modal.bets_count
+                            }) }}
+                        </label>
                     </div>
-                    <div class="inline pull-left m-l-lg m-t-sm checkbox" v-else>
-                        <input
-                            type="checkbox"
-                            v-model="modal.inform"
-                            :disabled="!$root.permissions.includes('official_no_draw')">
-                        <i class="blue"></i>{{ $t('game_history.inform_no_draw') }}
+                    <div class="inline pull-left m-l-sm m-t-sm checkbox" v-else>
+                        <label class="check">
+                            <input
+                                type="checkbox"
+                                v-model="modal.inform"
+                                :disabled="!$root.permissions.includes('official_no_draw')">
+                            <i class="blue"></i>
+                            {{ $t('game_history.inform_no_draw') }}
+                        </label>
                     </div>
                     <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
                     <button 
@@ -272,7 +280,7 @@ export default{
         },
         enterDetailPage (id, mode) {
             this.getGameInfo(id).then(game => {
-                this.$router.push(`/game_history/${id}/?code=${game.code}&mode=${mode}`)
+                this.$router.push(`/game_history/${id}/?game_code=${game.code}&mode=${mode}`)
             })
         }
     },
