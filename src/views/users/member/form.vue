@@ -118,7 +118,7 @@
                     <input class="form-control"
                       :placeholder="member.id!='' ? '' : '比如：张三丰'"
                       v-model="member.real_name"
-                      :disabled="!updateMemberNamePermission && !updateMemberDetailsPermission"
+                      :disabled="!updateMemberNamePermission"
                       required>
                   </div>
                 </div>
@@ -135,7 +135,7 @@
                       :level="member.level"
                       @level-select="levelSelect"
                       :req="true"
-                      :disabled="!updateMemberLevelPermission && !updateMemberDetailsPermission">
+                      :disabled="!updateMemberLevelPermission">
                     </level>
                   </div>
                 </div>
@@ -222,10 +222,10 @@
                 return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_details') : this.$root.permissions.includes('add_new_member')
             },
             updateMemberNamePermission () {
-                return this.$root.permissions.includes('update_member_name')
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_name') : this.$root.permissions.includes('add_new_member')
             },
             updateMemberLevelPermission () {
-                return this.$root.permissions.includes('update_member_name')
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_name') : this.$root.permissions.includes('add_new_member')
             },
             listUpdateMemberBankPermission () {
                 return this.$route.name === 'member-edit' ? this.$root.permissions.includes('list_update_member_bank') : this.$root.permissions.includes('add_new_member')
