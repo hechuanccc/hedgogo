@@ -471,7 +471,7 @@ export default {
         updated_at: 'Updated at',
         email: 'Email',
         no_setting: 'No Setting',
-        enable: 'Enable',
+        enabled: 'Enable',
         disabled: 'Disabled',
         status_updated: 'Status Updated!',
         no_select_group: 'Please select a role!'

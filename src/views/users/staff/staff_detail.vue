@@ -6,13 +6,6 @@
                 <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
-        <div class="alert alert-success" v-if="passwordSuccess">
-            <span>{{ $t('action.login_password_changed') }}</span>
-            <strong>{{ newPassword }}</strong>
-        </div>
-        <div class="alert alert-danger" v-if="passwordError">
-            修改失败：{{ passwordError }}
-        </div>
         <div class="box">
             <div class="box-header b-b">
                 <div class="row">
@@ -21,12 +14,6 @@
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right">
                         <router-link class="md-btn md-flat m-r-sm" :to="'/staff/'+staff.id+'/edit'">{{ $t('action.update') }}</router-link>
-                        <a
-                            class="md-btn md-flat m-r-sm"
-                            @click="resetPassword($event)"
-                            v-if="$root.permissions.includes('update_staff_password')"
-                        >{{ $t('action.reset_password') }}
-                        </a>
                         <a
                             class="md-btn md-flat m-r-sm"
                             @click="deleteStaff(staff.id, true, $event)"
@@ -111,10 +98,7 @@ export default {
             staff: {
                 user_group: {}
             },
-            statusUpdated: false,
-            passwordSuccess: false,
-            passwordError: '',
-            newPassword: ''
+            statusUpdated: false
         }
     },
     created () {
@@ -138,21 +122,6 @@ export default {
                 setTimeout(() => {
                     this.statusUpdated = false
                 }, 2000)
-            })
-        },
-        resetPassword (event) {
-            if (!window.confirm(this.$t('member.reset_confirm', {
-                action: event.target.innerText
-            }))) {
-                return
-            }
-            this.$http.post(api.passwordstaff, {
-                'account_id': this.staff.id
-            }, {emulateJSON: true}).then(data => {
-                this.passwordSuccess = true
-                this.newPassword = data.new_password
-            }, error => {
-                this.passwordError = error
             })
         },
         deleteStaff (id, confirm, event) {

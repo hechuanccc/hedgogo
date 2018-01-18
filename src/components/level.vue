@@ -1,5 +1,5 @@
 <template>
-    <select class="form-control w-sm c-select" v-model="mySelectLevel" v-if="mode==='select'" :required="req" :disabled="!disabled">
+    <select class="form-control w-sm c-select" v-model="mySelectLevel" v-if="mode==='select'" :required="req" :disabled="disabled">
         <option value="">{{$t('member.level')}}</option>
         <option class="form-control" :value="l.id" v-for="l in levels" :key="l.id">{{l.name}}</option>
     </select>
@@ -26,7 +26,7 @@ export default {
             default: 'select'
         },
         disabled: {
-            default: true
+            default: false
         },
         index: {
             default: 0
