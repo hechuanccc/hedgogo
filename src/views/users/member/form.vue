@@ -225,7 +225,7 @@
                 return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_name') : this.$root.permissions.includes('add_new_member')
             },
             updateMemberLevelPermission () {
-                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_name') : this.$root.permissions.includes('add_new_member')
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_level') : this.$root.permissions.includes('add_new_member')
             },
             listUpdateMemberBankPermission () {
                 return this.$route.name === 'member-edit' ? this.$root.permissions.includes('list_update_member_bank') : this.$root.permissions.includes('add_new_member')
