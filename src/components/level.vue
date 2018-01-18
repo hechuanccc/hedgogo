@@ -20,13 +20,13 @@ export default {
             default: false
         },
         level: {
-            default: 'true'
+            default: ''
         },
         mode: {
             default: 'select'
         },
         disabled: {
-            default: ''
+            default: 'true'
         },
         index: {
             default: 0
