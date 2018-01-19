@@ -60,7 +60,7 @@
                                 v-model="query.description_q"
                                 class="form-control"
                                 style="width: 224px;"
-                                :placeholder="`${$t('actionrecord.enter_keywords')}${$t('actionrecord.separated_by_spaces')}`"
+                                :placeholder="`${$t('actionrecord.enter_keywords')} ${$t('actionrecord.separated_by_spaces')}`"
                                 @input="search"
                             />
                         </div>
