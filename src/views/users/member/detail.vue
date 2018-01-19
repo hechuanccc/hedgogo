@@ -199,14 +199,14 @@
           <div class="row m-b b-b p-b">
             <div class="col-xs-5">
               <span class="text-muted">{{$t('bank.bank_title')}}</span>
-              <div v-if="!member.bank">
+              <div v-if="!member.bank || (typeof member.bank === 'array' && !member.bank.length)">
                 <span class="label">{{$t('common.unfilled')}}</span>
               </div>
               <div class="grey-50 p-a m-t" v-else>
-                <div>{{$t('bank.name')}}：<span>{{member.bank.bank.name}}</span></div>
-                <div>{{$t('bank.province')}}：<span>{{member.bank.province}}</span></div>
-                <div>{{$t('bank.city')}}：<span>{{member.bank.city}}</span></div>
-                <div>{{$t('bank.account')}}：<span>{{member.bank.account}}</span></div>
+                <div>{{$t('bank.name')}}：<span>{{(member.bank.bank && member.bank.bank.name) || '-'}}</span></div>
+                <div>{{$t('bank.province')}}：<span>{{member.bank.province || '-'}}</span></div>
+                <div>{{$t('bank.city')}}：<span>{{member.bank.city || '-'}}</span></div>
+                <div>{{$t('bank.account')}}：<span>{{member.bank.account || '-'}}</span></div>
               </div>
             </div>
           </div>
