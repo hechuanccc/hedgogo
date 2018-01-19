@@ -85,6 +85,24 @@
                                 {{ $t('status.failed') }}
                             </label>
                         </div>
+                        <div class="pull-right">
+                            <button
+                                type="button"
+                                class="btn btn-icon white p-b-0 m-t-sm"
+                                @click="clearAll"
+                                v-if="!loading"
+                            >
+                                <i class="fa fa-remove text-blue"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-icon white p-b-0 m-t-sm"
+                                v-else
+                                disabled
+                            >
+                                <i class="fa fa-spin fa-spinner"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,7 +174,8 @@ export default {
                 text: this.$t(`common.${element}`),
                 start: date[element][0],
                 end: date[element][1]
-            }))
+            })),
+            loading: true
         }
     },
     created () {
@@ -204,6 +223,7 @@ export default {
             this.query = Object.assign({}, this.$route.query)
         },
         queryData (queryset) {
+            this.loading = false
             this.queryset = queryset
             this.queryset.forEach(element => {
                 element.description = element.description.replace(/(\r\n|\r|\n)/g, '<br/>')
@@ -213,13 +233,20 @@ export default {
             this.query = Object.assign(this.query, query)
         },
         submit () {
+            this.loading = true
             this.$refs.pulling.submit()
         },
         search:
             _.debounce(function () {
                 this.submit()
             },
-        500)
+        500),
+        clearAll () {
+            this.query = {}
+            this.$nextTick(() => {
+                this.submit()
+            })
+        }
     },
     components: {
         DatePicker,
