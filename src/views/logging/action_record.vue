@@ -199,6 +199,7 @@ export default {
         },
         '$route': {
             handler () {
+                this.loading = true
                 this.setQueryAll()
                 this.$refs.pulling.rebase()
             },
@@ -233,7 +234,6 @@ export default {
             this.query = Object.assign(this.query, query)
         },
         submit () {
-            this.loading = true
             this.$refs.pulling.submit()
         },
         search:
