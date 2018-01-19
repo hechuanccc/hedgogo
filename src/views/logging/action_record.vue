@@ -85,6 +85,15 @@
                                 {{ $t('status.failed') }}
                             </label>
                         </div>
+                        <div class="pull-right">
+                            <button
+                                type="button"
+                                class="btn btn-icon white p-b-0 m-t-sm"
+                                @click="clearAll"
+                            >
+                                <i class="fa fa-remove text-blue"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -219,7 +228,13 @@ export default {
             _.debounce(function () {
                 this.submit()
             },
-        500)
+        500),
+        clearAll () {
+            this.query = {}
+            this.$nextTick(() => {
+                this.submit()
+            })
+        }
     },
     components: {
         DatePicker,

@@ -236,7 +236,7 @@
                 return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('update_agent_name_phone_mail') : this.$root.permissions.includes('add_new_agent')
             },
             listUpdateAgentBankPermission () {
-                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('list_update_agent_bank') : this.$root.permissions.includes('add_new_agent')
+                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('update_agent_bank') : this.$root.permissions.includes('add_new_agent')
             },
             bankFilled () {
                 let bankinfo = this.agent.bank
