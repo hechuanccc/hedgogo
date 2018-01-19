@@ -315,6 +315,7 @@
             },
             clearall () {
                 this.query = {}
+                this.selected = '0'
                 this.$nextTick(() => {
                     this.submit()
                 })
