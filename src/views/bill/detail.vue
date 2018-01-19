@@ -2,9 +2,9 @@
     <div>
       <div class="m-b">
           <ol class="breadcrumb">
-              <li v-if="transaction.transaction_type.code ==='remit'" class="active"><router-link :to="'/bill/remit?report_flag=True'">{{transaction.transaction_type.display_name}}</router-link></li>
-              <li v-if="transaction.transaction_type.code ==='online_pay'" class="active"><router-link :to="'/bill/online?report_flag=True'">{{transaction.transaction_type.display_name}}</router-link></li>
-              <li v-if="transaction.transaction_type.code ==='withdraw'" class="active"><router-link :to="'/bill/withdraw?report_flag=True'">{{transaction.transaction_type.display_name}}</router-link></li>
+              <li v-if="transaction.transaction_type.code ==='remit'" class="active"><router-link :to="'/bill/remit'">{{transaction.transaction_type.display_name}}</router-link></li>
+              <li v-if="transaction.transaction_type.code ==='online_pay'" class="active"><router-link :to="'/bill/online'">{{transaction.transaction_type.display_name}}</router-link></li>
+              <li v-if="transaction.transaction_type.code ==='withdraw'" class="active"><router-link :to="'/bill/withdraw'">{{transaction.transaction_type.display_name}}</router-link></li>
               <li class="active">{{transaction.transaction_type.display_name}}</li>
           </ol>
       </div>
