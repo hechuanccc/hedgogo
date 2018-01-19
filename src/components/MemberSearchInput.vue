@@ -3,7 +3,7 @@
         <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m" @submit.prevent="search">
             <div class="form-group l-h m-a-0">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon btn b-a"><i class="fa fa-search"></i></span>
+                    <span class="input-group-addon b-a"><i class="fa fa-search"></i></span>
                     <input 
                         type="text"
                         class="form-control p-x b-a rounded"
