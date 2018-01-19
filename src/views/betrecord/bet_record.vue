@@ -423,7 +423,7 @@
                 })
             },
             getGameCategory (game) {
-                this.$http.get(`${api.gamecategory}?game=${this.query.game_q}`).then(data => {
+                this.$http.get(`${api.gamecategory}?game=${this.query.game_q}&opt_fields=id,display_name`).then(data => {
                     this.categories = data
                 })
             },
