@@ -13,33 +13,7 @@
                     <a class="dropdown-item" @click="logout">{{$t('action.logout')}}</a>
                 </div>
             </div>
-            <div class="collapse navbar-toggleable-sm" id="collapse">
-                <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m" @submit.prevent="search">
-                    <div class="form-group l-h m-a-0">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                            <input 
-                                type="text"
-                                class="form-control p-x b-a rounded"
-                                v-model.trim="query.username_q"
-                                :placeholder="$t('common.search_member')"
-                                @focus="focusSearchMemberInput()"
-                                @blur="blurSearchMemberInput()"
-                                @change="search"
-                            >
-                            <div class="search-results" v-if="showResults">
-                                <div class="search-items">
-                                    <div class="search-item" v-show="searchLoading"><span class="m-l"><i class="fa fa-spin fa-spinner"></i> {{$t('common.loading')}}</span></div>
-                                    <div class="search-item" v-show="searchNoRecord"><span class="m-l">{{$t('common.no_record')}}</span></div>
-                                    <div class="search-item" v-for="r in results" :key="r.id">
-                                        <a @click="routerLinkTo(r.id)">{{r.username}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            <member-search-input/>
 
             <div class="navbar-nav pull-right m-r">
                 <ul class="nav navbar-nav pull-left prompt">
@@ -100,7 +74,7 @@
     import $ from '../utils/util'
     import INotify from 'title-notify'
     import axios from 'axios'
-    import _ from 'lodash'
+    import MemberSearchInput from './MemberSearchInput'
 
     export default {
         data () {
@@ -109,9 +83,6 @@
                 query: {
                     username_q: ''
                 },
-                results: [],
-                searchlimit: 5,
-                showResults: false,
                 status: '3',
                 members_count: '',
                 iNotify: '',
@@ -120,8 +91,7 @@
                 num: 0,
                 remit_count: '',
                 withdraw_count: '',
-                abnormal_count: '',
-                searchLoading: false
+                abnormal_count: ''
             }
         },
         props: {
@@ -138,9 +108,6 @@
         computed: {
             count: function () {
                 return this.remit_count + this.withdraw_count
-            },
-            searchNoRecord () {
-                return (!this.query.username_q || this.results.length === 0) && !this.searchLoading
             }
         },
         watch: {
@@ -201,13 +168,6 @@
                     } else if (old !== '') {
                         this.iNotify.setFavicon(newObj)
                     }
-                }
-            },
-            'query.username_q' (newObj, old) {
-                this.searchLoading = newObj.length > 0
-                this.results = []
-                if (this.query.username_q) {
-                    this.search()
                 }
             }
         },
@@ -300,39 +260,15 @@
                     this.iNotify.setTitle().title = this.oldTitle
                     this.iNotify.setTitle()
                 }
-            },
-            search:
-                _.debounce(function () {
-                    if (this.query.username_q) {
-                        this.results = []
-                        this.$http.get(api.search_member + '?username_q=' + this.query.username_q).then(data => {
-                            this.searchLoading = false
-                            if (data.length > 0) {
-                                this.results = data.slice(0, Number(this.searchlimit))
-                            }
-                        }, error => {
-                            this.searchErr = error
-                        })
-                    }
-                },
-            500),
-            focusSearchMemberInput () {
-                this.showResults = true
-            },
-            blurSearchMemberInput () {
-                setTimeout(() => {
-                    this.showResults = false
-                }, 300)
-            },
-            routerLinkTo (id) {
-                this.blurSearchMemberInput()
-                this.$router.push('/member/' + id)
             }
         },
         filters: {
             limit: function (arr, limit) {
                 return arr.slice(0, Number(limit))
             }
+        },
+        components: {
+            MemberSearchInput
         }
     }
 </script>
