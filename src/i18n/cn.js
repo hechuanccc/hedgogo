@@ -727,13 +727,21 @@ export default {
     actionrecord: {
         id: '序号',
         action_time: '操作时间',
-        action_user: '操作账户',
+        action_username: '操作账户',
         action_user_type: '角色',
         action_ip: 'IP',
         action_type: '操作类型',
+        action_types: {
+            finance: '财务',
+            configuration: '配置',
+            member_information: '会员资料',
+            game: '游戏'
+        },
         action_result: '状态',
         description: '操作说明',
-        username: '用户名'
+        username: '用户名',
+        enter_keywords: '输入关键字',
+        separated_by_spaces: '以空格隔开'
     },
     manage: {
         platform: '平台',

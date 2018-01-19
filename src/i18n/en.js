@@ -728,13 +728,21 @@ export default {
     actionrecord: {
         id: 'ID',
         action_time: 'Action Time',
-        action_user: 'User',
+        action_username: 'User Name',
         action_user_type: 'User Group',
+        action_types: {
+            finance: 'Finance',
+            configuration: 'Config.',
+            member_information: 'Member Info.',
+            game: 'Game'
+        },
         action_ip: 'IP',
         action_type: 'Action Type',
         action_result: 'Status',
         description: 'Description',
-        username: 'Username'
+        username: 'Username',
+        enter_keywords: 'Enter keywords',
+        separated_by_spaces: 'separated by spaces'
     },
     manage: {
         platform: 'Platform',

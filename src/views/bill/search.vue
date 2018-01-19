@@ -15,7 +15,7 @@
                             class="inline"
                             :level="member_level"
                             @level-select="changeFromLevel"
-                            :disabled="!$route.query.member"
+                            :disabled="$route.query.member"
                         >
                         </level>
                         <transaction-type-selector
