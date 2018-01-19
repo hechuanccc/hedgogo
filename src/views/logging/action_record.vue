@@ -22,7 +22,7 @@
                             <label class="form-control-label p-b-0">{{ $t('actionrecord.action_username') }}</label>
                             <input
                                 type="text"
-                                v-model="query.username_q"
+                                v-model="query.action_username_q"
                                 class="form-control w-sm"
                                 :placeholder="$t('actionrecord.action_username')"
                                 @input="search"
@@ -105,7 +105,7 @@
                 <tbody>
                     <tr v-for="(report, index) in queryset" :key="index">
                         <td class="text-center">{{ report.action_time | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                        <td>{{ report.action_user || '-' }}</td>
+                        <td>{{ report.action_username || '-' }}</td>
                         <td>{{ report.action_user_type || '-' }}</td>
                         <td>{{ report.action_ip || '-' }}</td>
                         <td>{{ report.action_type || '-' }}</td>
