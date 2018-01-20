@@ -79,7 +79,7 @@
                         <span class="text-muted">{{$t('staff.status')}}</span>
                         <div>
                             <span :class="['label', staff.status?'success':'danger']">{{ staff.status ?  $t('status.active') : $t('status.inactive') }}</span>
-                            <template>
+                            <template v-if="$root.permissions.includes('update_staff_status')">
                                 <a class="text-sm m-l" @click="toggleStatus">{{ staff.status ? $t('staff.disabled') : $t('staff.enabled') }}</a>
                             </template>
                             <span class="text-success text-sm m-l" v-show="statusUpdated">{{ $t('staff.status_updated') }}</span>
