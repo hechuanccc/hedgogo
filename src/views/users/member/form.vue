@@ -33,7 +33,7 @@
                     <input class="form-control" name="account" v-model="member.agent.name" disabled required/>
                   </div>
                 </div>
-                <div class="form-group b-b p-b" v-if="$root.permissions.includes('update_member_agent')">
+                <div class="form-group b-b p-b" v-if="updateMemberDetailsPermission">
                   <label for="agent" v-if="member.agent.name" class="label-width">{{$t('member.update_agent')}}</label>
                   <label for="agent" v-else class="label-width">{{$t('member.agent')}}</label>
                   <div class="inline-form-control dropdown" :class="{'open': hasItems}">
