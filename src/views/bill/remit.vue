@@ -137,6 +137,7 @@
                             <select
                                 class="pull-left form-control w-sm c-select no-b-r"
                                 v-model="selected"
+                                @change="autoTogglePopup = true"
                             >
                                 <option value="0">{{ $t('common.applied_at') }}</option>
                                 <option value="1">{{ $t('common.status_updated_at') }}</option>
@@ -298,7 +299,7 @@
             <pulling
                 :queryset="queryset"
                 :extra="'transaction_type=remit&report_flag=true'"
-                :api="billApi"
+                :api="api"
                 :query="query"
                 :amount="total_amount"
                 :export_query="export_query"
@@ -326,7 +327,7 @@
         data () {
             return {
                 queryset: [],
-                billApi: api.bill,
+                api: api.bill,
                 query: {},
                 remit_type: '',
                 status: '',
@@ -342,6 +343,7 @@
                     start: date[element][0],
                     end: date[element][1]
                 })),
+                autoTogglePopup: false,
                 loading: true
             }
         },
@@ -368,10 +370,12 @@
             },
             created_at (newObj) {
                 [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                this.autoTogglePopup = false
                 this.submit()
             },
             updated_at (newObj) {
                 [this.query.updated_at_0, this.query.updated_at_1] = [...newObj]
+                this.autoTogglePopup = false
                 this.submit()
             },
             selected (newObj, old) {
@@ -381,15 +385,17 @@
                     updated_at_0: undefined,
                     updated_at_1: undefined
                 })
-                this.$nextTick(() => {
-                    if (newObj !== old) {
-                        if (newObj === '1') {
-                            this.$refs.updated.togglePopup()
-                        } else {
-                            this.$refs.created.togglePopup()
+                if (this.autoTogglePopup) {
+                    this.$nextTick(() => {
+                        if (newObj !== old) {
+                            if (newObj === '1') {
+                                this.$refs.updated.togglePopup()
+                            } else {
+                                this.$refs.created.togglePopup()
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         },
         created () {
