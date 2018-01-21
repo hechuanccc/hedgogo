@@ -109,12 +109,14 @@
                             </label>
                         </div>
                         <button
-                            class="md-btn w-xs btn pull-right m-t-md"
+                            class="md-btn w-xs pull-right btn m-t-md"
                             type="button"
                             @click="clearAll"
-                        >  
-                            <i class="fa fa-spin fa-spinner" v-if="loading"></i> 
-                            {{ $t('action.clear_all') }}
+                            :disabled="isQueryEmpty"
+                        >
+                            <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                            <i v-else class="fa fa-trash-o"></i> 
+                            <span>{{ $t('action.clear_all') }}</span>
                         </button>
                     </div>
                 </div>
@@ -169,6 +171,7 @@ import api from '../../api'
 import pulling from '../../components/pulling'
 import date from '../../utils/date'
 import _ from 'lodash'
+import $ from '../../utils/util'
 
 export default {
     data () {
@@ -198,29 +201,29 @@ export default {
     watch: {
         actionResult (newObj) {
             this.query.action_result = newObj || ''
-            if ((newObj && newObj !== this.$route.query.action_result) || (!newObj && this.$route.query.action_result)) {
-                this.submit()
-            }
+            this.submit()
         },
         actionType (newObj) {
             this.query.action_type = newObj || ''
-            if ((newObj && newObj !== this.$route.query.action_type) || (!newObj && this.$route.query.action_type)) {
-                this.submit()
-            }
+            this.submit()
         },
         '$route': {
             handler () {
                 this.loading = true
                 this.setQueryAll()
+                this.queryset = []
                 this.$refs.pulling.rebase()
             },
             deep: true
         },
         action_time (newObj) {
             [this.query.action_time_0, this.query.action_time_1] = [...newObj]
-            if (this.query.action_time_0 !== this.$route.query.action_time_0 || this.query.action_time_1 !== this.$route.query.action_time_1) {
-                this.submit()
-            }
+            this.submit()
+        }
+    },
+    computed: {
+        isQueryEmpty () {
+            return $.compareQuery(this.query, {})
         }
     },
     methods: {
@@ -245,7 +248,9 @@ export default {
             this.query = Object.assign(this.query, query)
         },
         submit () {
-            this.$refs.pulling.submit()
+            if (!$.compareQuery(this.query, this.$route.query)) {
+                this.$refs.pulling.submit()
+            }
         },
         search:
             _.debounce(function () {
