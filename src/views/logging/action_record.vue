@@ -5,7 +5,11 @@
                 <div class="box-body clearfix form-input-sm">
                     <div class="row m-l-xs m-r-xs">
                         <div class="pull-left m-r-xs">
-                            <label class="form-control-label p-b-0">{{ $t('actionrecord.action_time') }}</label>
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': action_time && (action_time[0] || action_time[1])}"
+                            >{{ $t('actionrecord.action_time') }}
+                            </label>
                             <date-picker
                                 width='227'
                                 style="display: block;"
@@ -19,7 +23,11 @@
                             />
                         </div>
                         <div class="pull-left m-r-xs">
-                            <label class="form-control-label p-b-0">{{ $t('actionrecord.action_username') }}</label>
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.action_username_q}"
+                            >{{ $t('actionrecord.action_username') }}
+                            </label>
                             <input
                                 type="text"
                                 v-model="query.action_username_q"
@@ -29,7 +37,11 @@
                             />
                         </div>
                         <div class="pull-left m-r-xs">
-                            <label class="form-control-label p-b-0">{{ $t('actionrecord.action_ip') }}</label>
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.action_ip_q}"
+                            >{{ $t('actionrecord.action_ip') }}
+                            </label>
                             <input
                                 type="text"
                                 v-model="query.action_ip_q"
@@ -39,22 +51,31 @@
                             />
                         </div>
                         <div class="pull-left m-r-xs">
-                            <label class="form-control-label p-b-0">{{ $t('actionrecord.action_type') }}</label>
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': actionType}"
+                            >{{ $t('actionrecord.action_type') }}
+                            </label>
                             <select
                                 class="form-control w-sm c-select"
                                 style="display: block;"
-                                v-model="action_type">
+                                v-model="actionType"
+                            >
                                 <option value=""><span class="text-muted">{{ $t('common.please_select') }}</span></option>
                                 <option
                                     :value="`${index}`"
-                                    v-for="(actionType, index) in action_types"
+                                    v-for="(actionType, index) in actionTypes"
                                     :key="index"
                                 >{{ $t('actionrecord.action_types.' + actionType) }}
                                 </option>
                             </select>
                         </div>
                         <div class="pull-left m-r-xs">
-                            <label class="form-control-label p-b-0">{{ $t('actionrecord.description') }}</label>
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.description_q}"
+                            >{{ $t('actionrecord.description') }}
+                            </label>
                             <input
                                 type="text"
                                 v-model="query.description_q"
@@ -65,44 +86,36 @@
                             />
                         </div>
                         <div class="pull-left m-r-xs">
-                            <label class="form-control-label p-b-0" 
-                                style="display: block;">
-                                {{ $t('actionrecord.action_result') }}
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': actionResult}"
+                                style="display: block;"
+                            >{{ $t('actionrecord.action_result') }}
                             </label>
                             <label class="sm-check m-r m-t-sm m-l">
-                                <input class="c-radio" type="radio" value="" v-model="action_result">
+                                <input class="c-radio" type="radio" value="" v-model="actionResult">
                                 <i class="blue m-r-xs"></i>
                                 {{ $t('common.show_all') }}
                             </label>
                             <label class="sm-check m-r">
-                                <input class="c-radio" type="radio" value="1" v-model="action_result">
+                                <input class="c-radio" type="radio" value="1" v-model="actionResult">
                                 <i class="blue m-r-xs"></i>
-                                {{ $t('status.success') }}
+                                <span class="label" :class="{'success': actionResult === '1'}">{{ $t('status.success') }}</span>
                             </label>
                             <label class="sm-check m-r">
-                                <input class="c-radio" type="radio" value="0" v-model="action_result">
+                                <input class="c-radio" type="radio" value="0" v-model="actionResult">
                                 <i class="blue m-r-xs"></i>
-                                {{ $t('status.failed') }}
+                                <span class="label" :class="{'danger': actionResult === '0'}">{{ $t('status.failed') }}</span>
                             </label>
                         </div>
-                        <div class="pull-right">
-                            <button
-                                type="button"
-                                class="btn btn-icon white p-b-0 m-t-sm"
-                                @click="clearAll"
-                                v-if="!loading"
-                            >
-                                <i class="fa fa-remove text-blue"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-icon white p-b-0 m-t-sm"
-                                v-else
-                                disabled
-                            >
-                                <i class="fa fa-spin fa-spinner"></i>
-                            </button>
-                        </div>
+                        <button
+                            class="md-btn w-xs btn pull-right m-t-md"
+                            type="button"
+                            @click="clearAll"
+                        >  
+                            <i class="fa fa-spin fa-spinner" v-if="loading"></i> 
+                            {{ $t('action.clear_all') }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -131,7 +144,7 @@
                         <td v-else>-</td>
                         <td class="text-center">
                             <span v-if="report.action_result" class="label success">{{ $t('status.success') }}</span>
-                            <span v-else class="label  danger">{{ $t('status.failed') }}</span>
+                            <span v-else class="label danger">{{ $t('status.failed') }}</span>
                         </td>
                     </tr>
                 </tbody>
@@ -155,10 +168,8 @@ import DatePicker from 'vue2-datepicker'
 import api from '../../api'
 import pulling from '../../components/pulling'
 import date from '../../utils/date'
-import Vue from 'vue'
 import _ from 'lodash'
 
-const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
@@ -166,10 +177,10 @@ export default {
             action_time: ['', ''],
             query: {},
             queryset: [],
-            action_result: '',
-            action_type: '',
-            action_types: ['finance', 'configuration', 'member_information', 'game'],
-            today: Vue.moment().format(format),
+            actionResult: '',
+            actionType: '',
+            actionTypes: ['finance', 'configuration', 'member_information', 'game'],
+            today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
                 start: date[element][0],
@@ -185,13 +196,13 @@ export default {
         })
     },
     watch: {
-        action_result (newObj) {
+        actionResult (newObj) {
             this.query.action_result = newObj || ''
             if ((newObj && newObj !== this.$route.query.action_result) || (!newObj && this.$route.query.action_result)) {
                 this.submit()
             }
         },
-        action_type (newObj) {
+        actionType (newObj) {
             this.query.action_type = newObj || ''
             if ((newObj && newObj !== this.$route.query.action_type) || (!newObj && this.$route.query.action_type)) {
                 this.submit()
@@ -219,8 +230,8 @@ export default {
             } else {
                 this.action_time = [undefined, undefined]
             }
-            this.action_result = this.$route.query.action_result || ''
-            this.action_type = this.$route.query.action_type || ''
+            this.actionResult = this.$route.query.action_result || ''
+            this.actionType = this.$route.query.action_type || ''
             this.query = Object.assign({}, this.$route.query)
         },
         queryData (queryset) {

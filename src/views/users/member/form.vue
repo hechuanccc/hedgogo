@@ -41,12 +41,7 @@
                            placeholder="代理商"
                            autocomplete="on"
                            v-model="query"
-                           @keydown.down="down"
-                           @keydown.up="up"
-                           @keydown.enter="hit"
-                           @keydown.esc="reset"
-                           @blur="checkAgent"
-                           @input="update"
+                           @change="checkAgent"
                            :required="!member.agent.name"
                     />
                     <div class="dropdown-menu" v-show="hasItems">
@@ -182,6 +177,7 @@
     import VueTypeahead from 'vue-typeahead'
     import api from '../../../api'
     import Vue from 'vue'
+    import _ from 'lodash'
     const format = 'YYYY-MM-DD'
 
     export default {
@@ -233,12 +229,14 @@
             bankFilled: function () {
                 let bankinfo = this.member.bank
                 return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
-            },
-            src: function () {
-                return api.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=4'
             }
         },
         watch: {
+            'query' (newObj) {
+                this.checkAgent()
+                this.agentValid = ''
+                this.agent = ''
+            },
             'member.birthday' (newObj, old) {
                 if (newObj) {
                     this.member.birthday = Vue.moment(this.member.birthday).format(format)
@@ -265,23 +263,24 @@
             levelSelect (val) {
                 this.member.level = val
             },
-            checkAgent () {
-                if (this.query !== '') {
-                    this.$http.get(api.agent + '?opt_fields=username,id,&username=' + this.query + '&level=4')
-                    .then(data => {
-                        if (data.length === 1) {
-                            this.agentValid = true
-                            this.member.agent = data[0].id
-                        } else {
-                            this.agentValid = false
-                            this.member.agent = ''
-                        }
-                    })
-                } else {
-                    this.agentValid = false
-                    this.agent = ''
-                }
-            },
+            checkAgent:
+                _.debounce(function () {
+                    if (this.query !== '') {
+                        this.$http.get(`${api.agent}?opt_fields=username,id&username=${this.query}&level=4`)
+                        .then(data => {
+                            if (data.length === 1) {
+                                this.agentValid = true
+                                this.member.agent = data[0].id
+                            } else {
+                                this.agentValid = false
+                                this.member.agent = ''
+                            }
+                        })
+                    } else {
+                        this.agentValid = ''
+                    }
+                },
+            700),
             onSubmit (e) {
                 this.initMember = Object.assign(this.initMember, this.member)
                 if (!this.bankFilled) {

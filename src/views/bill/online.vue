@@ -99,7 +99,8 @@
                             />
                             <button
                                 class="md-btn w-xs btn pull-right"
-                                type="button" @click="clearall"
+                                type="button"
+                                @click="clearall"
                             >{{$t('action.clear_all')}}
                             </button>
                         </div>
@@ -199,9 +200,8 @@
     import transactionStatus from '../../components/transaction_status'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
-    import Vue from 'vue'
+    import level from '../../components/level'
 
-    const format = 'YYYY-MM-DD'
     export default {
         data () {
             return {
@@ -215,7 +215,7 @@
                 total_amount: '',
                 href: '',
                 export_query: [],
-                today: Vue.moment().format(format),
+                today: date.today[0],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                     text: this.$t(`common.${element}`),
                     start: date[element][0],
@@ -325,7 +325,7 @@
             DatePicker,
             pulling,
             transactionStatus,
-            level: require('../../components/level')
+            level
         }
     }
 </script>

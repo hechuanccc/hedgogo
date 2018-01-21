@@ -26,7 +26,7 @@
                                         name="password"
                                         :placeholder="$t('staff.password')"
                                         v-model="staff.password"
-                                        :disabled="!$root.permissions.includes('update_staff_password')"
+                                        :disabled="!updateStaffPermission('password')"
                                         :required="!staff.id"
                                     >
                                 </div>
@@ -40,7 +40,7 @@
                                         name="email"
                                         :placeholder="$t('staff.email')"
                                         v-model="staff.email"
-                                        :disabled="!$root.permissions.includes('update_staff_role_mail')"
+                                        :disabled="!updateStaffPermission('role_mail')"
                                     >
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                         v-model="staff.user_group.id"
                                         @change="changeRole"
                                         :placeholder="$t('common.please_select') + $t('staff.role')"
-                                        :disabled="!$root.permissions.includes('update_staff_role_mail')"
+                                        :disabled="!updateStaffPermission('role_mail')"
                                     >
                                         <option class="form-control" value=''>{{ $t('common.please_select') + $t('staff.role') }}</option>                                        
                                         <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{ r.name }}</option>
@@ -125,6 +125,9 @@ export default {
         }
     },
     methods: {
+        updateStaffPermission (field) {
+            return this.$route.name === 'staff_edit' ? this.$root.permissions.includes(`update_staff_${field}`) : !this.$root.permissions.includes('add_new_staff')
+        },
         onSubmit (e) {
             let staffResult = Object({
                 username: this.staff.username,
