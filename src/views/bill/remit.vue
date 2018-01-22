@@ -130,7 +130,8 @@
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': selected === '0'
                                     ? created_at && (created_at[0] || created_at[1])
-                                    : updated_at && (updated_at[0] || updated_at[1])}"
+                                    : updated_at && (updated_at[0] || updated_at[1])
+                                }"
                             >{{ $t('common.applied_at') }} / {{ $t('common.status_updated_at') }} 
                             </label>
                             <div style="display: block;">
