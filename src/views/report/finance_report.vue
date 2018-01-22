@@ -51,7 +51,7 @@
               />
               <div class="pull-right">
                 <button type="submit" class="md-btn w-xs blue" @keyup.enter="submit">{{ $t('common.search') }}</button>
-                <button class="md-btn w-xs" type="button" @click="clearAll">{{ $t('action.clear_all') }}</button>
+                <button class="md-btn w-xs" type="button" @click="clearAll">{{ $t('action.clear') }}</button>
               </div>
             </div>
           </div>

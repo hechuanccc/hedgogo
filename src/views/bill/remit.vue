@@ -190,7 +190,7 @@
                         >
                             <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                             <i v-else class="fa fa-trash-o"></i> 
-                            <span>{{ $t('action.clear_all') }}</span>
+                            <span>{{ $t('action.clear') }}</span>
                         </button>
                     </div>
                 </div>

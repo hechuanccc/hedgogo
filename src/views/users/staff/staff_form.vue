@@ -126,7 +126,7 @@ export default {
     },
     methods: {
         updateStaffPermission (field) {
-            return this.$route.name === 'staff_edit' ? this.$root.permissions.includes(`update_staff_${field}`) : !this.$root.permissions.includes('add_new_staff')
+            return this.$route.name === 'staff_edit' ? this.$root.permissions.includes(`update_staff_${field}`) : this.$root.permissions.includes('add_new_staff')
         },
         onSubmit (e) {
             let staffResult = Object({

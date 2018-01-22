@@ -440,7 +440,7 @@ export default {
         edit_level: 'Modify Level',
         delete_level: 'Delete Level',
         logout: 'Log Out',
-        clear_all: 'Clear All',
+        clear: 'Clear',
         filter_trial_account: 'Filter Test User',
         no_setting: 'No setting',
         back_page: 'Go Back To The Last Page',
