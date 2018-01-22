@@ -39,7 +39,7 @@
                 <div class="form-group" v-if="agent.id!=''">
                   <label for="agent"  class="label-width">{{$t('common.status')}}</label>
                   <div class="inline-form-control">
-                    <select class="form-control w-sm c-select" v-model="agent.status" :disabled="!$root.permissions.includes('update_agent_status')">
+                    <select class="form-control w-sm c-select" v-model="agent.status" :disabled="!updateAgentPermission('status')">
                       <option value="1">{{$t('status.active')}}</option>
                       <option value="0">{{$t('status.disabled')}}</option>
                     </select>
@@ -48,7 +48,7 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.commission_setting')}} </label>
                   <div class="inline-form-control">
-                    <commissionsetting :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true" :disabled="!updateAgentSettingsPermission"/>
+                    <commissionsetting :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true" :disabled="!updateAgentPermission('settings')"/>
                   </div>
                 </div>
 
@@ -56,20 +56,20 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.dft_member_lv')}}</label>
                   <div class="inline-form-control">
-                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="true" :disabled="!updateAgentSettingsPermission"/>
+                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="true" :disabled="!updateAgentPermission('settings')"/>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="wechat" class="label-width">{{$t('common.wechat')}}</label>
                   <div class="inline-form-control">
-                    <input type="text" class="form-control" name="wechat" placeholder="比如：ABC234" v-model="agent.wechat" :disabled="!updateAgentDetailsPermission">
+                    <input type="text" class="form-control" name="wechat" placeholder="比如：ABC234" v-model="agent.wechat" :disabled="!updateAgentPermission('details')">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="qq" class="label-width">{{$t('common.qq')}}</label>
                   <div class="inline-form-control">
-                    <input type="number" class="form-control" name="qq" placeholder="比如：453087589" v-model="agent.qq" :disabled="!updateAgentDetailsPermission">
+                    <input type="number" class="form-control" name="qq" placeholder="比如：453087589" v-model="agent.qq" :disabled="!updateAgentPermission('details')">
                   </div>
                 </div>
                 <div class="form-group" v-if="agent.id!=''">
@@ -81,14 +81,14 @@
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('agent.domain')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" placeholder="123.com, abc.com" v-model="agent.domain" :disabled="!updateAgentSettingsPermission" required>
+                    <input class="form-control input-lg" placeholder="123.com, abc.com" v-model="agent.domain" :disabled="!updateAgentPermission('settings')" required>
                   </div>
                   <label class="t-red"> {{$t('agent.domain_label')}}</label>
                 </div>
                 <div class="form-group" >
                   <label for="phone" class="label-width">{{$t('common.phone')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" type="number"  name="agent" placeholder="比如：13856789876" v-model="agent.phone" :disabled="!updateAgentNamePhoneMailPermission" required>
+                    <input class="form-control" type="number"  name="agent" placeholder="比如：13856789876" v-model="agent.phone" :disabled="!updateAgentPermission('name_phone_mail')" required>
                   </div>
                 </div>
               </div>
@@ -97,7 +97,7 @@
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('common.real_name')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name" :disabled="!updateAgentNamePhoneMailPermission" required>
+                    <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name" :disabled="!updateAgentPermission('name_phone_mail')" required>
                   </div>
                 </div>
 
@@ -105,13 +105,13 @@
                   <label for="agent" class="label-width">{{$t('common.gender')}}</label>
                   <div class="from-control inline-form-control">
                     <label class="md-check md-check-md">
-                      <input type="radio" name="gender" value="M" v-model="agent.gender" :disabled="!updateAgentDetailsPermission">
+                      <input type="radio" name="gender" value="M" v-model="agent.gender" :disabled="!updateAgentPermission('details')">
                       <i class="blue"></i>
                       {{$t('common.male')}}
                     </label>
 
                     <label class="md-check md-check-md m-l-lg" >
-                      <input type="radio" name="gender" value="F" v-model="agent.gender" :disabled="!updateAgentDetailsPermission">
+                      <input type="radio" name="gender" value="F" v-model="agent.gender" :disabled="!updateAgentPermission('details')">
                       <i class="blue"></i>
                       {{$t('common.female')}}
                     </label>
@@ -121,13 +121,13 @@
                 <div class="form-group">
                   <label for="email" class="label-width">{{$t('common.email')}}</label>
                   <div class="inline-form-control">
-                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email" :disabled="!updateAgentNamePhoneMailPermission" required>
+                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email" :disabled="!updateAgentPermission('name_phone_mail')" required>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="birthday" class="label-width">{{$t('common.birthday')}}</label>
-                  <div class="inline-form-control" v-if="updateAgentDetailsPermission">
+                  <div class="inline-form-control" v-if="updateAgentPermission('details')">
                     <date-picker width='153' v-model="agent.birthday"></date-picker>
                   </div>
                   <div class="inline-form-control" v-else>
@@ -138,30 +138,30 @@
                 <h6 class="b-b p-b m-b m-t-lg">{{$t('bank.bank_title')}}</h6>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.name')}}</label>
-                  <bank :bank="agent.bank.bank" :req="true" @bank-select="bankSelect" :disabled="!listUpdateAgentBankPermission"></bank>
+                  <bank :bank="agent.bank.bank" :req="true" @bank-select="bankSelect" :disabled="!updateAgentPermission('bank')"></bank>
                 </div>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.province')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.province" :disabled="!listUpdateAgentBankPermission" required>
+                    <input class="form-control" v-model="agent.bank.province" :disabled="!updateAgentPermission('bank')" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.city')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.city" :disabled="!listUpdateAgentBankPermission" required>
+                    <input class="form-control" v-model="agent.bank.city" :disabled="!updateAgentPermission('bank')" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('bank.account')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" :disabled="!listUpdateAgentBankPermission" required>
+                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" :disabled="!updateAgentPermission('bank')" required>
                   </div>
                 </div>
 
                 <div class="form-group" >
                   <label for="memo" >{{$t('common.memo')}}</label>
-                  <textarea class="form-control" rows="3" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="agent.memo" :disabled="!updateAgentDetailsPermission"></textarea>
+                  <textarea class="form-control" rows="3" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="agent.memo" :disabled="!updateAgentPermission('details')"></textarea>
                 </div>
               </div>
 
@@ -226,18 +226,6 @@
             }
         },
         computed: {
-            updateAgentSettingsPermission () {
-                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('update_agent_settings') : this.$root.permissions.includes('add_new_agent')
-            },
-            updateAgentDetailsPermission () {
-                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('update_agent_details') : this.$root.permissions.includes('add_new_agent')
-            },
-            updateAgentNamePhoneMailPermission () {
-                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('update_agent_name_phone_mail') : this.$root.permissions.includes('add_new_agent')
-            },
-            listUpdateAgentBankPermission () {
-                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes('update_agent_bank') : this.$root.permissions.includes('add_new_agent')
-            },
             bankFilled () {
                 let bankinfo = this.agent.bank
                 return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
@@ -287,6 +275,9 @@
             }
         },
         methods: {
+            updateAgentPermission (field) {
+                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes(`update_agent_${field}`) : this.$root.permissions.includes('add_new_agent')
+            },
             bankSelect (bank) {
                 this.agent.bank.bank = bank
             },
