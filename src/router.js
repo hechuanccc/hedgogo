@@ -497,7 +497,7 @@ export default new Router({
             group: 'setting',
             title: Vue.t('nav.member_level_edit'),
             auth: true,
-            permission: 'update_member_level'
+            permission: 'update_memberlevel'
         }
     },
     {
