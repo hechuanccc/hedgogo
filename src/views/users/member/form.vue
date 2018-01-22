@@ -33,7 +33,7 @@
                     <input class="form-control" name="account" v-model="member.agent.name" disabled required/>
                   </div>
                 </div>
-                <div class="form-group b-b p-b" v-if="updateMemberDetailsPermission">
+                <div class="form-group b-b p-b" v-if="updateMemberPermission('agent')">
                   <label for="agent" v-if="member.agent.name" class="label-width">{{$t('member.update_agent')}}</label>
                   <label for="agent" v-else class="label-width">{{$t('member.agent')}}</label>
                   <div class="inline-form-control dropdown" :class="{'open': hasItems}">
@@ -59,13 +59,13 @@
                   <label for="agent" class="label-width">{{$t('common.gender')}} </label>
                   <div class="from-control inline-form-control">
                     <label class="md-check">
-                      <input type="radio" value="M" name="gender" v-model="member.gender" :disabled="!updateMemberDetailsPermission">
+                      <input type="radio" value="M" name="gender" v-model="member.gender" :disabled="!updateMemberPermission('details')">
                       <i class="blue"></i>
                       {{$t('common.male')}}
                     </label>
 
                     <label class="md-check m-l-lg" >
-                      <input type="radio" value="F" name="gender" v-model="member.gender" :disabled="!updateMemberDetailsPermission">
+                      <input type="radio" value="F" name="gender" v-model="member.gender" :disabled="!updateMemberPermission('details')">
                       <i class="blue"></i>
                       {{$t('common.female')}}
                     </label>
@@ -75,12 +75,12 @@
                 <div class="form-group">
                   <label for="email" class="label-width">{{$t('common.email')}}</label>
                   <div class="inline-form-control">
-                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="member.email" :disabled="!updateMemberDetailsPermission">
+                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="member.email" :disabled="!updateMemberPermission('details')">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="birthday" class="label-width">{{$t('common.birthday')}} </label>
-                  <div class="inline-form-control" v-if="updateMemberDetailsPermission">
+                  <div class="inline-form-control" v-if="updateMemberPermission('details')">
                     <date-picker width='153' v-model="member.birthday"></date-picker>
                   </div>
                   <div class="inline-form-control" v-else>
@@ -91,19 +91,19 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.wechat')}} </label>
                   <div class="inline-form-control">
-                    <input type="text" class="form-control" placeholder="比如：ABC234" v-model="member.wechat" :disabled="!updateMemberDetailsPermission">
+                    <input type="text" class="form-control" placeholder="比如：ABC234" v-model="member.wechat" :disabled="!updateMemberPermission('details')">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="label-width">QQ</label>
                   <div class="inline-form-control">
-                    <input type="number" class="form-control" placeholder="比如：453087589" v-model="member.qq" :disabled="!updateMemberDetailsPermission">
+                    <input type="number" class="form-control" placeholder="比如：453087589" v-model="member.qq" :disabled="!updateMemberPermission('details')">
                   </div>
                 </div>
 
                 <div class="form-group m-t" >
                   <label for="memo">{{$t('common.memo')}} </label>
-                  <textarea class="form-control" rows="3" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="member.memo" :disabled="!updateMemberDetailsPermission"></textarea>
+                  <textarea class="form-control" rows="3" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="member.memo" :disabled="!updateMemberPermission('details')"></textarea>
                 </div>
               </div>
               <div class="col-md-4 col-md-offset-1">
@@ -113,14 +113,14 @@
                     <input class="form-control"
                       :placeholder="member.id!='' ? '' : '比如：张三丰'"
                       v-model="member.real_name"
-                      :disabled="!updateMemberNamePermission"
+                      :disabled="!updateMemberPermission('name')"
                       required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="label-width">{{$t('common.phone')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" type="number" :placeholder="member.id!='' ? '' : '比如：13856789876'" v-model="member.phone" :disabled="!updateMemberDetailsPermission" required>
+                    <input class="form-control" type="number" :placeholder="member.id!='' ? '' : '比如：13856789876'" v-model="member.phone" :disabled="!updateMemberPermission('details')" required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -130,32 +130,32 @@
                       :level="member.level"
                       @level-select="levelSelect"
                       :req="true"
-                      :disabled="!updateMemberLevelPermission">
+                      :disabled="!updateMemberPermission('level')">
                     </level>
                   </div>
                 </div>
-                <div v-if="listUpdateMemberBankPermission">
+                <div v-if="updateMemberPermission('bank')">
                   <h5 class="m-b">{{$t('bank.bank_title')}} </h5>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.name')}}</label>
-                    <bank :bank="member.bank.bank" :req="bankFilled" @bank-select="bankSelect" :disabled="!listUpdateMemberBankPermission"></bank>
+                    <bank :bank="member.bank.bank" :req="bankFilled" @bank-select="bankSelect" :disabled="!updateMemberPermission('bank')"></bank>
                   </div>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.province')}} </label>
                     <div class="inline-form-control">
-                      <input class="form-control" v-model="member.bank.province" :required="bankFilled" :disabled="!listUpdateMemberBankPermission">
+                      <input class="form-control" v-model="member.bank.province" :required="bankFilled" :disabled="!updateMemberPermission('bank')">
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.city')}} </label>
                     <div class="inline-form-control">
-                      <input class="form-control" v-model="member.bank.city" :required="bankFilled" :disabled="!listUpdateMemberBankPermission">
+                      <input class="form-control" v-model="member.bank.city" :required="bankFilled" :disabled="!updateMemberPermission('bank')">
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.account')}} </label>
                     <div class="inline-form-control">
-                      <input class="form-control w-lg" type="number" placeholder="比如：3345678" v-model="member.bank.account" :required="bankFilled" :disabled="!listUpdateMemberBankPermission">
+                      <input class="form-control w-lg" type="number" placeholder="比如：3345678" v-model="member.bank.account" :required="bankFilled" :disabled="!updateMemberPermission('bank')">
                     </div>
                   </div>
                 </div>
@@ -214,18 +214,6 @@
             }
         },
         computed: {
-            updateMemberDetailsPermission () {
-                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_details') : this.$root.permissions.includes('add_new_member')
-            },
-            updateMemberNamePermission () {
-                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_name') : this.$root.permissions.includes('add_new_member')
-            },
-            updateMemberLevelPermission () {
-                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_level') : this.$root.permissions.includes('add_new_member')
-            },
-            listUpdateMemberBankPermission () {
-                return this.$route.name === 'member-edit' ? this.$root.permissions.includes('update_member_bank') : this.$root.permissions.includes('add_new_member')
-            },
             bankFilled: function () {
                 let bankinfo = this.member.bank
                 return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
@@ -257,6 +245,9 @@
             })
         },
         methods: {
+            updateMemberPermission (field) {
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes(`update_member_$(field)`) : this.$root.permissions.includes('add_new_member')
+            },
             bankSelect (bank) {
                 this.member.bank.bank = bank
             },
