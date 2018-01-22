@@ -118,9 +118,9 @@ export default class $ {
     }
 
     static compareQuery (q1, q2) {
-        // return true => q1 and q2 is the same, false => q1 and q2 is different
+        // return true => q1 and q2 are the same; false => q1 and q2 are different
         let q1Keys = Object.keys(q1).filter(element => !(!q1[element])).sort()
         let q2Keys = Object.keys(q2).filter(element => !(!q2[element])).sort()
-        return `${q1Keys}` === `${q2Keys}` && !q1Keys.find(key => q1[key] !== q2[key])
+        return `${q1Keys}` === `${q2Keys}` && !q1Keys.find(key => `${q1[key]}` !== `${q2[key]}`)
     }
 }

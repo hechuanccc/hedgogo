@@ -1,203 +1,201 @@
 <template>
     <div>
-      <form class="form" v-on:submit.prevent="submit">
-        <div class="box">
-            <div class="box-body clearfix form-input-sm">
-                <div class="row m-l-xs m-r-xs">
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': remit_type}"
-                        >{{ $t('setting.remit_type') }}
-                        </label>
-                        <select
-                            class="form-control w-sm c-select"
-                            style="display: block;"
-                            v-model="remit_type"
-                        >
-                            <option value="">{{ $t('common.please_select') }}</option>
-                            <option value="1">{{ $t('setting.payment_normal') }}</option>
-                            <option value="2">{{ $t('setting.payment_alipay') }}</option>
-                            <option value="3">{{ $t('setting.payment_wechat') }}</option>
-                        </select>
-                    </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': status}"
-                        >{{ $t('common.status') }}
-                        </label>
-                        <select
-                            class="form-control w-sm c-select"
-                            style="display: block;"
-                            v-model="status"
-                        >
-                            <option value="">{{ $t('common.please_select') }}</option>
-                            <option value="1">{{ $t('status.success') }}</option>
-                            <option value="2">{{ $t('status.failed') }}</option>
-                            <option value="3">{{ $t('status.ongoing') }}</option>
-                            <option value="4">{{ $t('status.cancelled') }}</option>
-                            <option value="5">{{ $t('status.declined') }}</option>
-                        </select>
-                    </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': query.member_level}"
-                        >{{ $t('member.level') }}
-                        </label>
-                        <level
-                            class="inline"
-                            style="display: block;"
-                            :level="query.member_level"
-                            @level-select="levelSelect"
-                        />
-                    </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': query.member_q}"
-                        >{{ $t('common.member') }}
-                        </label>
-                        <input
-                            type="text"
-                            v-model="query.member_q"
-                            class="form-control w-sm"
-                            :placeholder="$t('common.member')"
-                            @input="search"
-                        />
-                    </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': query.updated_by}"
-                        >{{ $t('common.operator') }}
-                        </label>
-                        <input
-                            type="text"
-                            v-model="query.updated_by"
-                            class="form-control w-sm"
-                            :placeholder="$t('common.operator')"
-                            @input="search"
-                        />
-                    </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': query.real_name_q}"
-                        >{{ $t('common.real_name') }}
-                        </label>
-                        <input
-                            type="text"
-                            v-model="query.real_name_q"
-                            class="form-control w-sm"
-                            :placeholder="$t('common.real_name')"
-                            @input="search"
-                        />
-                    </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': query.amount_lte || query.amount_gte}"
-                        >{{ $t('common.amount') }}
-                        </label>
-                        <div style="display: block;">
-                            <input
-                                type="number"
-                                v-model="query.amount_gte"
-                                class="form-control inline w-sm"
-                                :max="query.amount_lte"
-                                :placeholder="$t('common.min_amount')"
-                                @input="search"
-                            />
-                            <span>
-                                ~
-                            </span>
-                            <input
-                                type="number"
-                                v-model="query.amount_lte"
-                                class="form-control inline w-sm"
-                                :min="query.amount_gte"
-                                :placeholder="$t('common.max_amount')"
-                                @input="search"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-r-xs m-l-xs m-t-sm">
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': selected === '0'
-                                ? created_at && (created_at[0] || created_at[1])
-                                : updated_at && (updated_at[0] || updated_at[1])}"
-                        >{{ $t('common.applied_at') }} / {{ $t('common.status_updated_at') }} 
-                        </label>
-                        <div style="display: block;">
+        <form class="form" v-on:submit.prevent="submit">
+            <div class="box">
+                <div class="box-body clearfix form-input-sm">
+                    <div class="row m-l-xs m-r-xs">
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': remit_type}"
+                            >{{ $t('setting.remit_type') }}
+                            </label>
                             <select
-                                class="pull-left form-control w-sm c-select no-b-r"
-                                v-model="selected"
-                                @change="autoTogglePopup = true"
+                                class="form-control w-sm c-select"
+                                style="display: block;"
+                                v-model="remit_type"
                             >
-                                <option value="0">{{ $t('common.applied_at') }}</option>
-                                <option value="1">{{ $t('common.status_updated_at') }}</option>
+                                <option value="">{{ $t('common.please_select') }}</option>
+                                <option value="1">{{ $t('setting.payment_normal') }}</option>
+                                <option value="2">{{ $t('setting.payment_alipay') }}</option>
+                                <option value="3">{{ $t('setting.payment_wechat') }}</option>
                             </select>
-                            <date-picker
-                                width='248'
-                                :not-after="today"
-                                :shortcuts="shortcuts"
-                                type="date"
-                                v-model="created_at"
-                                v-if="selected === '0'"
-                                format="yyyy-MM-dd"
-                                range
-                                ref="created"
-                            />
-                            <date-picker
-                                width='248'
-                                :not-after="today"
-                                :shortcuts="shortcuts"
-                                type="date"
-                                v-model="updated_at"
-                                v-else
-                                format="yyyy-MM-dd"
-                                range
-                                ref="updated"
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': status}"
+                            >{{ $t('common.status') }}
+                            </label>
+                            <select
+                                class="form-control w-sm c-select"
+                                style="display: block;"
+                                v-model="status"
+                            >
+                                <option value="">{{ $t('common.please_select') }}</option>
+                                <option value="1">{{ $t('status.success') }}</option>
+                                <option value="2">{{ $t('status.failed') }}</option>
+                                <option value="3">{{ $t('status.ongoing') }}</option>
+                                <option value="4">{{ $t('status.cancelled') }}</option>
+                                <option value="5">{{ $t('status.declined') }}</option>
+                            </select>
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.member_level}"
+                            >{{ $t('member.level') }}
+                            </label>
+                            <level
+                                class="inline"
+                                style="display: block;"
+                                :level="query.member_level"
+                                @level-select="levelSelect"
                             />
                         </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.member_q}"
+                            >{{ $t('common.member') }}
+                            </label>
+                            <input
+                                type="text"
+                                v-model.trim="query.member_q"
+                                class="form-control w-sm"
+                                :placeholder="$t('common.member')"
+                                @input="search"
+                            />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.updated_by}"
+                            >{{ $t('common.operator') }}
+                            </label>
+                            <input
+                                type="text"
+                                v-model.trim="query.updated_by"
+                                class="form-control w-sm"
+                                :placeholder="$t('common.operator')"
+                                @input="search"
+                            />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.real_name_q}"
+                            >{{ $t('common.real_name') }}
+                            </label>
+                            <input
+                                type="text"
+                                v-model.trim="query.real_name_q"
+                                class="form-control w-sm"
+                                :placeholder="$t('common.real_name')"
+                                @input="search"
+                            />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.amount_lte || query.amount_gte}"
+                            >{{ $t('common.amount') }}
+                            </label>
+                            <div style="display: block;">
+                                <input
+                                    type="number"
+                                    v-model="query.amount_gte"
+                                    class="form-control inline w-sm"
+                                    :max="query.amount_lte"
+                                    :placeholder="$t('common.min_amount')"
+                                    @input="search"
+                                />
+                                <span>
+                                    ~
+                                </span>
+                                <input
+                                    type="number"
+                                    v-model="query.amount_lte"
+                                    class="form-control inline w-sm"
+                                    :min="query.amount_gte"
+                                    :placeholder="$t('common.max_amount')"
+                                    @input="search"
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div class="pull-left m-r-xs">
-                        <label
-                            class="form-control-label p-b-0"
-                            :class="{'text-blue': query.transaction_id}"
-                        >{{ $t('bill.order_id') }}
-                        </label>
-                        <input
-                            style="width: 244px;"
-                            type="text"
-                            v-model.trim="query.transaction_id"
-                            class="form-control w-sm"
-                            :placeholder="$t('bill.order_id')"
-                            ref="transactionId"
-                            @input="search"
-                        />
+                    <div class="row m-r-xs m-l-xs m-t-sm">
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': selected === '0'
+                                    ? created_at && (created_at[0] || created_at[1])
+                                    : updated_at && (updated_at[0] || updated_at[1])}"
+                            >{{ $t('common.applied_at') }} / {{ $t('common.status_updated_at') }} 
+                            </label>
+                            <div style="display: block;">
+                                <select
+                                    class="pull-left form-control w-sm c-select no-b-r"
+                                    v-model="selected"
+                                    @change="autoTogglePopup = true"
+                                >
+                                    <option value="0">{{ $t('common.applied_at') }}</option>
+                                    <option value="1">{{ $t('common.status_updated_at') }}</option>
+                                </select>
+                                <date-picker
+                                    width='248'
+                                    :not-after="today"
+                                    :shortcuts="shortcuts"
+                                    type="date"
+                                    v-model="created_at"
+                                    v-if="selected === '0'"
+                                    format="yyyy-MM-dd"
+                                    range
+                                    ref="created"
+                                />
+                                <date-picker
+                                    width='248'
+                                    :not-after="today"
+                                    :shortcuts="shortcuts"
+                                    type="date"
+                                    v-model="updated_at"
+                                    v-else
+                                    format="yyyy-MM-dd"
+                                    range
+                                    ref="updated"
+                                />
+                            </div>
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.transaction_id}"
+                            >{{ $t('bill.order_id') }}
+                            </label>
+                            <input
+                                style="width: 244px;"
+                                type="text"
+                                v-model.trim="query.transaction_id"
+                                class="form-control w-sm"
+                                :placeholder="$t('bill.order_id')"
+                                @input="search"
+                            />
+                        </div>
+                        <button
+                            class="md-btn w-xs pull-right btn m-t-md"
+                            type="button"
+                            @click="clearAll"
+                            :disabled="isQueryEmpty"
+                        >
+                            <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                            <i v-else class="fa fa-trash-o"></i> 
+                            <span>{{ $t('action.clear_all') }}</span>
+                        </button>
                     </div>
-                    <button
-                        class="md-btn w-xs pull-right btn m-t-md"
-                        type="button"
-                        @click="clearAll"
-                        :disabled="isQueryEmpty"
-                    >
-                        <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
-                        <i v-else class="fa fa-trash-o"></i> 
-                        <span>{{ $t('action.clear_all') }}</span>
-                    </button>
                 </div>
             </div>
-        </div>
-    </form>
-    <div class="row">
-        <div class="col-xs-12">
+        </form>
+        <div class="row m-l-xs m-r-xs">
             <div class="pull-right" v-if="$root.permissions.includes('export_remit_report')">
                 <a :href="href" :getReport="getReport" v-if="queryset.length">
                     <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
@@ -211,8 +209,7 @@
                 <span v-else>{{ 0 | currency('￥') }}</span>
             </div>
         </div>
-      </div>
-      <div class="box">
+        <div class="box">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -419,13 +416,12 @@
                 if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
                     this.selected = '0'
                     this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
-                } else {
-                    this.created_at = [undefined, undefined]
-                }
-                if (this.$route.query.updated_at_0 || this.$route.query.updated_at_1) {
+                } else if (this.$route.query.updated_at_0 || this.$route.query.updated_at_1) {
                     this.selected = '1'
                     this.updated_at = [this.$route.query.updated_at_0, this.$route.query.updated_at_1]
                 } else {
+                    this.selected = '0'
+                    this.created_at = [undefined, undefined]
                     this.updated_at = [undefined, undefined]
                 }
                 this.status = this.$route.query.status || ''
@@ -461,7 +457,6 @@
             700),
             clearAll () {
                 this.query = {}
-                this.selected = '0'
                 this.$nextTick(() => {
                     this.submit()
                 })
