@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <h2 class="v-m m-t-sm">
-                            <span v-if="remit_payee.remit_type === 1">{{remit_payee.bank.name}} {{remit_payee.payee_name}}</span>
+                            <span v-if="remit_payee.remit_type === 1">{{remit_payee.bank && remit_payee.bank.name}} {{remit_payee.payee_name}}</span>
                             <span v-else>{{remit_payee.nickname}}</span>
                         </h2>
                     </div>
@@ -40,29 +40,30 @@
                             <tbody v-if="remit_payee.remit_type === 1">
                             <tr>
                                 <th class="grey-50" width="200">{{$t('bank.name')}}</th>
-                                <td>{{remit_payee.bank.name}}</td>
+                                <td v-if="remit_payee.bank">{{remit_payee.bank.name}}</td>
+                                <td v-else>-</td>
                             </tr>
                             <tr>
                                 <th class="grey-50">{{$t('common.name')}}</th>
-                                <td>{{remit_payee.payee_name}}</td>
+                                <td>{{remit_payee.payee_name || '-'}}</td>
                             </tr>
                             <tr>
                                 <th class="grey-50">{{$t('bank.address')}}</th>
-                                <td>{{remit_payee.address}}</td>
+                                <td>{{remit_payee.address || '-'}}</td>
                             </tr>
                             <tr>
                                 <th class="grey-50">{{$t('bank.account')}}</th>
-                                <td>{{remit_payee.account}}</td>
+                                <td>{{remit_payee.account || '-'}}</td>
                             </tr>
                             <tr>
                                 <th class="grey-50">{{$t('common.memo')}}</th>
-                                <td>{{remit_payee.memo}}</td>
+                                <td>{{remit_payee.memo || '-'}}</td>
                             </tr>
                             </tbody>
                             <tbody v-else>
                             <tr>
                                 <th class="grey-50" width="200">{{$t('common.username')}}</th>
-                                <td>{{remit_payee.nickname}}</td>
+                                <td>{{remit_payee.nickname || '-'}}</td>
                             </tr>
                             <tr>
                                 <th class="grey-50" width="200">{{$t('common.qr_code')}}</th>
@@ -72,7 +73,7 @@
                             </tr>
                             <tr>
                                 <th class="grey-50">{{$t('common.memo')}}</th>
-                                <td>{{remit_payee.memo}}</td>
+                                <td>{{remit_payee.memo || '-'}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -121,7 +122,6 @@
         data () {
             return {
                 remit_payee: [],
-                names: [],
                 isActive: false,
                 showDeleteError: false,
                 errorMsg: ''
@@ -141,9 +141,6 @@
                     vm.getPayee(id)
                 }
             })
-        },
-        created () {
-            this.remitTransactions()
         },
         methods: {
             getPayee (id) {
@@ -166,18 +163,6 @@
                 } else {
                     this.showDeleteError = true
                 }
-            },
-            remitTransactions () {
-                this.$http.get(api.bill + '?transaction_type=remit').then(data => {
-                    for (let i = 0; i < data.length; i++) {
-                        this.names.push(data[i].remit_info.remit_payee.payee_name)
-                    }
-                    if (this.names.indexOf(this.remit_payee.payee_name) !== -1) {
-                        this.isActive = true
-                    }
-                }, error => {
-                    this.errorMsg = error
-                })
             }
         }
     }
