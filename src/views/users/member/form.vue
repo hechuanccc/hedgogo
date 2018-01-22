@@ -246,7 +246,7 @@
         },
         methods: {
             updateMemberPermission (field) {
-                return this.$route.name === 'member-edit' ? this.$root.permissions.includes(`update_member_$(field)`) : this.$root.permissions.includes('add_new_member')
+                return this.$route.name === 'member-edit' ? this.$root.permissions.includes(`update_member_${field}`) : this.$root.permissions.includes('add_new_member')
             },
             bankSelect (bank) {
                 this.member.bank.bank = bank
