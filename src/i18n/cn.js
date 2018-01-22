@@ -439,7 +439,7 @@ export default {
         edit_level: '修改会员等级',
         delete_level: '删除会员等级',
         logout: '退出登录',
-        clear_all: '全部清除',
+        clear: '清除',
         filter_trial_account: '过滤试玩用户',
         no_setting: '未设置',
         back_page: '返回上一页',

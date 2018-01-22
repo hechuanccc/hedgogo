@@ -130,7 +130,8 @@
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': selected === '0'
                                     ? created_at && (created_at[0] || created_at[1])
-                                    : updated_at && (updated_at[0] || updated_at[1])}"
+                                    : updated_at && (updated_at[0] || updated_at[1])
+                                }"
                             >{{ $t('common.applied_at') }} / {{ $t('common.status_updated_at') }} 
                             </label>
                             <div style="display: block;">
@@ -189,7 +190,7 @@
                         >
                             <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                             <i v-else class="fa fa-trash-o"></i> 
-                            <span>{{ $t('action.clear_all') }}</span>
+                            <span>{{ $t('action.clear') }}</span>
                         </button>
                     </div>
                 </div>
