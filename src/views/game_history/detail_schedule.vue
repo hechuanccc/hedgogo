@@ -54,7 +54,7 @@
                         </th>
                         <th class="text-center" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
                         <th
-                            :width="game.code === 'bjkl8' ? '360' : ''"
+                            :width="(game.code === 'bjkl8' || game.code === 'auluck8') ? '360' : ''"
                             :class="{'p-b-md': twoRow}"
                             v-else
                         >
@@ -87,6 +87,25 @@
                                     :style="{
                                         'display': 'inline-block',
                                         'width': `${100 / sumCol.length}%`
+                                    }"
+                                >
+                                    {{ $t('game_history.' + col) }}
+                                </div>
+                            </template>
+                        </th>
+                        <th
+                            class="p-l-0 p-r-0"
+                            :width="threeBallsSumCol.length * 50"
+                            v-if="threeBallsSumCol.length > 0"
+                        >
+                            <div class="b-b p-b-sm">{{ $t('game_history.three_balls_sum_col') }}</div>
+                            <template v-for="col in threeBallsSumCol" >
+                                <div
+                                    class="m-t-sm"
+                                    :key="col"
+                                    :style="{
+                                        'display': 'inline-block',
+                                        'width': `${100 / threeBallsSumCol.length}%`
                                     }"
                                 >
                                     {{ $t('game_history.' + col) }}
@@ -236,7 +255,8 @@
                             :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
                             v-if="otherCol.length > 0"
                         >
-                            {{ $t('game_history.' + result.result_category[col]) }}
+                            <span v-if="typeof result.result_category[col] === 'number'">{{ result.result_category[col] }}</span>
+                            <span :class="`text-${result.result_category[col]}`" v-else>{{ $t('game_history.' + result.result_category[col]) }}</span>
                         </td>
                         <td>
                             <button
@@ -414,7 +434,8 @@ export default {
                 'ball_odd_even',
                 'ball_than_size',
                 'ball_tail_than_size',
-                'ball_of_sum_number_odd_even'
+                'ball_of_sum_number_odd_even',
+                'ball_prime_composite'
             ],
             sumCol: [],
             displaySumCol: [
@@ -430,10 +451,22 @@ export default {
                 'sum_of_1st_2st_odd_even',
                 'sum_of_1st_2st_than_size'
             ],
+            threeBallsSumCol: [],
+            displayThreeBallsSumCol: [
+                'three_balls_sum',
+                'sum_of_ball_odd_even',
+                'sum_of_ball_than_size',
+                'sum_of_ball_tail_than_size',
+                'sum_of_ball_prime_composite_tail'
+            ],
             sumCol1st2nd: true,
             dragonTigerCol: [],
             comparisonCol: [],
             otherCol: [],
+            displayOtherCol: [
+                'ball_max_min_diff',
+                'seven_color_wavelength'
+            ],
             twoRow: false
         }
     },
@@ -623,6 +656,7 @@ export default {
                 let category = []
                 let resultCol = new Set()
                 let sumCol = new Set()
+                let threeBallsSumCol = new Set()
                 let dragonTigerCol = new Set()
                 let comparisonCol = new Set()
                 let otherCol = new Set()
@@ -640,11 +674,21 @@ export default {
                     category = Object.keys(this.queryset[0].result_category).map(i => i.split('_'))
                     category.forEach(i => {
                         if (i[0] === 'ball') {
-                            i.splice(i.length - 1, 1)
-                            resultCol.add(i.join('_'))
+                            if (i[1] === 'max' && i[2] === 'min' && i[3] === 'diff') {
+                                otherCol.add(i.join('_'))
+                            } else {
+                                i.splice(i.length - 1, 1)
+                                resultCol.add(i.join('_'))
+                            }
                         } else if (i[0] === 'sum') {
                             this.sumCol1st2nd = (i[2][0] === '1' && i[3][0] === '2')
-                            sumCol.add(i.join('_'))
+                            if (this.game.code === 'fc3d') {
+                                threeBallsSumCol.add(i.join('_'))
+                            } else {
+                                sumCol.add(i.join('_'))
+                            }
+                        } else if (i[0] === 'three' && i[1] === 'balls') {
+                            threeBallsSumCol.add(i.join('_'))
                         } else if (i[0] === 'dragon' && i[1] === 'tiger') {
                             dragonTigerCol.add(i)
                         } else if (i[i.length - 1] === 'cp') {
@@ -656,11 +700,12 @@ export default {
                 }
                 this.resultCol = ['ball_num', ...resultCol].filter(e => this.displayResultCol.includes(e))
                 this.sumCol = [...sumCol].filter(e => this.displaySumCol.includes(e))
+                this.threeBallsSumCol = [...threeBallsSumCol].filter(e => this.displayThreeBallsSumCol.includes(e))
                 this.dragonTigerCol = [...dragonTigerCol].sort((a, b) => a[2] - b[2]).map(e => e.join('_'))
                 this.comparisonCol = [...comparisonCol]
-                this.otherCol = [...otherCol]
-                this.allCol = [this.sumCol, this.dragonTigerCol, this.comparisonCol].filter(e => e.length > 0)
-                this.twoRow = (this.sumCol.length > 0 || this.dragonTigerCol.length > 1 || this.comparisonCol.length > 0)
+                this.otherCol = [...otherCol].filter(e => this.displayOtherCol.includes(e))
+                this.allCol = [this.sumCol, this.threeBallsSumCol, this.dragonTigerCol, this.comparisonCol].filter(e => e.length > 0)
+                this.twoRow = (this.sumCol.length || this.threeBallsSumCol.length || this.dragonTigerCol.length > 1 || this.comparisonCol.length)
             } else {
                 this.resultCol = this.sumCol = this.dragonTigerCol = this.comparisonCol = this.otherCol = this.allCol = []
                 this.twoRow = false
@@ -686,16 +731,16 @@ export default {
 .text-center th {
     text-align: center;
 }
-.bigger, .even {
+.bigger, .even, .composite {
   background: lightsalmon;
 }
-.smaller, .odd {
+.smaller, .odd, .prime {
   background: lightslategray;
 }
 .equal {
   background: skyblue;
 }
-.text-bigger, .text-even, .text-red, .text-great, .text-dragon {
+.text-bigger, .text-even, .text-red, .text-great, .text-dragon, .text-composite {
   color: lightsalmon;
 }
 .text-green {
