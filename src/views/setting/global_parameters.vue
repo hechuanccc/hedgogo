@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="box" v-if="queryset.length > 0">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t align-middle">
+      <table st-table="rowCollectionBasic" class="table table-striped b-t v-m">
           <thead>
           <tr>
             <th width="20%" class="text-center align-middle">{{ $t('global_parameters.name') }}</th>
@@ -15,30 +15,47 @@
           </tr>
           </thead>
           <tbody>
-            <tr v-for="(preference, index) in queryset" :key="index">
+            <tr v-for="(preference, index) in queryset" :key="index" class="align-middle">
                 <td class="text-center align-middle">{{ preference.display_name }}</td>
                 <td v-if="listMode.includes(index)">
-                    <div :class="preference.newValue ? '' : 'has-danger'" v-if="preference.newValue!=='true' && preference.newValue!=='false'">
-                        <input :class="['form-control', preference.newValue ? '' : 'form-control-danger']" v-model="preference.newValue">
+                    <div v-if="typeof preference.newValue === 'object'">
+                        <div
+                            class="inline m-r-xs"
+                            v-for="(element, index) in preference.newValue"
+                            :key="index">
+                            <label class="form-control-label">{{ element.display_name }}</label>
+                            <input class="form-control" v-model="element.value"/>
+                        </div>
                     </div>
-                    <div class="form-group m-t-sm p-a-0" v-else>
+                    <div class="form-group m-t-sm p-a-0" v-else-if="preference.newValue === 'true' || preference.newValue === 'false'">
                         <label class="radio-inline">
-                            <input type="radio" :value="'true'||'True'" v-model="preference.newValue"> True
+                            <input type="radio" :value="'true'" v-model="preference.newValue"> true
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" :value="'false'||'False'" v-model="preference.newValue"> False
+                            <input type="radio" :value="'false'" v-model="preference.newValue"> false
                         </label>
+                    </div>
+                    <div  v-else>
+                        <input class="form-control" v-model="preference.newValue">
                     </div>
                 </td>
                 <td v-else>
-                    <div v-if="preference.value!=='true' && preference.value!=='false'">{{ preference.value }}</div>
-                    <div class="radio disabled m-t-sm p-a-0" v-else>
+                    <div v-if="typeof preference.value === 'object'">
+                        <div class="m-r-xs inline" v-for="(element, index) in preference.value" :key="index">
+                            <label class="form-control-label">{{ element.display_name }}</label>
+                            <input class="form-control" v-model="element.value" disabled/>
+                        </div>
+                    </div>
+                    <div class="radio disabled m-t-sm p-a-0" v-else-if="preference.value === 'true' || preference.value === 'false'">
                         <label class="radio-inline disabled">
-                            <input type="radio" :value="'true'||'True'" v-model="preference.value" disabled> True
+                            <input type="radio" :value="'true'" v-model="preference.value" disabled> True
                         </label>
                         <label class="radio-inline disabled">
-                            <input type="radio" :value="'false'||'False'" v-model="preference.value" disabled> False
+                            <input type="radio" :value="'false'" v-model="preference.value" disabled> False
                         </label>
+                    </div>
+                    <div v-else>
+                        {{ preference.value }}
                     </div>
                 </td>
                 <td class="align-middle" v-if="$root.permissions.includes('update_global_parameters_setting')">
@@ -68,7 +85,12 @@
                     <tbody>
                         <tr>
                             <td>{{ modal.globalPreferenceResult.display_name }}</td>
-                            <td>{{ modal.globalPreferenceResult.value }}</td>
+                            <td v-if="typeof modal.displayValue === 'object'">
+                                <span v-for="element in modal.displayValue" :key="element.key">
+                                    {{ element.display_name }}: {{ element.value }}<br/>
+                                </span>
+                            </td>
+                            <td v-else>{{ modal.displayValue }}</td>
                         </tr>
                     </tbody>
                     </table>
@@ -92,6 +114,7 @@
 import api from '../../api'
 import pulling from '../../components/pulling'
 import alertMsg from '../../components/alertMsg'
+import $ from '../../utils/util'
 // import Vue from 'vue'
 
 export default {
@@ -104,6 +127,7 @@ export default {
                 isShow: false,
                 index: '',
                 key: '',
+                displayValue: '',
                 globalPreferenceResult: {
                     display_name: '',
                     value: ''
@@ -121,24 +145,44 @@ export default {
     methods: {
         changeMode (index) {
             if (this.listMode.includes(index)) {
-                this.modal.key = this.queryset[index].key
-                this.modal.index = index
-                this.modal.globalPreferenceResult.value = this.queryset[index].newValue
-                this.modal.globalPreferenceResult.display_name = this.queryset[index].display_name
-                this.showModal()
+                this.modal = Object.assign({
+                    key: this.queryset[index].key,
+                    index: index,
+                    displayValue: this.queryset[index].newValue,
+                    globalPreferenceResult: {
+                        value: this.queryset[index].newValue,
+                        display_name: this.queryset[index].display_name
+                    },
+                    isShow: true
+                })
             } else {
-                this.$set(this.queryset[index], 'newValue', this.queryset[index].value)
+                if (typeof this.queryset[index].value === 'object') {
+                    this.$set(this.queryset[index], 'newValue', this.queryset[index].value.map(element => Object({
+                        key: element.key,
+                        value: element.value,
+                        display_name: element.display_name
+                    })))
+                } else {
+                    this.$set(this.queryset[index], 'newValue', this.queryset[index].value)
+                }
                 this.listMode.push(index)
             }
         },
         cancel (index) {
-            this.queryset[index].newValue = this.queryset[index].value
+            delete this.queryset[index].newValue
             this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
         },
         updateGlobalPreference () {
+            if (typeof this.modal.globalPreferenceResult.value === 'object') {
+                let result = {}
+                this.modal.globalPreferenceResult.value.forEach(element => {
+                    result[element.key] = element.value
+                })
+                this.modal.globalPreferenceResult.value = JSON.stringify(result)
+            }
             this.$http.patch(this.globalPreferencesApi + this.modal.key + '/', this.modal.globalPreferenceResult)
             .then(data => {
-                this.queryset[this.modal.index].value = data.value
+                this.queryset[this.modal.index].value = $.isJsonString(data.value) ? Object.assign(JSON.parse(data.value)) : data.value
                 this.modal.msg = this.$t('game_manage.modify_success')
                 this.$refs.alertMsg.trigger('success', 1, true)
                 this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
@@ -157,7 +201,15 @@ export default {
             this.$refs.pulling.submit()
         },
         queryData (queryset) {
-            this.queryset = queryset
+            this.queryset = queryset.map(element => {
+                if ($.isJsonString(element.value)) {
+                    return Object.assign(element, {
+                        value: JSON.parse(element.value)
+                    })
+                } else {
+                    return element
+                }
+            })
         },
         queryParam (query) {
             this.query = query

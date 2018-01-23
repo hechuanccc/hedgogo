@@ -358,8 +358,7 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.staff_detail'),
-            permission: 'view_staff_management_page'
+            title: Vue.t('nav.staff_detail')
         }
     },
     {
@@ -371,8 +370,7 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('staff.update_staff'),
-            permission: 'view_staff_management_page'
+            title: Vue.t('staff.update_staff')
         }
     },
     {
