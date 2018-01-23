@@ -123,4 +123,15 @@ export default class $ {
         let q2Keys = Object.keys(q2).filter(element => !(!q2[element])).sort()
         return `${q1Keys}` === `${q2Keys}` && !q1Keys.find(key => `${q1[key]}` !== `${q2[key]}`)
     }
+
+    static isJsonString (str) {
+        try {
+            var o = JSON.parse(str)
+            if (o && typeof o === 'object') {
+                return o
+            }
+        } catch (e) {
+            return false
+        }
+    }
 }

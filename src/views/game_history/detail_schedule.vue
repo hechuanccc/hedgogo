@@ -149,7 +149,7 @@
                 </thead>
                 <tbody class="v-m text-center">
                     <tr
-                        v-if="isPageOne"
+                        v-if="isShowRetreatedSched"
                         v-for="sched in retreatedScheds"
                         :key="'retreat_' + sched.id"
                     >
@@ -245,17 +245,19 @@
                                     'blue': result.remarks !== 'manual_draw' && $root.permissions.includes('manually_draw_game_result')
                                 }]"
                                 @click="showModal(result, 'manual_draw')"
+                                v-if="$root.permissions.includes('manually_draw_game_result')"
                                 :disabled="result.remarks === 'manual_draw' || !$root.permissions.includes('manually_draw_game_result')"
                             ><b>{{ $t('game_history.manual_draw') }}</b>
                             </button>
+                            <span v-else-if="!mode">-</span>
                             <span
                                 class="label btn blue"
                                 @click="showModal(result, 'no_draw')"
-                                v-if="mode && $root.permissions.includes('official_no_draw')"
+                                v-show="mode && $root.permissions.includes('official_no_draw')"
                             ><b>{{ $t('game_history.no_draw') }}</b>
                             </span>
-                            <span v-if="!mode && !$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
-                                {{ $t('common.errorPermission') }}
+                            <span v-show="mode && !$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
+                                -
                             </span>
                         </td>
                     </tr>
@@ -665,8 +667,8 @@ export default {
             }
             return this.queryset
         },
-        isPageOne () {
-            return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.mode
+        isShowRetreatedSched () {
+            return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.input.period && !this.mode
         }
     },
     components: {
