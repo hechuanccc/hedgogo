@@ -29,8 +29,7 @@ export default {
         trigger (type, timeout, hideModal) {
             this.showMsg = false
             if (type) {
-                this.alertClass = this.classMapping[type][0]
-                this.iconClass = this.classMapping[type][1]
+                [this.alertClass, this.iconClass] = this.classMapping[type]
                 this.showMsg = true
                 if (timeout) {
                     setTimeout(() => {

@@ -558,6 +558,7 @@ export default {
         ball_odd_even: '单双',
         ball_tail_than_size: '尾大小',
         ball_of_sum_number_odd_even: '合单双',
+        ball_prime_composite: '质合',
         sum_of_ball: '号码',
         sum_of_ball_odd_even: '单双',
         sum_of_ball_than_size: '大小',
@@ -569,6 +570,10 @@ export default {
         sum_of_ball_great_tiny: '极值',
         sum_of_ball_color_wavelength: '色波',
         sum_of_ball_five_element: '五行',
+        sum_of_ball_prime_composite_tail: '尾质合',
+        three_balls_sum_col: '佰拾个和數',
+        three_balls_sum: '和數',
+        three_balls_sum_tail: '和數尾',
         seven_color_wavelength: '7色波',
         balls_odd_even_cp: '单双比',
         balls_front_rear_count_cp: '前后比',
@@ -604,7 +609,10 @@ export default {
         straight: '顺子',
         half_straight: '半顺',
         misc_six: '杂六',
-        leopard: '豹子'
+        leopard: '豹子',
+        prime: '质',
+        composite: '合',
+        ball_max_min_diff: '跨度'
     },
     agent: {
         number: '编号',

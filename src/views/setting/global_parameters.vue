@@ -145,7 +145,7 @@ export default {
     methods: {
         changeMode (index) {
             if (this.listMode.includes(index)) {
-                this.modal = Object.assign({
+                this.modal = Object.assign(this.modal, {
                     key: this.queryset[index].key,
                     index: index,
                     displayValue: this.queryset[index].newValue,
