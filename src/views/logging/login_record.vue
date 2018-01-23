@@ -98,7 +98,7 @@
                         <td>{{ report.member.username }}</td>
                         <td>
                             <span>{{ report.ipaddr }}</span><br/>
-                            <span>{{ report.address.country || '-' }} {{ report.address.region || '-' }} {{ report.address.city || '-' }}</span>
+                            <span class="text-muted">{{ report.address.country || '-' }} {{ report.address.region || '-' }} {{ report.address.city || '-' }}</span>
                         </td>
                         <td>{{ report.isp || '-' }}</td>
                         <td>{{ report.platform || '-' }}</td>
