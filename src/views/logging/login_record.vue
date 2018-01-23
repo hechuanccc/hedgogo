@@ -87,7 +87,6 @@
                         <th>{{ $t('member.account') }}</th>
                         <th>{{ $t('member.ip') }}</th>
                         <th>{{ $t('member.isp') }}</th>
-                        <th width="240">{{ $t('member.area') }}</th>
                         <th>{{ $t('member.login_platform') }}</th>
                         <th>{{ $t('member.loggedin_domain') }}</th>
                         <th class="text-center">{{ $t('member.logout_at') }}</th>
@@ -97,9 +96,11 @@
                     <tr v-for="report in queryset" :key="report.id">
                         <td class="text-center">{{ report.logindate | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>{{ report.member.username }}</td>
-                        <td>{{ report.ipaddr }}</td>
+                        <td>
+                            <span>{{ report.ipaddr }}</span><br/>
+                            <span>{{ report.address.country || '-' }} {{ report.address.region || '-' }} {{ report.address.city || '-' }}</span>
+                        </td>
                         <td>{{ report.isp || '-' }}</td>
-                        <td>{{ report.address.country || '-' }} {{ report.address.region || '-' }} {{ report.address.city || '-' }}</td>
                         <td>{{ report.platform || '-' }}</td>
                         <td>{{ report.domain || '-' }}</td>
                         <td class="text-center">
