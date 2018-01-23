@@ -694,7 +694,6 @@ export default {
                         } else if (i[i.length - 1] === 'cp') {
                             comparisonCol.add(i.join('_'))
                         } else {
-                            console.log(i.join('_'))
                             otherCol.add(i.join('_'))
                         }
                     })
