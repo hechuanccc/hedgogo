@@ -83,13 +83,13 @@
             <table class="table table-striped b-t">
                 <thead>
                     <tr>
-                        <th class="text-center">{{ $t('common.login_at') }}</th>
+                        <th style="width: 10%" class="text-center">{{ $t('common.login_at') }}</th>
                         <th>{{ $t('member.account') }}</th>
                         <th>{{ $t('member.ip') }}</th>
                         <th>{{ $t('member.isp') }}</th>
                         <th>{{ $t('member.login_platform') }}</th>
                         <th>{{ $t('member.loggedin_domain') }}</th>
-                        <th class="text-center">{{ $t('member.logout_at') }}</th>
+                        <th style="width: 10%" class="text-center">{{ $t('member.logout_at') }}</th>
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length > 0">
