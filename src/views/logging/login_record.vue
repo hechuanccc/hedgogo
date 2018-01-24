@@ -180,8 +180,6 @@ export default {
             } else {
                 this.logindate = [undefined, undefined]
             }
-            this.actionResult = this.$route.query.action_result || ''
-            this.actionType = this.$route.query.action_type || ''
             this.query = Object.assign({}, this.$route.query)
         },
         submit () {

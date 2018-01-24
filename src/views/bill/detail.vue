@@ -195,8 +195,8 @@
                     </div>
                     <div v-if="transaction.status === 1" class="t-green">
                         {{$t('bill.saved')}}
-                        <router-link :to="'/bill/search?member=' + transaction.member.username " class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
-                        <router-link :to="'/bill/search?transaction_type=remit,online_pay&member=' + transaction.member.username " class="m-l">{{$t('bill.view_all_discounts')}}</router-link>
+                        <router-link :to="`/bill/search?member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
+                        <router-link :to="`/bill/search?transaction_type=remit,online_pay&member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l">{{$t('bill.view_all_discounts')}}</router-link>
                     </div>
                 </div>
 
@@ -214,7 +214,7 @@
 
                     <div v-if="transaction.status === 1" class="t-green">
                         {{$t('bill.saved')}}
-                        <router-link :to="'/bill/search?transaction_type=withdraw&member=' + transaction.member.username " class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
+                        <router-link :to="`/bill/search?transaction_type=withdraw&member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
                     </div>
                     <div v-if="transaction.status === 5 " class="t-red">
                         {{$t('bill.withdraw_declined')}}
@@ -261,6 +261,11 @@
                     }
                 },
                 loading: false
+            }
+        },
+        watch: {
+            '$route.params.id' (newObj) {
+                this.getTransaction(newObj)
             }
         },
         beforeRouteEnter (to, from, next) {

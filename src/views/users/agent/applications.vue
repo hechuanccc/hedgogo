@@ -23,9 +23,9 @@
               <span v-else>-</span>
             </td>
             <td>
-              <span class="label " v-if="agent.status==0">{{$t('status.rejected')}}</span>
-              <span class="label danger" v-if="agent.status==2">{{$t('status.inactive')}}</span>
-              <span class="label " v-if="agent.status==3">{{$t('status.ongoing')}}</span>
+              <span class="label danger " v-if="agent.status==0">{{$t('status.rejected')}}</span>
+              <span class="label" v-if="agent.status==2">{{$t('status.inactive')}}</span>
+              <span class="label warn" v-if="agent.status==3">{{$t('status.ongoing')}}</span>
             </td>
             <td>
               <span v-if="agent.domain">{{agent.domain}}</span>
