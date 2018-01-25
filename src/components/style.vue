@@ -4,5 +4,4 @@
     require('../assets/bootstrap/scss/bootstrap.scss')
     require('../assets/scss/app.scss')
     require('../assets/custom/base.scss')
-
 </script>

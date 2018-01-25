@@ -28,6 +28,7 @@
                     </div>
                 </div>
             </div>
+            <notifications></notifications>
         </div>
     </div>
 </template>

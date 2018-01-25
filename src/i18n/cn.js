@@ -482,6 +482,7 @@ export default {
         code: '游戏号码',
         enabled_status: '启用状态',
         icon: '图标',
+        holiday: '公休',
         holiday_start_time: '公休开始时间',
         holiday_end_time: '公休结束时间',
         closed_status: '封盘状态',

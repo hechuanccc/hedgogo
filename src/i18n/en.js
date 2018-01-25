@@ -483,6 +483,7 @@ export default {
         code: 'Game Code',
         enabled_status: 'Enabled Status',
         icon: 'Icon',
+        holiday: 'Holiday',
         holiday_start_time: 'Holiday Start',
         holiday_end_time: 'Holiday End',
         closed_status: 'Closed Status',

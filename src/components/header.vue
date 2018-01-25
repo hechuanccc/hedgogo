@@ -13,7 +13,11 @@
                     <a class="dropdown-item" @click="logout">{{$t('action.logout')}}</a>
                 </div>
             </div>
-            <member-search-input/>
+            <div class="collapse navbar-toggleable-sm" id="collapse">
+                <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m">
+                    <member-search-input/>
+                </form>
+            </div>
 
             <div class="navbar-nav pull-right m-r">
                 <ul class="nav navbar-nav pull-left prompt">
@@ -278,34 +282,6 @@
     }
     .my {
         margin: 12px 0;
-    }
-    .search-results {
-        font-size: 0.875rem;
-        color: rgba(0, 0, 0, 0.87);
-        border-radius: 3px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 1000;
-        float: left;
-        padding: 5px 0;
-        margin: 2px 0 0;
-        font-size: 1rem;
-        color: #373a3c;
-        text-align: left;
-        list-style: none;
-        background-color: #fff;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    .search-item {
-        margin: 5px 0;
-    }
-    .search-item a {
-        color: #2196f3;
-        padding: 0px 15px;
     }
     .close {
         display: flex;
