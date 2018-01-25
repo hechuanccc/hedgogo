@@ -36,21 +36,27 @@
               </div>
             </td>
             <td>
-              <div :class="game.status ? 'text-success': 'text-danger'">
-                {{game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}
-              </div>
+                <span class="text-success" v-if="game.status === 1">{{ $t('game_manage.openning') }}</span>
+                <span class="text-danger" v-else>{{ game.status === 0 ? $t('game_manage.closed') : $t('game_manage.holiday') }}</span>
             </td>
             <td>
+              <span class="text-muted p-l-xs" v-if="game.status === 2">
+                  {{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
+              </span>
               <a
                 class="p-l-xs"
                 @click="toggleEnable(index)"
-                v-if="updateGameStatusPermission"
+                v-show="updateGameStatusPermission"
+                v-else
               >{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
               </a>
+              <span class="text-muted p-l-xs" v-if="game.status === 2">
+                  {{ $t('game_manage.holiday') }}
+              </span>
               <a
                 class="p-l-xs"
                 @click="toggleClose(index)"
-                v-if="updateGameStatusPermission"
+                v-else-if="updateGameStatusPermission"
               >{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}
               </a>
               <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
@@ -143,6 +149,7 @@
 <script>
 import api from '../../api'
 import alertMsg from '../../components/alertMsg'
+import $ from '../../utils/util'
 import DatePicker from 'vue2-datepicker'
 import draggable from 'vuedraggable'
 
@@ -205,6 +212,11 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(data => {
                 this.$set(this.queryset, index, data)
+            }, error => {
+                $.notify(this.$notifications, {
+                    message: error,
+                    type: 'danger'
+                })
             })
         },
         toggleClose (index) {
@@ -216,6 +228,11 @@ export default {
             }
             this.$http.put(api.game_list + game.id + '/', params).then(data => {
                 this.$set(this.queryset, index, data)
+            }, error => {
+                $.notify(this.$notifications, {
+                    message: error,
+                    type: 'danger'
+                })
             })
         },
         showModal (index) {
@@ -301,12 +318,16 @@ export default {
                     display_name: game.display_name,
                     rank: index + 1
                 }))).then(data => {
-                    this.updateRankMsg = this.$t('game_manage.modify_success')
-                    setTimeout(() => {
-                        this.updateRankMsg = ''
-                    }, 3000)
-                }, () => {
-                    this.cancelAdjustRank()
+                    $.notify(this.$notifications, {
+                        message: this.$t('game_manage.modify_success'),
+                        type: 'success'
+                    })
+                }, error => {
+                    $.notify(this.$notifications, {
+                        message: error,
+                        type: 'danger'
+                    })
+                    this.queryset = this.initialQueryset
                 })
             } else {
                 this.initialQueryset = this.queryset

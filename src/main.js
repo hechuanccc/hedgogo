@@ -10,6 +10,7 @@ import { handleError } from './utils/handleError'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
 import axios from 'axios'
+import Notifications from './components/NotificationPlugin'
 
 import App from './views/App'
 
@@ -21,6 +22,7 @@ Vue.use(VueRouter)
 Vue.use(Moment)
 Vue.use(VueI18n)
 Vue.use(VueCookie)
+Vue.use(Notifications)
 
 // if we set xhr.withCredentials = true, all xhr request will send with credential cookies
 // for example (session_id, access_token, csrf_token), but not all the browser supports

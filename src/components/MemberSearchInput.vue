@@ -1,30 +1,29 @@
 <template>
-    <div class="collapse navbar-toggleable-sm" id="collapse">
-        <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m" @submit.prevent="search">
-            <div class="form-group l-h m-a-0">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon b-a"><i class="fa fa-search"></i></span>
-                    <input 
-                        type="text"
-                        class="form-control p-x b-a rounded"
-                        v-model.trim="username_q"
-                        :placeholder="$t('common.search_member')"
-                        @focus="focusSearchMemberInput()"
-                        @blur="blurSearchMemberInput()"
-                        @change="search"
-                    >
-                    <div class="search-results" v-if="isShowResults">
-                        <div class="search-items">
-                            <div class="search-item" v-show="searchLoading" disabled><span class="m-l"><i class="fa fa-spin fa-spinner"></i> {{$t('common.loading')}}</span></div>
-                            <div class="search-item" v-show="searchNoRecord" disabled><span class="m-l">{{$t('common.no_record')}}</span></div>
-                            <div class="search-item" v-for="r in results" :key="r.id" @click="routerLinkTo(r.id)">
-                                <span>{{r.username}}</span>
-                            </div>
-                        </div>
+    <div class="form-group l-h m-a-0">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon btn b-a">
+                <i class="fa fa-plus" v-if="exportMember"></i>
+                <i class="fa fa-search" v-else></i>
+            </span>
+            <input 
+                type="text"
+                class="form-control p-x b-a rounded"
+                v-model.trim="username_q"
+                :placeholder="$t('common.search_member')"
+                @focus="focusSearchMemberInput()"
+                @blur="blurSearchMemberInput()"
+                @change="search"
+            >
+            <div class="search-results" v-if="isShowResults">
+                <div class="search-items">
+                    <div class="search-item" v-show="searchLoading" disabled><span class="m-l"><i class="fa fa-spin fa-spinner"></i> {{$t('common.loading')}}</span></div>
+                    <div class="search-item" v-show="searchNoRecord" disabled><span class="m-l">{{$t('common.no_record')}}</span></div>
+                    <div class="search-item" v-for="r in results" :key="r.id" @click="routerLinkTo(r.id)">
+                        <span>{{r.username}}</span>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -33,6 +32,9 @@ import api from '../api'
 import _ from 'lodash'
 
 export default {
+    props: {
+        exportMember: false
+    },
     data () {
         return {
             username_q: '',
