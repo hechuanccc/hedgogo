@@ -14,9 +14,9 @@
                 </div>
             </div>
             <div class="collapse navbar-toggleable-sm" id="collapse">
-                <form class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m">
+                <div class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m">
                     <member-search-input/>
-                </form>
+                </div>
             </div>
 
             <div class="navbar-nav pull-right m-r">
