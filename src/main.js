@@ -41,7 +41,7 @@ axios.interceptors.response.use(response => {
         router.push({
             path: '/login',
             query: {
-                next: router.path
+                next: router.fullPath
             }
         })
     } else {

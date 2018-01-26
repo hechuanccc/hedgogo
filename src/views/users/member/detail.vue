@@ -346,7 +346,7 @@
                     this.member = data
                     this.member_id = {'account_id': data.id}
                 }, () => {
-                    this.$router.push('/login?next=' + this.$route.path)
+                    this.$router.push('/login?next=' + this.$route.fullPath)
                 })
             },
             changeAudit () {

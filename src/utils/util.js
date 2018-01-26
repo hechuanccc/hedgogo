@@ -4,9 +4,7 @@ import urls from '../api'
 
 const STORAGE_KEY = 'data-storage'
 
-// Vue.use(VueResource)
 export default class $ {
-
     static fetchMember (cb, successCb, errorCb) {
         return Vue.http.get(urls.member + '?opt_expand=1').then(data => {
             cb(data)

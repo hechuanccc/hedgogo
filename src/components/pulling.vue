@@ -172,7 +172,7 @@ export default {
                 this.loading = false
                 this.next = data.next
             }, () => {
-                this.$router.push('/login?next=' + this.$route.path)
+                this.$router.push('/login?next=' + this.$route.fullPath)
             })
             this.$emit('query-param', this.myQuery)
         },
