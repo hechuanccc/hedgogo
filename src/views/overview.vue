@@ -138,7 +138,6 @@ export default {
 div.box:hover,
 div.box:focus,
 div.box:active {
-    transform: scale(1.01);
     cursor: pointer;
 }
 </style>

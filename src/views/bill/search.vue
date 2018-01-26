@@ -181,8 +181,7 @@
                 <tbody>
                     <tr v-for="t in queryset" :key="t.id">
                         <td>
-                            <router-link v-if="$root.$data.userType !== 'agent'" :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
-                            <span v-else>{{t.member.username}}</span>
+                            <router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
                         </td>
                         <td><router-link :to="'/agent/' + t.member.agent.id ">{{t.member.agent.username}}</router-link></td>
                         <td>{{t.created_at | moment("YYYY-MM-DD HH:mm:ss")}}</td>

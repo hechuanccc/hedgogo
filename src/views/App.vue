@@ -71,16 +71,6 @@ export default {
          * before every router can be reached, authentication and permissions
          * should be checked
          */
-        agentPermission () {
-            this.$router.beforeEach((to, from, next) => {
-                this.dropdown = false
-                if (!to.meta.agentPermission) {
-                    this.$router.push('/')
-                } else {
-                    next()
-                }
-            })
-        },
         setUpRouterHooks () {
             this.$router.beforeEach((to, from, next) => {
                 this.dropdown = false
@@ -120,9 +110,6 @@ export default {
                 if (data) {
                     this.username = data.username
                     this.userType = data.type
-                    if (this.userType === 'agent') {
-                        this.agentPermission()
-                    }
                     this.getPermissions()
                 } else {
                     this.$router.push('/login?next=' + this.$route.path)
@@ -148,16 +135,12 @@ export default {
             })
         },
         getPermissions () {
-            if (this.userType !== 'agent') {
-                this.$http.get(api.permissionsUser).then(data => {
-                    this.permissions = data
-                    // permissions must be loaded before we can handle other data
-                    this.setUpAuth()
-                    this.setUpRouterHooks()
-                })
-            } else {
+            this.$http.get(api.permissionsUser).then(data => {
+                this.permissions = data
+                // permissions must be loaded before we can handle other data
                 this.setUpAuth()
-            }
+                this.setUpRouterHooks()
+            })
         }
     },
     components: {

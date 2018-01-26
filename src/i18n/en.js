@@ -360,7 +360,8 @@ export default {
         },
         loading: 'Loading',
         setting: 'Setting',
-        file_size_too_large: 'File size is too large, please select another one.'
+        file_size_too_large: 'File size is too large, please select another one.',
+        agent_login_error: 'You\'re an agent. Please login Agent Dashboard.'
     },
     bank: {
         bank_title: 'Bank Information',

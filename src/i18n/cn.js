@@ -360,7 +360,8 @@ export default {
         },
         loading: '载入中',
         setting: '设置',
-        file_size_too_large: '文件太大，请选择另一个'
+        file_size_too_large: '文件太大，请选择另一个',
+        agent_login_error: '您是代理商，请登入代理后台'
     },
     bank: {
         bank_title: '银行资讯',

@@ -65,6 +65,10 @@
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 }).then(data => {
+                    if (data.type === 'agent') {
+                        this.errorMsg = this.$t('common.agent_login_error')
+                        return
+                    }
                     $.storage.save({type: data.type})
                     let d = new Date(data.expires_in)
                     // Vue.http.headers.common['Authorization'] = 'Bearer ' + data.access_token

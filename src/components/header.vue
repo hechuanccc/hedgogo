@@ -75,7 +75,6 @@
 <script>
     import api from '../api'
     import VueCookie from 'vue-cookie'
-    import $ from '../utils/util'
     import INotify from 'title-notify'
     import axios from 'axios'
     import MemberSearchInput from './MemberSearchInput'
@@ -104,10 +103,8 @@
             }
         },
         created () {
-            if ($.storage.fetch().type !== 'agent') {
-                this.getCount()
-                setInterval(this.getCount, 5000)
-            }
+            this.getCount()
+            setInterval(this.getCount, 5000)
         },
         computed: {
             count: function () {
@@ -117,7 +114,7 @@
         watch: {
             count (newObj, old) {
                 let vm = this
-                if ($.storage.fetch().type !== 'agent' && newObj) {
+                if (newObj) {
                     if (!vm.iNotify) {
                         vm.createINotify()
                     }
@@ -241,21 +238,18 @@
 
                     let userCookie = VueCookie.get('access_token')
                     if (authenticationCookie === userCookie) {
-                        let userType = $.storage.fetch().type
-                        if (userType !== 'agent') {
-                            this.$http.get(api.metrics_count).then(data => {
-                                if (data) {
-                                    this.remit_count = data.remit_count
-                                    this.withdraw_count = data.withdraw_count
-                                    this.online_member = data.online_member
-                                    this.abnormal_count = data.abnormal_count
-                                } else {
-                                    this.$router.push('/login?next=' + this.$route.path)
-                                }
-                            }, () => {
+                        this.$http.get(api.metrics_count).then(data => {
+                            if (data) {
+                                this.remit_count = data.remit_count
+                                this.withdraw_count = data.withdraw_count
+                                this.online_member = data.online_member
+                                this.abnormal_count = data.abnormal_count
+                            } else {
                                 this.$router.push('/login?next=' + this.$route.path)
-                            })
-                        }
+                            }
+                        }, () => {
+                            this.$router.push('/login?next=' + this.$route.path)
+                        })
                     } else {
                         this.$router.push('/login?next=' + this.$route.path)
                     }
