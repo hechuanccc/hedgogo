@@ -245,13 +245,13 @@
                                 this.online_member = data.online_member
                                 this.abnormal_count = data.abnormal_count
                             } else {
-                                this.$router.push('/login?next=' + this.$route.path)
+                                this.$router.push('/login?next=' + this.$route.fullPath)
                             }
                         }, () => {
-                            this.$router.push('/login?next=' + this.$route.path)
+                            this.$router.push('/login?next=' + this.$route.fullPath)
                         })
                     } else {
-                        this.$router.push('/login?next=' + this.$route.path)
+                        this.$router.push('/login?next=' + this.$route.fullPath)
                     }
                 } else if (this.iNotify) {
                     this.iNotify.faviconClear()

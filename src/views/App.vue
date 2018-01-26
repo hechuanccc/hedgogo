@@ -112,10 +112,10 @@ export default {
                     this.userType = data.type
                     this.getPermissions()
                 } else {
-                    this.$router.push('/login?next=' + this.$route.path)
+                    this.$router.push('/login?next=' + this.$route.fullPath)
                 }
             }, () => {
-                this.$router.push('/login?next=' + this.$route.path)
+                this.$router.push('/login?next=' + this.$route.fullPath)
             })
         },
         refresh () {
