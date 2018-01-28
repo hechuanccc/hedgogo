@@ -3,7 +3,6 @@ set -e  # to stop script when error occurs
 
 # NPM commands and Azure cli scripts to deploy our static VueJS in a CDN
 
-export root_container=\$root  # is '\' is to escape the special character
 export audio_container=audio
 export langs_container=langs
 export static_container=static
@@ -22,7 +21,7 @@ npm run build
 /root/bin/az storage blob upload-batch --destination $ENV_CONTAINER/$audio_container --source dist/audio
 /root/bin/az storage blob upload-batch --destination $ENV_CONTAINER/$langs_container --source dist/langs
 /root/bin/az storage blob upload-batch --content-cache-control "public, max-age=$MAX_AGE" --destination $ENV_CONTAINER/$static_container --source dist/static
-/root/bin/az storage blob upload --file dist/index.html --container-name $ENV_CONTAINER/$root_container  --name index.html
+/root/bin/az storage blob upload --file dist/index.html --container-name $ENV_CONTAINER  --name index.html
 
 
 # To start purging the CDN
