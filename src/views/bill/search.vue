@@ -52,14 +52,14 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': $route.query.member
-                                    ? member.username
+                                    ? query.member
                                     : query.member_q
                                 }"
                             >{{ $t('common.member') }}
                             </label>
                             <input
                                 type="text"
-                                v-model="member.username"
+                                v-model="query.member"
                                 class="form-control w-sm"
                                 disabled
                                 v-if="$route.query.member"
@@ -77,14 +77,14 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': $route.query.member
-                                    ? member.agent.name
+                                    ? query.agent
                                     : query.agent_q
                                 }"
                             >{{ $t('common.agent') }}
                             </label>
                             <input
                                 type="text"
-                                v-model="member.agent.name"
+                                v-model="query.agent"
                                 class="form-control w-sm"
                                 disabled
                                 v-if="$route.query.member"
@@ -278,10 +278,6 @@
             }
         },
         created () {
-            let member = this.$route.query.member
-            if (member) {
-                this.getMember(member)
-            }
             this.setQueryAll()
             this.$nextTick(() => {
                 this.$refs.pulling.rebase()
@@ -306,11 +302,6 @@
                 }
                 this.transaction_type = this.$route.query.transaction_type || ''
                 this.query = Object.assign({}, this.$route.query)
-            },
-            getMember (username) {
-                this.$http.get(api.member + '?opt_fields=username,agent,level&username=' + username).then(data => {
-                    this.member = data[0]
-                })
             },
             levelSelect (val) {
                 this.query.member_level = val

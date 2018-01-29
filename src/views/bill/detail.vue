@@ -127,7 +127,18 @@
                         <div class="col-xs-3 text-right">{{$t('common.member')}}</div>
                         <div class="col-xs-8">
                             <router-link :to="'/member/' + transaction.member.id">{{transaction.member.username}}</router-link>
-                            <router-link :to="`/bill/search?member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l text-blue">{{$t('bill.view_all_orders')}}</router-link>
+                            <router-link
+                                :to="{
+                                    path: '/bill/search',
+                                    query: {
+                                        member: transaction.member.username,
+                                        member_level: transaction.member.level.id,
+                                        agent: transaction.member.agent.username,
+                                    }
+                                }" 
+                                class="m-l text-blue"
+                            >{{$t('bill.view_all_orders')}}
+                            </router-link>
                         </div>
                     </div>
                     <div class="row m-t">
@@ -251,6 +262,9 @@
                         level: {},
                         bank: {
                             bank: {}
+                        },
+                        agent: {
+                            username: ''
                         }
                     },
                     memo: '',
