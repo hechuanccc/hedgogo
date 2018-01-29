@@ -207,7 +207,7 @@
                         <th>{{ $t('common.settledat') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('common.game') }}</th>
-                        <th>{{ $t('game_manage.issue_number') }}</th>
+                        <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_manage.play') }}</th>
                         <th>{{ $t('common.betamount') }}</th>
                         <th>{{ $t('common.settlementamount') }}</th>
@@ -260,7 +260,7 @@
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('member.account_type') }}</th>
                         <th>{{ $t('common.game') }}</th>
-                        <th>{{ $t('game_manage.issue_number') }}</th>
+                        <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_manage.play') }}</th>
                         <th>{{ $t('game_manage.return_rate') }}(%)</th>
                         <th>{{ $t('common.betamount') }}</th>
