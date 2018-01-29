@@ -10,7 +10,7 @@
             <div class="col-xs-12">
               <date-picker
                 :not-after="today"
-                :shortcuts="[]"
+                :shortcuts="shortcuts"
                 class="pull-left m-r-xs"
                 v-model="date"
                 type="date"
@@ -111,6 +111,7 @@ import gameSelector from '../../components/gameSelector'
 import agentSelector from '../../components/agentSelector'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
+import date from '../../utils/date'
 
 const format = 'YYYY-MM-DD'
 export default {
@@ -119,15 +120,7 @@ export default {
             date: ['', ''],
             api: api.member_report,
             queryset: [],
-            query: {
-                start_date: '',
-                end_date: '',
-                agent: '',
-                member_level: '',
-                transaction_type: '',
-                platform: '',
-                game: ''
-            },
+            query: {},
             agent: '',
             member_level: '',
             transaction_type: '',
@@ -136,19 +129,18 @@ export default {
             filter: {},
             href: '',
             export_query: [],
-            today: Vue.moment().format(format)
+            today: Vue.moment().format(format),
+            shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                text: this.$t(`common.${element}`),
+                start: date[element][0],
+                end: date[element][1]
+            })),
+            defaultDate: ['', '']
         }
     },
     created () {
-        if (this.$route.query.start_date || this.$route.query.end_date) {
-            this.date = [this.$route.query.start_date, this.$route.query.end_date]
-        } else {
-            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
-        }
-        this.query = {
-            ...this.query,
-            ...this.$route.query
-        }
+        this.defaultDate = [Vue.moment(this.today).subtract(6, 'days').format(format), this.today]
+        this.setQueryAll()
         this.$nextTick(() => {
             this.$refs.pulling.rebase()
         })
@@ -158,9 +150,25 @@ export default {
             this.query.platform = newObj
         },
         date (newObj, old) {
-            [this.query.start_date, this.query.end_date] = newObj.map(e => Vue.moment(e).format(format))
+            if (`${newObj}` === `${this.defaultDate}`) {
+                [this.query.start_date, this.query.end_date] = [undefined, undefined]
+            } else {
+                [this.query.start_date, this.query.end_date] = [...newObj]
+            }
+            if (this.query.start_date !== this.$route.query.start_date || this.query.end_date !== this.$route.query.end_date) {
+                this.submit()
+            }
         },
-        '$route': 'nextTickFetch'
+        '$route': {
+            handler () {
+                this.setQueryAll()
+                this.queryset = []
+                this.$nextTick(() => {
+                    this.$refs.pulling.rebase()
+                })
+            },
+            deep: true
+        }
     },
     computed: {
         getReport () {
@@ -170,16 +178,16 @@ export default {
         }
     },
     methods: {
-        nextTickFetch () {
+        setQueryAll () {
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
-                this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
+                this.date = this.defaultDate
             }
-            setTimeout(() => {
-                this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
-            }, 100)
+            this.transaction_type = this.$route.query.transaction_type || ''
+            this.platform = this.$route.query.platform || ''
+            this.game = this.$route.query.game || ''
+            this.query = Object.assign({}, this.$route.query)
         },
         agentSelect (val) {
             this.query.agent = val
@@ -212,23 +220,9 @@ export default {
             this.$refs.pulling.getExportQuery()
         },
         clearAll () {
-            this.query = {
-                start_date: '',
-                end_date: '',
-                agent: '',
-                member_level: '',
-                transactionType: '',
-                platform: '',
-                game: ''
-            }
-            this.date = [Vue.moment(this.today).subtract(6, 'days'), this.today]
-            this.agent = ''
-            this.member_level = ''
-            this.transactionType = ''
-            this.platform = ''
-            this.game = ''
-            this.$router.push({
-                path: this.$route.path
+            this.query = {}
+            this.$nextTick(() => {
+                this.submit()
             })
         }
     },
