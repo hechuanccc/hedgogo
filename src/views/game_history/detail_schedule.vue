@@ -205,7 +205,8 @@
                         <td>
                             <span>{{ result.issue_number }}</span>
                             <br/>
-                            <span class="text-muted" v-if="result.remarks">({{ $t(`game_history.${result.remarks}`) }})</span>
+                            <span class="text-muted" v-if="result.is_manual">({{ $t('game_history.manual_draw') }})</span>
+                            <span class="text-muted" v-else-if="result.remarks !== 'manual_draw' && result.remarks !== null">({{ $t(`game_history.${result.remarks}`) }})</span>
                         </td>
                         <td>{{ result.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode">{{ result.bets_count }}</td>
