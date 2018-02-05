@@ -306,10 +306,10 @@ export default {
     },
     watch: {
         status: function (newObj, old) {
-            if (newObj === '0') {
-                this.query.status = ''
-            } else {
+            if (newObj) {
                 this.query.status = newObj
+            } else {
+                this.query.status = ''
             }
         },
         member_logged_in: function (newObj, old) {
