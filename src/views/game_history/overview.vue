@@ -296,11 +296,6 @@ export default{
                 this.modal.msg = `${this.$t('status.failed')}（${error}）`
                 this.$refs.alertMsg.trigger('danger')
             })
-        },
-        enterDetailPage (id, mode) {
-            this.getGameInfo(id).then(game => {
-                this.$router.push(`/game_history/${id}/?game_code=${game.code}&mode=${mode}`)
-            })
         }
     },
     beforeDestroy () {
