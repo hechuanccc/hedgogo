@@ -640,7 +640,7 @@ export default {
     },
     computed: {
         inputDate () {
-            return Vue.moment(this.input.date).format(dateFormat)
+            return this.input.date ? Vue.moment(this.input.date).format(dateFormat) : ''
         },
         queryCondition () {
             let condition = ''
