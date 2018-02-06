@@ -9,6 +9,7 @@ body{font-family: NotoSansHans-Regular,AvenirNext-Regular,arial,Hiragino Sans GB
     color: $blue-800;
 }
 
+
 .lh-md {
     line-height: 1.8;
 }
@@ -75,6 +76,11 @@ a.text-blue:hover {
     width: 110px;
     height: 33px;
 }
+
+
+.text-break-all {
+    word-break: break-all;
+ }
 
 .table-striped > tbody > tr:nth-child(odd).table-amount{
   background: #c3e1ff;

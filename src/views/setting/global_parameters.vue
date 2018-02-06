@@ -90,7 +90,7 @@
                                     {{ element.display_name }}: {{ element.value }}<br/>
                                 </span>
                             </td>
-                            <td v-else>{{ modal.displayValue }}</td>
+                            <td class="text-break-all" v-else><span>{{ modal.displayValue }}</span></td>
                         </tr>
                     </tbody>
                     </table>

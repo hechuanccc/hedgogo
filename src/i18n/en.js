@@ -131,6 +131,7 @@ export default {
         cycle: 'cycle'
     },
     member: {
+        contact_info: 'Contact Info',
         page_title: 'Search Members',
         account: 'Account',
         created_at: 'Registered at',
