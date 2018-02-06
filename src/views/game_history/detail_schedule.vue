@@ -5,8 +5,8 @@
     </div>
     <div class="box">
         <div class="box-body clearfix form-inline form-input-sm">
-            <div class="row">
-                <div class="col-xs-3">
+            <div class="row m-l m-r">
+                <div class="pull-left">
                     <label>{{$t('game_history.periods')}}：</label>
                     <input
                         type="number"
@@ -15,12 +15,12 @@
                         class="form-control"
                     >
                 </div>
-                <div class="col-xs-3" v-if="!mode">
+                <div class="pull-left m-l-md" v-if="!mode">
                     <label>{{$t('game_history.date')}}：</label>
                     <date-picker
                         width='140'
                         v-model="input.date"
-                    ></date-picker>
+                    />
                 </div>
             </div>
         </div>

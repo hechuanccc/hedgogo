@@ -81,7 +81,7 @@
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link  to="/member?report_flag=True">
+                                    <router-link  to="/member">
                                         <span class="nav-text">{{$t("nav.member_list")}}</span>
                                     </router-link>
                                 </li>

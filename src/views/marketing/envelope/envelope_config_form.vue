@@ -50,7 +50,7 @@
                         <div class="clearfix  m-b">
                             <label for="agent" class="col-xs-4 text-right form-control-label">{{$t('envelope.member_level')}}</label>
                             <div class="inline-form-control">
-                                <level :level="group.member_lvl" :index="index" required @level-choose="changeFromLevel" :disabled="userPermission"></level>
+                                <level :level="group.member_lvl" :index="index" required @level-choose="changeFromLevel" :disabled="!userPermission"></level>
                             </div>
                         </div>
                         <div class="clearfix  m-b">

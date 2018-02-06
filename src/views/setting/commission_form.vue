@@ -269,7 +269,11 @@
                     threshold: '',
                     max: '',
                     check_amount: '',
-                    rates: this.gamelist
+                    rates: this.gamelist.map(element => Object({
+                        game: element.game,
+                        game_id: element.game_id,
+                        rate: ''
+                    }))
                 })
             },
             onSubmit (e) {
