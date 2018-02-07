@@ -14,37 +14,71 @@
             </div>
             </div>
         </div>
-        <form class="form" v-on:submit.prevent="submit('agent')">
+        <form class="form" @submit.prevent="submit">
             <div class="box">
-                <div class="box-body clearfix form-inline form-input-sm">
-                    <div class="row">
-                        <div class="col-xs-12">
+                <div class="box-body clearfix form-input-sm">
+                    <div class="row m-l-xs m-r-xs">
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.username_q}"
+                            >{{ $t('common.username') }}
+                            </label>
                             <input
-                                type="text"
                                 v-model.trim="query.username_q"
-                                class="pull-left m-r-xs form-control"
+                                class="form-control w-sm"
                                 :placeholder="$t('agent.account')"
+                                @input="search"
                             />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.real_name_q}"
+                            >{{ $t('common.real_name') }}
+                            </label>
                             <input
-                                type="text"
-                                v-model="query.promo_code"
-                                class="pull-left m-r-xs form-control w-sm" 
-                                :placeholder="$t('agent.promo_code')"
-                            />
-                            <input
-                                type="text"
-                                v-model="query.real_name_q"
-                                class="pull-left m-r-xs form-control w-sm"
+                                v-model.trim="query.real_name_q"
+                                class="form-control w-sm"
                                 :placeholder="$t('common.real_name')"
+                                @input="search"
                             />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.promo_code}"
+                            >{{ $t('agent.promo_code') }}
+                            </label>
                             <input
-                                type="text"
-                                v-model="query.parent_agent_q"
-                                class="pull-left m-r-xs form-control w-sm"
-                                :placeholder="$t('agent.parent_agent')"
+                                v-model.trim="query.promo_code"
+                                class="form-control w-sm" 
+                                :placeholder="$t('agent.promo_code')"
+                                @input="search"
                             />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.parent_agent_q}"
+                            >{{ $t('agent.parent_agent') }}
+                            </label>
+                            <input
+                                v-model="query.parent_agent_q"
+                                class="form-control w-sm"
+                                :placeholder="$t('agent.parent_agent')"
+                                @input="search"
+                            />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.level}"
+                            >{{ $t('agent.level') }}
+                            </label>
                             <select
-                                class="pull-left m-r-xs form-control c-select w-sm"
+                                class="form-control c-select w-sm"
+                                style="display: block;"
                                 v-model="level"
                             >
                                 <option value="">{{ $t('agent.level') }}</option>
@@ -53,72 +87,108 @@
                                 <option value="3">总代理</option>
                                 <option value="4">代理</option>
                             </select>
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': commission_settings}"
+                            >{{ $t('agent.commission_setting') }}
+                            </label>
                             <commissionsetting
-                                class="pull-left m-r-xs"
+                                style="display: block;"
                                 :commissionsetting="commission_settings"
                                 @myCommission="myCommission"
                             />
-                            <button class="md-btn w-xs blue pull-right" type="submit">{{ $t('common.search') }}</button>
-                            <button class="md-btn grey-100 pull-right m-r" @click="showAll=!showAll">
-                                <span v-if="!showAll">{{ $t('member.more_options') }} <i class="fa fa-angle-double-down"></i></span>
-                                <span v-else>{{ $t('member.collapse_options') }} <i class="fa fa-angle-double-up"></i></span>
-                            </button>
                         </div>
                     </div>
-                    <div class="row m-t" v-show="showAll">
-                        <div class="col-xs-12">
-                            <select
-                                class="pull-left m-r-xs form-control w-sm c-select inline"
-                                v-model="selected"
-                            >
+                    <div class="row m-t-xs m-r-xs m-l-xs">
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': userInfo_q}"
+                            >{{ $t('member.contact_info') }}
+                            </label>
+                            <div style="display: block;">
+                                <select
+                                class="pull-left form-control w-sm c-select no-b-r"
+                                v-model="userInfoSelect"
+                                >
                                 <option value="">{{ $t('common.please_select') }}</option>
                                 <option value="0">{{ $t('common.phone') }}</option>
                                 <option value="1">{{ $t('common.email') }}</option>
                                 <option value="2">{{ $t('common.qq') }}</option>
                                 <option value="3">{{ $t('common.wechat') }}</option>
-                            </select>
-                            <input
-                                v-if="!selected"
-                                type="text"
-                                class="pull-left m-r-xs form-control inline"
-                                :disabled="!selected"
-                            />
-                            <input
-                                v-else
-                                type="text"
-                                v-model="detailValue"
-                                class="pull-left m-r-xs form-control w-sm"
-                                :placeholder="`${$t('common.input')} ${$t('common.' + detailSelect)}`"
-                                ref="detailInput"
-                            />
-                            <select class="pull-left m-r-xs form-control c-select w-sm" v-model="status">
-                                <option value="">{{ $t('common.status') }}</option>
+                                </select>
+                                <input
+                                v-model.trim="userInfo_q"
+                                class="form-control w-sm"
+                                style="width: 122px;"
+                                :disabled="!userInfoSelect"
+                                />
+                            </div>
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': status}"
+                            >{{ $t('common.status') }}
+                            </label>
+                            <select
+                                class="form-control c-select w-sm"
+                                style="display: block;"
+                                v-model="status"
+                            >
+                                <option value="">{{ $t('common.please_select') }}</option>
                                 <option value="1">{{ $t('status.active') }}</option>
                                 <option value="0">{{ $t('status.inactive') }}</option>
                             </select>
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': query.bank}"
+                            >{{ $t('agent.bank_account') }}
+                            </label>
                             <input
-                                type="text"
                                 v-model="query.bank"
-                                class="pull-left m-r-xs form-control w-sm"
+                                class="form-control w-sm"
                                 :placeholder="$t('agent.bank_account')"
+                                @input="search"
                             />
+                        </div>
+                        <div class="pull-left m-r-xs">
+                            <label
+                                class="form-control-label p-b-0"
+                                :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
+                            >{{ $t('agent.joined_at') }}
+                            </label>
                             <date-picker
-                                width='224'
+                                width='244'
+                                style="display: block;"
                                 :not-after="today"
                                 :shortcuts="shortcuts"
-                                :placeholder="$t('agent.joined_at')"
-                                class="pull-left m-r-xs"
+                                :inputClass="'input form-control'"
                                 type="date"
                                 v-model="created_at"
                                 format="yyyy-MM-dd"
                                 range
                             />
-                            <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{ $t('action.clear') }}</button>
                         </div>
+                        <button
+                            class="md-btn w-xs pull-right btn m-t-md"
+                            type="button"
+                            @click="clearAll"
+                            :disabled="isQueryEmpty"
+                        >
+                            <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                            <i v-else class="fa fa-trash-o"></i> 
+                            <span>{{ $t('action.clear') }}</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </form>
+
         <div class="box">
             <table class="table table-striped">
                 <thead>
@@ -209,20 +279,17 @@ import DatePicker from 'vue2-datepicker'
 import api from '../../../api'
 import pulling from '../../../components/pulling'
 import date from '../../../utils/date'
+import _ from 'lodash'
+import $ from '../../../utils/util'
 
 export default {
     data () {
         return {
-            created_at: ['', ''],
-            optexpand: 'level,parent_agent',
-            showAll: false,
             agentApi: api.agent,
             queryset: [],
             query: {},
-            selected: '',
-            details: ['phone', 'email', 'qq', 'wechat'],
-            detailSelect: '',
-            detailValue: '',
+            created_at: ['', ''],
+            optexpand: 'level,parent_agent',
             status: '',
             level: '',
             commission_settings: '',
@@ -231,12 +298,17 @@ export default {
                 text: this.$t(`common.${element}`),
                 start: date[element][0],
                 end: date[element][1]
-            }))
+            })),
+            userInfos: ['phone', 'email', 'qq', 'wechat'],
+            userInfoSelect: '',
+            userInfo_q: '',
+            loading: true
         }
     },
     watch: {
         '$route': {
             handler () {
+                this.loading = true
                 this.setQueryAll()
                 this.queryset = []
                 this.$refs.pulling.rebase()
@@ -244,80 +316,94 @@ export default {
             deep: true
         },
         status (newObj) {
-            this.query.status = newObj
+            this.query.status = newObj || ''
+            this.submit()
         },
         level (newObj) {
-            this.query.level = newObj
+            this.query.level = newObj || ''
+            this.submit()
         },
-        selected (newObj) {
-            this.details.forEach(element => {
-                this.query[element] = ''
-            })
-            if (newObj) {
-                this.detailSelect = this.details[newObj]
-                this.$nextTick(() => {
-                    this.$refs.detailInput.focus()
-                })
-            }
+        userInfo_q (newObj) {
+            this.setUserInfo()
         },
-        detailValue (newObj) {
-            this.query[this.detailSelect] = newObj
+        userInfoSelect (newObj) {
+            this.setUserInfo()
         },
         created_at (newObj) {
             [this.query.created_at_0, this.query.created_at_1] = [...newObj]
-            if (this.query.created_at_0 !== this.$route.query.created_at_0 || this.query.created_at_1 !== this.$route.query.created_at_1) {
-                this.submit()
-            }
+            this.submit()
         }
     },
     created () {
         this.setQueryAll()
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
-        })
+        this.rebase()
+    },
+    computed: {
+        isQueryEmpty () {
+            return $.compareQuery(this.query, {})
+        }
     },
     methods: {
         setQueryAll () {
             this.level = this.$route.query.level || ''
             this.commission_settings = this.$route.query.commission_settings || ''
             this.status = this.$route.query.status || ''
-            this.selected = ''
-            this.details.forEach((element, index) => {
-                if (this.$route.query[element]) {
-                    this.selected = `${index}`
-                    this.detailSelect = element
-                    this.detailValue = this.$route.query[element]
-                }
-            })
+            this.userInfoSelect = this.userInfos.findIndex(element => this.$route.query[element + '_q']).toString()
+            if (this.userInfoSelect !== '-1') {
+                let key = this.userInfos[this.userInfoSelect]
+                this.userInfo_q = this.$route.query[key + '_q']
+            } else {
+                this.userInfoSelect = '0'
+                this.userInfo_q = ''
+            }
             if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
                 this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
             } else {
                 this.created_at = [undefined, undefined]
             }
-
             this.query = Object.assign({}, this.$route.query)
         },
         queryData (queryset) {
             this.queryset = queryset
+            this.loading = false
         },
         queryParam (query) {
             this.query = Object.assign(this.query, query)
         },
         myCommission (val) {
             this.query.commission_settings = val
-            this.commission_settings = val
+            this.submit()
+        },
+        rebase () {
+            this.$nextTick(() => {
+                this.$refs.pulling.rebase()
+            })
         },
         submit () {
-            this.$refs.pulling.submit()
+            if (!$.compareQuery(this.query, this.$route.query)) {
+                this.$refs.pulling.submit()
+            }
         },
-        isArray (o) {
-            return Object.prototype.toString.call(o) === '[object Array]'
-        },
-        clearall: function () {
+        search:
+            _.debounce(function () {
+                this.submit()
+            },
+        700),
+        clearAll () {
             this.query = {}
             this.$nextTick(() => {
                 this.submit()
             })
+        },
+        isArray (o) {
+            return Object.prototype.toString.call(o) === '[object Array]'
+        },
+        setUserInfo () {
+            let key = this.userInfos[this.userInfoSelect]
+            this.userInfos.forEach(element => {
+                this.query[element + '_q'] = element === key ? this.userInfo_q : ''
+            })
+            this.search()
         }
     },
     components: {
