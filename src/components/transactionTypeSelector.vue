@@ -1,6 +1,6 @@
 <template>
     <select class="form-control w-sm c-select" v-model="myTransactionType" :required="req" :disabled="!disabled">
-        <option value="">{{ $t('bill.transaction_type') }}</option>
+        <option value="">{{ $t('common.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"
