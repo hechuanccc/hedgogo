@@ -28,7 +28,7 @@
             <div class="pull-left m-r-xs">
               <label
                   class="form-control-label p-b-0"
-                  :class="{'text-blue': agent}"
+                  :class="{'text-blue': agent && !agentReport}"
               >{{ $t('member.agent') }}
               </label>
               <agent-selector
@@ -42,7 +42,7 @@
             <div class="pull-left m-r-xs">
               <label
                   class="form-control-label p-b-0"
-                  :class="{'text-blue': query.member_level}"
+                  :class="{'text-blue': query.member_level && !agentReport}"
               >{{ $t('member.level') }}
               </label>
               <level
