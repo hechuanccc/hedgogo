@@ -5,55 +5,107 @@
       @submit.prevent="submit"
     >
       <div class="box m-t-sm m-b-sm">
-        <div class="box-body clearfix form-inline form-input-sm">
-          <div class="row">
-            <div class="col-xs-12">
+        <div class="box-body clearfix form-input-sm">
+          <div class="row m-l-xs m-r-xs">
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.start_date && query.end_date}"
+              >{{ $t('common.date') }}
+              </label>
               <date-picker
+                width='244'
+                style="display: block;"
                 :not-after="today"
                 :shortcuts="shortcuts"
-                class="pull-left m-r-xs"
+                :inputClass="'input form-control'"
                 v-model="date"
                 type="date"
                 format="yyyy-MM-dd"
                 range
               />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': agent && !agentReport}"
+              >{{ $t('member.agent') }}
+              </label>
               <agent-selector
-                class="pull-left m-r-xs"
+                style="display: block;"
                 :agent="agent"
                 @agent-select="agentSelect"
                 :placeholder="$t('member.agent')"
                 :disabled="!agentReport"
               />
-              <level 
-                class="pull-left m-r-xs"
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': query.member_level && !agentReport}"
+              >{{ $t('member.level') }}
+              </label>
+              <level
+                style="display: block;"
                 :level="query.member_level"
                 @level-select="levelSelect"
                 :placeholder="$t('member.level')"
                 :disabled="agentReport"
               />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': transaction_type}"
+              >{{ $t('bill.transaction_type') }}
+              </label>
               <transaction-type-selector
-                class="pull-left m-r-xs"
+                style="display: block;"
                 :transactionType="transaction_type"
-                :displayList="[1, 2]"
+                :displayList="['remit', 'online_pay']"
                 @transaction-type-select="transactionTypeSelect"
                 :placeholder="$t('bill.transaction_type')"
               />
-              <select class="pull-left m-r-xs form-control w-sm c-select" v-model="platform">
-                <option value="">{{ $t('manage.platform') }}</option>
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': platform}"
+              >{{ $t('manage.platform') }}
+              </label>
+              <select
+                style="display: block;"
+                class="form-control w-sm c-select"
+                v-model="platform"
+              >
+                <option value="">{{ $t('common.please_select') }}</option>
                 <option value="pc">{{ $t('manage.pc') }}</option>
                 <option value="mobile">{{ $t('manage.mobile') }}</option>
               </select>
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': game}"
+              >{{ $t('common.game') }}
+              </label>
               <game-selector
-                class="pull-left m-r-xs"
+                style="display: block;"
                 :game="game"
                 @game-select="gameSelect"
                 :placeholder="$t('common.game')"
               />
-              <div class="pull-right">
-                <button type="submit" class="md-btn w-xs blue" @keyup.enter="submit">{{ $t('common.search') }}</button>
-                <button class="md-btn w-xs" type="button" @click="clearAll">{{ $t('action.clear') }}</button>
-              </div>
             </div>
+            <button
+              class="md-btn w-xs pull-right btn m-t-md"
+              type="button"
+              @click="clearAll"
+              :disabled="isQueryEmpty"
+            >
+              <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+              <i v-else class="fa fa-trash-o"></i> 
+              <span>{{ $t('action.clear') }}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -115,6 +167,8 @@ import agentSelector from '../../components/agentSelector'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
 import date from '../../utils/date'
+import _ from 'lodash'
+import $ from '../../utils/util'
 
 const format = 'YYYY-MM-DD'
 export default {
@@ -132,25 +186,25 @@ export default {
             game: '',
             href: '',
             export_query: [],
-            today: Vue.moment().format(format),
+            today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
                 start: date[element][0],
                 end: date[element][1]
             })),
-            defaultDate: ['', '']
+            defaultDate: ['', ''],
+            loading: true
         }
     },
     created () {
         this.defaultDate = [Vue.moment(this.today).subtract(6, 'days').format(format), this.today]
         this.setQueryAll()
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
-        })
+        this.rebase()
     },
     watch: {
-        platform (newObj, old) {
-            this.query.platform = newObj
+        platform (newObj) {
+            this.query.platform = newObj || ''
+            this.submit()
         },
         date (newObj, old) {
             if (`${newObj}` === `${this.defaultDate}`) {
@@ -158,17 +212,13 @@ export default {
             } else {
                 [this.query.start_date, this.query.end_date] = [...newObj]
             }
-            if (this.query.start_date !== this.$route.query.start_date || this.query.end_date !== this.$route.query.end_date) {
-                this.submit()
-            }
+            this.submit()
         },
         '$route': {
             handler () {
                 this.setQueryAll()
                 this.queryset = []
-                this.$nextTick(() => {
-                    this.$refs.pulling.rebase()
-                })
+                this.rebase()
             },
             deep: true
         }
@@ -178,6 +228,9 @@ export default {
             this.$refs.pulling.getExportQuery()
             this.href = `${this.api}?token=${VueCookie.get('access_token')}${this.agentReport ? `&agent=${this.agent}` : ''}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
+        },
+        isQueryEmpty () {
+            return $.compareQuery(this.query, {})
         }
     },
     methods: {
@@ -203,21 +256,28 @@ export default {
         },
         agentSelect (val) {
             this.query.agent = val
-            this.agent = val
+            this.submit()
         },
         levelSelect (val) {
             this.query.member_level = val
+            this.submit()
         },
         transactionTypeSelect (val) {
             this.query.transaction_type = val
-            this.transaction_type = val
+            this.submit()
         },
         gameSelect (val) {
             this.query.game = val
-            this.game = val
+            this.submit()
         },
         queryData (queryset) {
             this.queryset = queryset
+            this.loading = false
+        },
+        rebase () {
+            this.$nextTick(() => {
+                this.$refs.pulling.rebase()
+            })
         },
         queryParam (query) {
             this.query = Object.assign(this.query, query)
@@ -226,8 +286,15 @@ export default {
             this.export_query = expor
         },
         submit () {
-            this.$refs.pulling.submit()
+            if (!$.compareQuery(this.query, this.$route.query)) {
+                this.$refs.pulling.submit()
+            }
         },
+        search:
+            _.debounce(function () {
+                this.submit()
+            },
+        700),
         clearAll () {
             if (this.agentReport) {
                 this.query = {

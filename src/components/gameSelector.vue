@@ -1,6 +1,11 @@
 <template>
-    <select class="form-control w-sm c-select" v-model="myGame" :required="req" :disabled="!disabled">
-        <option value="">{{ $t('common.game') }}</option>
+    <select
+        class="form-control w-sm c-select"
+        v-model="myGame"
+        :required="req"
+        :disabled="!disabled"
+    >
+        <option value="">{{ $t('common.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"

@@ -25,7 +25,7 @@
     </div>
     <form 
       class="form"
-      v-on:submit.prevent="submit"
+      @submit.prevent="submit"
       v-show="pageSelected === 'allMember'"
     >
       <div class="box m-t-sm m-b-sm">
@@ -302,7 +302,7 @@
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
-          <tr v-for="member in queryset">
+          <tr v-for="member in queryset" :key="member.id">
             <td>
               <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</div>
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
@@ -381,7 +381,6 @@ export default {
             extra: '',
             status: '',
             level: '',
-            selected: '0',
             href: '',
             export_query: [],
             pageSelected: '',
@@ -471,8 +470,8 @@ export default {
             this.submit()
         },
         queryData (queryset) {
-            this.loading = false
             this.queryset = queryset
+            this.loading = false
         },
         queryParam (query) {
             this.query = Object.assign(this.query, query)
