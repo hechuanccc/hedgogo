@@ -97,6 +97,15 @@ a.text-blue:hover {
     border: 1px solid rgba(120, 130, 140, 0.2);
 }
 
+.mx-datepicker input.mx-input{
+  height: 33px;
+  padding: 6px 10px 6px 10px;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid rgba(120, 130, 140, 0.2);
+  background-color: white;
+}
+
 span.time-picker{
   width: 140px;
 }

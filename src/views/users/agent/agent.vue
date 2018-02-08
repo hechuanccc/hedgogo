@@ -47,11 +47,11 @@
                         <div class="pull-left m-r-xs">
                             <label
                                 class="form-control-label p-b-0"
-                                :class="{'text-blue': query.promo_code}"
+                                :class="{'text-blue': query.promo_code_q}"
                             >{{ $t('agent.promo_code') }}
                             </label>
                             <input
-                                v-model.trim="query.promo_code"
+                                v-model.trim="query.promo_code_q"
                                 class="form-control w-sm" 
                                 :placeholder="$t('agent.promo_code')"
                                 @input="search"
@@ -146,11 +146,11 @@
                         <div class="pull-left m-r-xs">
                             <label
                                 class="form-control-label p-b-0"
-                                :class="{'text-blue': query.bank}"
+                                :class="{'text-blue': query.bank_account_q}"
                             >{{ $t('agent.bank_account') }}
                             </label>
                             <input
-                                v-model="query.bank"
+                                v-model="query.bank_account_q"
                                 class="form-control w-sm"
                                 :placeholder="$t('agent.bank_account')"
                                 @input="search"
