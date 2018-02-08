@@ -232,11 +232,11 @@
                                 <div class="pull-left m-r-xs">
                                     <label
                                         class="form-control-label p-b-0"
-                                        :class="{'text-blue': query.issue_number}"
+                                        :class="{'text-blue': query.issue_number_q}"
                                     >{{ $t('game_history.periods') }}
                                     </label>
                                     <input
-                                        v-model="query.issue_number"
+                                        v-model="query.issue_number_q"
                                         class="form-control w-sm"
                                         :placeholder="$t('game_history.periods')"
                                         @input="search"
