@@ -38,7 +38,7 @@
                         <div class="pull-left m-r-xs">
                             <label
                                 class="form-control-label p-b-0"
-                                :class="{'text-blue': query.member_level}"
+                                :class="{'text-blue': !$route.query.member && query.member_level}"
                             >{{ $t('member.level') }}
                             </label>
                             <level
@@ -51,9 +51,7 @@
                         <div class="pull-left m-r-xs">
                             <label
                                 class="form-control-label p-b-0"
-                                :class="{'text-blue': $route.query.member
-                                    ? query.member
-                                    : query.member_q
+                                :class="{'text-blue': !$route.query.member && query.member_q
                                 }"
                             >{{ $t('common.member') }}
                             </label>
@@ -76,9 +74,7 @@
                         <div class="pull-left m-r-xs">
                             <label
                                 class="form-control-label p-b-0"
-                                :class="{'text-blue': $route.query.member
-                                    ? query.agent
-                                    : query.agent_q
+                                :class="{'text-blue': !$route.query.member && query.agent_q
                                 }"
                             >{{ $t('common.agent') }}
                             </label>

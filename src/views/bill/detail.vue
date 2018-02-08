@@ -132,8 +132,8 @@
                                     path: '/bill/search',
                                     query: {
                                         member: transaction.member.username,
-                                        member_level: transaction.member.level.id,
-                                        agent: transaction.member.agent.username,
+                                        member_level: transaction.member.level && transaction.member.level.id,
+                                        agent: transaction.member.agent && transaction.member.agent.username,
                                     }
                                 }" 
                                 class="m-l text-blue"
@@ -206,8 +206,23 @@
                     </div>
                     <div v-if="transaction.status === 1" class="t-green">
                         {{$t('bill.saved')}}
-                        <router-link :to="`/bill/search?member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
-                        <router-link :to="`/bill/search?transaction_type=remit,online_pay&member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l">{{$t('bill.view_all_discounts')}}</router-link>
+                        <router-link :to="{
+                            path: '/bill/search',
+                            query: {
+                                member: transaction.member.username,
+                                member_level: transaction.member.level && transaction.member.level.id,
+                                agent: transaction.member.agent && transaction.member.agent.username,
+                            }
+                        }" class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
+                        <router-link :to="{
+                            path: '/bill/search',
+                            query: {
+                                member: transaction.member.username,
+                                member_level: transaction.member.level && transaction.member.level.id,
+                                agent: transaction.member.agent && transaction.member.agent.username,
+                                transaction_type: 'remit,online_pay'
+                            }
+                        }" class="m-l">{{$t('bill.view_all_discounts')}}</router-link>
                     </div>
                 </div>
 
@@ -225,7 +240,15 @@
 
                     <div v-if="transaction.status === 1" class="t-green">
                         {{$t('bill.saved')}}
-                        <router-link :to="`/bill/search?transaction_type=withdraw&member=${transaction.member.username}&member_level=${transaction.member.level.id}`" class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
+                        <router-link :to="{
+                            path: '/bill/search',
+                            query: {
+                                member: transaction.member.username,
+                                member_level: transaction.member.level && transaction.member.level.id,
+                                agent: transaction.member.agent && transaction.member.agent.username,
+                                transaction_type: 'withdraw'
+                            }
+                        }" class="m-l">{{$t('bill.view_all_transactions')}}</router-link>
                     </div>
                     <div v-if="transaction.status === 5 " class="t-red">
                         {{$t('bill.withdraw_declined')}}
