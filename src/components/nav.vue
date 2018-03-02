@@ -136,7 +136,7 @@
                             <ul class="nav-sub">
                                 <li><router-link to="/login_record"><span class="nav-text">{{$t("nav.login_logs")}}</span></router-link></li>
                                 <li><router-link to="/actionrecord"><span class="nav-text">{{$t("nav.action_logs")}}</span></router-link></li>
-                                <li><router-link to="/errors"><span class="nav-text">{{$t("nav.errors")}}</span></router-link></li>
+                                <!-- <li><router-link to="/errors"><span class="nav-text">{{$t("nav.errors")}}</span></router-link></li> -->
                             </ul>
                         </li>
                         <li :class="$route.meta.group == 'agent' ? 'active' : ''" v-if="$root.permissions.includes('export_agent_commission_report')">
