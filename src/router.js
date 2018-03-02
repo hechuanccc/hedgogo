@@ -673,19 +673,19 @@ export default new Router({
             group: 'logging'
         }
     },
-    {
-        path: '/errors',
-        name: 'errors',
-        component: function (resolve) {
-            require(['./views/logging/error.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            disable_tabs: true,
-            title: Vue.t('nav.errors'),
-            group: 'logging'
-        }
-    },
+    // {
+    //     path: '/errors',
+    //     name: 'errors',
+    //     component: function (resolve) {
+    //         require(['./views/logging/error.vue'], resolve)
+    //     },
+    //     meta: {
+    //         auth: true,
+    //         disable_tabs: true,
+    //         title: Vue.t('nav.errors'),
+    //         group: 'logging'
+    //     }
+    // },
     {
         path: '/report/betrecord',
         name: 'report_betrecord',
