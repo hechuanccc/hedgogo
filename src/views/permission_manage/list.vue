@@ -4,23 +4,23 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
           <thead>
           <tr>
-            <th>{{$t('permission_manage.id')}}</th>
+            <th style="width: 5%;" class="text-center">#</th>
             <th>{{$t('permission_manage.name')}}</th>
             <th>{{$t('permission_manage.description')}}</th>
-            <th>{{$t('permission_manage.group_id')}}</th>
-            <th>{{$t('permission_manage.created_at')}}</th>
-            <th>{{$t('permission_manage.operating')}}</th>
+            <th style="width: 7%;" class="text-center">{{$t('permission_manage.group_id')}}</th>
+            <th style="width: 10%;" class="text-center">{{$t('permission_manage.created_at')}}</th>
+            <th style="width: 5%;" class="text-center">{{$t('permission_manage.operating')}}</th>
           </tr>
           </thead>
           <tbody v-if="permissionsListAll.length > 0">
             <tr v-for="permission in permissionsListAll" :key="permission.id">
-                <td>{{ permission.id }}</td>
+                <td class="text-center">{{ permission.id }}</td>
                 <td>{{ permission.display_name }}</td>
-                <td>{{ permission.description }}</td>
-                <td>{{ getPermission(permission.group) }}</td>
-                <td>{{ permission.updated_at | datetimeFilter }}</td>
-                <td>
-                    <a class="p-l-xs" @click="showModal(permission.group, permission.id)">{{ $t('permission_manage.modify') }}</a>
+                <td>{{ permission.description || '-' }}</td>
+                <td class="text-center">{{ getPermission(permission.group) }}</td>
+                <td class="text-center">{{ permission.updated_at | datetimeFilter }}</td>
+                <td class="text-center">
+                    <a @click="showModal(permission.group, permission.id)">{{ $t('permission_manage.modify') }}</a>
                 </td>
             </tr>
           </tbody>
@@ -91,7 +91,7 @@ export default {
         getPermissionsListAll () {
             this.$http.get(api.advpermissions)
             .then(data => {
-                this.permissionsListAll = data.sort((a, b) => a.group - b.group)
+                this.permissionsListAll = data.sort((a, b) => a.id - b.id)
             })
         },
         getPermissions () {
