@@ -1,26 +1,43 @@
 <template>
 <div>
-    <div class="row m-b">
-        <div class="m-l"><h3>{{ game.display_name }}</h3></div>
+    <div class="row m-b-sm">
+        <div class="m-l"><h4>{{ game.display_name }}</h4></div>
     </div>
     <div class="box">
-        <div class="box-body clearfix form-inline form-input-sm">
-            <div class="row">
-                <div class="col-xs-3">
-                    <label>{{$t('game_history.periods')}}：</label>
+        <div class="box-body clearfix form-input-sm">
+            <div class="row m-l-xs m-r-xs">
+                <div class="pull-left m-r-xs">
+                    <label class="form-control-label p-b-0">
+                        {{$t('game_history.periods')}}
+                    </label>
                     <input
-                        type="number"
-                        v-model.number="input.period"
+                        type="text"
+                        v-model.trim="input.period"
                         :placeholder="$t('game_history.periods')"
-                        class="form-control"
+                        class="form-control w-md"
                     >
                 </div>
-                <div class="col-xs-3" v-if="!mode">
-                    <label>{{$t('game_history.date')}}：</label>
+                <div class="pull-left" v-if="!mode">
+                    <label class="form-control-label p-b-0">
+                        {{$t('game_history.date')}}
+                    </label>
                     <date-picker
+                        style="display:block"
                         width='140'
                         v-model="input.date"
-                    ></date-picker>
+                        v-if="game.code !== 'hkl'"
+                    />
+                    <date-picker
+                        style="display:block"
+                        width="248"
+                        :not-after="today"
+                        :shortcuts="shortcuts"
+                        type="date"
+                        v-model="input.date"
+                        format="yyyy-MM-dd"
+                        range
+                        v-else
+                    />
                 </div>
             </div>
         </div>
@@ -205,7 +222,8 @@
                         <td>
                             <span>{{ result.issue_number }}</span>
                             <br/>
-                            <span class="text-muted" v-if="result.remarks">({{ $t(`game_history.${result.remarks}`) }})</span>
+                            <span class="text-muted" v-if="result.is_manual">({{ $t('game_history.manual_draw') }})</span>
+                            <span class="text-muted" v-else-if="result.remarks !== 'manual_draw' && result.remarks !== null">({{ $t(`game_history.${result.remarks}`) }})</span>
                         </td>
                         <td>{{ result.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode">{{ result.bets_count }}</td>
@@ -392,12 +410,19 @@ import alertMsg from '../../components/alertMsg'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 import _ from 'lodash'
+import date from '../../utils/date'
 
 const dateFormat = 'YYYY-MM-DD'
 
 export default {
     data () {
         return {
+            today: Vue.moment().format(dateFormat),
+            shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                text: this.$t(`common.${element}`),
+                start: date[element][0],
+                end: date[element][1]
+            })),
             mode: 0,
             game: {
                 id: '',
@@ -407,7 +432,7 @@ export default {
             },
             retreatedScheds: [],
             input: {
-                date: Vue.moment().format(dateFormat),
+                date: date.today,
                 period: ''
             },
             inputPeriod: '',
@@ -425,7 +450,6 @@ export default {
             pullingApi: '',
             queryset: [],
             query: {},
-            today: Vue.moment().format(dateFormat),
             allCol: [],
             resultCol: [],
             resultColMode: undefined,
@@ -639,12 +663,19 @@ export default {
     },
     computed: {
         inputDate () {
-            return Vue.moment(this.input.date).format(dateFormat)
+            return Array.isArray(this.input.date)
+            ? [
+                this.input.date[0] ? Vue.moment(this.input.date[0]).format(dateFormat) : '',
+                this.input.date[1] ? Vue.moment(this.input.date[1]).format(dateFormat) : ''
+            ]
+            : this.input.date ? Vue.moment(this.input.date).format(dateFormat) : ''
         },
         queryCondition () {
             let condition = ''
-            if (this.inputDate) {
-                condition += `&date=${this.inputDate}`
+            if (Array.isArray(this.inputDate)) {
+                condition += `${this.inputDate[0] && `&created_at_0=${this.inputDate[0]}`}${this.inputDate[1] && `&created_at_1=${this.inputDate[1]}`}`
+            } else {
+                condition += `&created_at_0=${this.inputDate}&created_at_1=${this.inputDate}`
             }
             if (this.inputPeriod) {
                 condition += `&issue_number_q=${this.inputPeriod}`
@@ -713,7 +744,7 @@ export default {
             return this.queryset
         },
         isShowRetreatedSched () {
-            return this.$refs.pulling.isPageOne && this.today === Vue.moment(this.input.date).format(dateFormat) && !this.input.period && !this.mode
+            return this.$refs.pulling.isPageOne && Array.isArray(this.input.date) ? this.today === Vue.moment(this.input.date[1]).format(dateFormat) : this.today === Vue.moment(this.input.date).format(dateFormat) && !this.input.period && !this.mode
         }
     },
     components: {

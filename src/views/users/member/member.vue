@@ -1,117 +1,233 @@
 <template>
   <div>
-    <div class="m-l-xs row" v-if="pageSelected == 'all_members'">
+    <div class="m-l-xs m-t-0 row" v-if="pageSelected === 'allMember'">
       <div class="inline m-r-xs" v-if="$root.permissions.includes('add_new_member')">
-        <router-link tag="button" class="md-btn w-sm blue pull-right" to="/member/add">{{$t('action.add_member')}}</router-link>
+        <router-link
+          tag="button"
+          class="md-btn w-sm blue pull-right"
+          to="/member/add"
+        >{{ $t('action.add_member') }}
+        </router-link>
       </div>
     </div>
-    <div class="row m-b-sm" v-else>
-      <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>
-      </div>
-      <button class="md-btn blue w-xs pull-right m-r" type="button" @click="refresh">{{$t('common.refresh')}}</button>
+    <div class="row m-b-sm m-r-xs m-l-xs" v-else>
+			<button
+				class="md-btn blue pull-right btn w-xs"
+				type="button"
+				@click="refresh"
+			>
+				<span>
+					<i class="fa fa-spin fa-spinner" v-if="loading"></i>
+					<i class="fa fa-repeat" v-else></i>
+						{{ $t('common.refresh') }}
+				</span>
+			</button>
     </div>
     <form 
       class="form"
-      v-on:submit.prevent="submit"
-      v-show="pageSelected == 'all_members'"
+      @submit.prevent="submit"
+      v-show="pageSelected === 'allMember'"
     >
       <div class="box m-t-sm m-b-sm">
-        <div class="box-body clearfix form-inline form-input-sm">
-          <div class="row">
-            <div class="col-xs-12">
+        <div class="box-body clearfix form-input-sm">
+          <div class="row m-l-xs m-r-xs">
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.username_q}"
+              >{{ $t('common.username') }}
+              </label>
               <input 
-                type="text" 
-                v-model="query.username_q" 
-                class="form-control" 
-                :placeholder="$t('member.account')"
+                v-model.trim="query.username_q"
+                class="form-control w-sm"
+                :placeholder="$t('common.username')"
+                @input="search"
               />
-              <level 
-                :level="level"
-                @level-select="levelSelect"
-                :placeholder="$t('member.level')"
-              />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.real_name_q}"
+              >{{ $t('common.real_name') }}
+              </label>
               <input 
-                type="text"
-                v-model="query.agent_q"
-                class="form-control"
-                :placeholder="$t('member.agent')"
-              />
-              <input 
-                type="text"
-                v-model="query.real_name_q"
-                class="form-control"
+                v-model.trim="query.real_name_q"
+                class="form-control w-sm"
                 :placeholder="$t('common.real_name')"
+                @input="search"
               />
-              <select class="form-control c-select w-sm" v-model="status">
-                <option value="">{{$t('common.status')}}</option>
-                <option value="1">{{$t('status.active')}}</option>
-                <option value="0">{{$t('status.inactive')}}</option>
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.agent_q}"
+              >{{ $t('common.agent') }}
+              </label>
+              <input 
+                v-model.trim="query.agent_q"
+                class="form-control w-sm"
+                :placeholder="$t('common.agent')"
+                @input="search"
+              />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': query.level}"
+              >{{ $t('member.level') }}
+              </label>
+              <level
+                :level="query.level"
+                @level-select="levelSelect"
+                style="display: block;"
+              />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                  class="form-control-label p-b-0"
+                  :class="{'text-blue': status}"
+              >{{ $t('common.status') }}
+              </label>
+              <select
+                class="form-control c-select w-sm"
+                style="display: block;"
+                v-model="status"
+              >
+                <option value="">{{ $t('common.please_select') }}</option>
+                <option value="1">{{ $t('status.active') }}</option>
+                <option value="0">{{ $t('status.inactive') }}</option>
               </select>
-              <select class="form-control w-sm c-select" v-model="member_logged_in">
-                <option value="">{{$t('common.login_status')}}</option>
-                <option value="1">{{$t('common.logged_in')}}</option>
-                <option value="0">{{$t('common.all')}}</option>
-              </select>
-              <div class="pull-right">
-                <button class="md-btn grey-100 m-r-xs" type="button" @click="showAll=!showAll">
-                  <span v-if="!showAll">{{$t('member.more_options')}} <i class="fa fa-angle-double-down"></i></span>
-                  <span v-else>{{$t('member.collapse_options')}} <i class="fa fa-angle-double-up"></i></span>
-                </button>
-                <button type="submit" class="md-btn w-xs blue">{{$t('common.search')}}</button>
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.balance_lte || query.balance_gte}"
+              >{{ $t('common.amount') }}
+              </label>
+              <div style="display: block;">
+                <input
+                  type="number"
+                  v-model="query.balance_gte"
+                  class="form-control inline w-sm"
+                  :max="query.balance_lte"
+                  :placeholder="$t('common.min_amount')"
+                  @input="search"
+                />
+                ~
+                <input
+                  type="number"
+                  v-model="query.balance_lte"
+                  class="form-control inline w-sm"
+                  :min="query.balance_gte"
+                  :placeholder="$t('common.max_amount')"
+                  @input="search"
+                />
               </div>
             </div>
           </div>
-          <div class="row m-t" v-show="showAll">
-            <div class="col-xs-12">
-              <select class="form-control w-sm c-select inline" v-model="selected" @change="filterUserContactInfo">
-                <option value="0">{{$t('common.please_select')}}</option>
-                <option value="1">{{$t('common.phone')}}</option>
-                <option value="2">{{$t('common.email')}}</option>
-                <option value="3">{{$t('common.qq')}}</option>
-                <option value="4">{{$t('common.wechat')}}</option>
-              </select>
-              <input v-show="selected == '0' || selected == '-1'" type="text" class="form-control inline" :disabled="selected == '0'"/>
-              <input v-if="selected == '1'" type="text" v-model="query.phone_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.phone')"/>
-              <input v-if="selected == '2'" type="text" v-model="query.email_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.email')"/>
-              <input v-if="selected == '3'" type="text" v-model="query.qq_q" class="form-control w-sm" v-bind:placeholder="$t('common.input') + ' ' + $t('common.qq')"/>
-              <input v-if="selected == '4'" type="text" v-model="query.wechat_q" class="form-control w-sm " v-bind:placeholder="$t('common.input') + ' ' + $t('common.wechat')"/>
-              <input type="text" v-model="query.register_ip" class="form-control w-sm " v-bind:placeholder="$t('member.created_ip')"/>
-              <input type="text" v-model="query.balance_gte" class="form-control inline w-sm" v-bind:placeholder="$t('common.min_amount')"/> <span>~</span>
-              <input type="text" v-model="query.balance_lte" class="form-control inline w-sm" v-bind:placeholder="$t('common.max_amount')"/>
-              <date-picker width='140' v-model="created_at_0" v-bind:placeholder="$t('member.created_at')"></date-picker>
-              <span>~</span>
-              <date-picker width='140' v-model="created_at_1" v-bind:placeholder="$t('member.created_at')"></date-picker>
-              <button class="md-btn w-xs grey-400 pull-right" type="button" @click="clearall">{{$t('action.clear')}}</button>
+          <div class="row m-t-xs m-l-xs m-r-xs">
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': userInfo_q}"
+              >{{ $t('member.contact_info') }}
+              </label>
+              <div style="display: block;">
+                <select
+                  class="pull-left form-control w-sm c-select no-b-r"
+                  v-model="userInfoSelect"
+                >
+                  <option value="">{{ $t('common.please_select') }}</option>
+                  <option value="0">{{ $t('common.phone') }}</option>
+                  <option value="1">{{ $t('common.email') }}</option>
+                  <option value="2">{{ $t('common.qq') }}</option>
+                  <option value="3">{{ $t('common.wechat') }}</option>
+                </select>
+                <input
+                  v-model.trim="userInfo_q"
+                  class="form-control w-sm"
+                  style="width: 122px;"
+                  :disabled="!userInfoSelect"
+                />
+              </div>
             </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
+              >{{ $t('member.created_at') }}
+              </label>
+              <date-picker
+                width='244'
+                style="display: block;"
+                :not-after="today"
+                :shortcuts="shortcuts"
+                :inputClass="'input form-control'"
+                type="date"
+                v-model="created_at"
+                format="yyyy-MM-dd"
+                range
+              />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.register_ip}"
+              >{{ $t('member.created_ip') }}
+              </label>
+              <input
+                v-model.trim="query.register_ip"
+                class="form-control w-sm"
+                style="width: 244px;"
+                :placeholder="$t('member.created_ip')"
+                @input="search"
+              />
+            </div>
+            <button
+              class="md-btn w-xs pull-right btn m-t-md"
+              type="button"
+              @click="clearAll"
+              :disabled="isQueryEmpty"
+            >
+              <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+              <i v-else class="fa fa-trash-o"></i> 
+              <span>{{ $t('action.clear') }}</span>
+            </button>
           </div>
         </div>
       </div>
     </form>
-    <div class="row m-t-md" v-if="pageSelected === 'all_members'">
-        <div class="col-xs-12">
+    <div class="row" v-if="pageSelected === 'allMember'">
+      <div class="col-xs-12">
         <div class="pull-right" v-if="$root.permissions.includes('export_member_report')">
-            <a :href="href" :getReport="getReport" v-if="queryset.length">
-            <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
-            </a>
-            <span disabled v-else>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
+          <a :href="href" :getReport="getReport" v-if="queryset.length">
+            <span>
+              {{ $t('action.download') }}
+              <i class="material-icons">&#xe2c4;</i>
+            </span>
+          </a>
+          <span disabled v-else>
+            {{ $t('action.download') }}
+            <i class="material-icons">&#xe2c4;</i>
+          </span>
         </div>
-        </div>
+      </div>
     </div>
     <div class="box m-t-xs" v-if="queryset.length > 0">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'online_member'">
+      <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'onlineMember'">
         <thead>
           <tr class="text-center">
-            <th width="7%" class="text-center">{{$t('common.login_status')}}</th>
-            <th width="7%">{{$t('member.account_type')}}</th>
-            <th width="7%">{{$t('member.account')}}</th>
-            <th width="10%">{{$t('common.real_name')}}</th>
-            <th width="15%">{{$t('member.last_login')}}</th>
-            <th width="15%">{{$t('member.loggedin_infos')}}</th>
-            <th width="10%">{{$t('member.login_platform')}}</th>
-            <th width="15%">{{$t('member.area')}}</th>
-            <th width="10%">{{$t('member.agent')}}</th>
-            <th width="7%" class="text-center">{{$t('member.level')}}</th>
-            <th width="5%">{{$t('member.balance')}}</th>
+            <th width="7%" class="text-center">{{ $t('common.login_status') }}</th>
+            <th width="7%">{{ $t('member.account_type') }}</th>
+            <th width="7%">{{ $t('member.account') }}</th>
+            <th width="10%">{{ $t('common.real_name') }}</th>
+            <th width="15%">{{ $t('member.last_login') }}</th>
+            <th width="15%">{{ $t('member.loggedin_infos') }}</th>
+            <th width="10%">{{ $t('member.login_platform') }}</th>
+            <th width="15%">{{ $t('member.area') }}</th>
+            <th width="10%">{{ $t('member.agent') }}</th>
+            <th width="7%" class="text-center">{{ $t('member.level') }}</th>
+            <th width="5%">{{ $t('member.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -121,112 +237,112 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td>
-              <span v-if="member.account_type === 1">{{$t('member.real_account')}}</span>
-              <span v-else>{{$t('member.trial_account')}}</span>
+              <span v-if="member.account_type === 1">{{ $t('member.real_account') }}</span>
+              <span v-else>{{ $t('member.trial_account') }}</span>
             </td>
             <td>
-              <router-link :to="'/member/' + member.id" v-if="member.account_type === 1">{{member.username}}</router-link>
+              <router-link :to="'/member/' + member.id" v-if="member.account_type === 1">{{ member.username }}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
               <br/>
-              <span class="label success" v-if="member.status===1">{{$t('status.active')}}</span>
-              <span class="label" v-else>{{$t('status.inactive')}}</span>
+              <span class="label success" v-if="member.status===1">{{ $t('status.active') }}</span>
+              <span class="label" v-else>{{ $t('status.inactive') }}</span>
             </td>
             <td>
               <div v-if="member.account_type === 1">
-                {{member.real_name || '-'}}
+                {{ member.real_name || '-' }}
                 <div v-if="member.realname_repeated">
-                  <span class="label danger">{{$t('common.repeat')}}</span>
+                  <span class="label danger">{{ $t('common.repeat') }}</span>
                 </div>
               </div>
               <span v-else>-</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm")}}</span>
+              <span v-if="member.last_login">{{ member.last_login.login_at | moment("YYYY-MM-DD HH:mm") }}</span>
               <span v-else>-</span>
             </td>
             <td>
-              <span>{{member.loggedin_domain || '-'}}</span>
+              <span>{{ member.loggedin_domain || '-' }}</span>
               <br/>
-              <span class="text-muted">{{member.loggedin_ip || '-'}}</span>
+              <span class="text-muted">{{ member.loggedin_ip || '-' }}</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{member.last_login.platform}}</span>
+              <span v-if="member.last_login">{{ member.last_login.platform }}</span>
               <span v-else>-</span>
             </td>
             <td>
-              <div v-if="member.last_login">{{member.last_login.address.country}} {{member.last_login.address.region}} {{member.last_login.address.city}}</div>
+              <div v-if="member.last_login">{{ member.last_login.address.country }} {{ member.last_login.address.region }} {{ member.last_login.address.city }}</div>
               <div v-else>-</div>
             </td>
 
             <td v-if="member.agent.name">
-              <span>{{member.agent.name}}</span>
+              <span>{{ member.agent.name }}</span>
             </td>
             <td class="text-center">
-              <router-link v-if="member.level && member.account_type === 1" :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
+              <router-link v-if="member.level && member.account_type === 1" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
               <span v-else>-</span>
             </td>
-            <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
+            <td><div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div></td>
           </tr>
         </tbody>
       </table>
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
         <thead>
           <tr>
-            <th width="5%" class="text-center">{{$t('common.login_status')}}</th>
-            <th>{{$t('member.account')}}</th>
-            <th>{{$t('common.real_name')}}</th>
-            <th>{{$t('member.created_ip')}}</th>
-            <th>{{$t('member.last_login')}}</th>
-            <th>{{$t('member.agent')}}</th>
-            <th width="5%">{{$t('member.level')}}</th>
-            <th>{{$t('betrecord.total_valid_bet_amount')}}</th>
-            <th>{{$t('betrecord.total_bet_amount')}}</th>
-            <th>{{$t('common.member') + $t('betrecord.win') + $t('betrecord.lose')}}</th>
-            <th>{{$t('member.balance')}}</th>
+            <th width="5%" class="text-center">{{ $t('common.login_status') }}</th>
+            <th>{{ $t('member.account') }}</th>
+            <th>{{ $t('common.real_name') }}</th>
+            <th>{{ $t('member.created_ip') }}</th>
+            <th>{{ $t('member.last_login') }}</th>
+            <th>{{ $t('member.agent') }}</th>
+            <th width="5%">{{ $t('member.level') }}</th>
+            <th>{{ $t('betrecord.total_valid_bet_amount') }}</th>
+            <th>{{ $t('betrecord.total_bet_amount') }}</th>
+            <th>{{ $t('common.member') + $t('betrecord.win') + $t('betrecord.lose') }}</th>
+            <th>{{ $t('member.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
-          <tr v-for="member in queryset">
+          <tr v-for="member in queryset" :key="member.id">
             <td>
               <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</div>
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td>
-              <router-link :to="'/member/' + member.id">{{member.username}}</router-link>
+              <router-link :to="'/member/' + member.id">{{ member.username }}</router-link>
               <br/>
-              <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
-              <span class="label" v-else>{{$t('status.inactive')}}</span>
+              <span class="label success" v-if="member.status === 1">{{ $t('status.active') }}</span>
+              <span class="label" v-else>{{ $t('status.inactive') }}</span>
             </td>
             <td>
-              {{member.real_name || '-'}}
+              {{ member.real_name || '-' }}
               <div v-if="member.realname_repeated">
-                <span class="label danger">{{$t('common.repeat')}}</span>
+                <span class="label danger">{{ $t('common.repeat') }}</span>
               </div>
             </td>
             <td>
-            <div>{{member.register_ip || '-'}}
-              <div><span class="label danger" v-if="member.ip_repeated">{{$t('common.repeat')}}</span></div>
+            <div>{{ member.register_ip || '-' }}
+              <div><span class="label danger" v-if="member.ip_repeated">{{ $t('common.repeat') }}</span></div>
             </div>
             </td>
             <td>
-              <span v-if="member.last_login">{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm")}}</span>
+              <span v-if="member.last_login">{{ member.last_login.login_at | moment("YYYY-MM-DD HH:mm") }}</span>
               <span v-else>-</span>
             </td>
             <td v-if="member.agent.name">
-              <span>{{member.agent.name}}</span>
+              <span>{{ member.agent.name }}</span>
             </td>
             <td>
-              <router-link v-if="member.level" :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
+              <router-link v-if="member.level" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
             </td>
-            <td>{{member.total_amount | currency('￥')}}</td>
-            <td>{{member.total_betrecords | currency('￥')}}</td>
+            <td>{{ member.total_amount | currency('￥') }}</td>
+            <td>{{ member.total_betrecords | currency('￥') }}</td>
             <td>
-              <span class="text-success">{{$t('betrecord.win')}}: </span>
-              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link> <br/>
-              <span class="text-danger">{{$t('betrecord.lose')}}: </span>
-              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link>
+              <span class="text-success">{{ $t('betrecord.win') }}: </span>
+              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{ member.total_gain | currency('￥') }}</router-link> <br/>
+              <span class="text-danger">{{ $t('betrecord.lose') }}: </span>
+              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
-            <td><div v-if="member.balance">{{member.balance.balance | currency('￥')}}</div></td>
+            <td><div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div></td>
           </tr>
         </tbody>
       </table>
@@ -251,175 +367,149 @@ import DatePicker from 'vue2-datepicker'
 import api from '../../../api'
 import pulling from '../../../components/pulling'
 import VueCookie from 'vue-cookie'
-import Vue from 'vue'
+import date from '../../../utils/date'
+import _ from 'lodash'
+import $ from '../../../utils/util'
 
-const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            created_at_0: '',
-            created_at_1: '',
-            showAll: false,
             memberApi: api.member,
             queryset: [],
-            query: {
-                time1: '',
-                username_q: '',
-                created_at_0: '',
-                created_at_1: '',
-                balance_gte: '',
-                balance_lte: '',
-                status: '',
-                return_settings: '',
-                agent_q: '',
-                real_name_q: '',
-                phone_q: '',
-                email_q: '',
-                qq_q: '',
-                wechat_q: '',
-                logined: '',
-                register_ip: '',
-                level: '',
-                report_flag: true,
-                is_logged_in: '',
-                account_type: '1'
-            },
+            query: {},
+            created_at: ['', ''],
             extra: '',
             status: '',
             level: '',
-            selected: '0',
-            filter: {},
             href: '',
-            member_logged_in: '',
-            loading: false,
             export_query: [],
-            today: Vue.moment().format(format),
-            pageSelected: ''
+            pageSelected: '',
+            today: date.today[0],
+            shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                text: this.$t(`common.${element}`),
+                start: date[element][0],
+                end: date[element][1]
+            })),
+            userInfos: [
+                'phone',
+                'email',
+                'qq',
+                'wechat'
+            ],
+            userInfoSelect: '',
+            userInfo_q: '',
+            loading: true
         }
     },
     created () {
-        this.getPageAccessed()
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
-            this.$refs.pulling.getExportQuery()
-        })
+        this.setQueryAll()
+        this.rebase()
     },
     watch: {
-        status: function (newObj, old) {
-            if (newObj === '0') {
-                this.query.status = ''
-            } else {
-                this.query.status = newObj
-            }
+        status (newObj) {
+            this.query.status = newObj || ''
+            this.submit()
         },
-        member_logged_in: function (newObj, old) {
-            if (newObj === '') {
-                this.query.logined = ''
-            } else {
-                this.query.logined = newObj
-            }
+        '$route': {
+            handler () {
+                this.loading = true
+                this.setQueryAll()
+                this.queryset = []
+                this.rebase()
+            },
+            deep: true
         },
-        '$route': 'nextTickFetch',
-        created_at_0 (newObj, old) {
-            this.query.created_at_0 = newObj
+        created_at (newObj) {
+            [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+            this.submit()
         },
-        created_at_1 (newObj, old) {
-            this.query.created_at_1 = newObj
+        userInfo_q (newObj) {
+            this.setUserInfo()
+        },
+        userInfoSelect (newObj) {
+            this.setUserInfo()
         }
     },
     computed: {
         getReport () {
+            this.$refs.pulling.getExportQuery()
             this.href = `${api.report_member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
             return this.queryset.length
+        },
+        isQueryEmpty () {
+            return $.compareQuery(this.query, {})
         }
     },
     methods: {
-        nextTickFetch () {
-            this.queryset = []
-            this.getPageAccessed()
-            setTimeout(() => {
-                this.$refs.pulling.rebase()
-                this.$refs.pulling.getExportQuery()
-            }, 100)
+        setQueryAll () {
+            if (this.$route.path === '/online_member') {
+                this.extra = `report_flag=True&logined=1`
+                this.pageSelected = 'onlineMember'
+            } else {
+                this.extra = `report_flag=True&account_type=1`
+                this.pageSelected = 'allMember'
+            }
+            if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
+                this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
+            } else {
+                this.created_at = [undefined, undefined]
+            }
+            this.userInfoSelect = this.userInfos.findIndex(element => this.$route.query[element + '_q']).toString()
+            if (this.userInfoSelect !== '-1') {
+                let key = this.userInfos[this.userInfoSelect]
+                this.userInfo_q = this.$route.query[key + '_q']
+            } else {
+                this.userInfoSelect = '0'
+                this.userInfo_q = ''
+            }
+            this.status = this.$route.query.status || ''
+            this.query = Object.assign({}, this.$route.query)
         },
         levelSelect (val) {
             this.query.level = val
-            this.level = val
+            this.submit()
         },
         queryData (queryset) {
-            this.query = Object.assign({}, this.filter)
-            this.created_at_0 = ''
-            this.created_at_1 = ''
-            if (this.query.created_at_0) {
-                this.created_at_0 = this.query.created_at_0
-            }
-            if (this.query.created_at_1) {
-                this.created_at_1 = this.query.created_at_1
-            }
             this.queryset = queryset
+            this.loading = false
         },
         queryParam (query) {
-            this.filter = query
+            this.query = Object.assign(this.query, query)
         },
         exportQuery (expor) {
             this.export_query = expor
         },
+        rebase () {
+            this.$nextTick(() => {
+                this.$refs.pulling.rebase()
+            })
+        },
         submit () {
-            this.$refs.pulling.submit()
-            this.$refs.pulling.getExportQuery()
+            if (!$.compareQuery(this.query, this.$route.query)) {
+                this.$refs.pulling.submit()
+            }
         },
-        clearall: function () {
+        search:
+            _.debounce(function () {
+                this.submit()
+            },
+        700),
+        clearAll () {
             this.query = {}
-            this.status = ''
-            this.member_logged_in = ''
-            this.created_at_0 = ''
-            this.created_at_1 = ''
-            this.level = 0
-            this.selected = '0'
-            this.$router.push({
-                path: this.$route.path + '?report_flag=true'
+            this.$nextTick(() => {
+                this.submit()
             })
         },
-        refresh: function () {
+        refresh () {
             this.loading = true
-            this.$router.push({
-                path: this.$route.path + '?report_flag=true'
-            })
-            this.$router.push({
-                path: this.$route.path + '?logined=1'
-            })
-            this.loading = false
+            this.rebase()
         },
-        filterUserContactInfo () {
-            this.query.phone_q = ''
-            this.query.email_q = ''
-            this.query.wechat_q = ''
-            this.query.qq_q = ''
-            switch (this.selected) {
-            case '1':
-                this.query.phone_q = this.query.phone_q
-                break
-            case '2':
-                this.query.email_q = this.query.email_q
-                break
-            case '3':
-                this.query.qq_q = this.query.qq_q
-                break
-            case '4':
-                this.query.wechat_q = this.query.wechat_q
-                break
-            }
-            this.$refs.pulling.submit()
-        },
-        getPageAccessed () {
-            this.router_path = this.$route.path
-            if (this.router_path === '/online_member') {
-                this.extra = `report_flag=True&logined=1`
-                this.pageSelected = 'online_member'
-            } else {
-                this.extra = `account_type=1`
-                this.pageSelected = 'all_members'
-            }
+        setUserInfo () {
+            let key = this.userInfos[this.userInfoSelect]
+            this.userInfos.forEach(element => {
+                this.query[element + '_q'] = element === key ? this.userInfo_q : ''
+            })
+            this.search()
         }
     },
     components: {

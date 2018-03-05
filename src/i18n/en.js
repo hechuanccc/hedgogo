@@ -131,6 +131,7 @@ export default {
         cycle: 'cycle'
     },
     member: {
+        contact_info: 'Contact Info',
         page_title: 'Search Members',
         account: 'Account',
         created_at: 'Registered at',
@@ -337,6 +338,7 @@ export default {
         specify_date_range: 'Specify Date Range',
         input: 'Input',
         refresh: 'Refresh',
+        refresh_period: 'Refresh Period',
         show_all: 'Show All',
         select_all: 'Select All',
         deselect_all: 'Deselect All',

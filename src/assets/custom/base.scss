@@ -9,6 +9,7 @@ body{font-family: NotoSansHans-Regular,AvenirNext-Regular,arial,Hiragino Sans GB
     color: $blue-800;
 }
 
+
 .lh-md {
     line-height: 1.8;
 }
@@ -76,6 +77,11 @@ a.text-blue:hover {
     height: 33px;
 }
 
+
+.text-break-all {
+    word-break: break-all;
+ }
+
 .table-striped > tbody > tr:nth-child(odd).table-amount{
   background: #c3e1ff;
   font-weight: 700;
@@ -89,6 +95,15 @@ a.text-blue:hover {
     border-radius: 0;
     box-shadow: none;
     border: 1px solid rgba(120, 130, 140, 0.2);
+}
+
+.mx-datepicker input.mx-input{
+  height: 33px;
+  padding: 6px 10px 6px 10px;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid rgba(120, 130, 140, 0.2);
+  background-color: white;
 }
 
 span.time-picker{

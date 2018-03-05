@@ -104,9 +104,13 @@
                             </div>
                             <div class="form-group">
                                 <label class="label-width">{{ $t('promotion.availability') }}</label>
-                                <date-picker v-model="promotion.start_date" width='140'></date-picker>
-                                <span>~</span>
-                                <date-picker v-model="promotion.end_date" width='140'></date-picker>
+                                <date-picker
+                                    v-model="date"
+                                    type="date"
+                                    format="yyyy-MM-dd"
+                                    ref="date"
+                                    range
+                                />
                             </div>
                             <div class="form-group">
                                 <label class="text-sm">{{ $t('member.level') }}</label>
@@ -158,6 +162,7 @@
                     image_mobile: '',
                     mobile_description: ''
                 },
+                date: ['', ''],
                 randomId: 'pd' + _.random(0, 500),
                 randomIdMobile: 'pd' + _.random(501, 1000),
                 promotions: [],
@@ -171,11 +176,12 @@
             this.getPromotions()
         },
         watch: {
-            'promotion.start_date' (newObj, old) {
-                this.promotion.start_date = Vue.moment(this.promotion.start_date).format(format)
-            },
-            'promotion.end_date' (newObj, old) {
-                this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
+            date (newObj) {
+                if (newObj) {
+                    [this.promotion.start_date, this.promotion.end_date] = [...newObj.map(e => Vue.moment(e).format(format))]
+                } else {
+                    [this.promotion.start_date, this.promotion.end_date] = ['', '']
+                }
             }
         },
         methods: {
@@ -188,6 +194,11 @@
                 })
             },
             onSubmit (e) {
+                if (!this.promotion.start_date || !this.promotion.start_date) {
+                    this.errorMsg = `${this.$t('common.unfilled')}(${this.$t('promotion.availability')})`
+                    this.$refs.date.togglePopup()
+                    return
+                }
                 let formData = new window.FormData()
                 formData.append('name', this.promotion.name)
                 formData.append('rank', this.promotion.rank)
@@ -242,6 +253,7 @@
             },
             selectPromotion (id) {
                 this.promotion = Object.assign(this.promotion, this.promotions.find(element => element.id === parseInt(id)))
+                this.date = [this.promotion.start_date || '', this.promotion.end_date || '']
                 if (this.promotion.image) {
                     this.promotion.image_url = this.promotion.image
                 }

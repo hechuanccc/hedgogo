@@ -1,6 +1,11 @@
 <template>
-    <select class="form-control w-sm c-select" v-model="myAgent" :required="req" :disabled="!disabled">
-        <option value="">{{ $t('member.agent') }}</option>
+    <select
+        class="form-control w-sm c-select"
+        v-model="myAgent"
+        :required="req"
+        :disabled="!disabled"
+    >
+        <option value="">{{ $t('common.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"

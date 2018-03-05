@@ -1,6 +1,11 @@
 <template>
-    <select class="form-control w-sm c-select" v-model="myTransactionType" :required="req" :disabled="!disabled">
-        <option value="">{{ $t('bill.transaction_type') }}</option>
+    <select
+        class="form-control w-sm c-select"
+        v-model="myTransactionType"
+        :required="req"
+        :disabled="disabled"
+    >
+        <option value="">{{ $t('common.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"
@@ -21,10 +26,7 @@ export default {
         },
         transactionType: '',
         disabled: {
-            default: true
-        },
-        index: {
-            default: 0
+            default: false
         },
         displayList: {
             default: ''
@@ -40,7 +42,6 @@ export default {
         return {
             transactionTypes: [],
             myTransactionType: this.transactionType,
-            noViewPermissions: [],
             default_opt_fields: 'id,display_name'
         }
     },
@@ -54,18 +55,11 @@ export default {
     },
     created () {
         this.$http.get(`${api.transactiontype}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
-            if (!this.$root.permissions.includes('view_remit_transaction_page')) {
-                this.noViewPermissions.push(1)
-            }
-            if (!this.$root.permissions.includes('view_withdraw_application_page')) {
-                this.noViewPermissions.push(8)
-            }
             if (this.displayList.length > 0) {
-                this.transactionTypes = data.filter(e => this.displayList.includes(e.id))
+                this.transactionTypes = data.filter(e => this.displayList.includes(e.code))
             } else {
                 this.transactionTypes = data
             }
-            this.transactionTypes = this.transactionTypes.filter(e => !this.noViewPermissions.includes(e.id))
         })
         this.myTransactionType = this.transactionType
     }

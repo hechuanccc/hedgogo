@@ -131,6 +131,7 @@ export default {
         cycle: '反水计算周期'
     },
     member: {
+        contact_info: '联络资料',
         page_title: '查询条件',
         account: '账号',
         created_at: '注册日期',
@@ -337,6 +338,7 @@ export default {
         specify_date_range: '指定日期范围',
         input: '键入',
         refresh: '刷新数据',
+        refresh_period: '刷新周期',
         show_all: '显示所有',
         select_all: '全选',
         deselect_all: '清空',

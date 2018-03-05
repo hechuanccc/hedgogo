@@ -21,29 +21,52 @@
             </div>
         </div>
         <div v-if="pageSelected === 'today' || pageSelected === 'history'">
-            <form class="form text-sm" v-on:submit.prevent="submit" >
+            <form
+                class="form text-sm"
+                @submit.prevent="submit"
+            >
                 <div class="box">
-                    <div class="box-body clearfix form-inline form-input-sm">
-                        <div class="row">
-                            <div class="col-xs-12">
+                    <div class="box-body clearfix form-input-sm">
+                        <div class="row m-l-xs m-r-xs">
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': query.member_q}"
+                                >{{ $t('common.member') }}
+                                </label>
                                 <input
-                                    type="text"
-                                    v-model="query.member_q"
-                                    class="form-control w-sm pull-left m-r-xs"
+                                    v-model.trim="query.member_q"
+                                    class="form-control w-sm"
                                     :placeholder="$t('common.member')"
+                                    @input="search"
                                 />
+                            </div>
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': query.id}"
+                                >{{ $t('report.bet_record_number') }}
+                                </label>
                                 <input
-                                    type="text"
-                                    v-model="query.id"
-                                    class="form-control w-sm pull-left m-r-xs"
+                                    v-model.trim="query.id"
+                                    class="form-control w-sm"
                                     :placeholder="$t('report.bet_record_number')"
+                                    @input="search"
                                 />
+                            </div>
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': status}"
+                                >{{ $t('common.status') }}
+                                </label>
                                 <select
-                                    class="form-control c-select pull-left m-r-xs"
+                                    class="form-control c-select w-sm"
+                                    style="display: block;"
                                     v-model="status"
                                     type="search"
                                 >
-                                    <option value="">{{ $t('common.status') }} </option>
+                                    <option value="">{{ $t('common.please_select') }} </option>
                                     <option value="ongoing">{{ $t('betrecord.ongoing') }}</option>
                                     <option value="win">{{ $t('betrecord.win') }}</option>
                                     <option value="lose">{{ $t('betrecord.lose') }}</option>
@@ -51,63 +74,94 @@
                                     <option value="tie">{{ $t('betrecord.tie') }}</option>
                                     <option value="no_draw">{{ $t('game_history.no_draw') }}</option>
                                 </select>
-                                <div class="pull-left m-r-xs">
+                            </div>
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': query.bet_lte || query.bet_gte}"
+                                >{{ $t('common.amount') }}
+                                </label>
+                                <div style="display: block;">
                                     <input
-                                        type="text"
+                                        type="number"
                                         v-model="query.bet_gte"
-                                        class="form-control w-sm"
+                                        class="form-control inline w-sm"
+                                        :max="query.bet_lte"
                                         :placeholder="$t('common.min_amount')"
+                                        @input="search"
                                     />
-                                    <span>~</span>
+                                    <span>
+                                        ~
+                                    </span>
                                     <input
-                                        type="text"
+                                        type="number"
                                         v-model="query.bet_lte"
-                                        class="form-control w-sm"
-                                        v-bind:placeholder="$t('common.max_amount')"
+                                        class="form-control inline w-sm"
+                                        :min="query.bet_gte"
+                                        :placeholder="$t('common.max_amount')"
+                                        @input="search"
                                     />
                                 </div>
-                                <div class="pull-left m-r-xs" v-if="pageSelected === 'history'">
-                                    <date-picker
-                                        width='224'
-                                        :not-after="yesterday"
-                                        :shortcuts="shortcuts"
-                                        class="pull-left m-r-xs"
-                                        type="date"
-                                        v-model="created_at"
-                                        format="yyyy-MM-dd"
-                                        range
-                                    />
-                                </div>
-                                <button class="md-btn w-xs blue pull-right" type="submit">
-                                    {{ $t('common.search') }}
-                                </button>
                             </div>
-                            <div class="col-xs-12 m-t-sm">
-                                <game-selector
-                                    class="pull-left m-r-xs"
-                                    :attribute="'id'"
-                                    :game="game"
-                                    @game-select="gameSelect"
-                                    :placeholder="$t('common.game')"
+                            <div class="pull-left m-r-xs" v-if="pageSelected === 'history'">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
+                                >{{ $t('common.date') }}
+                                </label>
+                                <date-picker
+                                    width='244'
+                                    style="display: block;"
+                                    :not-after="yesterday"
+                                    :shortcuts="shortcuts"
+                                    :inputClass="'input form-control'"
+                                    type="date"
+                                    v-model="created_at"
+                                    format="yyyy-MM-dd"
+                                    range
                                 />
-                                <select
-                                    class="form-control pull-left c-select"
-                                    style="width: 224px;"
-                                    v-model="game_category" 
-                                    :disabled="!game || categories.length === 0"
-                                >
-                                    <option value="" hidden>{{ $t('common.gamecategory') }}</option>
-                                    <option
-                                        name="game"
-                                        v-for="category in categories"
-                                        :value="category.id"
-                                        :key="category.id"
-                                    >
-                                        <i class="blue">{{ category.display_name }}</i>
-                                    </option>
-                                </select>
-                                <button class="md-btn w-xs btn pull-right" type="button" @click="clearall">{{ $t('action.clear') }}</button>
                             </div>
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': game}"
+                                >{{ $t('common.game') }}
+                                </label>
+                                <div style="display: block;">
+                                    <game-selector
+                                        class="pull-left w-sm c-select no-b-r"
+                                        :attribute="'id'"
+                                        :game="game"
+                                        @game-select="gameSelect"
+                                    />
+                                    <select
+                                        class="form-control c-select"
+                                        style="width: 224px;"
+                                        v-model="game_category" 
+                                        :disabled="!game || categories.length === 0"
+                                    >
+                                        <option value="">{{ $t('common.gamecategory') }}</option>
+                                        <option
+                                            name="game"
+                                            v-for="category in categories"
+                                            :value="category.id"
+                                            :key="category.id"
+                                        >
+                                            <i class="blue">{{ category.display_name }}</i>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button
+                                class="md-btn w-xs pull-right btn m-t-md"
+                                type="button"
+                                @click="clearAll"
+                                :disabled="isQueryEmpty"
+                            >
+                                <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                                <i v-else class="fa fa-trash-o"></i> 
+                                <span>{{ $t('action.clear') }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -116,10 +170,10 @@
         <div v-else-if="pageSelected === 'realtime'">
             <form class="form text-sm">
                 <div class="box">
-                    <div class="box-body clearfix form-inline form-input-sm">
-                        <div class="row">
+                    <div class="box-body clearfix form-input-sm">
+                        <div class="row m-l-xs m-r-xs">
                             <div class="col-xs-12">
-                                <label class="text-sm m-b">{{ $t('betrecord.game_selection') }}</label>
+                                <label class="text-sm m-r-sm m-t-xs m-b">{{ $t('betrecord.game_selection') }}</label>
                                 <button
                                     class="btn-md r w-xs blue no-border m-r-sm"
                                     type="button"
@@ -133,6 +187,8 @@
                                 >{{ $t('common.deselect_all') }}
                                 </button>
                             </div>
+                        </div>
+                        <div class="row m-l-xs m-r-xs">
                             <div class="col-xs-12">
                                 <label class="check m-r m-b" v-for="game in gamelist" :key="game.id">
                                     <input
@@ -146,33 +202,73 @@
                                 </label>
                             </div>
                             <div class="col-xs-12">
-                                <input
-                                    type="text"
-                                    v-model="query.member_q"
-                                    class="form-control w-sm"
-                                    :placeholder="$t('common.member')"
-                                    @input="quickFilter"
-                                />
-                                <input
-                                    type="text"
-                                    v-model="query.bet_gte"
-                                    class="form-control inline w-sm"
-                                    :placeholder="$t('common.min_amount')"
-                                    @input="quickFilter"
-                                />
-                                <input
-                                    type="text"
-                                    v-model="query.issue_number"
-                                    class="form-control inline w-sm"
-                                    :placeholder="$t('game_manage.issue_number')"
-                                    @input="quickFilter"
-                                />
-                                <select class="form-control w-sm c-select inline" v-model="period">
-                                    <option value="5000">{{ $t('betrecord.five_seconds') }}</option>
-                                    <option value="10000">{{ $t('betrecord.ten_seconds') }}</option>
-                                    <option value="30000">{{ $t('betrecord.thirty_seconds') }}</option>
-                                    <option value="60000">{{ $t('betrecord.sixty_seconds') }}</option>
-                                </select>
+                                <div class="pull-left m-r-xs">
+                                    <label
+                                        class="form-control-label p-b-0"
+                                        :class="{'text-blue': query.member_q}"
+                                    >{{ $t('common.member') }}
+                                    </label>
+                                    <input
+                                        v-model="query.member_q"
+                                        class="form-control w-sm"
+                                        :placeholder="$t('common.member')"
+                                        @input="search"
+                                    />
+                                </div>
+                                <div class="pull-left m-r-xs">
+                                    <label
+                                        class="form-control-label p-b-0"
+                                        :class="{'text-blue': query.bet_gte}"
+                                    >{{ $t('common.min_amount') }}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        v-model="query.bet_gte"
+                                        class="form-control w-sm"
+                                        :placeholder="$t('common.min_amount')"
+                                        @input="search"
+                                    />
+                                </div>
+                                <div class="pull-left m-r-xs">
+                                    <label
+                                        class="form-control-label p-b-0"
+                                        :class="{'text-blue': query.issue_number_q}"
+                                    >{{ $t('game_history.periods') }}
+                                    </label>
+                                    <input
+                                        v-model="query.issue_number_q"
+                                        class="form-control w-sm"
+                                        :placeholder="$t('game_history.periods')"
+                                        @input="search"
+                                    />
+                                </div>
+                                <div class="pull-left m-r-xs">
+                                    <label
+                                        class="form-control-label p-b-0"
+                                        :class="{'text-blue': query.issue_number}"
+                                    >{{ $t('common.refresh_period') }}
+                                    </label>
+                                    <select
+                                        class="form-control w-sm c-select inline"
+                                        v-model="period"
+                                        style="display: block;"
+                                    >
+                                        <option value="5000">{{ $t('betrecord.five_seconds') }}</option>
+                                        <option value="10000">{{ $t('betrecord.ten_seconds') }}</option>
+                                        <option value="30000">{{ $t('betrecord.thirty_seconds') }}</option>
+                                        <option value="60000">{{ $t('betrecord.sixty_seconds') }}</option>
+                                    </select>
+                                </div>
+                                <button
+                                    class="md-btn w-xs pull-right btn m-t-md"
+                                    type="button"
+                                    @click="clearAll"
+                                    :disabled="isQueryEmpty"
+                                >
+                                    <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                                    <i v-else class="fa fa-trash-o"></i> 
+                                    <span>{{ $t('action.clear') }}</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -182,7 +278,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="pull-left" v-if="pageSelected === 'realtime'">
-                    <label class="check">
+                    <label class="check m-b-0">
                         <input type="checkbox" value="1" name="account_type" v-model="account_type"/>
                         <i class="blue"></i>
                         {{ $t('action.filter_trial_account') }}
@@ -235,7 +331,7 @@
                             <div class="flex-value status">
                                 <span class="label danger" v-if="t.status === 'lose'">{{ $t('betrecord.lose') }}</span>
                                 <span class="label success" v-if="t.status === 'win'">{{ $t('betrecord.win') }}</span>
-                                <span class="label ongoing" v-if="t.status === 'ongoing'">{{ $t('betrecord.ongoing') }}</span>
+                                <span class="label warn" v-if="t.status === 'ongoing'">{{ $t('betrecord.ongoing') }}</span>
                                 <span class="label ongoing" v-if="t.status === 'tie'">{{ $t('betrecord.tie') }}</span>
                                 <span class="label ongoing" v-if="t.status === 'cancelled'">{{ $t('status.cancelled') }}</span>
                                 <span class="label ongoing" v-if="t.status === 'no_draw'">{{ $t('game_history.no_draw') }}</span>
@@ -310,6 +406,7 @@
     import DatePicker from 'vue2-datepicker'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
+    import $ from '../../utils/util'
     import _ from 'lodash'
 
     export default {
@@ -338,29 +435,27 @@
                     text: this.$t(`common.${element}`),
                     start: date[element][0],
                     end: date[element][1]
-                }))
+                })),
+                loading: true
             }
         },
         created () {
             this.getGameList()
             this.getPageAccessed()
-            this.$nextTick(() => {
-                this.$refs.pulling.rebase()
-            })
+            this.rebase()
         },
         watch: {
             status (newObj) {
-                this.query.status = newObj
+                this.query.status = newObj || ''
+                this.submit()
             },
-            account_type: function (newObj, old) {
+            account_type (newObj, old) {
                 if (newObj === true) {
                     this.query.account_type = '1'
                 } else {
-                    this.query.account_type = undefined
+                    this.query.account_type = ''
                 }
-                if (this.$route.query.account_type !== this.query.account_type) {
-                    this.submit()
-                }
+                this.submit()
             },
             game (newObj) {
                 this.categories = []
@@ -371,36 +466,28 @@
                 }
             },
             game_category (newObj) {
-                this.query.category = newObj
+                this.query.category = newObj || ''
+                this.submit()
             },
             filter_game (newObj) {
                 if (newObj.length === 0) {
                     this.query.game_q = ''
-                    if (this.$route.query.game_q) {
-                        this.submit()
-                    }
                 } else {
                     this.query.game_q = newObj
-                    if (`${this.$route.query.game_q}` !== `${this.query.game_q}`) {
-                        this.submit()
-                    }
                 }
+                this.submit()
             },
             '$route': {
                 handler () {
                     this.getPageAccessed()
                     this.queryset = []
-                    this.$nextTick(() => {
-                        this.$refs.pulling.rebase()
-                    })
+                    this.rebase()
                 },
                 deep: true
             },
             created_at (newObj) {
                 [this.query.created_at_0, this.query.created_at_1] = [...newObj]
-                if (this.query.created_at_0 !== this.$route.query.created_at_0 || this.query.created_at_1 !== this.$route.query.created_at_1) {
-                    this.submit()
-                }
+                this.submit()
             },
             period (newObj, old) {
                 clearInterval(this.interval)
@@ -416,6 +503,11 @@
                 }
             }
         },
+        computed: {
+            isQueryEmpty () {
+                return $.compareQuery(this.query, {})
+            }
+        },
         methods: {
             getGameList () {
                 this.$http.get(api.game_list).then(data => {
@@ -429,10 +521,11 @@
             },
             gameSelect (val) {
                 this.query.game_q = val
-                this.game = val
+                this.submit()
             },
             queryData (queryset) {
                 this.queryset = queryset
+                this.loading = false
             },
             queryParam (query) {
                 this.query = Object.assign(this.query, query)
@@ -443,8 +536,15 @@
             totalProfit (profit) {
                 this.total_profit = profit
             },
+            rebase () {
+                this.$nextTick(() => {
+                    this.$refs.pulling.rebase()
+                })
+            },
             submit () {
-                this.$refs.pulling.submit()
+                if (!$.compareQuery(this.query, this.$route.query)) {
+                    this.$refs.pulling.submit()
+                }
             },
             getPageAccessed () {
                 if (this.$route.path === '/report/betrecord/today') {
@@ -488,13 +588,13 @@
             },
             refresh () {
                 this.queryset = []
-                this.$refs.pulling.rebase()
+                this.rebase()
             },
-            quickFilter:
+            search:
                 _.debounce(function () {
                     this.submit()
                 },
-            500),
+            700),
             getBetRecord () {
                 if (this.pageSelected === 'realtime') {
                     let authenticationCookie = this.$http.defaults.headers.common['Authorization']
@@ -528,7 +628,7 @@
                     })
                 }
             },
-            clearall: function () {
+            clearAll () {
                 if (this.pageSelected === 'realtime') {
                     this.query = Object.assign({}, {
                         account_type: '1'
