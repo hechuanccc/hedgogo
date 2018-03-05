@@ -152,7 +152,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="row m-b-lg">
+        <div class="row m-b-sm">
             <pulling
                 :queryset="queryset"
                 :query="query"

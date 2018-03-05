@@ -110,6 +110,8 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="row m-b-sm">
             <pulling
                 :api="api"
                 :extra="'report_flag=true'"
