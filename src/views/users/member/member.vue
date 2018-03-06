@@ -291,7 +291,7 @@
             <th>{{ $t('member.account') }}</th>
             <th>{{ $t('common.real_name') }}</th>
             <th>{{ $t('member.created_ip') }}</th>
-            <th style="width: 15%;">{{ $t('member.last_login') }}</th>
+            <th>{{ $t('member.last_login') }}</th>
             <th>{{ $t('member.agent') }}</th>
             <th width="5%">{{ $t('member.level') }}</th>
             <th>{{ $t('betrecord.total_valid_bet_amount') }}</th>
