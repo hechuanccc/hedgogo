@@ -11,16 +11,16 @@
       </div>
     </div>
     <div class="row m-b-sm m-r-xs m-l-xs" v-else>
-			<button
-				class="md-btn blue pull-right btn w-sm"
-				type="button"
-				@click="refresh"
-			>
-				<span>
-					<i class="fa fa-spin fa-spinner" v-if="loading"></i>
-					{{ $t('common.refresh') }}
-				</span>
-			</button>
+      <button
+        class="md-btn blue pull-right btn w-sm"
+        type="button"
+        @click="refresh"
+      >
+        <span>
+          <i class="fa fa-spin fa-spinner" v-if="loading"></i>
+          {{ $t('common.refresh') }}
+        </span>
+      </button>
     </div>
     <form 
       class="form"
