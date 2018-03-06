@@ -507,8 +507,11 @@ export default {
             this.pullingApi = api.game_schedule
         } else {
             // game result in detail
-            if (this.timeRangeGames.includes(this.game.code)) this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
-            else this.extra = `date=${this.today}`
+            if (this.timeRangeGames.includes(this.game.code)) {
+                this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
+            } else {
+                this.extra = `date=${this.today}`
+            }
             this.pullingApi = api.game_history
             this.getRetreatedSchedules(gameid)
         }

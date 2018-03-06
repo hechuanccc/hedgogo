@@ -220,7 +220,7 @@
             <th width="6%">{{ $t('member.account_type') }}</th>
             <th width="7%">{{ $t('member.account') }}</th>
             <th width="10%">{{ $t('common.real_name') }}</th>
-            <th width="10%">{{ $t('member.last_login') }}</th>
+            <th width="15%">{{ $t('member.last_login') }}</th>
             <th width="15%">{{ $t('member.loggedin_infos') }}</th>
             <th width="10%">{{ $t('member.login_platform') }}</th>
             <th width="15%">{{ $t('member.area') }}</th>
@@ -291,7 +291,7 @@
             <th>{{ $t('member.account') }}</th>
             <th>{{ $t('common.real_name') }}</th>
             <th>{{ $t('member.created_ip') }}</th>
-            <th style="width: 10%;">{{ $t('member.last_login') }}</th>
+            <th style="width: 15%;">{{ $t('member.last_login') }}</th>
             <th>{{ $t('member.agent') }}</th>
             <th width="5%">{{ $t('member.level') }}</th>
             <th>{{ $t('betrecord.total_valid_bet_amount') }}</th>
