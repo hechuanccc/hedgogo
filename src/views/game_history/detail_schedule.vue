@@ -25,7 +25,7 @@
                         style="display:block"
                         width='140'
                         v-model="input.date"
-                        v-if="game.code !== 'hkl'"
+                        v-if="!timeRangeGames.includes(game.code)"
                     />
                     <date-picker
                         style="display:block"
@@ -203,6 +203,7 @@
                         </td>
                         <td v-else></td>
                         <td v-if="sumCol.length > 0"></td>
+                        <td v-if="threeBallsSumCol.length > 0"></td>
                         <td v-if="dragonTigerCol.length > 0"></td>
                         <td v-if="comparisonCol.length > 0"></td>
                         <td
@@ -240,9 +241,8 @@
                             </div>
                             <div v-else>
                                 <div
-                                    id="circle"
                                     v-for="index in result.result_str.split(',').length"
-                                    :class="['m-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
+                                    :class="['circle', 'm-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
                                     :key="`${result.issue_number}_${resultColMode}_${index}`"
                                 >
                                     {{ $t('game_history.' + result.result_category[`${resultColMode}_${index}`]) }}
@@ -432,9 +432,10 @@ export default {
             },
             retreatedScheds: [],
             input: {
-                date: date.today,
+                date: date.this_month,
                 period: ''
             },
+            timeRangeGames: ['hkl', 'fc3d'],
             inputPeriod: '',
             modal: {
                 isShow: false,
@@ -506,7 +507,8 @@ export default {
             this.pullingApi = api.game_schedule
         } else {
             // game result in detail
-            this.extra = `date=${this.today}`
+            if (this.timeRangeGames.includes(this.game.code)) this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
+            else this.extra = `date=${this.today}`
             this.pullingApi = api.game_history
             this.getRetreatedSchedules(gameid)
         }
@@ -795,11 +797,11 @@ export default {
 .v-m td{
   vertical-align: middle;
 }
-#circle {
+.circle {
   color: aliceblue;
-  width: 32px;
-  height: 32px;
-  line-height: 34px;
+  width: 28px;
+  height: 28px;
+  line-height: 30px;
   border-radius: 50%;
 }
 </style>
