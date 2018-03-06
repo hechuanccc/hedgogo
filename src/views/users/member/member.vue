@@ -11,17 +11,16 @@
       </div>
     </div>
     <div class="row m-b-sm m-r-xs m-l-xs" v-else>
-			<button
-				class="md-btn blue pull-right btn w-xs"
-				type="button"
-				@click="refresh"
-			>
-				<span>
-					<i class="fa fa-spin fa-spinner" v-if="loading"></i>
-					<i class="fa fa-repeat" v-else></i>
-						{{ $t('common.refresh') }}
-				</span>
-			</button>
+      <button
+        class="md-btn blue pull-right btn w-sm"
+        type="button"
+        @click="refresh"
+      >
+        <span>
+          <i class="fa fa-spin fa-spinner" v-if="loading"></i>
+          {{ $t('common.refresh') }}
+        </span>
+      </button>
     </div>
     <form 
       class="form"
@@ -217,8 +216,8 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'onlineMember'">
         <thead>
           <tr class="text-center">
-            <th width="7%" class="text-center">{{ $t('common.login_status') }}</th>
-            <th width="7%">{{ $t('member.account_type') }}</th>
+            <th width="6%" class="text-center">{{ $t('common.login_status') }}</th>
+            <th width="6%">{{ $t('member.account_type') }}</th>
             <th width="7%">{{ $t('member.account') }}</th>
             <th width="10%">{{ $t('common.real_name') }}</th>
             <th width="15%">{{ $t('member.last_login') }}</th>
@@ -226,7 +225,7 @@
             <th width="10%">{{ $t('member.login_platform') }}</th>
             <th width="15%">{{ $t('member.area') }}</th>
             <th width="10%">{{ $t('member.agent') }}</th>
-            <th width="7%" class="text-center">{{ $t('member.level') }}</th>
+            <th width="12%" class="text-center">{{ $t('member.level') }}</th>
             <th width="5%">{{ $t('member.balance') }}</th>
           </tr>
         </thead>
