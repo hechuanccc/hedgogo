@@ -395,7 +395,7 @@ export default {
         game: '游戏',
         ongoing: '待确认',
         total_profit: '总计 损益',
-        total_bet_amount: '总计 投注金额',
+        total_bet_amount: '总投注金额',
         game_selection: '游戏选择',
         five_seconds: '5 秒',
         ten_seconds: '10 秒',
