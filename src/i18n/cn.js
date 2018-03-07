@@ -235,7 +235,8 @@ export default {
         submit_alert: '注意：提交该交易将直接更新会员账户余额',
         view_all_orders: '查看会员所有订单',
         fee: '手续费',
-        discount_deduction: '优惠扣除'
+        discount_deduction: '优惠扣除',
+        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作'
     },
     common: {
         default_agent_password: '代理商登录密码预设',
@@ -403,7 +404,7 @@ export default {
         sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
         cancelled_bets: '赌注被取消了',
-        total_valid_bet_amount: '有效投注总笔数',
+        total_valid_bet_record: '有效投注总笔数',
         options: '投注选项',
         opts_combos_count: '组合选项计数'
     },
