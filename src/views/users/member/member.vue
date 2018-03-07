@@ -294,10 +294,10 @@
             <th>{{ $t('member.last_login') }}</th>
             <th>{{ $t('member.agent') }}</th>
             <th width="5%">{{ $t('member.level') }}</th>
-            <th>{{ $t('betrecord.total_valid_bet_amount') }}</th>
-            <th>{{ $t('betrecord.total_bet_amount') }}</th>
-            <th>{{ $t('common.member') + $t('betrecord.win') + $t('betrecord.lose') }}</th>
-            <th>{{ $t('member.balance') }}</th>
+            <th class="text-right" width="7%">{{ $t('betrecord.total_valid_bet_amount') }}</th>
+            <th class="text-right">{{ $t('betrecord.total_bet_amount') }}</th>
+            <th class="text-right">{{ $t('common.member') + $t('betrecord.win') + $t('betrecord.lose') }}</th>
+            <th class="text-right">{{ $t('member.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -333,15 +333,17 @@
             <td>
               <router-link v-if="member.level" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
             </td>
-            <td>{{ member.total_amount | currency('￥') }}</td>
-            <td>{{ member.total_betrecords | currency('￥') }}</td>
-            <td>
+            <td class="text-right">{{ member.total_betrecords }} 笔</td>
+            <td class="text-right">{{ member.total_amount | currency('￥') }}</td>
+            <td class="text-right">
               <span class="text-success">{{ $t('betrecord.win') }}: </span>
-              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{ member.total_gain | currency('￥') }}</router-link> <br/>
+              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{ member.total_gain | currency('￥') }}</router-link><br/>
               <span class="text-danger">{{ $t('betrecord.lose') }}: </span>
               <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
-            <td><div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div></td>
+            <td class="text-right">
+              <div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div>
+            </td>
           </tr>
         </tbody>
       </table>
