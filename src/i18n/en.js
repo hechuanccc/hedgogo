@@ -235,7 +235,8 @@ export default {
         submit_alert: 'Note: Submitting the transaction will directly update the member account balance.',
         view_all_orders: 'View All Transactions',
         fee: 'Fee',
-        discount_deduction: 'Discount Deduction'
+        discount_deduction: 'Discount Deduction',
+        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作'
     },
     common: {
         default_agent_password: 'Default Agent Password',
@@ -403,7 +404,7 @@ export default {
         sixty_seconds: '60 seconds',
         cancel_bet: 'Cancel Bet',
         cancelled_bet: 'Cancelled Bet',
-        total_valid_bet_amount: 'Total Valid Bet Amount',
+        total_valid_bet_record: 'Total Valid Bet Records',
         options: 'Bet Options',
         opts_combos_count: 'Combo Options Count',
         visitor: 'Visitor'

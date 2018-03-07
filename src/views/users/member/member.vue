@@ -294,7 +294,7 @@
             <th>{{ $t('member.last_login') }}</th>
             <th>{{ $t('member.agent') }}</th>
             <th width="5%">{{ $t('member.level') }}</th>
-            <th class="text-right" width="7%">{{ $t('betrecord.total_valid_bet_amount') }}</th>
+            <th class="text-right" width="7%">{{ $t('betrecord.total_valid_bet_record') }}</th>
             <th class="text-right">{{ $t('betrecord.total_bet_amount') }}</th>
             <th class="text-right">{{ `${$t('common.member')}${$t('betrecord.win')}${$t('betrecord.lose')}` }}</th>
             <th class="text-right">{{ $t('member.balance') }}</th>
@@ -337,9 +337,9 @@
             <td class="text-right">{{ member.total_amount | currency('￥') }}</td>
             <td class="text-right">
               <span class="text-success">{{ $t('betrecord.win') }}: </span>
-              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{ member.total_gain | currency('￥') }}</router-link><br/>
+              <router-link :to="`/report/betrecord/history?member=${member.username}&status=win&created_at_1=${today}`">{{ member.total_gain | currency('￥') }}</router-link><br/>
               <span class="text-danger">{{ $t('betrecord.lose') }}: </span>
-              <router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{ member.total_loss | currency('￥') }}</router-link>
+              <router-link :to="`/report/betrecord/history?member=${member.username}&status=lose&created_at_1=${today}`">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
             <td class="text-right">
               <div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div>
