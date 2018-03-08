@@ -444,7 +444,7 @@ export default {
     methods: {
         setQueryAll () {
             if (this.$route.path === '/online_member') {
-                this.extra = `report_flag=True&logined=1`
+                this.extra = `logined=1`
                 this.pageSelected = 'onlineMember'
             } else {
                 this.extra = `report_flag=True&account_type=1`
