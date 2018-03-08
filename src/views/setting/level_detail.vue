@@ -72,8 +72,8 @@
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('level.display_report')}}</span>
                         <div>
-                            <span class="label success" v-if="report_flag">{{$t('status.active')}}</span>
-                            <span class="label danger" v-else>{{$t('status.inactive')}}</span>
+                            <span class="label success" v-if="report_flag">显示</span>
+                            <span class="label danger" v-else>隐藏</span>
                         </div>
                     </div>
                 </div>

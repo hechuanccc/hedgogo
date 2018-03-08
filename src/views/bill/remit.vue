@@ -17,8 +17,8 @@
                             >
                                 <option value="">{{ $t('common.please_select') }}</option>
                                 <option value="1">{{ $t('setting.payment_normal') }}</option>
-                                <option value="2">{{ $t('setting.payment_alipay') }}</option>
-                                <option value="3">{{ $t('setting.payment_wechat') }}</option>
+                                <option value="2">{{ $t('setting.payment_wechat') }}</option>
+                                <option value="3">{{ $t('setting.payment_alipay') }}</option>
                             </select>
                         </div>
                         <div class="pull-left m-r-xs">

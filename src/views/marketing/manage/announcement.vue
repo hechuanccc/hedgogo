@@ -111,16 +111,16 @@
                     </td>
                     <td v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
                         <a
-                            class="md-btn md-flat m-r-sm"
-                            @click="deleteAnnouncement(announcement.id, $event)"
-                            v-if="$root.permissions.includes('delete_announcement')"
-                        >{{ $t('action.delete') }}
-                        </a>
-                        <a
-                            class="md-btn md-flat m-r-sm"
+                            class="m-r-sm"
                             @click="updateAnnouncement(announcement)"
                             v-if="$root.permissions.includes('update_announcement')"
                         >{{ $t('action.update') }}
+                        </a>
+                        <a
+                            class="m-r-sm"
+                            @click="deleteAnnouncement(announcement.id, $event)"
+                            v-if="$root.permissions.includes('delete_announcement')"
+                        >{{ $t('action.delete') }}
                         </a>
                     </td>
                 </tr>

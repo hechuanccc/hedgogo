@@ -23,8 +23,8 @@
               <tr v-for="l in levels">
                 <td><router-link :to="'/level/' + l.id">{{l.name}}</router-link></td>
                 <td>
-                    <span v-if="l.status==1" class="label success">安全</span>
-                    <span v-else-if="l.status==0" class="label danger">危险</span>
+                    <span v-if="l.status==1" class="label success">{{ $t('status.active') }}</span>
+                    <span v-else-if="l.status==0" class="label danger">{{ $t('status.inactive') }}</span>
                 </td>
                 <td>
                     <div v-if="l.remit_limit && (l.remit_limit.lower || l.remit_limit.upper)">
