@@ -319,7 +319,10 @@
                 if (confirm) {
                     if (!window.confirm(this.$t('bill.confirm_declined', {
                         action: event.target.innerText
-                    }) + (!this.transaction.online_payee.check_order ? ` ${this.$t('bill.dongfangkf_alert_msg')}` : ''))) {
+                    }) + ((this.transaction.online_payee && !this.transaction.online_payee.check_order)
+                        ? ` ${this.$t('bill.dongfangkf_alert_msg')}`
+                        : ''
+                    ))) {
                         return
                     }
                 }

@@ -228,7 +228,7 @@
                         </td>
                         <td>{{ result.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode">{{ result.bets_count }}</td>
-                        <td v-else class="result-balls">
+                        <td v-else-if="result.result_status === 'valid'" class="result-balls">
                             <div v-if="!resultColMode || resultColMode==='ball_num'">
                                 <span
                                     v-show="result.result_str !== undefined"
@@ -249,10 +249,12 @@
                                 </div>
                             </div>
                         </td>
+                        <td v-else-if="result.result_status === 'official_invalid'">{{ $t('game_history.official_invalid') }}</td>
                         <td
                             class="p-l-0 p-r-0"
                             v-for="(colList, index) in allCol"
                             :key="'Col_' + index"
+                            v-if="result.result_status === 'valid'"
                         >
                             <template v-for="col in colList">
                                 <div
@@ -267,15 +269,17 @@
                                 </div>
                             </template>
                         </td>
+                        <td v-else-if="result.result_status === 'official_invalid'"></td>
                         <td
                             class="p-l-0 p-r-0"
                             v-for="col in otherCol"
                             :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
-                            v-if="otherCol.length > 0"
+                            v-if="otherCol.length > 0 && result.result_status === 'valid'"
                         >
                             <span v-if="typeof result.result_category[col] === 'number'">{{ result.result_category[col] }}</span>
                             <span :class="`text-${result.result_category[col]}`" v-else>{{ $t('game_history.' + result.result_category[col]) }}</span>
                         </td>
+                        <td v-else-if="result.result_status === 'official_invalid'"></td>
                         <td>
                             <button
                                 type="button"
@@ -707,32 +711,35 @@ export default {
                             result.result_str = resultStr.join(',')
                         })
                     }
-                    category = Object.keys(this.queryset[0].result_category).map(i => i.split('_'))
-                    category.forEach(i => {
-                        if (i[0] === 'ball') {
-                            if (i[1] === 'max' && i[2] === 'min' && i[3] === 'diff') {
-                                otherCol.add(i.join('_'))
-                            } else {
-                                i.splice(i.length - 1, 1)
-                                resultCol.add(i.join('_'))
-                            }
-                        } else if (i[0] === 'sum') {
-                            this.sumCol1st2nd = (i[2][0] === '1' && i[3][0] === '2')
-                            if (this.game.code === 'fc3d') {
+                    let validResult = this.queryset.find(i => i.result_status === 'valid')
+                    if (validResult) {
+                        category = Object.keys(validResult.result_category).map(i => i.split('_'))
+                        category.forEach(i => {
+                            if (i[0] === 'ball') {
+                                if (i[1] === 'max' && i[2] === 'min' && i[3] === 'diff') {
+                                    otherCol.add(i.join('_'))
+                                } else {
+                                    i.splice(i.length - 1, 1)
+                                    resultCol.add(i.join('_'))
+                                }
+                            } else if (i[0] === 'sum') {
+                                this.sumCol1st2nd = (i[2][0] === '1' && i[3][0] === '2')
+                                if (this.game.code === 'fc3d') {
+                                    threeBallsSumCol.add(i.join('_'))
+                                } else {
+                                    sumCol.add(i.join('_'))
+                                }
+                            } else if (i[0] === 'three' && i[1] === 'balls') {
                                 threeBallsSumCol.add(i.join('_'))
+                            } else if (i[0] === 'dragon' && i[1] === 'tiger') {
+                                dragonTigerCol.add(i)
+                            } else if (i[i.length - 1] === 'cp') {
+                                comparisonCol.add(i.join('_'))
                             } else {
-                                sumCol.add(i.join('_'))
+                                otherCol.add(i.join('_'))
                             }
-                        } else if (i[0] === 'three' && i[1] === 'balls') {
-                            threeBallsSumCol.add(i.join('_'))
-                        } else if (i[0] === 'dragon' && i[1] === 'tiger') {
-                            dragonTigerCol.add(i)
-                        } else if (i[i.length - 1] === 'cp') {
-                            comparisonCol.add(i.join('_'))
-                        } else {
-                            otherCol.add(i.join('_'))
-                        }
-                    })
+                        })
+                    }
                 }
                 this.resultCol = ['ball_num', ...resultCol].filter(e => this.displayResultCol.includes(e))
                 this.sumCol = [...sumCol].filter(e => this.displaySumCol.includes(e))
