@@ -618,7 +618,8 @@ export default {
         leopard: '豹子',
         prime: '质',
         composite: '合',
-        ball_max_min_diff: '跨度'
+        ball_max_min_diff: '跨度',
+        official_invalid: 'Official Invalid Result'
     },
     agent: {
         number: 'No.',
