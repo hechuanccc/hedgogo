@@ -28,7 +28,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <label class="label-width">{{$t('setting.payment_gateway')}}</label>
+                                <label class="label-width">{{$t('setting.payee')}}</label>
                                 <div v-if="payment.detail.length > 0" class="m-t-sm">
                                     <label class="m-l-lg checkbox inline" v-for="(detail, index) in payment.detail">
                                         <input type="checkbox" name="payees"  :value="detail.payee_id" :diu="detail.activate" :checked="detail.activate" @click="changePayee(detail.payee_id, index)">

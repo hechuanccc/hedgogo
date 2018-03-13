@@ -698,6 +698,7 @@ export default {
         certificate: '密钥',
         board_url: '跳板地址',
         payment_domain: '支付域名',
+        payee: '支付商户',
         create_online_payee: '新增线上支付商户',
         staff_info: '子账号信息',
         display_name: '显示名称',

@@ -700,6 +700,7 @@ export default {
         board_url: 'Board URL',
         payment_domain: 'Payment Domain',
         create_online_payee: 'Create Online Payee',
+        payee: 'Payee',
         staff_info: 'Staff Info',
         display_name: 'Display Name',
         paymenttype: 'Payment Type',
