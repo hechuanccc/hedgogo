@@ -8,7 +8,7 @@
                     class="nav-link"
                     :class="{ 'active': type === 0 }"
                     @click="type = 0"
-                    ><b>PC</b>
+                    ><b>{{$t('manage.pc')}}</b>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -16,7 +16,7 @@
                     class="nav-link"
                     :class="{ 'active': type === 1 }"
                     @click="type = 1"
-                    ><b>MOBILE</b>
+                    ><b>{{$t('manage.mobile')}}</b>
                     </a>
                 </li>
             </ul>
