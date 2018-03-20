@@ -190,7 +190,7 @@
                         :key="'retreat_' + sched.id"
                     >
                         <td>{{ sched.issue_number }}</td>
-                        <td>{{ sched.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="sched.status !== 'cancelled'">
                             <span
                                 class="label btn blue"
@@ -218,7 +218,7 @@
                     </tr>
                     <tr
                         v-for="result in filteredResults"
-                        :key="result.created_at"
+                        :key="mode ? result.schedule_result : result.created_at"
                     >
                         <td>
                             <span>{{ result.issue_number }}</span>
@@ -226,7 +226,7 @@
                             <span class="text-muted" v-if="result.is_manual">({{ $t('game_history.manual_draw') }})</span>
                             <span class="text-muted" v-else-if="result.remarks !== 'manual_draw' && result.remarks !== null">({{ $t(`game_history.${result.remarks}`) }})</span>
                         </td>
-                        <td>{{ result.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td>{{ mode ? result.schedule_result : result.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td v-if="mode">{{ result.bets_count }}</td>
                         <td v-else-if="result.result_status === 'valid'" class="result-balls">
                             <div v-if="!resultColMode || resultColMode==='ball_num'">
@@ -590,7 +590,7 @@ export default {
                         result_str: '',
                         issue_number: sched.issue_number
                     },
-                    time: sched.created_at,
+                    time: this.mode ? sched.schedule_result : sched.created_at,
                     betrecords: sched.bets_count,
                     msg: this.$t(`game_history.${modalMode}_initial_msg`),
                     sureDraw: false,
@@ -603,7 +603,7 @@ export default {
             } else if (modalMode === 'retreat_sched') {
                 this.modal = {
                     mode: modalMode,
-                    time: sched.created_at,
+                    time: sched.schedule_result,
                     scheduleResult: sched,
                     isShow: true
                 }
@@ -756,7 +756,10 @@ export default {
             return this.queryset
         },
         isShowRetreatedSched () {
-            return this.$refs.pulling.isPageOne && Array.isArray(this.input.date) ? this.today === Vue.moment(this.input.date[1]).format(dateFormat) : this.today === Vue.moment(this.input.date).format(dateFormat) && !this.input.period && !this.mode
+            return this.$refs.pulling.isPageOne &&
+            (Array.isArray(this.input.date) ? this.today === Vue.moment(this.input.date[1]).format(dateFormat) : this.today === Vue.moment(this.input.date).format(dateFormat)) &&
+            !this.input.period &&
+            !this.mode
         }
     },
     components: {
