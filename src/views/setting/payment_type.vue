@@ -24,8 +24,6 @@
         <table st-table="rowCollectionBasic" class="table table-striped">
             <thead>
                 <tr>
-                <th>#</th>
-                <th>{{$t('common.name')}}</th>
                 <th>{{$t('setting.display_name')}}</th>
                 <th>{{$t('setting.payee')}}</th>
                 <th>{{$t('common.status')}}</th>
@@ -33,10 +31,11 @@
             </thead>
             <tbody>
                 <tr v-for="paymentType in filerPaymentType" :key="paymentType.id">
-                    <td>{{paymentType.id}}</td>
-                    <td v-if="$root.permissions.includes('update_onlinepayment')"><router-link :to="'/paymenttype/' + paymentType.id + '/edit'">{{paymentType.name}}</router-link></td>
-                    <td v-else>{{paymentType.name}}</td>
-                    <td>{{paymentType.display_name}}</td>
+                    <td v-if="$root.permissions.includes('update_onlinepayment')">
+                        <router-link :to="'/paymenttype/' + paymentType.id + '/edit'">
+                            {{paymentType.display_name}}
+                        </router-link>
+                    </td>
                     <td v-if="paymentType.detail.length">
                         <span v-for="payee in paymentType.detail" :key="payee.id">
                             {{payee.name}}
@@ -86,6 +85,9 @@ export default {
         getPaymentType () {
             this.$http.get(`${api.paymenttype}?opt_expand=1`).then(data => {
                 this.paymentTypes = data
+                this.paymentTypes.forEach(paymentType => {
+                    paymentType.detail = paymentType.detail.filter(payee => payee.activate)
+                })
             })
         }
     }
