@@ -1,13 +1,12 @@
 <template>
     <div>
-        <div class="p-b m-b-sm" v-if="$root.permissions.includes('add_online_payee')" >
+        <div class="p-b" v-if="$root.permissions.includes('add_online_payee')" >
             <router-link tag="button" class="md-btn blue" to="/online_payee/add">{{$t('setting.create_online_payee')}}</router-link>
         </div>
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>
-                    <th>#</th>
                     <th>{{$t('common.name')}}</th>
                     <th>{{$t('setting.sum_fund')}}</th>
                     <th>{{$t('setting.expired_in')}}</th>
@@ -18,7 +17,6 @@
                 </thead>
                 <tbody>
                     <tr v-for="payee in online_payees" >
-                        <td>{{payee.id}}</td>
                         <td><router-link :to="'/online_payee/' + payee.id">{{payee.name}}</router-link></td>
                         <td>￥{{payee.sum_fund || 0}}</td>
                         <td>{{payee.expired_in}}</td>
