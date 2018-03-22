@@ -1054,6 +1054,19 @@ export default new Router({
         }
     },
     {
+        path: '/robots',
+        name: 'robots',
+        component: function (resolve) {
+            require(['./views/setting/robots.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            agentPermission: 'true',
+            title: Vue.t('nav.robot_management')
+        }
+    },
+    {
         path: '/ban',
         name: 'ban',
         component: function (resolve) {

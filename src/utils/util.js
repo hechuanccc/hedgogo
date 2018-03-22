@@ -133,13 +133,13 @@ export default class $ {
         }
     }
 
-    static notify (cb, {verticalAlign = 'top', horizontalAlign = 'center', message = '', type = ''}) {
+    static notify ({verticalAlign = 'top', horizontalAlign = 'center', message = '', type = ''}) {
         const typeIcon = {
             danger: 'fa fa-close',
             success: 'fa fa-check',
             warning: 'fa fa-warning'
         }
-        cb.notify({
+        Vue.prototype.$notifications.notify({
             message: `<i class="${typeIcon[type]}"></i> ${message}`,
             horizontalAlign: horizontalAlign,
             verticalAlign: verticalAlign,

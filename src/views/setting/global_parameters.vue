@@ -29,10 +29,10 @@
                     </div>
                     <div class="form-group m-t-sm p-a-0" v-else-if="preference.newValue === 'true' || preference.newValue === 'false'">
                         <label class="radio-inline">
-                            <input type="radio" :value="'true'" v-model="preference.newValue"> true
+                            <input type="radio" :value="'true'" v-model="preference.newValue"> True
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" :value="'false'" v-model="preference.newValue"> false
+                            <input type="radio" :value="'false'" v-model="preference.newValue"> False
                         </label>
                     </div>
                     <div  v-else>
