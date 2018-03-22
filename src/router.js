@@ -1053,19 +1053,19 @@ export default new Router({
             permission: 'view_global_parameters_setting'
         }
     },
-    {
-        path: '/robots',
-        name: 'robots',
-        component: function (resolve) {
-            require(['./views/setting/robots.vue'], resolve)
-        },
-        meta: {
-            group: 'setting',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.robot_management')
-        }
-    },
+    // {
+    //     path: '/robots',
+    //     name: 'robots',
+    //     component: function (resolve) {
+    //         require(['./views/setting/robots.vue'], resolve)
+    //     },
+    //     meta: {
+    //         group: 'setting',
+    //         auth: true,
+    //         agentPermission: 'true',
+    //         title: Vue.t('nav.robot_management')
+    //     }
+    // },
     {
         path: '/ban',
         name: 'ban',
