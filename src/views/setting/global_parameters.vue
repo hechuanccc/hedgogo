@@ -105,17 +105,12 @@
             </div>
         </div>
     </div>
-    <div class="row m-b-lg">
-        <pulling :queryset="queryset" :api="globalPreferencesApi" :query="query" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
-    </div>
   </div>
 </template>
 <script>
 import api from '../../api'
-import pulling from '../../components/pulling'
 import alertMsg from '../../components/alertMsg'
 import $ from '../../utils/util'
-// import Vue from 'vue'
 
 export default {
     data () {
@@ -138,11 +133,23 @@ export default {
         }
     },
     created () {
-        this.$nextTick(() => {
-            this.$refs.pulling.rebase()
-        })
+        this.getGlobalParameters()
     },
     methods: {
+        getGlobalParameters () {
+            this.$http.get(api.global_preferences).then(data => {
+                this.queryset = data
+                this.queryset.map(element => {
+                    if ($.isJsonString(element.value)) {
+                        return Object.assign(element, {
+                            value: JSON.parse(element.value)
+                        })
+                    } else {
+                        return element
+                    }
+                })
+            })
+        },
         changeMode (index) {
             if (this.listMode.includes(index)) {
                 this.modal = Object.assign(this.modal, {
@@ -196,27 +203,9 @@ export default {
         },
         hideModal () {
             this.modal.isShow = false
-        },
-        submit () {
-            this.$refs.pulling.submit()
-        },
-        queryData (queryset) {
-            this.queryset = queryset.map(element => {
-                if ($.isJsonString(element.value)) {
-                    return Object.assign(element, {
-                        value: JSON.parse(element.value)
-                    })
-                } else {
-                    return element
-                }
-            })
-        },
-        queryParam (query) {
-            this.query = query
         }
     },
     components: {
-        pulling,
         alertMsg
     }
 }
