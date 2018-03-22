@@ -7,6 +7,9 @@ const NotificationStore = {
         this.state.splice(index, 1)
     },
     notify (notification) {
+        if (this.state.length) {
+            this.removeNotification(0)
+        }
         this.state.push(notification)
     }
 }
