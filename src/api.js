@@ -3,6 +3,7 @@
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 const host = env.HOST.replace(/"/g, '')
+const chatHost = env.CHATHOST.replace(/"/g, '') + '/v1/'
 const prefix = host + '/manage/'
 const managePrefix = host + '/v1/manage/'
 const memberPrefix = host + '/v1/member/'
@@ -78,5 +79,6 @@ export default {
     member_report: managePrefix + 'report/count/membership/',
     finance_report: managePrefix + 'report/assets/finance/',
     check_member: host + '/v1/member/username/',
-    search_member: memberPrefix + 'search_member/'
+    search_member: memberPrefix + 'search_member/',
+    robot: chatHost + 'robot/'
 }

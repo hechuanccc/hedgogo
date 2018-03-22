@@ -87,6 +87,7 @@ export default {
         role_add: 'Add Role Setting',
         role_edit: 'Edit Role Setting',
         global_parameters: 'Global Parameters',
+        robot_management: 'Robot Management',
         logging: 'Logging',
         login_logs: 'Login Logs',
         action_logs: 'Action Logs',
@@ -364,7 +365,16 @@ export default {
         loading: 'Loading',
         setting: 'Setting',
         file_size_too_large: 'File size is too large, please select another one.',
-        agent_login_error: 'You\'re an agent. Please login Agent Dashboard.'
+        agent_login_error: 'You\'re an agent. Please login Agent Dashboard.',
+        avatar: 'Avatar',
+        online_time: 'Online Time',
+        speak_interval: 'Speak Interval',
+        operate: 'Operate',
+        minute: 'Minute(s)',
+        time: 'Time',
+        plan_robot: 'Plan Robot',
+        on_time: 'On Time',
+        off_time: 'Off Time'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -424,6 +434,7 @@ export default {
         reset_withdraw_password: 'Reset withdraw password',
         create: 'Create',
         update: 'Update',
+        update_object: 'Update {object}',
         delete: 'Delete',
         setting: 'Setting',
         confirm: 'Confirm',
@@ -450,7 +461,8 @@ export default {
         back_page: 'Go Back To The Last Page',
         hide: 'Hide',
         view: 'View',
-        inform: 'Inform'
+        inform: 'Inform',
+        please_fill_object: 'Please fill {object}'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -475,6 +487,7 @@ export default {
         updated_at: 'Updated at',
         email: 'Email',
         no_setting: 'No Setting',
+        no_show: 'No Show',
         enabled: 'Enable',
         disabled: 'Disabled',
         status_updated: 'Status Updated!',
@@ -858,5 +871,19 @@ export default {
         operating: 'Operating',
         role_permission: 'Role\'s Permissions',
         sure_delete_role: 'Are you sure to delete the role?'
+    },
+    week: {
+        week: 'Week: ',
+        0: 'Sun',
+        1: 'Mon',
+        2: 'Tue',
+        3: 'Wed',
+        4: 'Thu',
+        5: 'Fri',
+        6: 'Sat'
+    },
+    robot: {
+        manager: '管理员',
+        member: '普通会员'
     }
 }

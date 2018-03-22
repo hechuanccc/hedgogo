@@ -87,6 +87,7 @@ export default {
         role_add: '新增角色',
         role_edit: '修改角色',
         global_parameters: '系统参数配置',
+        robot_management: '机器人配置',
         logging: '日志管理',
         login_logs: '登录日志',
         action_logs: '操作日志',
@@ -364,7 +365,16 @@ export default {
         loading: '载入中',
         setting: '设置',
         file_size_too_large: '文件太大，请选择另一个',
-        agent_login_error: '您是代理商，请登入代理后台'
+        agent_login_error: '您是代理商，请登入代理后台',
+        avatar: '头像',
+        online_time: '在线时间',
+        speak_interval: '发言间隔',
+        operate: '操作',
+        minute: '分钟',
+        time: '时间',
+        plan_robot: '计划机器人',
+        on_time: '上线时间',
+        off_time: '下线时间'
     },
     bank: {
         bank_title: '银行资讯',
@@ -423,6 +433,7 @@ export default {
         reset_withdraw_password: '重设取款密码',
         create: '新增',
         update: '修改',
+        update_object: '修改{object}',
         delete: '删除',
         setting: '设定',
         confirm: '确定',
@@ -446,10 +457,12 @@ export default {
         clear: '清除',
         filter_trial_account: '过滤试玩用户',
         no_setting: '未设置',
+        no_show: '不显示',
         back_page: '返回上一页',
         hide: '隐藏',
         view: '查看',
-        inform: '通知'
+        inform: '通知',
+        please_fill_object: '请填写{object}'
     },
     staff: {
         roles: '角色 / 权限',
@@ -699,7 +712,7 @@ export default {
         board_url: '跳板地址',
         payment_domain: '支付域名',
         payee: '支付商户',
-        create_online_payee: '新增线上支付商户',
+        create_online_payee: '新增支付商户',
         staff_info: '子账号信息',
         display_name: '显示名称',
         paymenttype: '支付方式管理',
@@ -857,5 +870,19 @@ export default {
         operating: '操作',
         role_permission: '角色权限',
         sure_delete_role: '确定删除该角色吗？'
+    },
+    week: {
+        week: '星期',
+        0: '日',
+        1: '一',
+        2: '二',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六'
+    },
+    robot: {
+        manager: '管理员',
+        member: '普通会员'
     }
 }
