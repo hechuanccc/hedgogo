@@ -54,7 +54,7 @@
                                 <div class="inline-form-control v-m">
                                     <input class="form-control" type="file" accept="image/*" @change="syncImage($event, 'image')">
                                 </div>
-                                <div class="m-t text-danger">上传图片最大宽度1000像素！</div>
+                                <p class="m-t text-danger">图片尺寸：电脑端推荐宽高比例为 8 : 1，推荐宽高为 1000 * 144</p>
                             </div>
                             <div class="form-group">
                                 <label class="label-width">{{ $t('promotion.mobileBanner') }}</label>
@@ -64,7 +64,7 @@
                                 <div class="inline-form-control">
                                     <input class="form-control" type="file" name="image" accept="image/*" @change="syncImage($event, 'image_mobile')">
                                 </div>
-                                <div class="m-t text-danger">上传图片最大宽度320像素！</div>
+                                <p class="m-t text-danger">图片尺寸：手机端推荐宽高比例为 4 : 1 ，推荐宽高为 360 * 90</p>
                             </div>
                             <div class="form-group">
                                 <label for="description">{{ $t('promotion.desc') }}</label>
