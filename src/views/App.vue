@@ -138,7 +138,8 @@ export default {
             this.$http.get(api.permissionsUser).then(data => {
                 this.permissions = data
                 // permissions must be loaded before we can handle other data
-                this.setUpAuth()
+                // 20180323 Remove refresh mechanism and extend access token expiry.
+                // this.setUpAuth()
                 this.setUpRouterHooks()
             })
         }

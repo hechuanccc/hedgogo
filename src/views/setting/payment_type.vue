@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="row">
+    <div class="row" v-if="$root.permissions.includes('update_onlinepayment')">
         <div class="pull-right m-r">
             <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
             <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
@@ -56,6 +56,7 @@
                             {{paymentType.display_name}}
                         </router-link>
                     </td>
+                    <td v-else>{{paymentType.display_name}}</td>
                     <td v-if="paymentType.detail.length">
                         <span v-for="payee in paymentType.detail" :key="payee.id">
                             {{payee.name}}
