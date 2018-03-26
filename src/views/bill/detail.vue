@@ -35,7 +35,7 @@
                             <div v-if="transaction.transaction_type.code === 'remit'" class="grey-100 p-a clearfix">
                                 <div class="row">
                                     <div class="col-xs-3 text-right text-muted">{{$t('bill.remit_payee')}}</div>
-                                    <div class="col-xs-9 ">{{transaction.remit_info.remit_payee.payee_name || '-'}}</div>
+                                    <div class="col-xs-9 ">{{transaction.remit_info.remit_payee.payee_name || transaction.remit_info.remit_payee.nickname}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-3 text-right text-muted">{{$t('bill.depositor')}}</div>
