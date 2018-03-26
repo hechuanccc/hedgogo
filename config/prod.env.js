@@ -1,6 +1,6 @@
 module.exports = {
   NODE_ENV: '"production"',
   HOST: '"' + process.env.HOST + '"',
-  CHATHOST: '"' + process.env.chatApi + '"',  
+  CHATHOST: '"' + process.env.CHATHOST + '"',
   NAME: '"Lottery"'
 }
