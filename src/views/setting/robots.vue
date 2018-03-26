@@ -168,7 +168,7 @@
                   </label>
                 </div>
               </div>
-            <div class="row m-t-xs b-b">
+            <div class="row m-t-xs b-b p-b-xs">
               <div class="col-sm-3 col-sm-offset-1 text-right">
                 <label class="form-control-label">{{ $t('common.game') }}</label>
               </div>
