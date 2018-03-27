@@ -4,14 +4,17 @@
         <div v-else>
             <div class="pull-left m-l" v-if="!busy && count !== 0">
                 <span class="">共 {{count}} 条，每页&nbsp;</span>
-                <select class="form-control c-select" v-model="pageSize" style="height:38px; width:80px; border-radius: 0.25rem;">
+                <select
+                    class="form-control c-select"
+                    v-model="pageSize"
+                    style="height:38px; width:80px; border-radius: 0.25rem;"
+                >
                     <option value=20>20</option>
                     <option value=50>50</option>
                     <option value=100>100</option>
                     <option value=200>200</option>
                 </select>
-                <span>&nbsp;条，</span>
-                <span>前往&nbsp;</span>
+                <span>&nbsp;条，前往&nbsp;</span>
                 <input
                     type="number"
                     step="1"
@@ -141,8 +144,8 @@ export default {
         pageSize (newObj, old) {
             this.limit = newObj
             this.showPageGo = 1
+            this.pageInput = 1
             this.offset = 0
-            this.getPage()
         },
         pageInput (newObj) {
             if (this.showPageGo !== newObj) {
