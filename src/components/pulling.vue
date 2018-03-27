@@ -3,32 +3,75 @@
         <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>   </div>
         <div v-else>
             <div class="pull-left m-l" v-if="!busy && count !== 0">
-                <span class="">共 {{count}} 条，每页</span>
-                <select class="form-control c-select" v-model="pageSize" style="width:80px">
+                <span class="">共 {{count}} 条，每页&nbsp;</span>
+                <select
+                    class="form-control c-select"
+                    v-model="pageSize"
+                    style="height:38px; width:80px; border-radius: 0.25rem;"
+                >
                     <option value=20>20</option>
                     <option value=50>50</option>
                     <option value=100>100</option>
                     <option value=200>200</option>
                 </select>
-                <span>条，</span>
-                <span>
-                    显示第
-                    <select class="form-control c-select" v-model="showPageGo" style="width:60px"  @change="pageGo()">
-                        <option v-for="num in pageNum" :value="num">{{num}}</option>
-                    </select>
-                     页
-                </span>
-                </div>
-            <div class="pull-center" >
-                <div v-if="myQueryset.length === 0" class="text-muted">查无记录</div>
-                <div v-else>
-                    <button class="md-btn w-sm grey-600" @click="prevPage"  v-if="showPageGo !== 1">
-                        <span v-if="!busy">上一页</span>
-                        <span v-else>正在载入...</span>
+                <span>&nbsp;条，前往&nbsp;</span>
+                <input
+                    type="number"
+                    step="1"
+                    class="form-control w-xs inline"
+                    style="height:38px; width:80px; border-radius: 0.25rem;"
+                    v-model.number="pageInput"
+                    @change="pageGo()"
+                />
+                <span>&nbsp;页</span>
+            </div>
+            <div v-if="!myQueryset.length && !loading" class="text-muted pull-center">查无记录</div>
+            <div class="pull-right m-r">
+                <div v-if="myQueryset.length" >
+                    <button
+                        class="btn btn-icon m-r-xs"
+                        @click="pageGo(1)"
+                        v-if="pageNum.length && !pageNum.includes(1)"
+                    >
+                        <i class="fa fa-angle-double-left" v-if="!busy"></i>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
-                    <button class="md-btn w-sm grey-600" @click="nextPage" v-if="showPageGo !== countPage" :disabled="busy">
-                        <span v-if="!busy">下一页</span>
-                        <span v-else>正在载入...</span>
+                    <button
+                        class="btn btn-icon m-r-xs"
+                        @click="prevPage"
+                        v-if="showPageGo > 1"
+                    >
+                        <i class="fa fa-angle-left" v-if="!busy"></i>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
+                    </button>
+                    <div style="display: inline" v-if="pageNum.length">
+                        <button
+                            class="btn m-r-xs"
+                            @click="pageGo(num)"
+                            v-for="num in pageNum"
+                            :key="num"
+                            :class="{'blue': num === showPageGo}"
+                        >
+                            <span>{{ num }}</span>
+                        </button>
+                        <span v-if="showPageGo + 4 <= countPage && countPage > 6">&hellip;&nbsp;</span>
+                        <button
+                            class="btn m-r-xs"
+                            :class="{'blue': countPage === showPageGo}"
+                            @click="pageGo(countPage)"
+                            v-if="showPageGo + 3 <= countPage && countPage >= 6"
+                        >
+                            <span>{{ countPage }}</span>
+                        </button>
+                    </div>
+                    <button
+                        class="btn btn-icon"
+                        @click="nextPage"
+                        v-if="showPageGo !== countPage"
+                        :disabled="busy"
+                    >
+                        <i class="fa fa-angle-right" v-if="!busy"></i>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </div>
             </div>
@@ -38,6 +81,7 @@
 
 <script>
 import Vue from 'vue'
+import _ from 'lodash'
 // to perform a pulling, parent componet need to boardcast 'rebase' event
 // once the comopnent is ready, and might trigger 'rebase' everytime needed
 export default {
@@ -82,6 +126,7 @@ export default {
             busy: false,
             loading: true,
             pageSize: 20,
+            pageInput: 1,
             showPageGo: 1,
             offset: 0,
             countPage: 0,
@@ -99,16 +144,38 @@ export default {
         pageSize (newObj, old) {
             this.limit = newObj
             this.showPageGo = 1
+            this.pageInput = 1
             this.offset = 0
-            this.getPage()
+        },
+        pageInput (newObj) {
+            if (this.showPageGo !== newObj) {
+                this.debounceGo()
+            }
         }
     },
     methods: {
-        pageGo () {
-            let offset = parseInt(this.limit) * (parseInt(this.showPageGo) - 1)
-            this.offset = offset
+        debounceGo: _.debounce(function () {
             this.loading = true
-            this.rebase()
+            if (this.pageInput > this.countPage) {
+                this.pageInput = this.countPage
+            } else if (this.pageInput < 1) {
+                this.pageInput = 1
+            }
+            if (this.pageInput && this.showPageGo !== this.pageInput) {
+                this.pageGo(this.pageInput)
+            } else {
+                this.loading = false
+            }
+        },
+        700),
+        pageGo (showPageGo = this.showPageGo) {
+            if (showPageGo !== this.showPageGo) {
+                this.showPageGo = showPageGo
+                this.pageInput = showPageGo
+                let offset = parseInt(this.limit) * (parseInt(showPageGo) - 1)
+                this.offset = offset
+                this.rebase()
+            }
         },
         nextPage () {
             this.showPageGo = parseInt(this.showPageGo) + 1
@@ -124,14 +191,24 @@ export default {
         },
         getPage () {
             this.countPage = Math.ceil(this.count / this.limit)
+            this.pageNum.splice(0, this.pageNum.length)
             let pageNum = []
             if (this.countPage === 1) {
                 this.showPageGo = 1
+            } else if (this.countPage > 1) {
+                this.pageInput = this.showPageGo
+                pageNum.push(this.showPageGo)
+                for (let i = this.showPageGo - 1; i >= 1 && pageNum.length <= 2; --i) {
+                    pageNum = [i, ...pageNum]
+                }
+                for (let i = this.showPageGo + 1; i <= this.countPage && pageNum.length <= 4; ++i) {
+                    pageNum = [...pageNum, i]
+                }
+                for (let i = this.showPageGo - 3; i >= 1 && pageNum.length <= 4; --i) {
+                    pageNum = [i, ...pageNum]
+                }
             }
-            for (var i = 1; i <= this.countPage; i++) {
-                pageNum.push(i)
-            }
-            this.pageNum = pageNum
+            this.pageNum.push(...pageNum)
         },
         rebase () {
             this.next = this.buildUrl(this.api, this.extra + '&opt_expand=' + this.optexpand + '&offset=' + this.offset + '&limit=' + this.limit)
@@ -163,14 +240,14 @@ export default {
                 this.$emit('amount', amount)
                 this.$emit('profit', profit)
                 this.$emit('totalBet', totalBet)
-                this.busy = false
                 this.count = data.count
                 this.getPage()
+                this.busy = false
                 this.myQueryset = []
                 this.myQueryset = this.myQueryset.concat(data.results)
                 this.$emit('query-data', this.myQueryset)
-                this.loading = false
                 this.next = data.next
+                this.loading = false
             }, () => {
                 this.$router.push('/login?next=' + this.$route.fullPath)
             })
@@ -245,4 +322,3 @@ export default {
     }
 }
 </script>
-
