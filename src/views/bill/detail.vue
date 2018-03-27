@@ -159,7 +159,7 @@
                                 <span v-if="transaction.related">来自交易
                                     <router-link :to="'/transaction/' + transaction.related" >{{transaction.related}}</router-link>
                                 </span>
-                                <span v-if="!transaction.related && transaction.transaction_type.code === 'online_pay'">
+                                <span v-if="!transaction.related && transaction.transaction_type.code === 'online_pay' && transaction.payment_type">
                                     来自{{ transaction.payment_type }}
                                 </span>
                                 <span v-else-if="!transaction.related && transaction.transaction_type.code !== 'manual_operation'">
