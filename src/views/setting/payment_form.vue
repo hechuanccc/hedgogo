@@ -38,6 +38,12 @@
                                 </div>
                                 <div v-else class="inline-form-control">{{$t('setting.no_payment_gateway')}}</div>    
                             </div>
+                            <p
+                                class="text-muted"
+                                v-html="payment.gateway_memo"
+                                v-if="payment.gateway_memo"
+                            >
+                            </p>
                             <div class="form-group" >
                                 <label for="memo">{{$t('common.memo')}}</label>
                                 <textarea class="form-control" name="memo" rows="2" cols="4" v-model="payment.description"></textarea>
@@ -55,6 +61,7 @@
 </template>
 <script>
     import api from '../../api'
+    import $ from '../../utils/util'
 
     export default {
         data () {
@@ -101,7 +108,9 @@
                             this.payment.payees.push(data.detail[i].payee_id)
                         }
                     }
-                    this.payment = Object.assign(this.payment, data)
+                    Object.assign(this.payment, data, {
+                        gateway_memo: $.htmlTransform(data.gateway_memo)
+                    })
                 })
             },
             changePayee (id, index) {
