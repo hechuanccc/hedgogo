@@ -241,7 +241,7 @@ export default {
             this.loading = false
             this.queryset = queryset
             this.queryset.forEach(element => {
-                element.description = element.description.replace(/(\r\n|\r|\n)/g, '<br/>')
+                element.description = $.htmlTransform(element.description)
             })
         },
         queryParam (query) {

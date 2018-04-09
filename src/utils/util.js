@@ -146,4 +146,15 @@ export default class $ {
             type: type
         })
     }
+
+    static htmlTransform (s = '') {
+        try {
+            let ret = s
+            ret = ret.replace(/(\r\n|\r|\n)/g, '<br/>')
+            ret = ret.replace(/\s/g, '&nbsp;')
+            return ret
+        } catch (e) {
+            return ''
+        }
+    }
 }
