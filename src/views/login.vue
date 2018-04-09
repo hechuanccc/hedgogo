@@ -87,7 +87,7 @@
                     url = url ? decodeURIComponent(url.split('?')[0]) : '/'
                     this.$router.push(url)
                 }, error => {
-                    this.errorMsg = error
+                    this.errorMsg = (typeof error === 'string') ? error : this.$t('common.error_occurred_msg')
                 })
             }
         },
