@@ -329,9 +329,6 @@ export default {
         splitDayOfWeek (element) {
             return element.day_of_week && element.day_of_week.split(',')
         },
-        textBreakAll (str) {
-            return str && str.replace(/(\r\n|\r|\n)/g, '<br/>')
-        },
         updateRobot ({ mode = '', field = '' }, type = 2, resultRobot) {
             let result = new window.FormData()
             result.append('type', type)
