@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="label-width col-xs-1">{{$t('manage.logo')}}</label>
-                                <div class="inline-form-control" v-if="!hasImage">
+                                <div class="inline-form-control" v-if="hasLogo">
                                     <img :src="website.icon" width="60">
                                 </div>
                                 <span v-else>{{ $t('action.no_setting') }}</span>
@@ -185,7 +185,8 @@
                 boxes: [],
                 initialBoxes: {},
                 boxResults: {},
-                hasImage: false,
+                hasLogo: false,
+                hasLogoFile: false,
                 websiteAgreement: '',
                 updateWebsiteAgreementStatus: '',
                 statusUpdated: false,
@@ -223,7 +224,9 @@
         methods: {
             getWebsite () {
                 this.$http.get(api.website).then(data => {
-                    this.website = Object.assign(this.website, data)
+                    Object.assign(this.website, data)
+                    this.hasLogo = !!this.website.icon
+                    this.hasLogoFile = false
                 })
             },
             getWebsiteDescription () {
@@ -374,8 +377,14 @@
                 this.mode = 0
             },
             syncImg (e) {
-                this.website.icon = e.target.files[0]
-                this.hasImage = true
+                var reader = new FileReader()
+                reader.onload = (e) => {
+                    this.website.icon = e.target.result
+                }
+                reader.readAsDataURL(e.target.files[0])
+                this.$set(this.website, 'iconFile', e.target.files[0])
+                this.hasLogo = true
+                this.hasLogoFile = true
             },
             syncBoxImg (e, box, index, attr) {
                 if (!this.checkFileSize(e.target.files[0])) {
@@ -405,11 +414,13 @@
                 formData.append('name', this.website.name)
                 formData.append('description', this.website.description)
                 formData.append('second_name', this.website.second_name)
-                if (this.hasImage) {
-                    formData.append('icon', this.website.icon)
+                if (this.hasLogoFile) {
+                    formData.append('icon', this.website.iconFile)
                 }
                 this.$http.put(api.website, formData).then(data => {
-                    this.website = Object.assign(this.website, data)
+                    Object.assign(this.website, data)
+                    this.hasLogo = !!this.website.icon
+                    this.hasLogoFile = false
                     this.responseError = ''
                     this.statusUpdated = true
                 }, error => {
