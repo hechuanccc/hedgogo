@@ -347,7 +347,7 @@ export default {
         new_window: '新窗口打开',
         updated_at: '状态更新于',
         no_permission: '无权限访问',
-        error_occurred_msg: '发生错误。请联系客服人员。',
+        error_occurred_msg: '发生错误。请联系技术人员。',
         overview: {
             label: {
                 amount: '下注金额',
