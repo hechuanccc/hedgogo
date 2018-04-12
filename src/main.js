@@ -14,6 +14,14 @@ import Notifications from './components/NotificationPlugin'
 
 import App from './views/App'
 
+let url = window.location.href
+const HTTPS = process.env.HTTPS
+if (HTTPS && HTTPS.replace(/"/g, '') === '1') {
+    if (window.location.protocol === 'http:') {
+        window.location.replace(url.replace(/http:/, 'https:'))
+    }
+}
+
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 Vue.prototype.$http = axios
