@@ -462,7 +462,8 @@ export default {
         hide: 'Hide',
         view: 'View',
         inform: 'Inform',
-        please_fill_object: 'Please fill {object}'
+        please_fill_object: 'Please fill {object}',
+        reset_condition: 'Reset'
     },
     staff: {
         roles: 'Roles / Permission',

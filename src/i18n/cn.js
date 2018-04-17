@@ -462,7 +462,8 @@ export default {
         hide: '隐藏',
         view: '查看',
         inform: '通知',
-        please_fill_object: '请填写{object}'
+        please_fill_object: '请填写{object}',
+        reset_condition: '重置条件'
     },
     staff: {
         roles: '角色 / 权限',
