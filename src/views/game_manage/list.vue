@@ -91,7 +91,7 @@
                             </date-picker>
                         </div>
                         <div class="col-xs-2 col-xs-offset-2 text-right">
-                            <button type="button" class="btn btn-sm btn-primary" @click="updateTime">{{$t('action.update')}}</button>
+                            <button type="button" class="btn btn-sm blue" @click="updateTime">{{$t('action.update')}}</button>
                         </div>
                     </div>
                     <div class="row"></div>
@@ -111,7 +111,7 @@
                             <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'icon')" required>
                         </div>
                         <div class="col-xs-2 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
-                            <button type="button" class="btn btn-sm btn-primary" @click="updateImage('icon')">{{$t('action.update')}}</button>
+                            <button type="button" class="btn btn-sm blue" @click="updateImage('icon')">{{$t('action.update')}}</button>
                         </div>
                     </div>
                     <div class="row"></div>
@@ -131,7 +131,7 @@
                             <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'bg_icon')" required>
                         </div>
                         <div class="col-xs-2 text-right" style="margin-top:75px;" v-if="$root.permissions.includes('update_game_icon_background')">
-                            <button type="button" class="btn btn-sm btn-primary" @click="updateImage('bg_icon')">{{$t('action.update')}}</button>
+                            <button type="button" class="btn btn-sm blue" @click="updateImage('bg_icon')">{{$t('action.update')}}</button>
                         </div>
                     </div>
                     <div class="row m-l m-r">
@@ -213,7 +213,7 @@ export default {
             this.$http.put(api.game_list + game.id + '/', params).then(data => {
                 this.$set(this.queryset, index, data)
             }, error => {
-                $.notify(this.$notifications, {
+                $.notify({
                     message: error,
                     type: 'danger'
                 })
@@ -229,7 +229,7 @@ export default {
             this.$http.put(api.game_list + game.id + '/', params).then(data => {
                 this.$set(this.queryset, index, data)
             }, error => {
-                $.notify(this.$notifications, {
+                $.notify({
                     message: error,
                     type: 'danger'
                 })
@@ -318,12 +318,12 @@ export default {
                     display_name: game.display_name,
                     rank: index + 1
                 }))).then(data => {
-                    $.notify(this.$notifications, {
+                    $.notify({
                         message: this.$t('game_manage.modify_success'),
                         type: 'success'
                     })
                 }, error => {
-                    $.notify(this.$notifications, {
+                    $.notify({
                         message: error,
                         type: 'danger'
                     })
