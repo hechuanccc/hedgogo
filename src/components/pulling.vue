@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loading text-center" v-if="loading"><i class='fa fa-spinner '></i>   <b class="">正在加载中...</b>   </div>
+        <div class="loading text-center" v-if="loading"><i class="fa fa-spin fa-spinner"></i>   <b class="">正在加载中...</b>   </div>
         <div v-else>
             <div class="pull-left m-l" v-if="!busy && count !== 0">
                 <span class="">共 {{count}} 条，每页&nbsp;</span>
