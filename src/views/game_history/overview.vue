@@ -233,7 +233,7 @@ export default{
         },
         getGameInfo (gameId) {
             return new Promise((resolve, reject) => {
-                this.$http.get(api.game_list + gameId).then(data => {
+                this.$http.get(`${api.game_list}${gameId}/`).then(data => {
                     resolve(data)
                 })
             })
