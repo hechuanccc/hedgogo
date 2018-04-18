@@ -201,12 +201,12 @@
         <div class="pull-right" v-if="$root.permissions.includes('export_member_report')">
           <a :href="href" :getReport="getReport" v-if="queryset.length">
             <span>
-              {{ $t('action.download') }}
+              {{ $t('action.download_report') }}
               <i class="fa fa-download"></i>
             </span>
           </a>
           <span disabled v-else>
-            {{ $t('action.download') }}
+            {{ $t('action.download_report') }}
             <i class="fa fa-download"></i>
           </span>
         </div>

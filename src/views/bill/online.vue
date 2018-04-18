@@ -177,11 +177,11 @@
                 v-if="$root.permissions.includes('export_onlinepay_report')"
             >
                 <a :href="href" :getReport="getReport" v-if="queryset.length">
-                    {{ $t('action.download') }}
+                    {{ $t('action.download_report') }}
                     <i class="fa fa-download"></i>
                 </a>
                 <span disabled v-else>
-                    {{ $t('action.download') }}
+                    {{ $t('action.download_report') }}
                     <i class="fa fa-download"></i>
                 </span>
             </div>

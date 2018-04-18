@@ -196,11 +196,11 @@
                 :getReport="getReport"
                 v-if="queryset.length"
             >
-                {{ $t('action.download') }}
+                {{ $t('action.download_report') }}
                 <i class="fa fa-download"></i>
             </a>
             <span v-else>
-                {{ $t('action.download') }}
+                {{ $t('action.download_report') }}
                 <i class="fa fa-download"></i>
             </span>
         </div>
