@@ -129,7 +129,8 @@ export default {
         success: 'Return Rate successfully confirmed.',
         export: 'Export',
         generate: 'Generate',
-        cycle: 'cycle'
+        cycle: 'cycle',
+        return_amount: 'Return Amount'
     },
     member: {
         contact_info: 'Contact Info',
@@ -729,7 +730,7 @@ export default {
         setting_return_ratio_count: 'Return Setting Ratio Count',
         deleted_return_setting: 'Return Setting has been deleted.',
         delete_return_setting: 'Delete Return Setting',
-        group_threshold: 'Group Threshold',
+        bet_amount: 'Bet Amount',
         check_amount: 'Check Amount',
         group_max: 'Group Max',
         return_setting_ratio: 'Return Setting Ratio',

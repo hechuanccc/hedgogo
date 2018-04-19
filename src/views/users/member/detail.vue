@@ -55,15 +55,18 @@
                 <strong class="text-lg text-danger">{{member.suggested_balance | currency('￥')}}</strong>
               </div>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
               <div class="m-b">
                 <span class="text-muted">{{$t('member.current_audit')}}</span>
                 <span class="t-red" v-if="member.balance.bet_amount < member.balance.audit_amount">{{$t('member.failed')}}</span>
                 <span class="t-green" v-else>{{$t('member.pass')}}</span>
-                <strong class="t-red m-l-lg">{{member.balance.bet_amount}} / {{member.balance.audit_amount}}</strong>
               </div>
             </div>
-            <div class="col-xs-5">
+            <div class="col-xs-2">
+              <p class="m-b-0 text-muted">{{ $t('setting.bet_amount') }} / {{ $t('bill.audit_amount') }}</p>
+              <strong class="t-red">{{member.balance.bet_amount}} / {{member.balance.audit_amount}}</strong>
+            </div>
+            <div class="col-xs-4">
               <router-link :to="'/bill/operation?member=' + member.username"  v-if="$root.permissions.includes('manual_deposit_withdraw')" class="m-r">{{$t('member.manual_adjust')}}</router-link>
             </div>
           </div>
@@ -137,13 +140,19 @@
             </div>
             <div class="col-md-5">
               <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <span class="text-muted">{{$t('common.member') + $t('betrecord.win')}}</span>
                   <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <span class="text-muted">{{$t('common.member') + $t('betrecord.lose')}}</span>
                   <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link></div>
+                </div>
+                <div class="col-md-4">
+                  <span class="text-muted">{{$t('returnrate.return_amount')}}</span>
+                  <div>
+                    <span :class="{'text-muted': !member.total_return_amount}">{{member.total_return_amount | currency('￥')}}</span>
+                  </div>
                 </div>
               </div>
             </div>

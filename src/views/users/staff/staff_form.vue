@@ -55,14 +55,14 @@
                                         :placeholder="$t('common.please_select') + $t('staff.role')"
                                         :disabled="!updateStaffPermission('role_mail')"
                                     >
-                                        <option class="form-control" value=''>{{ $t('common.please_select') + $t('staff.role') }}</option>                                        
+                                        <option class="form-control" value="">{{ $t('common.please_select') + $t('staff.role') }}</option>                                        
                                         <option class="form-control" :value="r.id" v-for="r in roles" :key="r.id">{{ r.name }}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="label-width">{{$t('staff.permission')}}</label>
-                                <div class="box" v-if="permissions">
+                                <div class="box" v-if="permissions.length">
                                     <template v-for="(list, index) in permissions">
                                         <div class="row">
                                             <div class="col-sm-offset-1 col-sm-11 p-t"><strong>{{ list.display_name }}</strong></div>
@@ -121,7 +121,7 @@ export default {
         if (this.$route.params.staffId) {
             this.getStaff(this.$route.params.staffId)
         } else {
-            this.permissions = undefined
+            this.permissions = []
         }
     },
     methods: {
@@ -135,6 +135,10 @@ export default {
                 email: this.staff.email,
                 memo: this.staff.memo
             })
+            if (!this.staff.user_group.id) {
+                this.errorMsg = this.$t('staff.no_select_group')
+                return
+            }
             if (this.staff.password) {
                 staffResult = Object({
                     ...staffResult,
@@ -148,10 +152,6 @@ export default {
                     this.errorMsg = error
                 })
             } else {
-                if (!this.staff.user_group.id) {
-                    this.errorMsg = this.$t('staff.no_select_group')
-                    return
-                }
                 this.$http.post(api.staff, staffResult).then(data => {
                     this.$router.push('/staff/' + data.id)
                 }, error => {
@@ -179,7 +179,11 @@ export default {
             })
         },
         changeRole () {
-            this.permissions = this.roles.find(role => role.id === this.staff.user_group.id).manage_permissiongroup
+            if (this.staff.user_group.id) {
+                this.permissions = this.roles.find(role => role.id === this.staff.user_group.id).manage_permissiongroup
+            } else {
+                this.permissions = []
+            }
         }
     }
 }
