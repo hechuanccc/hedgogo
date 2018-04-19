@@ -99,7 +99,7 @@
                     </div>   
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="updateGlobalPreference">{{ $t('action.update') }}</button>
+                    <button type="button" class="btn blue" @click="updateGlobalPreference">{{ $t('action.update') }}</button>
                     <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
                 </div>
             </div>

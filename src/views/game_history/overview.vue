@@ -164,7 +164,7 @@
                     <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
                     <button 
                         type="button"
-                        class="inline pull-right btn btn-primary m-r-xs blue"
+                        class="inline pull-right btn m-r-xs blue"
                         @click="updateScheduleResult"
                         v-if="modal.mode === 'manual_draw'"
                         :disabled="!$root.permissions.includes('manually_draw_game_result') || !modal.sureDraw"
@@ -173,7 +173,7 @@
                     </button>
                     <button
                         type="button"
-                        class="inline pull-right btn btn-primary m-r-xs blue"
+                        class="inline pull-right btn m-r-xs blue"
                         @click="noDrawHandler"
                         v-else
                         :disabled="!$root.permissions.includes('official_no_draw')"

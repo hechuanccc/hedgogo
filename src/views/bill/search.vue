@@ -147,11 +147,11 @@
     <div class="row m-l-xs m-r-xs">
         <div class="pull-right" v-if="$root.permissions.includes('export_transaction_report')">
             <a :href="href" :getReport="getReport" v-if="queryset.length">
-                {{ $t('action.download') }}
+                {{ $t('action.download_report') }}
                 <i class="fa fa-download"></i>
             </a>
             <span disabled v-else>
-                {{ $t('action.download') }}
+                {{ $t('action.download_report') }}
                 <i class="fa fa-download"></i>
             </span>
         </div>
