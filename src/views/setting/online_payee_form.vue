@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <label  class="label-width">{{$t('setting.payment_domain')}}</label>
                                 <div class="inline-form-control">
-                                    <input  class="form-control" v-model="payee.domain_url"/>
+                                    <input  class="form-control" v-model="payee.domain_url" :disabled="disabledDomainURL"/>
                                 </div>
                                 <p class="text-danger note">{{$t('setting.domain_label')}}</p>
                             </div>
@@ -127,6 +127,15 @@
                 }
                 vm.getPaymentTypes()
             })
+        },
+        computed: {
+            disabledDomainURL () {
+                let paymentGateway = this.paymenttypes.find(p => p.id === this.payee.payment_gateway)
+                if (paymentGateway && !paymentGateway.need_domain_url) {
+                    this.payee.domain_url = ''
+                }
+                return paymentGateway && !paymentGateway.need_domain_url
+            }
         },
         methods: {
             onSubmit (e) {

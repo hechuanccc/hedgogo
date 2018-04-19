@@ -182,7 +182,7 @@
                         <input
                             type="password"
                             class="form-control"
-                            placeholder="再次输入当前子账号密码"
+                            placeholder="再次输入当前子帐号密码"
                             v-model="transaction.password"
                             required
                         />

@@ -14,7 +14,7 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('common.username')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" placeholder="代理商账号" v-model="agent.username" required :disabled="agent.id!=''" >
+                    <input class="form-control" placeholder="代理商帐号" v-model="agent.username" required :disabled="agent.id!=''" >
                   </div>
                   <i class="fa fa-star t-red-500 m-l" v-if="!agent.id">必填</i>
                 </div>
@@ -30,7 +30,7 @@
                   <label class="label-width">{{$t('agent.parent_agent')}}</label>
                   <div class="inline-form-control dropdown" :class="{'open': hasItems}">
                     <input v-if="!hasAgentParent" class="form-control" type="text"
-                           :placeholder="agent.level === 1 ? '大股东无需填写' : '代理商账号'"
+                           :placeholder="agent.level === 1 ? '大股东无需填写' : '代理商帐号'"
                            :disabled="!agent.level"
                            autocomplete="on"
                            v-model="query"
