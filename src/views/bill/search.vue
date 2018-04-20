@@ -1,220 +1,215 @@
 <template>
-    <div>
-        <form class="form" v-on:submit.prevent="submit">
-            <div class="box">
-                <div class="box-body clearfix form-input-sm">
-                    <div class="row m-l-xs m-r-xs">
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
-                            >{{ $t('common.date') }}
-                            </label>
-                            <date-picker
-                                width='227'
-                                style="display: block;"
-                                :not-after="today"
-                                :shortcuts="shortcuts"
-                                :inputClass="'input form-control'"
-                                type="date"
-                                v-model="created_at"
-                                format="yyyy-MM-dd"
-                                range
-                            />
-                        </div>
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': transaction_type}"
-                            >{{ $t('bill.transaction_type') }}
-                            </label>
-                            <transaction-type-selector
-                                style="display: block;"
-                                :transactionType="transaction_type"
-                                :attribute="'code'"
-                                @transaction-type-select="transactionTypeSelect"
-                            />
-                        </div>
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': !$route.query.member && query.member_level}"
-                            >{{ $t('member.level') }}
-                            </label>
-                            <level
-                                style="display: block;"
-                                :level="query.member_level"
-                                :disabled="$route.query.member"
-                                @level-select="levelSelect"
-                            />
-                        </div>
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': !$route.query.member && query.member_q
-                                }"
-                            >{{ $t('common.member') }}
-                            </label>
-                            <input
-                                type="text"
-                                v-model="query.member"
-                                class="form-control w-sm"
-                                disabled
-                                v-if="$route.query.member"
-                            />
-                            <input
-                                type="text"
-                                v-model="query.member_q"
-                                class="form-control w-sm"
-                                :placeholder="$t('common.member')"
-                                @input="search"
-                                v-else
-                            />
-                        </div>
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': !$route.query.member && query.agent_q
-                                }"
-                            >{{ $t('common.agent') }}
-                            </label>
-                            <input
-                                type="text"
-                                v-model="query.agent"
-                                class="form-control w-sm"
-                                disabled
-                                v-if="$route.query.member"
-                            />
-                            <input
-                                type="text"
-                                v-model="query.agent_q"
-                                class="form-control w-sm"
-                                :placeholder="$t('common.agent')"
-                                @input="search"
-                                v-else
-                            />
-                        </div>
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': query.amount_lte || query.amount_gte}"
-                            >{{ $t('common.amount') }}
-                            </label>
-                            <div style="display: block;">
-                                <input
-                                    type="number"
-                                    v-model="query.amount_gte"
-                                    class="form-control inline w-sm"
-                                    :max="query.amount_lte"
-                                    :placeholder="$t('common.min_amount')"
-                                    @input="search"
-                                />
-                                <span>
-                                    ~
-                                </span>
-                                <input
-                                    type="number"
-                                    v-model="query.amount_lte"
-                                    class="form-control inline w-sm"
-                                    :min="query.amount_gte"
-                                    :placeholder="$t('common.max_amount')"
-                                    @input="search"
-                                />
-                            </div>
-                        </div>
-                        <div class="pull-left m-r-xs">
-                            <label
-                                class="form-control-label p-b-0"
-                                :class="{'text-blue': query.transaction_id}"
-                            >{{ $t('bill.order_id') }}
-                            </label>
-                            <input
-                                style="width: 244px;"
-                                type="text"
-                                v-model.trim="query.transaction_id"
-                                class="form-control w-sm"
-                                :placeholder="$t('bill.order_id')"
-                                @input="search"
-                            />
-                        </div>
-                        <button
-                            class="md-btn w-xs pull-right btn m-t-md"
-                            type="button"
-                            @click="clearAll"
-                            :disabled="isQueryEmpty"
-                        >
-                            <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
-                            <i v-else class="fa fa-trash-o"></i> 
-                            <span>{{ $t('action.clear') }}</span>
-                        </button>
+<div>
+    <form class="form box" @submit.prevent="submit">
+        <div class="box-body clearfix form-input-sm">
+            <div class="row m-l-xs m-r-xs">
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
+                    >{{ $t('common.date') }}
+                    </label>
+                    <date-picker
+                        width='244'
+                        style="display: block;"
+                        :not-after="today"
+                        :shortcuts="shortcuts"
+                        :inputClass="'input form-control'"
+                        type="date"
+                        v-model="created_at"
+                        format="yyyy-MM-dd"
+                        range
+                    />
+                </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': transaction_type}"
+                    >{{ $t('bill.transaction_type') }}
+                    </label>
+                    <transaction-type-selector
+                        style="display: block;"
+                        :transactionType="transaction_type"
+                        :attribute="'code'"
+                        @transaction-type-select="transactionTypeSelect"
+                    />
+                </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': !$route.query.member && query.member_level}"
+                    >{{ $t('member.level') }}
+                    </label>
+                    <level
+                        style="display: block;"
+                        :level="query.member_level"
+                        :disabled="$route.query.member"
+                        @level-select="levelSelect"
+                    />
+                </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': !$route.query.member && query.member_q
+                        }"
+                    >{{ $t('common.member') }}
+                    </label>
+                    <input
+                        v-model="query.member"
+                        class="form-control w-sm"
+                        disabled
+                        v-if="$route.query.member"
+                    />
+                    <input
+                        v-model="query.member_q"
+                        class="form-control w-sm"
+                        :placeholder="$t('common.member')"
+                        @input="search"
+                        v-else
+                    />
+                </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': !$route.query.member && query.agent_q
+                        }"
+                    >{{ $t('common.agent') }}
+                    </label>
+                    <input
+                        v-model="query.agent"
+                        class="form-control w-sm"
+                        disabled
+                        v-if="$route.query.member"
+                    />
+                    <input
+                        v-model="query.agent_q"
+                        class="form-control w-sm"
+                        :placeholder="$t('common.agent')"
+                        @input="search"
+                        v-else
+                    />
+                </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': query.amount_lte || query.amount_gte}"
+                    >{{ $t('common.amount') }}
+                    </label>
+                    <div style="display: block;">
+                        <input
+                            type="number"
+                            v-model="query.amount_gte"
+                            class="form-control inline w-sm"
+                            :max="query.amount_lte"
+                            :placeholder="$t('common.min_amount')"
+                            @input="search"
+                        />
+                        <span>
+                            ~
+                        </span>
+                        <input
+                            type="number"
+                            v-model="query.amount_lte"
+                            class="form-control inline w-sm"
+                            :min="query.amount_gte"
+                            :placeholder="$t('common.max_amount')"
+                            @input="search"
+                        />
                     </div>
                 </div>
-            </div>
-        </form>
-        <div class="row m-l-xs m-r-xs">
-            <div class="pull-right" v-if="$root.permissions.includes('export_transaction_report')">
-                <a :href="href" :getReport="getReport" v-if="queryset.length">
-                <span>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
-                </a>
-                <span disabled v-else>{{ $t('action.download') }}<i class="material-icons">&#xe2c4;</i></span>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': query.transaction_id}"
+                    >{{ $t('bill.order_id') }}
+                    </label>
+                    <input
+                        style="width: 244px;"
+                        v-model.trim="query.transaction_id"
+                        class="form-control w-sm"
+                        :placeholder="$t('bill.order_id')"
+                        @input="search"
+                    />
+                </div>
+                <button
+                    class="md-btn w-xs pull-right btn m-t-md"
+                    type="button"
+                    @click="clearAll"
+                    :disabled="isQueryEmpty"
+                >
+                    <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                    <i v-else class="fa fa-trash-o"></i> 
+                    {{ $t('action.reset_condition') }}
+                </button>
             </div>
         </div>
-        <div class="box">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>{{$t('common.member')}}</th>
-                        <th>{{$t('common.agent')}}</th>
-                        <th>{{$t('bill.created_at')}}</th>
-                        <th>{{$t('bill.transaction_type')}}</th>
-                        <th>{{$t('common.balance_before')}}</th>
-                        <th>{{$t('common.balance_after')}}</th>
-                        <th>{{$t('common.amount')}}</th>
-                        <th>{{$t('common.status')}}</th>
-                        <th class="text-center">{{ $t('bill.order_detail') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="t in queryset" :key="t.id">
-                        <td>
-                            <router-link :to="'/member/' + t.member.id">{{t.member.username}}</router-link>
-                        </td>
-                        <td><router-link :to="'/agent/' + t.member.agent.id ">{{t.member.agent.username}}</router-link></td>
-                        <td>{{t.created_at | moment("YYYY-MM-DD HH:mm:ss")}}</td>
-                        <td>{{t.transaction_type.display_name}}</td>
-                        <td>
-                        <span v-if="t.balance_before">{{t.balance_before | currency('￥')}}</span>
-                        <span v-else>-</span>
-                        </td>
-                        <td>
-                        <span v-if="t.balance_after">{{t.balance_after | currency('￥')}}</span>
-                        <span v-else>-</span>
-                        </td>
-                        <td>{{t.amount | currency('￥')}} <label v-if="t.withdraw_fee"> - 手续费：{{t.withdraw_fee}}</label></td>
-                        <td>
-                            <transaction-status :transaction="t"></transaction-status>
-                        </td>
-                        <td class="text-center">
-                            <router-link :to="'/transaction/' + t.id">{{ $t('action.view') }}</router-link>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="row m-b-lg">
-            <pulling
-                :queryset="queryset"
-                :query="query"
-                :extra="'report_flag=true'"
-                :export_query="export_query"
-                @query-data="queryData"
-                @query-param="queryParam"
-                @export-query="exportQuery"
-                :api="api"
-                ref="pulling"
-            />
+    </form>
+    <div class="row m-l-xs m-r-xs">
+        <div class="pull-right" v-if="$root.permissions.includes('export_transaction_report')">
+            <a :href="href" :getReport="getReport" v-if="queryset.length">
+                {{ $t('action.download_report') }}
+                <i class="fa fa-download"></i>
+            </a>
+            <span disabled v-else>
+                {{ $t('action.download_report') }}
+                <i class="fa fa-download"></i>
+            </span>
         </div>
     </div>
+    <table class="box table table-striped">
+        <thead>
+            <tr>
+                <th>{{ $t('common.member') }}</th>
+                <th>{{ $t('common.agent') }}</th>
+                <th class="text-center">{{ $t('bill.created_at') }}</th>
+                <th>{{ $t('bill.transaction_type') }}</th>
+                <th class="text-center">{{ $t('common.balance_before') }}</th>
+                <th class="text-center">{{ $t('common.balance_after') }}</th>
+                <th class="text-center">{{ $t('common.amount') }}</th>
+                <th class="text-center">{{ $t('common.status') }}</th>
+                <th class="text-center">{{ $t('bill.order_detail') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="t in queryset" :key="t.id">
+                <td>
+                    <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
+                </td>
+                <td><router-link :to="'/agent/' + t.member.agent.id ">{{ t.member.agent.username }}</router-link></td>
+                <td class="text-center">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                <td>{{ t.transaction_type.display_name }}</td>
+                <td class="text-right">
+                    <span v-if="t.balance_before || t.balance_before === 0">{{ t.balance_before | currency('￥') }}</span>
+                    <span v-else>-</span>
+                </td>
+                <td class="text-right">
+                    <span v-if="t.balance_after || t.balance_after === 0">{{ t.balance_after | currency('￥') }}</span>
+                    <span v-else>-</span>
+                </td>
+                <td class="text-right">{{ t.amount | currency('￥') }} <label v-if="t.withdraw_fee"> - 手续费：{{ t.withdraw_fee }}</label></td>
+                <td class="text-center">
+                    <transaction-status :transaction="t"></transaction-status>
+                </td>
+                <td class="text-center">
+                    <router-link :to="'/transaction/' + t.id">{{ $t('action.view') }}</router-link>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row m-b-lg">
+        <pulling
+            :queryset="queryset"
+            :query="query"
+            :extra="'report_flag=true'"
+            :export_query="export_query"
+            @query-data="queryData"
+            @query-param="queryParam"
+            @export-query="exportQuery"
+            :api="api"
+            ref="pulling"
+        />
+    </div>
+</div>
 </template>
 
 <script>
@@ -228,7 +223,7 @@
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import _ from 'lodash'
-    
+
     export default {
         data () {
             return {

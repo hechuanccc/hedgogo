@@ -129,7 +129,8 @@ export default {
         success: 'Return Rate successfully confirmed.',
         export: 'Export',
         generate: 'Generate',
-        cycle: 'cycle'
+        cycle: 'cycle',
+        return_amount: 'Return Amount'
     },
     member: {
         contact_info: 'Contact Info',
@@ -439,7 +440,8 @@ export default {
         setting: 'Setting',
         confirm: 'Confirm',
         cancel: 'Cancel',
-        download: 'Download Report',
+        download: 'Download',
+        download_report: 'Download Report',
         view_remit_payees: 'View remit payees',
         update_remit_payee: 'Update',
         add_remit_payee: 'Add Remit Payee',
@@ -462,7 +464,8 @@ export default {
         hide: 'Hide',
         view: 'View',
         inform: 'Inform',
-        please_fill_object: 'Please fill {object}'
+        please_fill_object: 'Please fill {object}',
+        reset_condition: 'Reset'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -727,7 +730,7 @@ export default {
         setting_return_ratio_count: 'Return Setting Ratio Count',
         deleted_return_setting: 'Return Setting has been deleted.',
         delete_return_setting: 'Delete Return Setting',
-        group_threshold: 'Group Threshold',
+        bet_amount: 'Bet Amount',
         check_amount: 'Check Amount',
         group_max: 'Group Max',
         return_setting_ratio: 'Return Setting Ratio',

@@ -1,9 +1,19 @@
 <template>
     <div class="row">
-        <div class="col-md-6 col-xs-12" v-for="item in dataCategory" :key="item">
-            <router-link :to="routerLinkTo(item)" tag="div" class="box p-a-sm">
-                <div class="box-header p-b-0"><h6>{{ $t(`common.overview.title.${item}`) }}</h6></div>
-                <div class="box-body text-center" v-if="loading"><i class="fa fa-3x fa-spin fa-spinner fa-fw"></i></div>
+        <div
+            class="col-md-6 col-xs-12"
+            v-for="item in dataCategory"
+            :key="item"
+        >
+            <router-link
+                :to="routerLinkTo(item)"
+                tag="div"
+                class="box p-a-sm pointer"
+            >
+                <h6 class="box-header p-b-0">{{ $t(`common.overview.title.${item}`) }}</h6>
+                <div class="box-body text-center" v-if="loading">
+                    <i class="fa fa-3x fa-spin fa-spinner fa-fw"></i>
+                </div>
                 <div class="box-body" v-else-if="dataCollection[item] && lineChart.includes(item)">
                     <line-chart
                         :chart-data="dataCollection[item]"
@@ -55,12 +65,11 @@ export default {
                 betrecord_count: 45,
                 register_count: 18
             },
-            loading: undefined,
+            loading: true,
             options: {}
         }
     },
     created () {
-        this.loading = true
         this.getOverviewData()
     },
     methods: {
@@ -72,20 +81,20 @@ export default {
         },
         fillData (data) {
             data.sort((a, b) => Vue.moment(a.date) - Vue.moment(b.date))
-            this.dataCategory.forEach(title => {
-                this.$set(this.dataCollection, title, {
+            this.dataCategory.forEach(category => {
+                this.$set(this.dataCollection, category, {
                     labels: data.map(e => Vue.moment(e.date).format('MM/DD')),
                     datasets: [{
-                        label: this.$t(`common.overview.label.${title}`),
-                        pointBorderColor: `hsl(${this.color[title]}, 88%, 55%)`,
+                        label: this.$t(`common.overview.label.${category}`),
+                        pointBorderColor: `hsl(${this.color[category]}, 88%, 55%)`,
                         pointBackgroundColor: '#ffffff',
-                        backgroundColor: `hsl(${this.color[title]}, 88%, 80%)`,
-                        borderColor: `hsl(${this.color[title]}, 88%, 55%)`,
+                        backgroundColor: `hsl(${this.color[category]}, 88%, 80%)`,
+                        borderColor: `hsl(${this.color[category]}, 88%, 55%)`,
                         borderWidth: 2,
-                        data: data.map(e => e[title].toFixed(2))
+                        data: data.map(e => e[category].toFixed(2))
                     }]
                 })
-                this.$set(this.options, title, {
+                this.$set(this.options, category, {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
@@ -93,7 +102,7 @@ export default {
                             ticks: {
                                 callback: (value, index, values) => {
                                     if (Number.isInteger(value)) {
-                                        return this.lineChart.includes(title) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value.toLocaleString()
+                                        return this.lineChart.includes(category) ? (`${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}`) : value.toLocaleString()
                                     }
                                 }
                             },
@@ -113,7 +122,8 @@ export default {
                             label: (tooltipItem, data) => {
                                 let _data = data.datasets[0]
                                 let value = tooltipItem.yLabel
-                                return this.lineChart.includes(title) ? `${_data.label}：${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}` : `${_data.label} : ${value.toLocaleString()}`
+                                // Only line chart has negative value.
+                                return this.lineChart.includes(category) ? `${_data.label}：${value < 0 ? '-' : ''}¥${Math.abs(value).toLocaleString()}` : `${_data.label} : ${value.toLocaleString()}`
                             }
                         }
                     }
@@ -134,10 +144,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-div.box:hover,
-div.box:focus,
-div.box:active {
-    cursor: pointer;
-}
-</style>

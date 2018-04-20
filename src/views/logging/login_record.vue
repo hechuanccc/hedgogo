@@ -73,7 +73,7 @@
                         >
                             <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                             <i v-else class="fa fa-trash-o"></i> 
-                            <span>{{ $t('action.clear') }}</span>
+                            <span>{{ $t('action.reset_condition') }}</span>
                         </button>
                     </div>
                 </div>

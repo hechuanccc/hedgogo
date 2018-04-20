@@ -264,7 +264,8 @@
 import api from '../../api'
 import TimePicker from 'vue2-timepicker'
 import $ from '../../utils/util'
-const defaultAvatar = require('../../assets/avatar.png')
+import * as defaultAvatar from '../../../static/images/avatar.png'
+
 export default {
     data () {
         return {

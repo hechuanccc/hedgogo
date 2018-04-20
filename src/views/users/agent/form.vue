@@ -18,7 +18,7 @@
                 <div class="form-group">
                   <label for="username" class="label-width">{{$t('agent.account')}} </label>
                   <div class="inline-form-control">
-                    <input class="form-control" placeholder="代理商账号" v-model="agent.username" required :disabled="agent.id!=''" >
+                    <input class="form-control" placeholder="代理商帐号" v-model="agent.username" required :disabled="agent.id!=''" >
                   </div>
                   <i class="fa fa-star t-red-500 m-l" v-if="!agent.id">必填</i>
                 </div>

@@ -190,7 +190,7 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('action.clear') }}</span>
+              <span>{{ $t('action.reset_condition') }}</span>
             </button>
           </div>
         </div>
@@ -201,13 +201,13 @@
         <div class="pull-right" v-if="$root.permissions.includes('export_member_report')">
           <a :href="href" :getReport="getReport" v-if="queryset.length">
             <span>
-              {{ $t('action.download') }}
-              <i class="material-icons">&#xe2c4;</i>
+              {{ $t('action.download_report') }}
+              <i class="fa fa-download"></i>
             </span>
           </a>
           <span disabled v-else>
-            {{ $t('action.download') }}
-            <i class="material-icons">&#xe2c4;</i>
+            {{ $t('action.download_report') }}
+            <i class="fa fa-download"></i>
           </span>
         </div>
       </div>
