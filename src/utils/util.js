@@ -138,7 +138,7 @@ export default class $ {
         }
     }
 
-    static notify ({verticalAlign = 'top', horizontalAlign = 'center', message = '', type = ''}) {
+    static notify ({verticalAlign = 'top', horizontalAlign = 'center', message = '', type = 'success'}) {
         Vue.prototype.$notifications.notify({
             message: `<i class="${typeIcon[type]}"></i> ${message}`,
             horizontalAlign: horizontalAlign,
@@ -156,5 +156,9 @@ export default class $ {
         } catch (e) {
             return ''
         }
+    }
+
+    static camelToSnake (str) {
+        return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
     }
 }
