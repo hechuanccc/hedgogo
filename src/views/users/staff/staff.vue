@@ -35,7 +35,7 @@
                         </td>
                         <td>{{staff.created_at | moment("YYYY-MM-DD HH:mm")}}</td>
                         <td>{{staff.updated_at | moment("YYYY-MM-DD HH:mm")}}</td>
-                        <td>{{staff.memo}}</td>
+                        <td>{{staff.memo || '-'}}</td>
                     </tr>
                 </tbody>
             </table>

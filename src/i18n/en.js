@@ -324,6 +324,7 @@ export default {
         balance_after: 'Balance After',
         export: 'Export',
         no_record: 'No Record',
+        no_data: 'No Data',
         remarks: 'Remarks',
         no_remarks: 'No Remarks',
         add_bank_information: 'Add Bank Information',
@@ -801,7 +802,8 @@ export default {
         main: 'Main box',
         advertisement: 'Advertisement',
         adjust_rank: 'Adjust Rank',
-        agent_joining_agreement: 'Agent Joining Agreement'
+        agent_joining_agreement: 'Agent Joining Agreement',
+        right_float_img: 'Right Float Image'
     },
     cms: {
         pctitle: 'PC Website Management',
