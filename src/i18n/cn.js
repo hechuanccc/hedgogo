@@ -324,6 +324,7 @@ export default {
         balance_after: '更新后额度',
         export: '下载',
         no_record: '无记录',
+        no_data: '暂无资料',
         remarks: '备注',
         no_remarks: '暂无备注',
         add_bank_information: '建立银行资讯',
@@ -800,7 +801,8 @@ export default {
         main: '描述内容',
         advertisement: '网站广告',
         adjust_rank: '调整排序',
-        agent_joining_agreement: '代理加盟协议'
+        agent_joining_agreement: '代理加盟协议',
+        right_float_img: '右侧浮动图'
     },
     cms: {
         pctitle: '电脑网页管理',
