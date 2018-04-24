@@ -39,16 +39,6 @@
                             <input type="file" class="form-control w-md" accept="image/*" @change="syncImg($event, 'Icon')">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="label-width col-xs-1 text-uppercase m-t-xs">favicon</label>
-                        <div class="inline-form-control" v-if="hasFavicon">
-                            <img :src="website.favicon" height="30">
-                        </div>
-                        <span class="m-r-xs" v-else>{{ $t('action.no_setting') }}</span>
-                        <div class="inline-form-control" v-if="updateWebsiteManagementPermission">
-                            <input type="file" class="form-control w-md" accept="image/*" @change="syncImg($event, 'Favicon')">
-                        </div>
-                    </div>
                     <div class="p-b m-t" v-if="updateWebsiteManagementPermission">
                         <button
                             class="md-btn w-sm blue"
@@ -204,12 +194,11 @@ export default {
                 id: '',
                 name: '',
                 icon: '',
-                favicon: '',
                 right_float_img: '',
                 description: '',
                 second_name: ''
             },
-            websiteImg: ['Icon', 'Favicon', 'RightFloatImg'],
+            websiteImg: ['Icon', 'RightFloatImg'],
             websiteSettingLoading: false,
             websiteAgreementLoading: false,
             mode: 0,
@@ -218,8 +207,6 @@ export default {
             boxResults: {},
             hasIcon: false,
             hasIconFile: false,
-            hasFavicon: false,
-            hasFaviconFile: false,
             hasRightFloatImg: false,
             hasRightFloatImgFile: false,
             websiteAgreement: '',
