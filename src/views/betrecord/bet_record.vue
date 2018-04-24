@@ -302,6 +302,7 @@
                         <th>{{ $t('report.bet_record_number') }}</th>
                         <th>{{ $t('common.settledat') }}</th>
                         <th>{{ $t('common.member') }}</th>
+                        <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('common.game') }}</th>
                         <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_manage.play') }}</th>
@@ -318,6 +319,7 @@
                         <td><router-link :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link></td>
                         <td>{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
+                        <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
                         <td>{{ t.game.display_name }}</td>
                         <td>{{ t.issue_number }}</td>
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
@@ -354,6 +356,7 @@
                         <th>{{ $t('report.bet_record_number') }}</th>
                         <th>{{ $t('common.settledat') }}</th>
                         <th>{{ $t('common.member') }}</th>
+                        <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('member.account_type') }}</th>
                         <th>{{ $t('common.game') }}</th>
                         <th>{{ $t('game_history.periods') }}</th>
@@ -373,6 +376,7 @@
                             <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type === 1">{{ t.member.username }}</router-link>
                             <span v-else>{{ $t('member.visitor') }}</span>
                         </td>
+                        <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
                         <td>{{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}</td>
                         <td>{{ t.game.display_name }}</td>
                         <td>{{ t.issue_number }}</td>
