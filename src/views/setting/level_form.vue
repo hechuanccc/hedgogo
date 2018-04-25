@@ -197,7 +197,7 @@
                                         v-model="remit_discount.limit"
                                     >
                                 </div>
-                                <div class="col-xs-4">
+                                <div class="col-xs-3">
                                     <a
                                         class="pull-right"
                                         v-if="index > 0"
@@ -259,7 +259,7 @@
                                         class="form-control"
                                     />
                                 </div>
-                                <div class="col-xs-4 block">
+                                <div class="col-xs-3">
                                     <a
                                         class="pull-right"
                                         v-if="index > 0"
