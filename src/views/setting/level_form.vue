@@ -1,227 +1,301 @@
 <template>
-    <div>
-            <div class="m-b">
-                <ol class="breadcrumb">
-                    <li class="active"><router-link to="/level">{{$t('nav.setting_level')}}</router-link></li>
-                    <li class="active">{{$route.meta.title}}</li>
-                </ol>
-            </div>
-            <div class="box">
-            <div class="box-body">
-                <form class="form m-a" v-on:submit.prevent="onSubmit">
-                    <div class="row b-b p-b m-b">
-                        <div class="col-xs-5">
-                            <div class="form-group p-b">
-                                <label for="level-name" class="label-width">{{$t('common.name')}} </label>
-                                <div class="inline-form-control">
-                                    <input class="form-control w-sm" v-model="level.name" required  id="level-name">
-                                </div>
-                            </div>
-                            <div class="form-group p-b" v-if="level.remit_limit">
-                                <label for="agent" class="label-width">{{$t('level.remit_limit')}} </label>
-                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.remit_limit.lower">
-                                <span> ~ </span>
-                                <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.remit_limit.upper">
-                            </div>
-
-                            <div class="form-group p-b" v-if="level.online_limit">
-                              <label for="agent" class="label-width">{{$t('level.online_pay_limit')}}</label>
-                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.online_limit.lower">
-                                <span> ~ </span>
-                                <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.online_limit.upper">
-                            </div>
-                            <div class="form-group b-b p-b" v-if="level.withdraw_limit">
-                              <label for="agent" class="label-width">{{$t('level.withdraw_limit')}} </label>
-                                <input  class="form-control w-sm inline" type="number" placeholder="下限或留空" v-model="level.withdraw_limit.lower">
-                                <span> ~ </span>
-                                <input  class="form-control w-sm inline" type="number" name="agent" placeholder="上限或留空" v-model="level.withdraw_limit.upper" >
-                            </div>
-                            <div class="form-group">
-                                <label for="realname" class="label-width">{{$t('level.withdraw_fee_rate')}}</label>
-                                <div class="inline-form-control">
-                                    <input class="form-control w-sm" type="number" name="realname" placeholder="比如：100" v-model="level.withdraw_fee.rate" required>
-                                </div>
-                            </div>
-                            <div class="form-group p-b b-b ">
-                                <label for="phone" >{{$t('level.withdraw_fee_type')}}</label>
-                                <div>
-                                    <label class="radio md-check md-check-md m-b text-muted">
-                                        <input type="radio" value="0" name="gender" v-model="level.withdraw_fee.type">
-                                        <i class="blue"></i>
-                                        {{$t('level.free')}}
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="radio md-check md-check-md m-b text-muted">
-                                        <input type="radio" value="2" name="gender" v-model="level.withdraw_fee.type">
-                                        <i class="blue"></i>
-                                        {{$t('level.preset')}}
-                                    </label>
-                                    <div class="w-auto inline m-l-md m-b-md text-muted">
-                                        <input type="number" class="form-control xsm-input inline" v-model="level.withdraw_fee.hour" :disabled="level.withdraw_fee.type!=2"/>
-                                        <span> &nbsp;{{$t('level.hour')}}&nbsp; </span>
-                                        <input type="number" class="form-control xsm-input inline" v-model="level.withdraw_fee.times" :disabled="level.withdraw_fee.type!=2"/>
-                                        <span> &nbsp;{{$t('level.times')}} </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="radio md-check md-check-md m-b text-muted">
-                                        <input type="radio" value="1" name="gender" v-model="level.withdraw_fee.type">
-                                        <i class="blue"></i>
-                                        {{$t('level.everytime')}}
-                                    </label>
-                                </div>
-
-                                <div class="text-danger">{{$t('level.withdraw_fee_type_danger')}}</div>
-
-                            </div>
-                            <div class="row m-b p-b b-b">
-                                <div class="col-xs-8">
-                                    <span class="text-muted">{{$t('level.display_report')}}</span>
-                                    <div class="m-t">
-                                        <span class="label success" v-show="level.report_flag">显示</span>
-                                        <span class="label danger" v-show="!level.report_flag">隐藏</span>
-                                        <a class="text-sm m-l" @click="change" v-show="level.report_flag" >隐藏</a>
-                                        <a class="text-sm m-l" @click="change" v-show="!level.report_flag" >显示</a>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group m-t-md">
-                                <label for="serviceRate" class="label-width">{{$t('level.service_rate')}}</label>
-                                <div class="inline-form-control">
-                                    <input type="number" class="form-control w-lg inline" placeholder="存款稽核没有通过时，行政费用的金额比例" required v-model="level.service_rate">
-                                    <span class="inline"> &nbsp; %</span>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                              <label for="memo">{{$t('common.memo')}}</label>
-                              <textarea class="form-control" rows="2" v-model="level.memo"></textarea>
+<div>
+    <ol class="breadcrumb">
+        <li class="active"><router-link to="/level">{{ $t('nav.setting_level') }}</router-link></li>
+        <li class="active">{{ $route.meta.title }}</li>
+    </ol>
+    <div class="box">
+        <div class="box-body">
+            <form class="form m-a" @submit.prevent="onSubmit">
+                <div class="row b-b m-b">
+                    <div class="col-xs-5">
+                        <div class="form-group">
+                            <label for="level-name" class="label-width">
+                                {{ $t('common.name') }}
+                            </label>
+                            <div class="inline-form-control">
+                                <input
+                                    class="form-control w-sm"
+                                    v-model="level.name"
+                                    required
+                                />
                             </div>
                         </div>
-                        <div class="col-xs-6 col-xs-offset-1">
-                            <div class="form-group p-b b-b">
-                                <label for="birthday" class="label-width">{{$t('level.remit_offer')}}</label>
-                                <input type="button" class="btn grey-600 btn-sm pull-right" @click="addDiscounts(level.remit_discounts, 1)" value="新增一组"/>
-                                <div class="row text-muted">
-                                    <label class="col-xs-2">{{$t('level.rate')}}</label>
-                                    <label class="col-xs-2">{{$t('level.threshold')}}</label>
-                                    <label class="col-xs-2">{{$t('level.check_rate')}}</label>
-                                    <label class="col-xs-2">{{$t('level.discount_limit')}}</label>
-                                </div>
-                                <div class="form-group row " v-for="(remit_discount, index) in level.remit_discounts">
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(remit_discount)" class="form-control" v-model="remit_discount.rate">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(remit_discount)" class="form-control" v-model="remit_discount.threshold">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(remit_discount)" class="form-control" v-model="remit_discount.check_rate">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(remit_discount)" placeholder="可留空" class="form-control input-sm" v-model="remit_discount.limit">
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <a class="pull-right" v-if="index > 0"  @click="deleteDiscount(level.remit_discounts, index)">{{$t('action.delete')}}</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label
+                                for="remit-limit"
+                                class="label-width"
+                            >{{ $t('level.remit_limit') }}
+                            </label>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                placeholder="下限或留空"
+                                v-model="level.remit_limit.lower"
+                            />
+                            <span>&nbsp;~&nbsp;</span>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                placeholder="上限或留空"
+                                v-model="level.remit_limit.upper"
+                            />
+                        </div>
 
-                            <div class="form-group m-t-md p-b b-b">
-                                <label for="birthday" class="label-width">{{$t('level.online_pay_offer')}}</label>
-                                <input type="button" class="btn grey-600 btn-sm pull-right" @click="addDiscounts(level.online_discounts, 2)" value="新增一组"/>
-                                <div class="row text-muted">
-                                    <label class="col-xs-2">{{$t('level.rate')}}</label>
-                                    <label class="col-xs-2">{{$t('level.threshold')}}</label>
-                                    <label class="col-xs-2">{{$t('level.check_rate')}}</label>
-                                    <label class="col-xs-2">{{$t('level.discount_limit')}}</label>
+                        <div class="form-group">
+                            <label
+                                for="online-limit"
+                                class="label-width"
+                            >{{ $t('level.online_pay_limit') }}
+                            </label>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                placeholder="下限或留空"
+                                v-model="level.online_limit.lower"
+                            />
+                            <span>&nbsp;~&nbsp;</span>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                placeholder="上限或留空"
+                                v-model="level.online_limit.upper"
+                            />
+                        </div>
+                        <div class="form-group b-b p-b">
+                            <label
+                                for="withdraw-limit"
+                                class="label-width"
+                            >{{ $t('level.withdraw_limit') }}
+                            </label>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                placeholder="下限或留空"
+                                v-model="level.withdraw_limit.lower"
+                            />
+                            <span>&nbsp;~&nbsp;</span>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                placeholder="上限或留空"
+                                v-model="level.withdraw_limit.upper"
+                            />
+                        </div>
+                        <div class="form-group m-t-md b-b">
+                            <label
+                                for="reg-present"
+                                class="label-width"
+                            >{{ $t('level.reg_present') }}
+                            </label>
+                            <div class="row text-muted">
+                                <label class="col-xs-3">{{ $t('level.reg_present_status') }}</label>
+                                <label class="col-xs-3">{{ $t('level.reg_present_amount') }}</label>
+                                <label class="col-xs-3">{{ $t('level.reg_present_check_amount') }}</label>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-xs-3">
+                                    <label class="ui-switch blue m-t-xs m-r">
+                                        <input type="checkbox" v-model="level.reg_present.status">
+                                        <i></i>
+                                    </label>
                                 </div>
-                                <div class="form-group row" v-for="(online_discount, index) in level.online_discounts">
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(online_discount)" v-model="online_discount.rate" class="form-control">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(online_discount)" v-model="online_discount.threshold" class="form-control" >
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(online_discount)" v-model="online_discount.check_rate" class="form-control">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" :required="isRequired(online_discount)" v-model="online_discount.limit" placeholder="可留空" class="form-control input-sm">
-                                    </div>
-                                    <div class="col-xs-4 block">
-                                        <a class="pull-right" v-if="index > 0" @click="deleteDiscount(level.online_discounts, index)">{{$t('action.delete')}}</a>
-                                    </div>
+                                <div class="col-xs-3">
+                                    <input
+                                        type="number"
+                                        class="form-control w-sm"
+                                        v-model="level.reg_present.amount"
+                                    />
+                                </div>
+                                <div class="col-xs-3">
+                                    <input
+                                        type="number"
+                                        class="form-control w-sm"
+                                        v-model="level.reg_present.check_amount"
+                                    />
                                 </div>
                             </div>
-
-                            <div class="form-group m-t-md">
-                                <label for="birthday" class="label-width">{{$t('level.reg_present')}}</label>
-                                <div class="row text-muted">
-                                    <label class="col-xs-2">{{$t('level.reg_present_status')}}</label>
-                                    <label class="col-xs-2">{{$t('level.reg_present_allow_add')}}</label>
-                                    <label class="col-xs-2">{{$t('level.reg_present_amount')}}</label>
-                                    <label class="col-xs-2">{{$t('level.reg_present_check_amount')}}</label>
+                        </div>
+                        <div class="form-group m-t-md">
+                            <label
+                                for="baudit-ratio"
+                                class="label-width"
+                            >{{ $t('level.deposit_audit_ratio') }}</label>
+                            <div class="form-group row">
+                                <div class="col-xs-4">
+                                    <label class="text-muted">{{ $t('bill.remit') }}&nbsp;%</label>
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        v-model="level.deposit_check.remit_pay"
+                                    />
                                 </div>
-                                <div class="form-group row p-b-md b-b">
-                                    <div class="col-xs-2">
-                                        <label class="ui-switch info m-t-xs m-r">
-                                            <input type="checkbox" v-model="level.reg_present.status">
-                                            <i class="grey-200"></i>
-                                        </label>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <label class="ui-switch info m-t-xs m-r">
-                                            <input type="checkbox" v-model="level.reg_present.allow_add">
-                                            <i></i>
-                                        </label>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" class="form-control"  v-model="level.reg_present.amount">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <input type="number" class="form-control input-sm" v-model="level.reg_present.check_amount">
-                                    </div>
+                                <div class="col-xs-4">
+                                    <label class="text-muted">{{ $t('bill.online_pay') }}&nbsp;%</label>
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        v-model="level.deposit_check.online_pay"
+                                    />
                                 </div>
                             </div>
-                            <div class="form-group m-t-md ">
-                                <label for="birthday" class="label-width">{{$t('level.deposit_audit_ratio')}}</label>
-                                <div class="form-group row text-muted">
-                                    <div class="col-xs-3">
-                                        <label >{{$t('bill.remit')}}  %</label>
-                                        <input type="number" class="form-control" v-model="level.deposit_check.remit_pay">
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <label >{{$t('bill.online_pay')}} %</label>
-                                        <input type="number" class="form-control"  v-model="level.deposit_check.online_pay">
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <label >{{$t('bill.card_pay')}} %</label>
-                                        <input type="number" class="form-control"  v-model="level.deposit_check.card_pay">
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-                    <div>
-                        <div class="alert alert-danger" v-show="level.errorMsg">
-                            <span>{{level.errorMsg}}</span>
+                    <div class="col-xs-6 col-xs-offset-1">
+                        <div class="form-group b-b">
+                            <label
+                                for="bremit-offer"
+                                class="label-width"
+                            >{{ $t('level.remit_offer') }}
+                            </label>
+                            <input
+                                type="button"
+                                class="btn grey-600 btn-sm pull-right"
+                                @click="addDiscounts(level.remit_discounts, 1)"
+                                value="新增一组"
+                            />
+                            <div class="row text-muted">
+                                <label class="col-xs-3">{{ $t('level.threshold') }}</label>
+                                <label class="col-xs-2">{{ $t('level.rate') }}&nbsp;%</label>
+                                <label class="col-xs-2">{{ $t('level.check_rate') }}</label>
+                                <label class="col-xs-2">{{ $t('level.discount_limit') }}</label>
+                            </div>
+                            <div
+                                class="form-group row"
+                                :key="index"
+                                v-for="(remit_discount, index) in level.remit_discounts"
+                            >
+                                <div class="col-xs-3 p-r-0">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        v-model="remit_discount.threshold"
+                                        :required="isRequired(remit_discount)"
+                                    />
+                                </div>
+                                <div class="col-xs-2 p-r-0">
+                                    <input
+                                        type="number"
+                                        :required="isRequired(remit_discount)"
+                                        class="form-control"
+                                        v-model="remit_discount.rate"
+                                    >
+                                </div>
+                                <div class="col-xs-2 p-r-0">
+                                    <input
+                                        type="number"
+                                        :required="isRequired(remit_discount)"
+                                        class="form-control"
+                                        v-model="remit_discount.check_rate"
+                                    >
+                                </div>
+                                <div class="col-xs-2 p-r-0">
+                                    <input
+                                        type="number"
+                                        placeholder="可留空"
+                                        class="form-control"
+                                        v-model="remit_discount.limit"
+                                    >
+                                </div>
+                                <div class="col-xs-3">
+                                    <a
+                                        class="pull-right"
+                                        v-if="index > 0"
+                                        @click="deleteDiscount(level.remit_discounts, index)"
+                                    >{{ $t('action.delete') }}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+
+                        <div class="form-group m-t-md b-b">
+                            <label for="birthday" class="label-width">{{ $t('level.online_pay_offer') }}</label>
+                            <input
+                                type="button"
+                                class="btn grey-600 btn-sm pull-right"
+                                @click="addDiscounts(level.online_discounts, 2)"
+                                value="新增一组"
+                            />
+                            <div class="row text-muted">
+                                <label class="col-xs-3">{{ $t('level.threshold') }}</label>
+                                <label class="col-xs-2">{{ $t('level.rate') }}&nbsp;%</label>
+                                <label class="col-xs-2">{{ $t('level.check_rate') }}</label>
+                                <label class="col-xs-2">{{ $t('level.discount_limit') }}</label>
+                            </div>
+                            <div
+                                class="form-group row"
+                                :key="index"
+                                v-for="(online_discount, index) in level.online_discounts"
+                            >
+                                <div class="col-xs-3 p-r-0">
+                                    <input
+                                        type="number"
+                                        :required="isRequired(online_discount)"
+                                        v-model="online_discount.threshold"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="col-xs-2 p-r-0">
+                                    <input
+                                        type="number"
+                                        :required="isRequired(online_discount)"
+                                        v-model="online_discount.rate"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="col-xs-2 p-r-0">
+                                    <input
+                                        type="number"
+                                        :required="isRequired(online_discount)"
+                                        v-model="online_discount.check_rate"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="col-xs-2 p-r-0">
+                                    <input
+                                        type="number"
+                                        v-model="online_discount.limit"
+                                        placeholder="可留空"
+                                        class="form-control"
+                                    />
+                                </div>
+                                <div class="col-xs-3">
+                                    <a
+                                        class="pull-right"
+                                        v-if="index > 0"
+                                        @click="deleteDiscount(level.online_discounts, index)"
+                                    >{{ $t('action.delete') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="memo" class="col-xs-12">{{ $t('common.memo') }}</label>
+                            <div class="col-xs-8 p-r-0">
+                                <textarea
+                                    class="form-control"
+                                    rows="4"
+                                    v-model="level.memo"
+                                >
+                                </textarea>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+                <button type="submit" class="md-btn w-sm blue">
+                    <i class="fa fa-spin fa-spinner" v-if="loading"></i>
+                    <span v-else>{{ $t('common.save') }}</span>
+                </button>
+            </form>
         </div>
     </div>
+</div>
 
 </template>
 <script>
 import api from '../../api'
+import $ from '../../utils/util'
 
 export default {
     data () {
@@ -247,34 +321,18 @@ export default {
                     lower: '',
                     upper: ''
                 },
-                withdraw_fee: {
-                    value: '',
-                    type: '0',
-                    hour: '',
-                    times: ''
-                },
-                field_locales: {
-                    'remit_limit_upper': '公司支付限额有误：',
-                    'online_limit_upper': '线上支付限额有误：',
-                    'withdraw_limit_upper': '单次取款限额有误：',
-                    'service_rate': '行政费用比例：'
-                },
-                errorMsg: '',
                 memo: '',
-                service_rate: '',
                 reg_present: {
                     status: 0,
-                    allow_add: 0,
                     amount: 0,
                     check_amount: 0
                 },
                 deposit_check: {
                     remit_pay: '',
-                    online_pay: '',
-                    card_pay: ''
-                },
-                report_flag: true
-            }
+                    online_pay: ''
+                }
+            },
+            loading: false
         }
     },
     beforeRouteEnter (to, from, next) {
@@ -298,7 +356,7 @@ export default {
         verifyDiscounts (discounts) {
             for (let idx in discounts) {
                 let d = discounts[idx]
-                if (!d.rate && !d.threshold & !d.check_rate & !d.limit) {
+                if (!(d.rate || d.threshold || d.check_rate || d.limit)) {
                     discounts.splice(idx, 1)
                 }
             }
@@ -306,7 +364,7 @@ export default {
         addDiscounts (target, type) {
             if (target.length <= 5) {
                 target.push({
-                    type: type
+                    type
                 })
             }
         },
@@ -314,49 +372,64 @@ export default {
             target.splice(index, 1)
         },
         onSubmit (e) {
+            this.loading = true
+            this.verifyDiscounts(this.level.remit_discounts)
+            this.verifyDiscounts(this.level.online_discounts)
             if (this.level.id) {
-                this.verifyDiscounts(this.level.remit_discounts)
-                this.verifyDiscounts(this.level.online_discounts)
                 this.$http.put(api.level + this.level.id + '/', this.level).then(data => {
                     this.$router.push('/level/' + data.id)
+                    this.notify({
+                        message: this.$t('action.update') + this.$t('status.success')
+                    })
                 }, error => {
-                    this.level.errorMsg = error
+                    this.notify({
+                        message: error,
+                        type: 'danger'
+                    })
                 })
             } else {
-                this.verifyDiscounts(this.level.remit_discounts)
-                this.verifyDiscounts(this.level.online_discounts)
                 this.$http.post(api.level, this.level).then(data => {
                     this.$router.push('/level/' + data.id)
+                    this.notify({
+                        message: this.$t('action.update') + this.$t('status.success')
+                    })
                 }, error => {
-                    this.level.errorMsg = error
+                    this.notify({
+                        message: error,
+                        type: 'danger'
+                    })
                 })
             }
         },
         getLevel (id) {
+            this.loading = true
             this.$http.get(api.level + id + '/').then(data => {
                 let onlineDiscounts = data.online_discounts
-                if (onlineDiscounts.length === 0) {
+                if (!onlineDiscounts.length) {
                     data.online_discounts = [{
                         type: 2
                     }]
                 }
 
-                let regPresent = data.reg_present
-                if (regPresent === null) {
-                    data.reg_present = this.level.reg_present
-                }
-
                 let remitDiscounts = data.remit_discounts
-                if (remitDiscounts.length === 0) {
+                if (!remitDiscounts.length) {
                     data.remit_discounts = [{
                         type: 1
                     }]
                 }
-                for (let e in data) {
-                    if (!data[e]) delete data[e]
+                for (let key in data) {
+                    if (!data[key]) delete data[key]
                 }
                 this.level = Object.assign(this.level, data)
+                this.loading = false
             })
+        },
+        notify ({message, type = 'success'}, loading = false) {
+            $.notify({
+                message,
+                type
+            })
+            this.loading = loading
         }
     }
 }
