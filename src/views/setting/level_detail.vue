@@ -135,7 +135,7 @@
                         <tbody>
                             <tr >
                                 <td>
-                                    <span class="label success" v-if="reg_present.status === 1">{{ $t('status.active') }}</span>
+                                    <span class="label success" v-if="reg_present.status == 1">{{ $t('status.active') }}</span>
                                     <span class="label danger" v-else>{{ $t('status.disabled') }}</span>
                                 </td>
                                 <td>{{ reg_present.amount }}</td>
