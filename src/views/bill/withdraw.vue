@@ -18,6 +18,7 @@
                         <option value="1">{{ $t('status.success') }}</option>
                         <option value="2">{{ $t('status.failed') }}</option>
                         <option value="3">{{ $t('status.ongoing') }}</option>
+                        <option value="6">{{ $t('status.payment_pending') }}</option>
                         <option value="4">{{ $t('status.cancelled') }}</option>
                         <option value="5">{{ $t('status.declined') }}</option>
                     </select>

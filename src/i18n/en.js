@@ -238,7 +238,10 @@ export default {
         view_all_orders: 'View All Transactions',
         fee: 'Fee',
         discount_deduction: 'Discount Deduction',
-        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作'
+        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作',
+        withdraw_audit_alert_msg: '确认此笔取款交易申请要直接审核通过吗？',
+        withdraw_payee: '代付打款',
+        deposit_info: 'Deposit Info'
     },
     common: {
         default_agent_password: 'Default Agent Password',
@@ -396,7 +399,8 @@ export default {
         success: 'Success',
         cancelled: 'Cancelled',
         failed: 'Failed',
-        disabled: 'Disabled'
+        disabled: 'Disabled',
+        payment_pending: 'Pending'
     },
     betrecord: {
         win: 'Win',

@@ -238,7 +238,10 @@ export default {
         view_all_orders: '查看会员所有订单',
         fee: '手续费',
         discount_deduction: '优惠扣除',
-        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作'
+        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作',
+        withdraw_audit_alert_msg: '确认此笔取款交易申请要直接审核通过吗？',
+        withdraw_payee: '代付打款',
+        deposit_info: '入款方资讯'
     },
     common: {
         default_agent_password: '代理商登录密码预设',
@@ -396,7 +399,8 @@ export default {
         success: '成功',
         cancelled: '已取消',
         failed: '失败',
-        disabled: '停用'
+        disabled: '停用',
+        payment_pending: '处理中'
     },
     betrecord: {
         win: '赢',
