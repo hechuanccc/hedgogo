@@ -89,12 +89,12 @@
                             >{{ $t('level.reg_present') }}
                             </label>
                             <div class="row text-muted">
-                                <label class="col-xs-3">{{ $t('level.reg_present_status') }}</label>
+                                <label class="col-xs-2">{{ $t('level.reg_present_status') }}</label>
                                 <label class="col-xs-3">{{ $t('level.reg_present_amount') }}</label>
                                 <label class="col-xs-3">{{ $t('level.reg_present_check_amount') }}</label>
                             </div>
                             <div class="form-group row">
-                                <div class="col-xs-3">
+                                <div class="col-xs-2">
                                     <label class="ui-switch blue m-t-xs m-r">
                                         <input type="checkbox" v-model="level.reg_present.status">
                                         <i></i>
