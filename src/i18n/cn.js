@@ -23,6 +23,7 @@ export default {
         setting_return: '反水设定',
         setting_commission: '佣金设定',
         setting_online_payee: '支付商户管理',
+        setting_online_payer: '代付商户管理',
         member_detail: '会员详情',
         edit_member: '编辑会员资料',
         agent_detail: '代理商详情',
@@ -66,6 +67,8 @@ export default {
         setting_commission_edit: '修改佣金设定',
         online_payee_detail: '支付商户',
         online_payee_detail_edit: '支付商户修改',
+        online_payer_detail: '代付商户',
+        online_payer_detail_edit: '代付商户修改',
         payment_type_setting_detail: '支付方式管理',
         bet_record_detail: '投注记录详情',
         add_message: '新增站内信',
@@ -189,7 +192,8 @@ export default {
         deposit_member_count: '存款会员人数',
         bet_member_count: '下注会员人数',
         trial_member_count: '试玩会员人数',
-        visitor: '游客'
+        visitor: '游客',
+        username_form_validation_msg: '{digit}位英数字'
     },
     bill: {
         commission_report: '佣金计算',
@@ -238,7 +242,10 @@ export default {
         view_all_orders: '查看会员所有订单',
         fee: '手续费',
         discount_deduction: '优惠扣除',
-        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作'
+        dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作',
+        withdraw_audit_alert_msg: '确认此笔取款交易申请要直接审核通过吗？',
+        withdraw_payee: '代付打款',
+        deposit_info: '入款方资讯'
     },
     common: {
         default_agent_password: '代理商登录密码预设',
@@ -396,7 +403,8 @@ export default {
         success: '成功',
         cancelled: '已取消',
         failed: '失败',
-        disabled: '停用'
+        disabled: '停用',
+        payment_pending: '处理中'
     },
     betrecord: {
         win: '赢',
@@ -717,6 +725,7 @@ export default {
         payment_domain: '支付域名',
         payee: '支付商户',
         create_online_payee: '新增支付商户',
+        create_online_payer: '新增代付商户',
         staff_info: '子帐号信息',
         display_name: '显示名称',
         paymenttype: '支付方式管理',
@@ -748,6 +757,16 @@ export default {
         com_group_threshold: '派彩',
         com_discount_rate: '优惠',
         valid_member: '有效会员'
+    },
+    online_payer: {
+        name: '代付商戶',
+        withdraw_gateway: '网关类型',
+        merchant_num: '商户号',
+        certificate: '密钥',
+        public_key: '公钥',
+        private_key: '私钥',
+        board_url: '跳板地址',
+        sum_fund: '目前累计'
     },
     report: {
         number_login: '序号',

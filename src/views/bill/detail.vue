@@ -2,9 +2,7 @@
     <div>
       <div class="m-b">
           <ol class="breadcrumb">
-              <li v-if="transaction.transaction_type.code ==='remit'" class="active"><router-link :to="'/bill/remit'">{{transaction.transaction_type.display_name}}</router-link></li>
-              <li v-if="transaction.transaction_type.code ==='online_pay'" class="active"><router-link :to="'/bill/online'">{{transaction.transaction_type.display_name}}</router-link></li>
-              <li v-if="transaction.transaction_type.code ==='withdraw'" class="active"><router-link :to="'/bill/withdraw'">{{transaction.transaction_type.display_name}}</router-link></li>
+              <li v-if="transactionPage.includes(transaction.transaction_type.code)" class="active"><router-link :to="`/bill/${transaction.transaction_type.code}`">{{transaction.transaction_type.display_name}}</router-link></li>
               <li class="active">{{transaction.transaction_type.display_name}}</li>
           </ol>
       </div>
@@ -75,7 +73,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-3 text-right text-muted">{{$t('bank.name')}}</div>
-                                    <div class="col-xs-9 ">{{transaction.member.bank.bank.name}} &nbsp;</div>
+                                    <div class="col-xs-9 ">{{transaction.member.bank.name}} &nbsp;</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-3 text-right text-muted">{{$t('bank.province')}}</div>
@@ -162,10 +160,16 @@
                                 <span v-if="!transaction.related && transaction.transaction_type.code === 'online_pay' && transaction.payment_type">
                                     来自{{ transaction.payment_type }}
                                 </span>
-                                <span v-else-if="!transaction.related && transaction.transaction_type.code !== 'manual_operation'">
+                                <span v-else-if="!transaction.related && transaction.transaction_type.code !== 'manual_operation' && transaction.transaction_type.code !== 'withdraw'">
                                     来自手工存提
                                 </span>
                             </span>
+                        </div>
+                    </div>
+                    <div class="row m-t" v-if="transaction.online_payer && transaction.online_payer.name">
+                        <div class="col-xs-3 text-right">代付商户</div>
+                        <div class="col-xs-8 text-muted">
+                            {{ transaction.online_payer.name }}
                         </div>
                     </div>
                 </div>
@@ -257,11 +261,38 @@
                         {{$t('bill.withdraw_declined')}}
                     </div>
                     <div v-if="transaction.status === 3">
-                        <button class="btn md-btn w-sm blue m-r" @click="update('withdraw', 1, true, $event)" v-if="$root.permissions.includes('allow_withdraw_transaction')">{{$t('bill.audit')}}</button>
+                        <button
+                            class="btn md-btn w-sm blue m-r-sm"
+                            @click="withdrawPayeeModalShow = true"
+                            v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                        >代付打款
+                        </button>
+                        <button
+                            class="btn md-btn w-sm blue m-r-sm"
+                            @click="update('withdraw', 1, true, $event)"
+                            v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                        >{{$t('bill.audit')}}
+                        </button>
                         <template v-if="$root.permissions.includes('refuse_withdraw_transaction')">
-                            <button class="btn md-btn m-r" @click="update('withdraw', 4, true, $event)">{{$t('bill.cancel')}}</button>
+                            <button class="btn md-btn m-r-sm" @click="update('withdraw', 4, true, $event)">{{$t('bill.cancel')}}</button>
                             <button class="btn md-btn" @click="update('withdraw', 5, true, $event)">{{$t('bill.declined')}}</button>
                         </template>
+                    </div>
+                    <div v-if="transaction.status === 6">
+                        <button
+                            class="btn md-btn w-sm blue m-r-sm"
+                            @click="withdrawCheckOrder(transaction.id)"
+                            v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                        >
+                            <span v-if="!loading">{{$t('bill.manual_confirm')}}</span>
+                            <i class="fa fa-spin fa-spinner" v-else></i>
+                        </button>
+                        <button
+                            class="btn md-btn w-sm blue"
+                            @click="update('withdraw', 1, true, $event)"
+                            v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                        >{{$t('bill.audit')}}
+                        </button>
                     </div>
                 </div>
                 <div v-if="transaction.transaction_type.code ==='manual_operation'" class="t-green">
@@ -274,105 +305,149 @@
             </div>
         </div>
     </div>
-    </div>
+    <withdraw-payee-modal
+        :show="withdrawPayeeModalShow"
+        :transaction="transaction"
+        @withdraw-payee-showmodal="changeWithdrawPayeeModal"
+        @withdraw-payee-status="withdrawPayeeStatus"
+    />
+</div>
 </template>
 <script>
-    import api from '../../api'
-    import transactionStatus from '../../components/transaction_status'
-    export default {
-        data () {
-            return {
-                errorMsg: '',
-                transaction: {
-                    member: {
-                        level: {},
-                        bank: {
-                            bank: {}
-                        },
-                        agent: {
-                            username: ''
-                        }
+import api from '../../api'
+import $ from '../../utils/util'
+import transactionStatus from '../../components/transaction_status'
+import withdrawPayeeModal from '../../components/withdrawPayeeModal'
+
+export default {
+    data () {
+        return {
+            transactionPage: [
+                'remit',
+                'online_pay',
+                'withdraw'
+            ],
+            errorMsg: '',
+            transaction: {
+                member: {
+                    level: {},
+                    bank: {
+                        bank: {}
                     },
-                    memo: '',
-                    transaction_type: {},
-                    online_payee: {},
-                    remit_info: {
-                        online_payee: {}
+                    agent: {
+                        username: ''
                     }
                 },
-                loading: false
-            }
-        },
-        watch: {
-            '$route.params.id' (newObj) {
-                this.getTransaction(newObj)
-            }
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                let id = to.params.id
-                if (id) {
-                    vm.getTransaction(id)
-                }
-            })
-        },
-        methods: {
-            update (type, status, confirm, event) {
-                // type remit, onlinepay, withdraw
-                if (confirm) {
-                    if (!window.confirm(this.$t('bill.confirm_declined', {
-                        action: event.target.innerText
-                    }) + ((this.transaction.online_payee && !this.transaction.online_payee.check_order)
-                        ? ` ${this.$t('bill.dongfangkf_alert_msg')}`
-                        : ''
-                    ))) {
-                        return
-                    }
-                }
-
-                let url
-                let routerLink
-                if (type === 'remit') {
-                    url = api.bill
-                    routerLink = '/bill/remit'
-                } else if (type === 'onlinepay') {
-                    this.loading = true
-                    url = api.transaction_onlinepay
-                } else {
-                    url = api.transaction_withdraw
-                    routerLink = '/bill/withdraw?status=3'
-                    this.member = this.transaction.member.id
-                    this.transactiontype = parseInt(this.transaction.transaction_type.id)
-                }
-
-                if (this.transaction.id) {
-                    this.$http.put(url + this.transaction.id + '/', {
-                        status: status,
-                        memo: this.transaction.memo,
-                        member: this.member,
-                        transaction_type: this.transactiontype
-                    }).then(data => {
-                        this.transaction.status = data.status
-                        this.loading = false
-                        if (routerLink) {
-                            this.$router.go(routerLink)
-                        }
-                    }, error => {
-                        this.loading = false
-                        this.errorMsg = error
-                    })
+                memo: '',
+                transaction_type: {},
+                online_payee: {},
+                remit_info: {
+                    online_payee: {}
                 }
             },
-            getTransaction (id) {
-                this.$http.get(api.bill + id + '/?opt_expand=bank,updated_by').then(data => {
-                    this.transaction = data
+            withdrawPayeeModalShow: false,
+            loading: false
+        }
+    },
+    watch: {
+        '$route.params.id' (newObj) {
+            this.getTransaction(newObj)
+        }
+    },
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            let id = to.params.id
+            if (id) {
+                vm.getTransaction(id)
+            }
+        })
+    },
+    methods: {
+        update (type, status, confirm, event) {
+            // type remit, onlinepay, withdraw
+            if (confirm && type === 'withdraw' && status === 1) {
+                if (!window.confirm(this.$t('bill.withdraw_audit_alert_msg'))) {
+                    return
+                }
+            } else if (confirm) {
+                if (!window.confirm(this.$t('bill.confirm_declined', {
+                    action: event.target.innerText
+                }) + ((this.transaction.online_payee && !this.transaction.online_payee.check_order)
+                    ? ` ${this.$t('bill.dongfangkf_alert_msg')}`
+                    : ''
+                ))) {
+                    return
+                }
+            }
+
+            let url
+            let routerLink
+            if (type === 'remit') {
+                url = api.bill
+                routerLink = '/bill/remit'
+            } else if (type === 'onlinepay') {
+                this.loading = true
+                url = api.transaction_onlinepay
+            } else {
+                url = api.transaction_withdraw
+                routerLink = '/bill/withdraw?status=3'
+                this.member = this.transaction.member.id
+                this.transactiontype = parseInt(this.transaction.transaction_type.id)
+            }
+
+            if (this.transaction.id) {
+                this.$http.put(url + this.transaction.id + '/', {
+                    status: status,
+                    memo: this.transaction.memo,
+                    member: this.member,
+                    transaction_type: this.transactiontype
+                }).then(data => {
+                    this.transaction.status = data.status
+                    this.loading = false
+                    if (routerLink) {
+                        this.$router.go(routerLink)
+                    }
+                }, error => {
+                    this.loading = false
+                    this.errorMsg = error
                 })
             }
         },
-        components: {
-            transactionStatus
+        withdrawCheckOrder (id) {
+            if (id) {
+                this.loading = true
+                this.$http.put(api.transaction_withdraw + id + '/refresh/').then(data => {
+                    this.loading = false
+                    this.transaction = data
+                    $.notify({
+                        message: this.$t('bill.manual_confirm') + this.$t('status.success')
+                    })
+                }, error => {
+                    this.loading = false
+                    this.errorMsg = error
+                })
+            }
+        },
+        getTransaction (id) {
+            this.$http.get(api.bill + id + '/?opt_expand=bank,updated_by').then(data => {
+                this.transaction = data
+            })
+        },
+        changeWithdrawPayeeModal (val) {
+            this.withdrawPayeeModalShow = val
+        },
+        withdrawPayeeStatus (val) {
+            if (val) {
+                this.withdrawPayeeModalShow = false
+                this.getTransaction(this.transaction.id)
+            }
         }
+    },
+    components: {
+        transactionStatus,
+        withdrawPayeeModal
     }
+}
 </script>
 
 <style scoped>

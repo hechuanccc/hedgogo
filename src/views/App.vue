@@ -112,10 +112,10 @@ export default {
                     this.userType = data.type
                     this.getPermissions()
                 } else {
-                    this.$router.push('/login?next=' + this.$route.fullPath)
+                    this.toLoginPage()
                 }
             }, () => {
-                this.$router.push('/login?next=' + this.$route.fullPath)
+                this.toLoginPage()
             })
         },
         refresh () {
@@ -142,6 +142,18 @@ export default {
                 // this.setUpAuth()
                 this.setUpRouterHooks()
             })
+        },
+        toLoginPage () {
+            if (this.$route.name !== 'login') {
+                this.$cookie.delete('access_token')
+                this.$cookie.delete('refresh_token')
+                this.$router.push({
+                    path: '/login',
+                    query: {
+                        next: this.$route.name !== 'error' ? encodeURIComponent(this.$route.fullPath) : ''
+                    }
+                })
+            }
         }
     },
     components: {

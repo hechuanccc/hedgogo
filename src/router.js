@@ -544,6 +544,51 @@ export default new Router({
             permission: 'update_online_payee'
         }
     },
+
+    {
+        path: '/online_payer',
+        component: function (resolve) {
+            require(['./views/setting/online_payer.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.setting_online_payer')
+        }
+    },
+    {
+        path: '/online_payer/add',
+        component: function (resolve) {
+            require(['./views/setting/online_payer_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('setting.create_online_payer'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payer/:online_payerId',
+        component: function (resolve) {
+            require(['./views/setting/online_payer_detail.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.online_payer_detail'),
+            auth: true
+        }
+    },
+    {
+        path: '/online_payer/:online_payerId/edit',
+        component: function (resolve) {
+            require(['./views/setting/online_payer_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.online_payer_detail_edit'),
+            auth: true
+        }
+    },
     {
         path: '/paymenttype',
         component: function (resolve) {
