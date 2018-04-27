@@ -7,12 +7,12 @@
         </ol>
       </div>
       <div class="box">
-        <div class="box-header b-b ">
+        <div class="box-header b-b" v-if="!$route.params.memberId">
           <h3>{{$t('common.attention')}}：</h3>
           <small>{{$t('common.default_password')}} ：123456, {{$t('common.default_withdraw_password')}} ：123456。</small>
         </div>
         <div class="box-body">
-          <form class="form m-a" v-on:submit.prevent="onSubmit">
+          <form class="form m-a" @submit.prevent="onSubmit">
             <div class="row b-b p-b m-b">
               <div class="col-md-4">
                 <div class="form-group">
@@ -21,8 +21,12 @@
                     <input
                       class="form-control"
                       name="account"
-                      :placeholder="member.id!='' ? '':'用户名, 必填'"
+                      placeholder="用户名, 必填"
                       v-model="member.username"
+                      pattern="[A-Za-z\d]{6,15}"
+                      :title="$t('member.username_form_validation_msg', {
+                        digit: '6~15'
+                      })"
                       :disabled="member.id!=''"
                       required/>
                   </div>
