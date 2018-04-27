@@ -372,8 +372,6 @@
                 this.$http.get(api.member + id + '/?opt_expand=bank&action').then(data => {
                     this.member = data
                     this.member_id = {'account_id': data.id}
-                }, () => {
-                    this.$router.push('/login?next=' + this.$route.fullPath)
                 })
             },
             changeAudit () {

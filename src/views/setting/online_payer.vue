@@ -9,7 +9,7 @@
             </router-link>
         </div>
         <div class="box">
-            <table st-table="rowCollectionBasic" class="table table-striped">
+            <table st-table="rowCollectionBasic" class="table table-striped" v-if="!loading">
                 <thead>
                     <tr>
                         <th>{{ $t('common.name') }}</th>
@@ -30,6 +30,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="row" v-else>
+                <div class="text-center p-a">
+                    <i class="fa fa-spin fa-spinner"></i> <b>{{ $t('common.loading') }}...</b>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -39,7 +44,8 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            onlinePayers: []
+            onlinePayers: [],
+            loading: true
         }
     },
     created () {
@@ -65,6 +71,7 @@ export default {
         getPayers () {
             this.$http.get(api.online_payer).then(data => {
                 this.onlinePayers = data
+                this.loading = false
             })
         }
     }
