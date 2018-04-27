@@ -152,6 +152,29 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': platform}"
+                                    style="display: block;"
+                                >{{ $t('manage.platform') }}
+                                </label>
+                                <label class="sm-check m-r m-t-sm m-l">
+                                    <input class="c-radio" type="radio" value="" v-model="platform">
+                                    <i class="blue m-r-xs"></i>
+                                    {{ $t('common.show_all') }}
+                                </label>
+                                <label class="sm-check m-r">
+                                    <input class="c-radio" type="radio" value="pc" v-model="platform">
+                                    <i class="blue m-r-xs"></i>
+                                    <span>{{ $t('manage.pc') }}</span>
+                                </label>
+                                <label class="sm-check m-r">
+                                    <input class="c-radio" type="radio" value="mobile" v-model="platform">
+                                    <i class="blue m-r-xs"></i>
+                                    <span>{{ $t('manage.mobile') }}</span>
+                                </label>
+                            </div>
                             <button
                                 class="md-btn w-xs pull-right btn m-t-md"
                                 type="button"
@@ -258,6 +281,29 @@
                                         <option value="30000">{{ $t('betrecord.thirty_seconds') }}</option>
                                         <option value="60000">{{ $t('betrecord.sixty_seconds') }}</option>
                                     </select>
+                                </div>
+                                <div class="pull-left m-r-xs">
+                                    <label
+                                        class="form-control-label p-b-0"
+                                        :class="{'text-blue': platform}"
+                                        style="display: block;"
+                                    >{{ $t('manage.platform') }}
+                                    </label>
+                                    <label class="sm-check m-r m-t-sm m-l">
+                                        <input class="c-radio" type="radio" value="" v-model="platform">
+                                        <i class="blue m-r-xs"></i>
+                                        {{ $t('common.show_all') }}
+                                    </label>
+                                    <label class="sm-check m-r">
+                                        <input class="c-radio" type="radio" value="pc" v-model="platform">
+                                        <i class="blue m-r-xs"></i>
+                                        <span>{{ $t('manage.pc') }}</span>
+                                    </label>
+                                    <label class="sm-check m-r">
+                                        <input class="c-radio" type="radio" value="mobile" v-model="platform">
+                                        <i class="blue m-r-xs"></i>
+                                        <span>{{ $t('manage.mobile') }}</span>
+                                    </label>
                                 </div>
                                 <button
                                     class="md-btn w-xs pull-right btn m-t-md"
@@ -423,6 +469,7 @@
                 query: {},
                 account_type: true,
                 status: '',
+                platform: '',
                 created_at: ['', ''],
                 period: '',
                 game: '',
@@ -471,6 +518,10 @@
             },
             game_category (newObj) {
                 this.query.category = newObj || ''
+                this.submit()
+            },
+            platform (newObj) {
+                this.query.platform = newObj || ''
                 this.submit()
             },
             filter_game (newObj) {
@@ -551,35 +602,37 @@
                 }
             },
             getPageAccessed () {
+                let query = this.$route.query
+                this.platform = query.platform || ''
                 if (this.$route.path === '/report/betrecord/today') {
                     this.extra = `report_flag=true&account_type=1&created_at_0=${this.today}&created_at_1=${this.today}`
-                    this.game = this.$route.query.game_q || ''
-                    this.game_category = this.$route.query.category || ''
-                    this.status = this.$route.query.status || ''
+                    this.game = query.game_q || ''
+                    this.game_category = query.category || ''
+                    this.status = query.status || ''
                     this.pageSelected = 'today'
                 } else if (this.$route.path === '/report/betrecord/history') {
-                    if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
-                        this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
+                    if (query.created_at_0 || query.created_at_1) {
+                        this.created_at = [query.created_at_0, query.created_at_1]
                     } else {
                         this.created_at = [undefined, undefined]
                     }
                     this.extra = `report_flag=true&account_type=1&created_at_1=${this.yesterday}`
-                    this.game = this.$route.query.game_q || ''
-                    this.game_category = this.$route.query.category || ''
-                    this.status = this.$route.query.status || ''
+                    this.game = query.game_q || ''
+                    this.game_category = query.category || ''
+                    this.status = query.status || ''
                     this.pageSelected = 'history'
                 } else if (this.$route.path === '/report/betrecord/realtime') {
-                    if (this.$route.query.game_q) {
-                        this.filter_game = this.$route.query.game_q.split(',')
+                    if (query.game_q) {
+                        this.filter_game = query.game_q.split(',')
                     } else {
                         this.filter_game = []
                     }
                     this.extra = `report_flag=true&created_at_0=${this.today}&created_at_1=${this.today}`
-                    this.account_type = (this.$route.query.account_type === '1') || undefined
+                    this.account_type = (query.account_type === '1') || undefined
                     this.period = 10 * 1000
                     this.pageSelected = 'realtime'
                 }
-                this.query = Object.assign({}, this.$route.query)
+                this.query = Object.assign({}, query)
             },
             deselectall () {
                 this.filter_game = []
