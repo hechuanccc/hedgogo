@@ -17,6 +17,7 @@ export default {
     report_transaction: managePrefix + 'report/transaction/',
     report_onlinepay: managePrefix + 'report/online_pay/',
     transactiontype: managePrefix + 'transaction_type/',
+    online_payer: managePrefix + 'onlinepayer/',
     returnrate: prefix + 'report/returnrate/',
     envelope_settings: managePrefix + 'envelope/settings/',
     envelope: managePrefix + 'envelope/',
