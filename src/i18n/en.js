@@ -192,7 +192,8 @@ export default {
         deposit_member_count: 'Num. of Member Deposit per day',
         bet_member_count: 'Num. of Member bet per day',
         trial_member_count: 'Num. of Trial Member per day',
-        visitor: 'Visitor'
+        visitor: 'Visitor',
+        username_form_validation_msg: '{digit} letters or numbers.'
     },
     bill: {
         commission_report: 'Commission Report',
