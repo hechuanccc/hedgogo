@@ -23,6 +23,7 @@ export default {
         setting_return: 'Return Setting',
         setting_commission: 'Commission Setting',
         setting_online_payee: 'Online Payee',
+        setting_online_payer: 'Online Payer',
         member_detail: 'Member Detail',
         edit_member: 'Edit Member',
         agent_detail: 'Agent Detail',
@@ -66,6 +67,8 @@ export default {
         setting_commission_edit: 'Edit Commission Setting',
         online_payee_detail: 'Online Payee Detail',
         online_payee_detail_edit: 'Edit Online Payee Detail',
+        online_payer_detail: 'Online Payer Detail',
+        online_payer_detail_edit: 'Edit Online Payer Detail',
         payment_type_setting_detail: 'Payment Type Setting Detail',
         bet_record_detail: 'Bet Record Details',
         add_message: 'Add Message',
@@ -721,6 +724,7 @@ export default {
         board_url: 'Board URL',
         payment_domain: 'Payment Domain',
         create_online_payee: 'Create Online Payee',
+        create_online_payer: 'Create Online Payer',
         payee: 'Payee',
         staff_info: 'Staff Info',
         display_name: 'Display Name',
@@ -753,6 +757,16 @@ export default {
         com_group_threshold: 'Group Threshold',
         com_discount_rate: 'Discount Rate',
         valid_member: 'Valid Member'
+    },
+    online_payer: {
+        name: 'Online Payer',
+        withdraw_gateway: 'Withdraw Gateway',
+        merchant_num: 'Merchant Num.',
+        certificate: 'Certification',
+        public_key: 'Public Key',
+        private_key: 'Private Key',
+        board_url: 'Board URL',
+        sum_fund: 'Sum Fund.'
     },
     report: {
         number_login: 'No.',

@@ -55,6 +55,7 @@ export default {
     paymenttype: managePrefix + 'paymenttype/',
     remitpayee: managePrefix + 'remitpayee/',
     paymentgateway: managePrefix + 'paymentgateway/',
+    withdrawgateway: managePrefix + 'withdrawgateway/',
     loginrecord: managePrefix + 'loginrecord/',
     action_record: managePrefix + 'actionrecord/',
     banner: managePrefix + 'banner/',
