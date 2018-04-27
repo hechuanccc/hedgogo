@@ -73,7 +73,7 @@ export default {
     },
     methods: {
         getRole (id) {
-            this.$http.get(api.managerole + id + '?opt_expand=group,permissions').then(data => {
+            this.$http.get(api.managerole + id + '/?opt_expand=group,permissions').then(data => {
                 this.role = data
             })
         },

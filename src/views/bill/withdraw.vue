@@ -178,7 +178,8 @@
                     <th class="text-center">{{ $t('common.amount') }}</th>
                     <th width="11%" class="text-center">{{ $t('common.status_updated_at') }}</th>
                     <th>{{ $t('bank.bank_title') }}</th>
-                    <th width="5%" class="text-center">{{ $t('common.status') }}</th>
+                    <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
+                    <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.order_detail') }}</th>
                 </tr>
             </thead>
@@ -201,6 +202,10 @@
                         <p class="m-b-xs">{{ `${$t('bank.name')}: ${t.member.bank.name}` }}</p>
                         <p class="m-b-xs">{{ `${$t('bank.account')}: ${t.member.bank.account}` }}</p>
                         <p class="m-b-0">{{ `${$t('bank.address')}: ${t.member.bank.city}, ${t.member.bank.province}` }}</p>
+                    </td>
+                    <td class="text-center">
+                        <span v-if="t.audit_status" class="t-green">{{ $t('member.pass') }}</span>
+                        <span v-else class="t-red">{{ $t('member.failed') }}</span>
                     </td>
                     <td class="text-center">
                         <transaction-status :transaction="t"></transaction-status>
