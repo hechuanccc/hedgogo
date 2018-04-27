@@ -62,6 +62,7 @@ axios.interceptors.response.use(response => {
             status: (error.response && error.response.status) || ''
         }
     })
+    return Promise.reject(error)
 })
 
 let navLang = navigator.language || navigator.userLanguage

@@ -60,6 +60,7 @@
                     <button
                         class="btn blue p-x-md w-xs"
                         @click="update"
+                        :disabled="!payer"
                     >
                         <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
                         <span v-else>{{ $t('action.confirm') }}</span>

@@ -35,7 +35,7 @@
             <div class="row m-t" v-if="betrecords.game">
               <div class="col-xs-3 text-right">{{$t('common.game')}}</div>
               <div class="col-xs-8">
-                <span class="text-muted">{{betrecords.game.display_name}}&nbsp;{{betrecords.game_schedule}}期</span>
+                <span class="text-muted">{{betrecords.game.display_name}}&nbsp;{{betrecords.issue_number}}期</span>
               </div>
             </div>
 
