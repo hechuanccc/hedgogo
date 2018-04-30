@@ -383,7 +383,9 @@ export default {
         time: '时间',
         plan_robot: '计划机器人',
         on_time: '上线时间',
-        off_time: '下线时间'
+        off_time: '下线时间',
+        required: '必填',
+        not_required: '非必填'
     },
     bank: {
         bank_title: '银行资讯',

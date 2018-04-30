@@ -383,7 +383,9 @@ export default {
         time: 'Time',
         plan_robot: 'Plan Robot',
         on_time: 'On Time',
-        off_time: 'Off Time'
+        off_time: 'Off Time',
+        required: 'Required',
+        not_required: 'Not Required'
     },
     bank: {
         bank_title: 'Bank Information',
