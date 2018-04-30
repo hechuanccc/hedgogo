@@ -4,10 +4,6 @@
             <div class="pull-left" v-if="$root.permissions.includes('add_promotion_activity')">
                 <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('promotion.add')}}</router-link>
             </div>
-            <div class="pull-center m-t-sm">
-                <span class="alert alert-success text-success m-r p-a-sm" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
-                <span class="alert alert-danger text-danger m-r p-a-sm" v-if="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
-            </div>
             <div class="pull-right">
                 <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
                 <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
@@ -30,10 +26,10 @@
                         <td v-show="!mode" class="v-m text-center"><i class="fa fa-reorder text-blue"></i></td>
                         <td><router-link :to="'/promotion/' + promotion.id">{{promotion.name}}</router-link></td>
                         <td>
-                            <router-link class="m-r" v-for="pl in promotion.level" :to="'/level/' + pl.id">{{pl.name}}</router-link>
+                            <router-link class="m-r" v-for="pl in promotion.level" :to="'/level/' + pl.id" :key="pl.id">{{pl.name}}</router-link>
                         </td>
-                        <td>{{promotion.start_date}}</td>
-                        <td>{{promotion.end_date}}</td>
+                        <td>{{promotion.start_date || '-'}}</td>
+                        <td>{{promotion.end_date || '-'}}</td>
                         <td>
                             <span class="label success" v-if="promotion.status==1">{{$t('status.active')}}</span>
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
@@ -45,57 +41,57 @@
     </div>
 </template>
 <script>
-    import api from '../../../api'
-    import draggable from 'vuedraggable'
+import api from '../../../api'
+import draggable from 'vuedraggable'
+import $ from '../../../utils/util'
 
-    export default {
-        data () {
-            return {
-                mode: true,
-                api: api.promotion,
-                queryset: [],
-                successMsg: '',
-                errorMsg: ''
-            }
-        },
-        created () {
-            this.getPromotions()
-        },
-        methods: {
-            getPromotions () {
-                this.$http.get(this.api + '?opt_expand=level').then(data => {
-                    this.queryset = data.sort((a, b) => a.rank - b.rank)
-                })
-            },
-            changeMode () {
-                if (!this.mode) {
-                    this.$http.post(`${this.api}rank/?opt_expand=level`, this.queryset.map((element, index) => Object({
-                        id: element.id,
-                        rank: index + 1
-                    }))).then(data => {
-                        this.queryset.forEach((element, index) => {
-                            element.rank = index + 1
-                        })
-                        this.successMsg = this.$t('status.success')
-                        this.mode = true
-                        setTimeout(() => {
-                            this.successMsg = ''
-                        }, 3000)
-                    }, error => {
-                        this.errorMsg = `${this.$t('status.failed')} (${error})`
-                    })
-                } else {
-                    this.mode = false
-                }
-            },
-            cancelAdjustRank () {
-                this.getPromotions()
-                this.mode = !this.mode
-            }
-        },
-        components: {
-            draggable
+export default {
+    data () {
+        return {
+            mode: true,
+            api: api.promotion,
+            queryset: []
         }
+    },
+    created () {
+        this.getPromotions()
+    },
+    methods: {
+        getPromotions () {
+            this.$http.get(this.api + '?opt_expand=level').then(data => {
+                this.queryset = data.sort((a, b) => a.rank - b.rank)
+            })
+        },
+        changeMode () {
+            if (!this.mode) {
+                this.$http.post(`${this.api}rank/?opt_expand=level`, this.queryset.map((element, index) => Object({
+                    id: element.id,
+                    rank: index + 1
+                }))).then(data => {
+                    this.queryset.forEach((element, index) => {
+                        element.rank = index + 1
+                    })
+                    this.mode = true
+                    $.notify({
+                        message: this.$t('game_manage.adjust_rank') + this.$t('status.success')
+                    })
+                }, error => {
+                    $.notify({
+                        message: error,
+                        type: 'danger'
+                    })
+                })
+            } else {
+                this.mode = false
+            }
+        },
+        cancelAdjustRank () {
+            this.queryset.sort((a, b) => a.rank - b.rank)
+            this.mode = !this.mode
+        }
+    },
+    components: {
+        draggable
     }
-
+}
 </script>

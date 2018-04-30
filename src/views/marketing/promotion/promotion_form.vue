@@ -105,11 +105,20 @@
                             <div class="form-group">
                                 <label class="label-width">{{ $t('promotion.availability') }}</label>
                                 <date-picker
-                                    v-model="date"
+                                    v-model="promotion.start_date"
                                     type="date"
                                     format="yyyy-MM-dd"
-                                    ref="date"
-                                    range
+                                    ref="start_date"
+                                    :placeholder="$t('promotion.start_date')"
+                                    :not-before="today"
+                                />
+                                &nbsp;~&nbsp;
+                                <date-picker
+                                    v-model="promotion.end_date"
+                                    type="date"
+                                    format="yyyy-MM-dd"
+                                    :placeholder="`${$t('promotion.end_date')}, ${$t('common.not_required')}`"
+                                    :not-before="promotion.start_date"
                                 />
                             </div>
                             <div class="form-group">
@@ -125,10 +134,10 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="errorMsg">
-                            <span>{{ errorMsg }}</span>
-                        </div>
-                        <button type="submit" class="md-btn w-sm blue">{{ $t('common.save') }}</button>
+                        <button type="submit" class="md-btn w-sm blue">
+                            <span v-if="!loading">{{ $t('common.save') }}</span>
+                            <i v-else class="fa fa-spin fa-spinner"></i>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -136,144 +145,155 @@
     </div>
 </template>
 <script>
-    import api from '../../../api'
-    import tinymce from '../../../components/tinymce'
-    import Vue from 'vue'
-    import DatePicker from 'vue2-datepicker'
-    import _ from 'lodash'
-    const format = 'YYYY-MM-DD'
+import api from '../../../api'
+import tinymce from '../../../components/tinymce'
+import Vue from 'vue'
+import DatePicker from 'vue2-datepicker'
+import random from 'lodash/random'
+import $ from '../../../utils/util'
+const format = 'YYYY-MM-DD'
 
-    export default {
-        data () {
-            return {
-                api: api.promotion,
-                promotion: {
-                    id: '',
-                    image: '',
-                    description: '',
-                    level: [],
-                    start_date: '',
-                    end_date: '',
-                    rank: '1',
-                    name: '',
-                    status: '',
-                    image_url: '',
-                    image_mobile_url: '',
-                    image_mobile: '',
-                    mobile_description: ''
-                },
-                date: ['', ''],
-                randomId: 'pd' + _.random(0, 500),
-                randomIdMobile: 'pd' + _.random(501, 1000),
-                promotions: [],
-                hasImage: false,
-                hasImageMobile: false,
-                errorMsg: '',
-                selectedPromotion: ''
-            }
-        },
-        created () {
-            this.getPromotions()
-        },
-        watch: {
-            date (newObj) {
-                if (newObj) {
-                    [this.promotion.start_date, this.promotion.end_date] = [...newObj.map(e => Vue.moment(e).format(format))]
-                } else {
-                    [this.promotion.start_date, this.promotion.end_date] = ['', '']
-                }
-            }
-        },
-        methods: {
-            getPromotions () {
-                this.$http.get(this.api).then(data => {
-                    this.promotions = data
-                    if (this.$route.params.promotionId) {
-                        this.selectPromotion(this.$route.params.promotionId)
-                    }
-                })
+export default {
+    data () {
+        return {
+            id: '',
+            api: api.promotion,
+            promotion: {
+                id: '',
+                image: '',
+                description: '',
+                level: [],
+                start_date: '',
+                end_date: '',
+                rank: '1',
+                name: '',
+                status: '',
+                image_url: '',
+                image_mobile_url: '',
+                image_mobile: '',
+                mobile_description: ''
             },
-            onSubmit (e) {
-                if (!this.promotion.start_date || !this.promotion.start_date) {
-                    this.errorMsg = `${this.$t('common.unfilled')}(${this.$t('promotion.availability')})`
-                    this.$refs.date.togglePopup()
-                    return
-                }
-                let formData = new window.FormData()
-                formData.append('name', this.promotion.name)
-                formData.append('rank', this.promotion.rank)
-                if (this.hasImage) {
-                    formData.append('image', this.promotion.image)
-                } else {
-                    formData.append('image_url', this.promotion.image_url)
-                }
-                if (this.hasImageMobile) {
-                    formData.append('image_mobile', this.promotion.image_mobile)
-                } else {
-                    formData.append('image_url_mobile', this.promotion.image_mobile_url)
-                }
-                formData.append('description', this.promotion.description)
-                formData.append('status', this.promotion.status)
-                formData.append('start_date', this.promotion.start_date)
-                formData.append('end_date', this.promotion.end_date)
-                formData.append('level', this.promotion.level)
-                formData.append('mobile_description', this.promotion.mobile_description)
-
-                if (this.$route.params.promotionId && this.$route.name === 'promotion_edit') {
-                    this.$http.put(`${this.api}${this.$route.params.promotionId}/`, formData).then(data => {
-                        this.$router.push('/promotion/' + data.id)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                } else {
-                    this.$http.post(this.api, formData).then(data => {
-                        this.$router.push('/promotion/' + data.id)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                }
-            },
-            syncImage (e, target) {
-                var reader = new FileReader()
-
-                reader.onload = (e) => {
-                    this.promotion[target + '_url'] = e.target.result
-                }
-                reader.readAsDataURL(e.target.files[0])
-                this.promotion[target] = e.target.files[0]
-                if (target === 'image') {
-                    this.hasImage = true
-                } else if (target === 'image_mobile') {
-                    this.hasImageMobile = true
-                }
-            },
-            selectPromotionHandler (event) {
-                let value = event.target.value
-                this.selectPromotion(value)
-            },
-            selectPromotion (id) {
-                this.promotion = Object.assign(this.promotion, this.promotions.find(element => element.id === parseInt(id)))
-                this.date = [this.promotion.start_date || '', this.promotion.end_date || '']
-                if (this.promotion.image) {
-                    this.promotion.image_url = this.promotion.image
-                }
-                if (this.promotion.image_mobile) {
-                    this.promotion.image_mobile_url = this.promotion.image_mobile
-                }
-            },
-            changeModel (val, name) {
-                this.promotion[name] = val
-            },
-            levelSelect (val) {
-                this.promotion.level = val
-            }
-        },
-        components: {
-            DatePicker,
-            tinymce,
-            level: require('../../../components/level')
+            date: ['', ''],
+            randomId: 'pd' + random(0, 500),
+            randomIdMobile: 'pd' + random(501, 1000),
+            promotions: [],
+            hasImage: false,
+            hasImageMobile: false,
+            selectedPromotion: '',
+            today: Vue.moment().format(format),
+            loading: false
         }
+    },
+    created () {
+        this.getPromotions()
+    },
+    methods: {
+        getPromotions () {
+            this.$http.get(this.api).then(data => {
+                this.promotions = data
+                if (this.$route.params.promotionId) {
+                    this.id = this.$route.params.promotionId
+                    this.selectPromotion(this.id)
+                }
+            })
+        },
+        onSubmit (e) {
+            if (!this.$moment(this.promotion.start_date).isValid()) {
+                $.notify({
+                    message: `${this.$t('common.unfilled')}(${this.$t('promotion.availability')})`,
+                    type: 'danger'
+                })
+                this.$refs.start_date.togglePopup()
+                return
+            } else {
+                this.promotion.start_date = Vue.moment(this.promotion.start_date).format(format)
+            }
+
+            if (this.$moment(this.promotion.end_date).isValid()) {
+                this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
+            } else {
+                this.promotion.end_date = ''
+            }
+            let formData = new window.FormData()
+            formData.append('name', this.promotion.name)
+            formData.append('rank', this.promotion.rank)
+            if (this.hasImage) {
+                formData.append('image', this.promotion.image)
+            } else {
+                formData.append('image_url', this.promotion.image_url)
+            }
+            if (this.hasImageMobile) {
+                formData.append('image_mobile', this.promotion.image_mobile)
+            } else {
+                formData.append('image_url_mobile', this.promotion.image_mobile_url)
+            }
+            formData.append('description', this.promotion.description)
+            formData.append('status', this.promotion.status)
+            formData.append('start_date', this.promotion.start_date)
+            formData.append('end_date', this.promotion.end_date)
+            formData.append('level', this.promotion.level)
+            formData.append('mobile_description', this.promotion.mobile_description)
+
+            this.loading = true
+            this.$http({
+                method: this.id ? 'put' : 'post',
+                url: `${this.api}${this.id && this.id + '/'}`,
+                data: formData
+            }).then(data => {
+                $.notify({
+                    message: `${this.id ? this.$t('promotion.update') : this.$t('promotion.add')}${this.$t('status.success')}`
+                })
+                this.$router.push('/promotion/' + data.id)
+                this.loading = false
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.loading = false
+            })
+        },
+        syncImage (e, target) {
+            var reader = new FileReader()
+
+            reader.onload = (e) => {
+                this.promotion[target + '_url'] = e.target.result
+            }
+            reader.readAsDataURL(e.target.files[0])
+            this.promotion[target] = e.target.files[0]
+            if (target === 'image') {
+                this.hasImage = true
+            } else if (target === 'image_mobile') {
+                this.hasImageMobile = true
+            }
+        },
+        selectPromotionHandler (event) {
+            let value = event.target.value
+            this.selectPromotion(value)
+        },
+        selectPromotion (id) {
+            this.promotion = Object.assign(this.promotion, this.promotions.find(element => element.id === parseInt(id)))
+            this.date = [this.promotion.start_date || '', this.promotion.end_date || '']
+            if (this.promotion.image) {
+                this.promotion.image_url = this.promotion.image
+            }
+            if (this.promotion.image_mobile) {
+                this.promotion.image_mobile_url = this.promotion.image_mobile
+            }
+        },
+        changeModel (val, name) {
+            this.promotion[name] = val
+        },
+        levelSelect (val) {
+            this.promotion.level = val
+        }
+    },
+    components: {
+        DatePicker,
+        tinymce,
+        level: require('../../../components/level')
     }
+}
 </script>
 <style scoped>
     .promo-image-container {
