@@ -142,7 +142,7 @@
                         <td>{{ report.action_user_type || '-' }}</td>
                         <td>{{ report.action_ip || '-' }}</td>
                         <td>{{ report.action_type || '-' }}</td>
-                        <td v-if="report.description" v-html="report.description"></td>
+                        <td class="text-break-all" v-if="report.description" v-html="report.description"></td>
                         <td v-else>-</td>
                         <td class="text-center">
                             <span v-if="report.action_result" class="label success">{{ $t('status.success') }}</span>

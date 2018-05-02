@@ -47,6 +47,27 @@
                                 </div>
                             </div>
 
+
+                            <div class="form-group">
+                                <label class="label-width">{{$t('online_payer.public_key')}}</label>
+                                <div class="inline-form-control">
+                                    <input
+                                        class="form-control"
+                                        v-model="payee.public_key"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label-width">{{$t('online_payer.private_key')}}</label>
+                                <div class="inline-form-control">
+                                    <input
+                                        class="form-control"
+                                        v-model="payee.private_key"
+                                    />
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label  class="label-width">{{$t('setting.board_url')}}</label>
                                 <div class="inline-form-control">
@@ -107,6 +128,8 @@
                     name: '',
                     merchant_num: '',
                     certificate: '',
+                    private_key: '',
+                    public_key: '',
                     board_url: '',
                     level: '',
                     expired_in: '',
@@ -160,9 +183,7 @@
             },
             getPayee (id) {
                 this.$http.get(api.onlinepayee + id + '/').then(data => {
-                    setTimeout(() => {
-                        this.payee = Object.assign(this.payee, data)
-                    }, 300)
+                    Object.assign(this.payee, data)
                 })
             },
             levelSelect (val) {

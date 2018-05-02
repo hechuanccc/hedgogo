@@ -161,24 +161,31 @@
                             {{ $t('game_history.inform_no_draw') }}
                         </label>
                     </div>
-                    <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
+                    <button
+                        type="button"
+                        class="inline pull-right btn w-xs"
+                        @click="hideModal"
+                    >{{ $t('action.cancel') }}
+                    </button>
                     <button 
                         type="button"
-                        class="inline pull-right btn m-r-xs blue"
+                        class="inline pull-right btn m-r-xs blue w-xs"
                         @click="updateScheduleResult"
                         v-if="modal.mode === 'manual_draw'"
                         :disabled="!$root.permissions.includes('manually_draw_game_result') || !modal.sureDraw"
                     >
-                        {{ $t('action.confirm') }}
+                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <i class="fa fa-spin fa-spinner" v-else></i>                        
                     </button>
                     <button
                         type="button"
-                        class="inline pull-right btn m-r-xs blue"
+                        class="inline pull-right btn m-r-xs blue w-xs"
                         @click="noDrawHandler"
                         v-else
                         :disabled="!$root.permissions.includes('official_no_draw')"
                     >
-                        {{ $t('action.confirm') }}
+                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </div>
             </div>
@@ -210,7 +217,8 @@ export default{
                     issue_number: '',
                     result_str: ''
                 },
-                msg: ''
+                msg: '',
+                loading: false
             },
             today: Vue.moment().format(dateFormat)
         }
@@ -271,13 +279,16 @@ export default{
         },
         updateScheduleResult () {
             if (this.modal.scheduleResult.result_str) {
+                this.modal.loading = true
                 this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.getPeriods()
+                    this.modal.loading = false
                 }, error => {
                     this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error}）`
                     this.$refs.alertMsg.trigger('danger')
+                    this.modal.loading = false
                 })
             } else {
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')
@@ -285,6 +296,7 @@ export default{
             }
         },
         noDrawHandler () {
+            this.modal.loading = true
             this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.game_schedule}/`, {
                 'status': 'no_draw',
                 'inform': this.modal.inform ? 1 : 0
@@ -292,9 +304,11 @@ export default{
                 this.modal.msg = this.$t('common.setting') + this.$t('status.success')
                 this.$refs.alertMsg.trigger('success', 1, true)
                 this.getPeriods()
+                this.modal.loading = false
             }, error => {
                 this.modal.msg = `${this.$t('status.failed')}（${error}）`
                 this.$refs.alertMsg.trigger('danger')
+                this.modal.loading = false
             })
         }
     },
