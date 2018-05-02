@@ -50,14 +50,28 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-inline">
+                    <div class="form-inline right-float-img">
                         <label class="form-control-label text-uppercase">{{ $t('manage.right_float_img') }}</label>
                         <div class="inline-form-control" v-if="hasRightFloatImg">
                             <img :src="website.right_float_img" height="180">
+                            <button
+                                type="button"
+                                class="btn btn-xs btn-icon img-nav-btn"
+                                @click="clearImg('RightFloatImg')"
+                                v-if="hasRightFloatImg"
+                            >
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
                         <span class="m-r-xs" v-else>{{ $t('action.no_setting') }}</span>
                         <div class="inline-form-control" v-if="updateWebsiteManagementPermission">
-                            <input type="file" class="form-control w-md" accept="image/*" @change="syncImg($event, 'RightFloatImg')">
+                            <input
+                                type="file"
+                                class="form-control w-md"
+                                accept="image/*"
+                                @change="syncImg($event, 'RightFloatImg')"
+                                ref="rightFloatImg"
+                            />
                         </div>
                     </div>
                 </div>
@@ -403,6 +417,15 @@ export default {
             this[`has${attr}`] = true
             this[`has${attr}File`] = true
         },
+        clearImg (attr) {
+            this[`has${attr}`] = false
+            this[`has${attr}File`] = false
+            this.$refs.rightFloatImg.value = ''
+            $.notify({
+                message: this.$t('common.click_submit_and_clear'),
+                type: 'warning'
+            })
+        },
         syncBoxImg (e, box, index, attr) {
             if (!this.checkFileSize(e.target.files[0])) {
                 e.target.value = ''
@@ -436,6 +459,8 @@ export default {
                 let snakeCase = $.camelToSnake(e)
                 if (this[`has${e}File`]) {
                     formData.append(snakeCase, this.website[`${snakeCase}_file`])
+                } else if (!this[`has${e}`]) {
+                    formData.append(snakeCase, '')
                 }
             })
             this.$http.put(api.website, formData).then(data => {
@@ -458,7 +483,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .list-complete-item {
   transition: all .1s;
   display: inline-block;
@@ -470,5 +495,15 @@ export default {
 }
 .list-complete-leave-active {
   position: absolute;
+}
+.right-float-img {
+  img {
+      max-width: 80%;
+  }
+  .img-nav-btn {
+    vertical-align: top;
+    text-align: center;
+    transition: all .3s ease;
+  }
 }
 </style>
