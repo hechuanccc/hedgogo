@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="row">
-        <transition name="fade">
-            <div class="pull-center alert alert-success m-l m-t-0 p-t-xs p-b-xs" v-show="updateRankMsg"><i class="fa fa-check"></i>{{ updateRankMsg }}</div>
-        </transition>
         <div class="pull-right m-r">
             <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
             <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
@@ -25,8 +22,41 @@
           <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
           <tr v-for="(game, index) in queryset" :key="game.id">
             <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
-            <td>
-              <router-link :to="`/game_detail/${game.id}/?display_name=${game.display_name}`">{{game.display_name}}</router-link>
+            <td class="text-uppercase">
+              <router-link
+                :to="`/game_detail/${game.id}/?display_name=${game.display_name}`"
+                v-if="!editNameList[game.id]"
+              >
+                {{game.display_name}}
+              </router-link>
+              <input
+                class="form-control w-sm inline"
+                v-model="editNameList[game.id]"
+                v-else
+              />
+              &nbsp;
+              <a
+                @click="editName(game.id, game.display_name)"
+                v-show="!editNameList[game.id]"
+              >
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a
+                @click="submitName(game.id, editNameList[game.id])"
+                class="text-success"
+                v-show="editNameList[game.id]"
+              >
+                <i class="fa fa-check" v-if="!editNameLoading[game.id]"></i>
+                <i class="fa fa-spin fa-spinner" v-else></i>
+              </a>
+              &nbsp;
+              <a
+                @click="cancelEditName(game.id)"
+                class="text-danger"
+                v-show="editNameList[game.id]"
+              >
+                <i class="fa fa-times" v-if="!editNameLoading[game.id]"></i>
+              </a>
             </td>
             <td>{{game.holidates.schedule_open | datetimeFilter}}</td>
             <td>{{game.holidates.schedule_close | datetimeFilter}}</td>
@@ -182,7 +212,8 @@ export default {
                 },
                 msg: ''
             },
-            updateRankMsg: ''
+            editNameList: {},
+            editNameLoading: {}
         }
     },
     created () {
@@ -197,10 +228,6 @@ export default {
         getGameList () {
             this.$http.get(api.game_list).then(data => {
                 this.queryset = data
-                const games = {}
-                data.forEach(game => {
-                    games[game.id] = game.display_name
-                })
             })
         },
         toggleEnable (index) {
@@ -319,8 +346,7 @@ export default {
                     rank: index + 1
                 }))).then(data => {
                     $.notify({
-                        message: this.$t('game_manage.modify_success'),
-                        type: 'success'
+                        message: this.$t('game_manage.modify_success')
                     })
                 }, error => {
                     $.notify({
@@ -337,6 +363,32 @@ export default {
         cancelAdjustRank () {
             this.queryset = this.initialQueryset
             this.mode = !this.mode
+        },
+        editName (id, name) {
+            this.$set(this.editNameList, id, name)
+        },
+        submitName (id, name) {
+            this.$set(this.editNameLoading, id, true)
+            this.$http.put(`${api.game_list}${id}/`, {
+                display_name: name
+            }).then(data => {
+                Object.assign(this.queryset.find(game => game.id === id), {
+                    display_name: data.display_name
+                })
+                $.notify({
+                    message: this.$t('action.update') + this.$t('status.success')
+                })
+                this.$delete(this.editNameLoading, id)
+                this.cancelEditName(id)
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+            })
+        },
+        cancelEditName (id) {
+            this.$delete(this.editNameList, id)
         }
     },
     filters: {

@@ -236,7 +236,7 @@
                                     :class="getResultClass(resultball)"
                                     :key="`${result.issue_number}_resultStr_${index}`"
                                 >
-                                    <b>{{ resultball }}</b>
+                                    <b>{{ parseInt(resultball) }}</b>
                                 </span>
                             </div>
                             <div v-else>
@@ -368,28 +368,35 @@
                             {{$t('game_history.inform_no_draw')}}
                         </label>
                     </div>
-                    <button type="button" class="inline pull-right btn btn-default" @click="hideModal">{{ $t('action.cancel') }}</button>
+                    <button type="button" class="inline pull-right btn w-xs" @click="hideModal">{{ $t('action.cancel') }}</button>
                     <button
                         type="button"
-                        class="inline pull-right btn blue m-r-xs"
+                        class="inline pull-right btn blue m-r-xs w-xs"
                         @click="updateGameResult"
                         v-if="modal.mode === 'manual_draw' && $root.permissions.includes('manually_draw_game_result')"
                         :disabled="!modal.sureDraw"
-                    >{{ $t('action.confirm') }}
+                    >
+                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                     <button
                         type="button"
-                        class="inline pull-right btn blue m-r-xs"
+                        class="inline pull-right btn blue m-r-xs w-xs"
                         @click="noDrawHandler"
                         v-else-if="modal.mode === 'no_draw'"
-                    >{{ $t('action.confirm') }}
+                    >
+                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                     <button
                         type="button"
-                        class="inline pull-right btn blue m-r-xs"
+                        class="inline pull-right btn blue m-r-xs w-xs"
                         @click="retreatSchedule"
                         v-else
-                    >{{ $t('action.confirm') }}</button>
+                    >
+                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -449,7 +456,8 @@ export default {
                 scheduleResult: {},
                 sureDraw: false,
                 inform: false,
-                msg: ''
+                msg: '',
+                loading: false
             },
             extra: '',
             pullingApi: '',
@@ -582,7 +590,7 @@ export default {
         },
         showModal (sched, modalMode = 'manual_draw') {
             if (modalMode === 'manual_draw' || modalMode === 'no_draw') {
-                this.modal = Object.assign({}, {
+                Object.assign(this.modal, {
                     mode: modalMode,
                     scheduleResult: {
                         game_schedule: this.mode ? sched.id : sched.schedule_id,
@@ -601,12 +609,12 @@ export default {
                     this.$refs.alertMsg.trigger('warning')
                 })
             } else if (modalMode === 'retreat_sched') {
-                this.modal = {
+                Object.assign(this.modal, {
                     mode: modalMode,
                     time: sched.schedule_result,
                     scheduleResult: sched,
                     isShow: true
-                }
+                })
             }
         },
         hideModal () {
@@ -618,18 +626,22 @@ export default {
             return [gameClass, resultClass]
         },
         retreatSchedule () {
+            this.modal.loading = true
             this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.id}/`, {
                 'status': 'cancelled'
             }).then(data => {
                 this.modal.msg = this.$t('game_history.schedule_cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
                 this.getRetreatedSchedules()
+                this.modal.loading = false
             }, error => {
                 this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${error}）`
                 this.$refs.alertMsg.trigger('danger')
+                this.modal.loading = false
             })
         },
         noDrawHandler () {
+            this.modal.loading = true
             this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.game_schedule}/`, {
                 'status': 'no_draw',
                 'inform': this.modal.inform ? 1 : 0
@@ -637,20 +649,25 @@ export default {
                 this.modal.msg = this.$t('common.setting') + this.$t('status.success')
                 this.$refs.alertMsg.trigger('success', 1, true)
                 this.$refs.pulling.rebase()
+                this.modal.loading = false
             }, error => {
                 this.modal.msg = `${this.$t('status.failed')}（${error}）`
                 this.$refs.alertMsg.trigger('danger')
+                this.modal.loading = false
             })
         },
         updateGameResult () {
             if (this.modal.scheduleResult.result_str) {
+                this.modal.loading = true
                 this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.$refs.pulling.rebase()
+                    this.modal.loading = false
                 }, error => {
                     this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error}）`
                     this.$refs.alertMsg.trigger('danger')
+                    this.modal.loading = false
                 })
             } else {
                 this.modal.msg = this.$t('game_history.no_setting_draw_number')
