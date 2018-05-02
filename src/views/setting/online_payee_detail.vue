@@ -51,6 +51,14 @@
                                     <td>{{certificate || $t('action.no_setting')}}</td>
                                 </tr>
                                 <tr>
+                                    <th class="grey-50">{{$t('online_payer.public_key')}}</th>
+                                    <td>{{public_key || $t('action.no_setting')}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="grey-50">{{$t('online_payer.private_key')}}</th>
+                                    <td>{{private_key || $t('action.no_setting')}}</td>
+                                </tr>
+                                <tr>
                                     <th class="grey-50">{{$t('setting.board_url')}}</th>
                                     <td>{{board_url || $t('action.no_setting')}}</td>
                                 </tr>

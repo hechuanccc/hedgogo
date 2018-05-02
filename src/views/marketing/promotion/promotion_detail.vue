@@ -55,6 +55,14 @@
                                     <td v-html="promotion.mobile_description" v-if="promotion.mobile_description"></td>
                                     <td v-else>-</td>
                                 </tr>
+                                <tr>
+                                    <th class="grey-50" width="200">{{$t('promotion.start_date')}}</th>
+                                    <td>{{ promotion.start_date || '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="grey-50" width="200">{{$t('promotion.end_date')}}</th>
+                                    <td>{{ promotion.end_date || '-' }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
