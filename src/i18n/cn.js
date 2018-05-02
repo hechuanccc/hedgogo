@@ -385,7 +385,8 @@ export default {
         on_time: '上线时间',
         off_time: '下线时间',
         required: '必填',
-        not_required: '非必填'
+        not_required: '非必填',
+        click_submit_and_clear: '请按下提交按钮后才能成功清除'
     },
     bank: {
         bank_title: '银行资讯',

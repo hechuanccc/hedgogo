@@ -385,7 +385,8 @@ export default {
         on_time: 'On Time',
         off_time: 'Off Time',
         required: 'Required',
-        not_required: 'Not Required'
+        not_required: 'Not Required',
+        click_submit_and_clear: 'Please click submit button and save.'
     },
     bank: {
         bank_title: 'Bank Information',
