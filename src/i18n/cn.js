@@ -137,6 +137,7 @@ export default {
     },
     member: {
         contact_info: '联络资料',
+        account_info: '帐户资讯',
         page_title: '查询条件',
         account: '帐号',
         created_at: '注册日期',
