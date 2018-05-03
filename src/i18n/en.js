@@ -562,6 +562,7 @@ export default {
         loading: 'loading',
         auto_draw: 'Auto Draw',
         manual_draw: 'Manual Draw',
+        wrong_result_str: 'Wrong Result Number!',
         manual_draw_success: 'Successfully manual draw!',
         manual_draw_fail: 'Fail to manual draw!',
         sure_manual_draw: 'Please check if manual draw. This operation affects %{bet_record_count} bet record(s).',

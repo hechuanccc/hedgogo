@@ -161,4 +161,16 @@ export default class $ {
     static camelToSnake (str) {
         return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
     }
+
+    static validateResultStr (str = '') {
+        let judge = true
+        let result = str.split(',').map(e => {
+            if (isNaN(parseInt(e))) {
+                judge = false
+            } else {
+                return parseInt(e)
+            }
+        })
+        return [judge, `${result}`]
+    }
 }
