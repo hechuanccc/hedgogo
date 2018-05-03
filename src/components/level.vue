@@ -2,20 +2,27 @@
     <select
         class="form-control w-sm c-select"
         v-model="mySelectLevel"
-        v-if="mode==='select'"
+        v-if="!loading && mode === 'select'"
         :required="req"
         :disabled="disabled"
     >
         <option value="">{{$t('common.please_select')}}</option>
         <option class="form-control" :value="l.id" v-for="l in levels" :key="l.id">{{l.name}}</option>
     </select>
-    <div class="checkbox" v-else>
+    <div class="checkbox" v-else-if="!loading && mode === 'checkbox'">
         <label class="m-r"  v-for="l in levels" :key="l.id">
             <input type="checkbox" name="paymenttype" v-model="myCheckboxLevel[l.id]">
             <i class="dark-white"></i>
             {{l.name}}
         </label>
     </div>
+    <span
+        class="p-b-xs p-t-sm w-sm"
+        :class="{'form-control': mode === 'select'}"
+        v-else-if="loading"
+    >
+        <i class="fa fa-spin fa-spinner"></i>
+    </span>
 </template>
 
 <script>
@@ -50,7 +57,8 @@ export default {
             levels: [],
             mySelectLevel: '',
             myCheckboxLevel: {},
-            default_opt_fields: 'id,name'
+            default_opt_fields: 'id,name',
+            loading: true
         }
     },
     watch: {
@@ -81,6 +89,7 @@ export default {
     created () {
         this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1&' : '?'}opt_fields=${this.opt_fields && this.opt_fields + ','}${this.default_opt_fields}`).then(data => {
             this.levels = data
+            this.loading = false
         })
         if (this.mode === 'select') {
             this.mySelectLevel = this.level

@@ -137,6 +137,7 @@ export default {
     },
     member: {
         contact_info: '联络资料',
+        account_info: '帐户资讯',
         page_title: '查询条件',
         account: '帐号',
         created_at: '注册日期',
@@ -561,6 +562,7 @@ export default {
         loading: '正在加载中...',
         auto_draw: '自动开奖',
         manual_draw: '手动开奖',
+        wrong_result_str: '开奖号码格式错误',
         manual_draw_success: '手动开奖成功！',
         manual_draw_fail: '手动开奖失败！',
         sure_manual_draw: '请确认是否手动开奖，该操作将会影响%{bet_record_count}个注单',
