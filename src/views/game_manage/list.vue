@@ -6,45 +6,51 @@
             <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
         </div>
     </div>
-    <div class="box" v-if="queryset.length">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t">
+    <div class="box" v-if="!loading">
+      <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="queryset.length">
           <thead>
           <tr>
             <th v-show="!mode"></th>
-            <th>{{$t('game_manage.name')}}</th>
-            <th>{{$t('game_manage.holiday_start_time')}}</th>
-            <th>{{$t('game_manage.holiday_end_time')}}</th>
-            <th>{{$t('game_manage.enabled_status')}}</th>
-            <th>{{$t('game_manage.closed_status')}}</th>
-            <th>{{$t('game_manage.operating')}}</th>
+            <th width="20%">{{$t('game_manage.name')}}</th>
+            <th class="text-center">{{$t('game_manage.holiday_start_time')}}</th>
+            <th class="text-center">{{$t('game_manage.holiday_end_time')}}</th>
+            <th class="text-center">{{$t('game_manage.enabled_status')}}</th>
+            <th class="text-center">{{$t('game_manage.closed_status')}}</th>
+            <th class="text-center">{{$t('game_manage.operating')}}</th>
           </tr>
           </thead>
-          <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
+          <draggable
+            v-model="queryset"
+            :element="'tbody'"
+            :options="{disabled:mode}"
+            class="text-center"
+          >
           <tr v-for="(game, index) in queryset" :key="game.id">
             <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
-            <td class="text-uppercase">
+            <td class="text-uppercase text-left">
               <router-link
                 :to="`/game_detail/${game.id}/?display_name=${game.display_name}`"
-                v-if="!editNameList[game.id]"
+                v-show="editNameList[game.id] === undefined"
               >
                 {{game.display_name}}
               </router-link>
               <input
                 class="form-control w-sm inline"
                 v-model="editNameList[game.id]"
-                v-else
+                :ref="`input${game.id}`"
+                v-show="editNameList[game.id] !== undefined"
               />
               &nbsp;
               <a
                 @click="editName(game.id, game.display_name)"
-                v-show="!editNameList[game.id]"
+                v-show="editNameList[game.id] === undefined"
               >
                 <i class="fa fa-pencil"></i>
               </a>
               <a
                 @click="submitName(game.id, editNameList[game.id])"
                 class="text-success"
-                v-show="editNameList[game.id]"
+                v-show="editNameList[game.id] !== undefined"
               >
                 <i class="fa fa-check" v-if="!editNameLoading[game.id]"></i>
                 <i class="fa fa-spin fa-spinner" v-else></i>
@@ -53,9 +59,9 @@
               <a
                 @click="cancelEditName(game.id)"
                 class="text-danger"
-                v-show="editNameList[game.id]"
+                v-show="editNameList[game.id] !== undefined"
               >
-                <i class="fa fa-times" v-if="!editNameLoading[game.id]"></i>
+                <i class="fa fa-times"></i>
               </a>
             </td>
             <td>{{game.holidates.schedule_open | datetimeFilter}}</td>
@@ -69,7 +75,7 @@
                 <span class="text-success" v-if="game.status === 1">{{ $t('game_manage.openning') }}</span>
                 <span class="text-danger" v-else>{{ game.status === 0 ? $t('game_manage.closed') : $t('game_manage.holiday') }}</span>
             </td>
-            <td>
+            <td class="text-center">
               <span class="text-muted p-l-xs" v-if="game.status === 2">
                   {{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
               </span>
@@ -95,6 +101,10 @@
           </draggable>
         </table>
     </div>
+    <p v-else class="text-center">
+        <i class="fa fa-spin fa-spinner"></i>
+        <b>{{ $t('common.loading') }}...</b>
+    </p>
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
@@ -213,7 +223,8 @@ export default {
                 msg: ''
             },
             editNameList: {},
-            editNameLoading: {}
+            editNameLoading: {},
+            loading: true
         }
     },
     created () {
@@ -228,6 +239,7 @@ export default {
         getGameList () {
             this.$http.get(api.game_list).then(data => {
                 this.queryset = data
+                this.loading = false
             })
         },
         toggleEnable (index) {
@@ -366,6 +378,9 @@ export default {
         },
         editName (id, name) {
             this.$set(this.editNameList, id, name)
+            this.$nextTick(() => {
+                this.$refs[`input${id}`][0].select()
+            })
         },
         submitName (id, name) {
             this.$set(this.editNameLoading, id, true)
