@@ -4,6 +4,7 @@
         v-model="myAgent"
         :required="req"
         :disabled="!disabled"
+        v-if="!loading && agents.length"
     >
         <option value="">{{ $t('common.please_select') }}</option>
         <option
@@ -15,6 +16,18 @@
             {{ e.username }}
         </option>
     </select>
+    <span
+        class="p-b-xs p-t-sm form-control w-sm inline"
+        v-else-if="loading"
+    >
+        <i class="fa fa-spin fa-spinner"></i>
+    </span>
+    <span
+        class="p-b-xs p-t-sm form-control w-sm inline"
+        v-else-if="!agents.length"
+    >
+        {{ $t('common.no_record') }}
+    </span>
 </template>
 
 <script>
@@ -42,7 +55,8 @@ export default {
         return {
             agents: [],
             myAgent: this.agent,
-            default_opt_fields: 'username'
+            default_opt_fields: 'username',
+            loading: true
         }
     },
     watch: {
@@ -60,6 +74,7 @@ export default {
     created () {
         this.$http.get(`${api.agent}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
             this.agents = data
+            this.loading = false
         })
         this.myAgent = this.agent
     }

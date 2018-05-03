@@ -11,7 +11,8 @@
           <thead>
           <tr>
             <th v-show="!mode"></th>
-            <th width="20%">{{$t('game_manage.name')}}</th>
+            <th width="15%">{{$t('game_manage.name')}}</th>
+            <th width="7%"></th>
             <th class="text-center">{{$t('game_manage.holiday_start_time')}}</th>
             <th class="text-center">{{$t('game_manage.holiday_end_time')}}</th>
             <th class="text-center">{{$t('game_manage.enabled_status')}}</th>
@@ -40,7 +41,8 @@
                 :ref="`input${game.id}`"
                 v-show="editNameList[game.id] !== undefined"
               />
-              &nbsp;
+            </td>
+            <td class="text-left">
               <a
                 @click="editName(game.id, game.display_name)"
                 v-show="editNameList[game.id] === undefined"

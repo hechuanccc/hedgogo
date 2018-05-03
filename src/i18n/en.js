@@ -137,6 +137,7 @@ export default {
     },
     member: {
         contact_info: 'Contact Info',
+        account_info: 'Account Info',
         page_title: 'Search Members',
         account: 'Account',
         created_at: 'Registered at',
