@@ -43,14 +43,16 @@
         </div>
     </div>
     <div class="text-left">
-        <input
-            type="checkbox"
-            value="1"
-            name="exception"
-            v-model="mode"
-        >
+        <label class="check m-b-0 pointer">
+            <input
+                type="checkbox"
+                value="1"
+                name="exception"
+                v-model="mode"
+            />
             <i class="blue"></i>
             {{$t('game_history.abnormal_period')}}
+        </label>
     </div>
     <div class="card col">
         <div class="card-body">
@@ -422,6 +424,7 @@ import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 import _ from 'lodash'
 import date from '../../utils/date'
+import $ from '../../utils/util'
 
 const dateFormat = 'YYYY-MM-DD'
 
@@ -658,6 +661,14 @@ export default {
         },
         updateGameResult () {
             if (this.modal.scheduleResult.result_str) {
+                let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
+                if (!judgement) {
+                    this.modal.msg = this.$t('game_history.wrong_result_str')
+                    this.$refs.alertMsg.trigger('danger')
+                    return
+                } else {
+                    this.modal.scheduleResult.result_str = result
+                }
                 this.modal.loading = true
                 this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')

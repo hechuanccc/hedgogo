@@ -10,7 +10,7 @@
             </button>
         </div>
     </div>
-    <div class="card">
+    <div class="card" v-if="!loading">
         <table class="table table-bordered table-striped" v-if="gameDraw.length">
             <thead>
                 <tr>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for = "(game, index) in gameDraw">
+                <template v-for="(game, index) in gameDraw">
                 <tr class="v-m text-center" :key="index">
                     <td class="text-left p-l-md" style="text-transform: uppercase;">
                         <router-link
@@ -69,8 +69,7 @@
                                             class="label btn blue"
                                             @click="showModal(game, sched, 'no_draw')"
                                             v-if="$root.permissions.includes('official_no_draw')"
-                                        >
-                                            {{ $t('game_history.no_draw') }}
+                                        >{{ $t('game_history.no_draw') }}
                                         </span>
                                     </td>
                                 </tr>
@@ -99,6 +98,10 @@
             </tbody>
         </table>
     </div>
+    <p v-else class="text-center">
+        <i class="fa fa-spin fa-spinner"></i>
+        <b>{{ $t('common.loading') }}...</b>
+    </p>
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
@@ -197,7 +200,9 @@
 import api from '../../api.js'
 import alertMsg from '../../components/alertMsg'
 import Vue from 'vue'
+import $ from '../../utils/util'
 const dateFormat = 'YYYY-MM-DD'
+
 export default{
     data () {
         return {
@@ -220,7 +225,8 @@ export default{
                 msg: '',
                 loading: false
             },
-            today: Vue.moment().format(dateFormat)
+            today: Vue.moment().format(dateFormat),
+            loading: true
         }
     },
     created () {
@@ -237,6 +243,7 @@ export default{
             this.$http.get(`${api.game_draw}?abnormal=5`).then(data => {
                 this.gameDraw = data
                 this.isLatest = true
+                this.loading = false
             })
         },
         getGameInfo (gameId) {
@@ -279,6 +286,14 @@ export default{
         },
         updateScheduleResult () {
             if (this.modal.scheduleResult.result_str) {
+                let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
+                if (!judgement) {
+                    this.modal.msg = this.$t('game_history.wrong_result_str')
+                    this.$refs.alertMsg.trigger('danger')
+                    return
+                } else {
+                    this.modal.scheduleResult.result_str = result
+                }
                 this.modal.loading = true
                 this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
