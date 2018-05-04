@@ -173,8 +173,11 @@
                     <th>{{ $t('common.member') }}</th>
                     <th>{{ $t('member.level') }}</th>
                     <th width="11%" class="text-center">{{ $t('common.applied_at') }}</th>
-                    <th class="text-center">{{ $t('common.balance_before') }}</th>
-                    <th class="text-center">{{ $t('common.balance_after') }}</th>
+                    <th class="text-right">
+                        {{ $t('common.balance_before') }} /
+                        <br/>
+                        {{ $t('common.balance_after') }}
+                    </th>
                     <th class="text-center">{{ $t('common.amount') }}</th>
                     <th width="11%" class="text-center">{{ $t('common.status_updated_at') }}</th>
                     <th>{{ $t('bank.bank_title') }}</th>
@@ -189,12 +192,10 @@
                     <td><router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link></td>
                     <td class="text-center">{{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                     <td class="text-right">
-                        <span v-if="t.balance_before || t. balance_before === 0">{{ t.balance_before | currency('￥') }}</span>
-                        <span v-else>-</span>
-                    </td>
-                    <td class="text-right">
-                        <span v-if="t.balance_after || t.balance_after === 0">{{ t.balance_after | currency('￥') }}</span>
-                        <span v-else>-</span>
+                        <p class="m-b-xs" v-if="t.balance_before || t. balance_before === 0">{{ t.balance_before | currency('￥') }} /</p>
+                        <p class="m-b-xs" v-else>-</p>
+                        <p class="m-b-0" v-if="t.balance_after || t.balance_after === 0">{{ t.balance_after | currency('￥') }}</p>
+                        <p class="m-b-0" v-else>-</p>
                     </td>
                     <td class="text-right">{{ t.amount | currency('￥') }}</td>
                     <td class="text-center">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
@@ -208,7 +209,39 @@
                         <span v-else class="t-red">{{ $t('member.failed') }}</span>
                     </td>
                     <td class="text-center">
-                        <transaction-status :transaction="t"></transaction-status>
+                        <transaction-status :transaction="t" v-if="t.status !== 3"></transaction-status>
+                        <template v-else>
+                            <button 
+                                type="button"
+                                class="btn btn-xs blue m-b-sm"
+                                @click="openModal({
+                                    status: 1,
+                                    transactionType: parseInt(t.transaction_type.id),
+                                    transactionId: t.id
+                                }, t.member)"
+                                v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                            >{{ $t('bill.audit') }}
+                            </button>
+                            <br v-if="$root.permissions.includes('allow_withdraw_transaction')"/>
+                            <button
+                                type="button"
+                                class="btn btn-xs sm-btn m-b-sm"
+                                @click="openModal({
+                                    status: 4,
+                                    transactionType: parseInt(t.transaction_type.id),
+                                    transactionId: t.id,
+                                }, t.member)"
+                                v-if="$root.permissions.includes('refuse_withdraw_transaction')"
+                            >{{ $t('bill.cancel') }}
+                            </button>
+                            <online-payer-selector
+                                :member="t.member.id"
+                                :mode="'linklist'"
+                                :transaction="t"
+                                @get-transaction="openWithdrawPayeeModal"
+                                @payer-select="payerSelect"
+                            />
+                        </template>
                     </td>
                     <td class="text-center">
                         <router-link :to="'/transaction/' + t.id">{{$t('action.view')}}</router-link>
@@ -217,6 +250,58 @@
             </tbody>
         </table>
     </div>
+     <div class="modal" v-if="modal.showModal">
+        <div class="modal-backdrop fade in" @click="modal.showModal = false"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    
+                    <span class="text-md" v-if="modal.status === 1">{{ $t('bill.withdraw_audit_alert_msg') }}</span>
+                    <span class="text-md" v-if="modal.status === 4">{{ $t('bill.confirm_declined', {
+                        action: $t('bill.cancel')
+                    }) }}</span>
+                    <span class="text-md">({{ `${$t('common.username')}: ${modal.username}` }})</span>
+                    <button type="button" class="close" aria-hidden="true" @click="modal.showModal = false">×
+                    </button>
+                </div>
+                <div class="modal-body m-r m-l">
+                    <label
+                        class="form-control-label p-b-0"
+                    >审核备注
+                    </label>
+                    <textarea
+                        v-model.trim="modal.memo"
+                        class="form-control"
+                        ref="modalContent"
+                        rows="6"
+                        placeholder="编辑失败或者成功的理由追加在原有备注后，这些信息将会发送给用户！"
+                    />
+                </div>
+                <div class="modal-footer">
+                    <button
+                        class="btn blue p-x-md w-xs"
+                        @click="updateWithdraw(modal)"
+                    >
+                        <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
+                        <span v-else>{{ $t('action.confirm') }}</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn dark-white p-x-md w-xs"
+                        @click="modal.showModal = false"
+                    >{{ $t('action.cancel') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <withdraw-payee-modal
+        :show="showWithdrawPayeeModal"
+        :transaction="withdrawPayeeTransaction"
+        :payer="withdrawPayee"
+        @withdraw-payee-showmodal="changeWithdrawPayeeModal"
+        @withdraw-payee-status="withdrawPayeeStatus"
+    />
     <div class="row m-b-lg">
         <pulling
             :extra="'transaction_type=withdraw&report_flag=true'"
@@ -238,6 +323,8 @@
     import $ from '../../utils/util'
     import level from '../../components/level'
     import transactionStatus from '../../components/transaction_status'
+    import onlinePayerSelector from '../../components/onlinePayerSelector'
+    import withdrawPayeeModal from '../../components/withdrawPayeeModal'
     import DatePicker from 'vue2-datepicker'
     import date from '../../utils/date'
     import { debounce } from 'lodash'
@@ -260,7 +347,20 @@
                     end: date[element][1]
                 })),
                 autoTogglePopup: false,
-                loading: true
+                loading: true,
+                modal: {
+                    showModal: false,
+                    loading: false,
+                    transactionId: '',
+                    status: '',
+                    memo: '',
+                    member: '',
+                    transactionType: '',
+                    username: ''
+                },
+                showWithdrawPayeeModal: false,
+                withdrawPayeeTransaction: {},
+                withdrawPayee: ''
             }
         },
         watch: {
@@ -366,12 +466,69 @@
                 this.$nextTick(() => {
                     this.submit()
                 })
+            },
+            openModal ({status, transactionType, transactionId}, {id, username}) {
+                Object.assign(this.modal, {
+                    showModal: true,
+                    transactionId,
+                    status,
+                    memo: '',
+                    member: id,
+                    transactionType,
+                    username
+                })
+            },
+            openWithdrawPayeeModal (val) {
+                Object.assign(this.withdrawPayeeTransaction, val)
+                this.showWithdrawPayeeModal = true
+            },
+            payerSelect (val) {
+                this.withdrawPayee = val
+            },
+            updateWithdraw ({
+                transactionId,
+                status,
+                memo,
+                member,
+                transactionType
+            }) {
+                this.modal.loading = true
+                this.$http.put(api.transaction_withdraw + transactionId + '/', {
+                    status,
+                    memo,
+                    member,
+                    transaction_type: transactionType
+                }).then(data => {
+                    this.$refs.pulling.rebase()
+                    $.notify({
+                        message: status === 1 ? this.$t('bill.audit') : (status === 4 ? this.$t('bill.cancel') : '') + this.$t('status.success')
+                    })
+                    this.modal.showModal = false
+                    this.modal.loading = false
+                }, error => {
+                    $.notify({
+                        message: error,
+                        type: 'danger'
+                    })
+                    this.modal.loading = false
+                })
+            },
+            changeWithdrawPayeeModal (val) {
+                this.showWithdrawPayeeModal = val
+            },
+            withdrawPayeeStatus (val) {
+                if (val) {
+                    this.showWithdrawPayeeModal = false
+                    this.$refs.pulling.rebase()
+                }
             }
         },
         components: {
             DatePicker,
             pulling,
             transactionStatus,
+            onlinePayerSelector,
+            withdrawPayeeModal,
             level
         }
     }

@@ -336,16 +336,6 @@ export default{
 }
 </script>
 <style lang="scss" scoped>
-.modal-backdrop, .modal{
-  z-index: 1;
-}
-.modal-dialog{
-  z-index: 10;
-  top: 10%;
-}
-.modal{
-  display: block;
-}
 .table td{
   vertical-align: middle
 }
