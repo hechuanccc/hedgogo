@@ -820,16 +820,6 @@ export default {
 .text-green {
   color: lightgreen;
 }
-.modal-backdrop, .modal{
-  z-index: 1;
-}
-.modal-dialog{
-  z-index: 10;
-  top: 10%;
-}
-.modal{
-  display: block;
-}
 .result-balls span{
   display: inline-block;
   vertical-align: middle;

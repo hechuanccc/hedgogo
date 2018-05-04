@@ -62,7 +62,7 @@ export default new Router({
         }
     },
     {
-        path: '/bill/online',
+        path: '/bill/online_pay',
         name: 'bill-online',
         component: function (resolve) {
             require(['./views/bill/online.vue'], resolve)

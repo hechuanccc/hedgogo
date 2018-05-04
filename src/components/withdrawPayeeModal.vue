@@ -17,6 +17,7 @@
                         <div class="col-sm-3 col-sm-offset-1 text-right m-t-sm">{{ $t('setting.merchant_num') }}</div>
                         <div class="col-sm-5" v-if="transaction.member && transaction.member.id">
                             <online-payer-selector
+                                :payer="selectedPayer"
                                 :member="transaction.member.id"
                                 @payer-select="payerSelect"
                             />
@@ -50,7 +51,7 @@
                     </div>
                     <div class="row m-t-sm">
                         <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('bill.deposit_info') }}</div>
-                        <div class="col-sm-5" v-if="transaction.member.bank">
+                        <div class="col-sm-5" v-if="transaction.member">
                             <p class="m-b-xs">{{ $t('bank.name') }}: {{ transaction.member.bank.name }}</p>
                             <p>{{ $t('bank.account') }}: {{ transaction.member.bank.account }}</p>
                         </div>
@@ -60,7 +61,7 @@
                     <button
                         class="btn blue p-x-md w-xs"
                         @click="update"
-                        :disabled="!payer"
+                        :disabled="!selectedPayer"
                     >
                         <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
                         <span v-else>{{ $t('action.confirm') }}</span>
@@ -90,19 +91,25 @@ export default {
         show: {
             type: Boolean,
             default: false
+        },
+        payer: {
+            default: ''
         }
     },
     data () {
         return {
-            payer: '',
             modal: {
                 showModal: false,
                 loading: false
             },
-            member: {}
+            member: {},
+            selectedPayer: ''
         }
     },
     watch: {
+        payer (newObj) {
+            this.selectedPayer = newObj
+        },
         show (newObj) {
             this.modal.showModal = newObj
         },
@@ -112,12 +119,12 @@ export default {
     },
     methods: {
         update () {
-            if (this.transaction.id && this.transaction.member.id && this.payer) {
+            if (this.transaction.id && this.transaction.member.id && this.selectedPayer) {
                 this.modal.loading = true
                 this.$http.put(`${api.transaction_withdraw}${this.transaction.id}/`, {
                     memo: this.transaction.memo,
                     member: this.transaction.member.id,
-                    online_payer: this.payer,
+                    online_payer: this.selectedPayer,
                     transaction_type: parseInt(this.transaction.transaction_type.id),
                     status: 1
                 }).then(data => {
@@ -136,7 +143,7 @@ export default {
             }
         },
         payerSelect (val) {
-            this.payer = val
+            this.selectedPayer = val
         }
     },
     components: {
@@ -144,15 +151,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.modal-backdrop, .modal{
-  z-index: 1;
-}
-.modal-dialog{
-  z-index: 10;
-  top: 10%;
-}
-.modal{
-  display: block;
-}
-</style>

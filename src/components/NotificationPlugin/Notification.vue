@@ -101,7 +101,7 @@ export default {
     color: #FFFFFF;
     padding: 10px 15px;
     font-size: 14px;
-    z-index: 100;
+    z-index: 99999;
     display: inline-block;
     position: fixed;
     transition: all 0.5s ease-in-out;
