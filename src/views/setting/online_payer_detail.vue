@@ -28,7 +28,7 @@
             </div>
             <div class="box-body">
                 <div class="row m-b">
-                    <div class="col-xs-5">
+                    <div class="col-xs-7">
                         <span class="text-muted">{{$t('setting.merchant_info')}}</span>
                         <table class="table b-a m-t-sm">
                             <tbody>
@@ -46,11 +46,13 @@
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('online_payer.public_key')}}</th>
-                                    <td>{{public_key || '-'}}</td>
+                                    <td class="text-break-all" v-if="public_key" v-html="htmlTransform(public_key)"></td>
+                                    <td v-else>{{$t('action.no_setting')}}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('online_payer.private_key')}}</th>
-                                    <td>{{private_key || '-'}}</td>
+                                    <td class="text-break-all" v-if="private_key" v-html="htmlTransform(private_key)"></td>
+                                    <td v-else>{{$t('action.no_setting')}}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('online_payer.board_url')}}</th>
@@ -78,6 +80,7 @@
 
 <script>
     import api from '../../api'
+    import $ from '../../utils/util'
     export default {
         data () {
             return {
@@ -108,7 +111,8 @@
                         this[key] = data[key]
                     }
                 })
-            }
+            },
+            'htmlTransform': $.htmlTransform
         }
     }
 </script>
