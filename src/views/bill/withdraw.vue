@@ -183,6 +183,7 @@
                     <th>{{ $t('bank.bank_title') }}</th>
                     <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
+                    <th width="5%" class="text-center">{{ $t('common.operate') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.order_detail') }}</th>
                 </tr>
             </thead>
@@ -209,7 +210,10 @@
                         <span v-else class="t-red">{{ $t('member.failed') }}</span>
                     </td>
                     <td class="text-center">
-                        <transaction-status :transaction="t" v-if="t.status !== 3"></transaction-status>
+                        <transaction-status :transaction="t"/>
+                    </td>
+                    <td class="text-center">
+                        <span v-if="t.status !== 3">{{ $t('status.handled') }}</span>
                         <template v-else>
                             <button 
                                 type="button"
@@ -234,6 +238,18 @@
                                 v-if="$root.permissions.includes('refuse_withdraw_transaction')"
                             >{{ $t('bill.cancel') }}
                             </button>
+                            <br v-if="$root.permissions.includes('allow_withdraw_transaction')"/>
+                            <button
+                                type="button"
+                                class="btn btn-xs sm-btn m-b-sm"
+                                @click="openModal({
+                                    status: 5,
+                                    transactionType: parseInt(t.transaction_type.id),
+                                    transactionId: t.id,
+                                }, t.member)"
+                                v-if="$root.permissions.includes('refuse_withdraw_transaction')"
+                            >{{ $t('bill.declined') }}
+                            </button>
                             <online-payer-selector
                                 :member="t.member.id"
                                 :mode="'linklist'"
@@ -257,8 +273,8 @@
                 <div class="modal-header">
                     
                     <span class="text-md" v-if="modal.status === 1">{{ $t('bill.withdraw_audit_alert_msg') }}</span>
-                    <span class="text-md" v-if="modal.status === 4">{{ $t('bill.confirm_declined', {
-                        action: $t('bill.cancel')
+                    <span class="text-md" v-if="modal.status === 4 || modal.status === 5">{{ $t('bill.confirm_declined', {
+                        action: modal.status === 4 ? $t('bill.cancel') : $t('bill.declined')
                     }) }}</span>
                     <span class="text-md">({{ `${$t('common.username')}: ${modal.username}` }})</span>
                     <button type="button" class="close" aria-hidden="true" @click="modal.showModal = false">×
