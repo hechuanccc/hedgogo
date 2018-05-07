@@ -447,7 +447,7 @@ export default {
                 this.extra = `logined=1`
                 this.pageSelected = 'onlineMember'
             } else {
-                this.extra = `account_type=1`
+                this.extra = `account_type=1,2`
                 this.pageSelected = 'allMember'
             }
             if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
