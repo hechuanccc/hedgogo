@@ -183,7 +183,7 @@
                     <th>{{ $t('bank.bank_title') }}</th>
                     <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
-                    <!-- <th width="5%" class="text-center">{{ $t('common.operate') }}</th> -->
+                    <th width="5%" class="text-center">{{ $t('common.operate') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.order_detail') }}</th>
                 </tr>
             </thead>
@@ -212,7 +212,7 @@
                     <td class="text-center">
                         <transaction-status :transaction="t"/>
                     </td>
-                    <!-- <td class="text-center">
+                    <td class="text-center">
                         <span v-if="t.status !== 3">{{ $t('status.handled') }}</span>
                         <template v-else>
                             <button 
@@ -258,7 +258,7 @@
                                 @payer-select="payerSelect"
                             />
                         </template>
-                    </td> -->
+                    </td>
                     <td class="text-center">
                         <router-link :to="'/transaction/' + t.id">{{$t('action.view')}}</router-link>
                     </td>
