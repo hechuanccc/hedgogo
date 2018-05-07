@@ -48,9 +48,11 @@
               <level
                 style="display: block;"
                 :level="query.member_level"
-                @level-select="levelSelect"
+                :reportFlag="true"
+                :accountType="''"
                 :placeholder="$t('member.level')"
                 :disabled="agentReport"
+                @level-select="levelSelect"
               />
             </div>
             <div class="pull-left m-r-xs">
