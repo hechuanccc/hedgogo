@@ -44,6 +44,12 @@ export default {
         index: {
             default: 0
         },
+        accountType: {
+            default: '1'
+        },
+        reportFlag: {
+            default: false
+        },
         noShowTrialMember: {
             type: Boolean,
             default: true
@@ -87,7 +93,14 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.level}${this.noShowTrialMember ? '?account_type=1&' : '?'}opt_fields=${this.opt_fields && this.opt_fields + ','}${this.default_opt_fields}`).then(data => {
+        let params = {}
+        this.accountType && (params['account_type'] = this.accountType)
+        this.reportFlag && (params['report_flag'] = 'True')
+        params['opt_fields'] = (this.opt_fields && this.opt_fields + ',') + this.default_opt_fields
+
+        this.$http.get(api.level, {
+            params
+        }).then(data => {
             this.levels = data
             this.loading = false
         })
