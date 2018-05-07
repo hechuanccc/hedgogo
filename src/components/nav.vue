@@ -34,7 +34,7 @@
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link to="/bill/online"><span class="nav-text">{{$t('nav.online_pay_orders')}}</span>
+                                    <router-link to="/bill/online_pay"><span class="nav-text">{{$t('nav.online_pay_orders')}}</span>
                                     </router-link>
                                 </li>
                                 <li>

@@ -10,84 +10,110 @@
             <div class="box-body">
                 <form class="form m-a" v-on:submit.prevent="onSubmit">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <label  class="label-width">{{$t('common.name')}}</label>
-                                <div class="inline-form-control">
-                                    <input type="text" class="form-control" placeholder="名称" v-model="payee.name" required >
-                                </div>
+                        <div class="form-group">
+                            <label  class="label-width">{{$t('common.name')}}</label>
+                            <div class="inline-form-control">
+                                <input type="text" class="form-control" placeholder="名称" v-model="payee.name" required >
                             </div>
-                            <div class="form-group">
-                                <label  class="label-width">{{$t('setting.display_name')}}</label>
-                                <div class="inline-form-control">
-                                    <input type="text" class="form-control" placeholder="显示名称" v-model="payee.display_name" required>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="label-width">{{$t('setting.display_name')}}</label>
+                            <div class="inline-form-control">
+                                <input type="text" class="form-control" placeholder="显示名称" v-model="payee.display_name" required>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label class="label-width">{{$t('setting.type')}}</label>
-                                <div class="inline-form-control">
-                                    <select class="form-control c-select" v-model="payee.payment_gateway" required>
-                                        <option :value="p.id" v-for="p in paymenttypes">{{p.name}}</option>
-                                    </select>
-                                </div>
+                        <div class="form-group">
+                            <label class="label-width">{{$t('setting.type')}}</label>
+                            <div class="inline-form-control">
+                                <select class="form-control c-select" v-model="payee.payment_gateway" required>
+                                    <option :value="p.id" v-for="p in paymenttypes">{{p.name}}</option>
+                                </select>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label class="label-width">{{$t('setting.merchant_num')}}</label>
-                                <div class="inline-form-control">
-                                    <input class="form-control" type="text" v-model="payee.merchant_num" required />
-                                </div>
+                        <div class="form-group">
+                            <label class="label-width">{{$t('setting.merchant_num')}}</label>
+                            <div class="inline-form-control">
+                                <input class="form-control" type="text" v-model="payee.merchant_num" required />
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label class="label-width">{{$t('setting.certificate')}}</label>
-                                <div class="inline-form-control">
-                                    <input type="text" class="form-control" v-model="payee.certificate"  />
-                                </div>
+                        <div class="form-group">
+                            <label class="label-width">{{$t('setting.certificate')}}</label>
+                            <div class="inline-form-control">
+                                <input type="text" class="form-control w-lg" v-model="payee.certificate"  />
                             </div>
+                        </div>
 
 
-                            <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.public_key')}}</label>
-                                <div class="inline-form-control">
-                                    <input
-                                        class="form-control"
-                                        v-model="payee.public_key"
-                                    />
-                                </div>
+                        <div class="form-group">
+                            <label class="label-width v-t">{{$t('online_payer.public_key')}}</label>
+                            <div class="inline-form-control">
+                                <textarea
+                                    class="form-control"
+                                    v-model="payee.public_key"
+                                    cols="48"
+                                    rows="6"
+                                />
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.private_key')}}</label>
-                                <div class="inline-form-control">
-                                    <input
-                                        class="form-control"
-                                        v-model="payee.private_key"
-                                    />
-                                </div>
+                        <div class="form-group">
+                            <label class="label-width v-t">{{$t('online_payer.private_key')}}</label>
+                            <div class="inline-form-control">
+                                <textarea
+                                    class="form-control"
+                                    v-model="payee.private_key"
+                                    cols="48"
+                                    rows="6"
+                                />
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label  class="label-width">{{$t('setting.board_url')}}</label>
-                                <div class="inline-form-control">
-                                    <input  class="form-control" placeholder="Board URL" v-model="payee.board_url"  required/>
-                                </div>
+                        <div class="form-group">
+                            <label class="label-width v-t">{{$t('online_payer.merchant_public_key')}}</label>
+                            <div class="inline-form-control">
+                                <textarea
+                                    class="form-control"
+                                    v-model="payee.merchant_public_key"
+                                    cols="48"
+                                    rows="6"
+                                />
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label  class="label-width">{{$t('setting.payment_domain')}}</label>
-                                <div class="inline-form-control">
-                                    <input  class="form-control" v-model="payee.domain_url" :disabled="disabledDomainURL"/>
-                                </div>
-                                <p class="text-danger note">{{$t('setting.domain_label')}}</p>
+                        <div class="form-group">
+                            <label class="label-width v-t">{{$t('online_payer.merchant_private_key')}}</label>
+                            <div class="inline-form-control">
+                                <textarea
+                                    class="form-control"
+                                    v-model="payee.merchant_private_key"
+                                    cols="48"
+                                    rows="6"
+                                />
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label  class="label-width">{{$t('setting.expired_in')}}</label>
-                                <div class="inline-form-control">
-                                    <input  class="form-control" placeholder="Expiration" v-model="payee.expired_in" required>
-                                </div>
+                        <div class="form-group">
+                            <label  class="label-width">{{$t('setting.board_url')}}</label>
+                            <div class="inline-form-control">
+                                <input  class="form-control" placeholder="Board URL" v-model="payee.board_url"  required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label  class="label-width">{{$t('setting.payment_domain')}}</label>
+                            <div class="inline-form-control">
+                                <input  class="form-control" v-model="payee.domain_url" :disabled="disabledDomainURL"/>
+                            </div>
+                            <p class="text-danger note">{{$t('setting.domain_label')}}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label  class="label-width">{{$t('setting.expired_in')}}</label>
+                            <div class="inline-form-control">
+                                <input  class="form-control" placeholder="Expiration" v-model="payee.expired_in" required>
                             </div>
                         </div>
                     </div>
@@ -130,6 +156,8 @@
                     certificate: '',
                     private_key: '',
                     public_key: '',
+                    merchant_private_key: '',
+                    merchant_public_key: '',
                     board_url: '',
                     level: '',
                     expired_in: '',
@@ -198,8 +226,11 @@
 </script>
 
 <style>
-    .note {
-        padding-left: 20px;
-        display: inline-block;
-    }
+.note {
+  padding-left: 20px;
+  display: inline-block;
+}
+.v-t {
+  vertical-align: top;
+}
 </style>

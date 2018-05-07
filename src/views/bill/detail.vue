@@ -397,7 +397,7 @@ export default {
 
             if (this.transaction.id) {
                 this.$http.put(url + this.transaction.id + '/', {
-                    status: status,
+                    status,
                     memo: this.transaction.memo,
                     member: this.member,
                     transaction_type: this.transactiontype

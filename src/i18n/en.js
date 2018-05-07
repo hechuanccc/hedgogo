@@ -408,7 +408,8 @@ export default {
         cancelled: 'Cancelled',
         failed: 'Failed',
         disabled: 'Disabled',
-        payment_pending: 'Pending'
+        payment_pending: 'Pending',
+        handled: 'Handled'
     },
     betrecord: {
         win: 'Win',
@@ -771,6 +772,8 @@ export default {
         certificate: 'Certification',
         public_key: 'Public Key',
         private_key: 'Private Key',
+        merchant_public_key: 'Merchant Public Key',
+        merchant_private_key: 'Merchant Private Key',
         board_url: 'Board URL',
         sum_fund: 'Sum Fund.'
     },

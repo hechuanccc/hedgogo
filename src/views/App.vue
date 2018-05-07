@@ -46,8 +46,7 @@ export default {
             username: '',
             dropdown: false,
             remit_count: '',
-            withdraw_count: '',
-            agent_application: ''
+            withdraw_count: ''
         }
     },
     computed: {

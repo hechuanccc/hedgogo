@@ -75,21 +75,25 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.public_key')}}</label>
+                                <label class="label-width v-t">{{$t('online_payer.public_key')}}</label>
                                 <div class="inline-form-control">
-                                    <input
-                                        class="form-control w-lg"
+                                    <textarea
+                                        class="form-control"
                                         v-model="payer.public_key"
+                                        cols="48"
+                                        rows="6"
                                     />
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.private_key')}}</label>
+                                <label class="label-width v-t">{{$t('online_payer.private_key')}}</label>
                                 <div class="inline-form-control">
-                                    <input
-                                        class="form-control w-lg"
+                                    <textarea
+                                        class="form-control"
                                         v-model="payer.private_key"
+                                        cols="48"
+                                        rows="6"
                                     />
                                 </div>
                             </div>
@@ -165,7 +169,9 @@ export default {
             this.submitLoading = true
             let data = {}
             this.fields.forEach(key => {
-                data[key] = this.payer[key]
+                if (this.payer[key]) {
+                    data[key] = this.payer[key]
+                }
             })
             this.$http({
                 method: this.id ? 'put' : 'post',
@@ -206,3 +212,8 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.v-t {
+  vertical-align: top;
+}
+</style>

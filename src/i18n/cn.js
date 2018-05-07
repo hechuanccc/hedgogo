@@ -408,7 +408,8 @@ export default {
         cancelled: '已取消',
         failed: '失败',
         disabled: '停用',
-        payment_pending: '处理中'
+        payment_pending: '处理中',
+        handled: '已处理'
     },
     betrecord: {
         win: '赢',
@@ -770,6 +771,8 @@ export default {
         certificate: '密钥',
         public_key: '公钥',
         private_key: '私钥',
+        merchant_public_key: '商戶公钥',
+        merchant_private_key: '商戶私钥',
         board_url: '跳板地址',
         sum_fund: '目前累计'
     },
