@@ -408,7 +408,8 @@ export default {
         cancelled: '已取消',
         failed: '失败',
         disabled: '停用',
-        payment_pending: '处理中'
+        payment_pending: '处理中',
+        handled: '已处理'
     },
     betrecord: {
         win: '赢',

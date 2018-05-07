@@ -408,7 +408,8 @@ export default {
         cancelled: 'Cancelled',
         failed: 'Failed',
         disabled: 'Disabled',
-        payment_pending: 'Pending'
+        payment_pending: 'Pending',
+        handled: 'Handled'
     },
     betrecord: {
         win: 'Win',

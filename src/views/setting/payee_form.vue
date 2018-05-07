@@ -67,7 +67,7 @@
                                     <label class="label-width">{{$t('bank.account')}}</label>
                                     <div class="inline-form-control">
                                         <input
-                                            type="number"
+                                            pattern="[\d\*]*"
                                             class="form-control"
                                             placeholder="比如：6256768987765442"
                                             v-model="payee.account"
