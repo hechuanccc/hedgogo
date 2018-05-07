@@ -30,10 +30,11 @@
         <table st-table="rowCollectionBasic" class="table table-striped">
             <thead>
                 <tr>
-                    <th v-show="!mode" style="width: 3%;"></th>
-                    <th>{{$t('setting.display_name')}}</th>
-                    <th>{{$t('setting.payee')}}</th>
-                    <th>{{$t('common.status')}}</th>
+                    <th v-show="!mode" width="3%"></th>
+                    <th width="25%">{{$t('common.name')}}</th>
+                    <th width="25%">{{$t('setting.display_name')}}</th>
+                    <th width="25%">{{$t('setting.payee')}}</th>
+                    <th width="22%" class="text-center">{{$t('common.status')}}</th>
                 </tr>
             </thead>
             <draggable
@@ -53,17 +54,18 @@
                     <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
                     <td v-if="$root.permissions.includes('update_onlinepayment')">
                         <router-link :to="'/paymenttype/' + paymentType.id + '/edit'">
-                            {{paymentType.display_name}}
+                            {{paymentType.name}}
                         </router-link>
                     </td>
-                    <td v-else>{{paymentType.display_name}}</td>
+                    <td v-else>{{paymentType.name}}</td>
+                    <td>{{paymentType.display_name || '-'}}</td>
                     <td v-if="paymentType.detail.length">
                         <span v-for="payee in paymentType.detail" :key="payee.id">
                             {{payee.name}}
                         </span> 
                     </td>
                     <td v-else>-</td>
-                    <td>
+                    <td class="text-center">
                         <span class="label success m-r" v-if="paymentType.status==1">{{$t('status.active')}}</span>
                         <span class="label danger m-r" v-else>{{$t('status.disabled')}}</span>
                         <template v-if="$root.permissions.includes('update_onlinepayment_status')">
