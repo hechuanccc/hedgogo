@@ -172,14 +172,18 @@
                 <tr>
                     <th>{{ $t('common.member') }}</th>
                     <th>{{ $t('member.level') }}</th>
-                    <th width="11%" class="text-center">{{ $t('common.applied_at') }}</th>
+                    <th width="11%" class="text-center">
+                        {{ $t('common.applied_at') }}&nbsp;/
+                        <br/>
+                        {{ $t('common.status_updated_at') }}
+                    </th>
+                    <th>{{ $t('common.ip_info') }}</th>
                     <th class="text-right">
                         {{ $t('common.balance_before') }} /
                         <br/>
                         {{ $t('common.balance_after') }}
                     </th>
                     <th class="text-center">{{ $t('common.amount') }}</th>
-                    <th width="11%" class="text-center">{{ $t('common.status_updated_at') }}</th>
                     <th>{{ $t('bank.bank_title') }}</th>
                     <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
@@ -191,7 +195,17 @@
                 <tr v-for="t in queryset" :key="t.id">
                     <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
                     <td><router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link></td>
-                    <td class="text-center">{{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                    <td class="text-center">
+                        {{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}&nbsp;/
+                        <br/>
+                        {{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}
+                    </td>
+                    <td v-if="t.ip_info">
+                        <span>{{ t.ip_info.ip || '-' }}</span>
+                        <br/>
+                        <span class="text-muted">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>
+                    </td>
+                    <td v-else>-</td>
                     <td class="text-right">
                         <p class="m-b-xs" v-if="t.balance_before || t. balance_before === 0">{{ t.balance_before | currency('￥') }} /</p>
                         <p class="m-b-xs" v-else>-</p>
@@ -199,7 +213,6 @@
                         <p class="m-b-0" v-else>-</p>
                     </td>
                     <td class="text-right">{{ t.amount | currency('￥') }}</td>
-                    <td class="text-center">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                     <td>
                         <p class="m-b-xs">{{ `${$t('bank.name')}: ${t.member.bank.name}` }}</p>
                         <p class="m-b-xs">{{ `${$t('bank.account')}: ${t.member.bank.account}` }}</p>
