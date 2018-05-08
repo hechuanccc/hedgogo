@@ -18,7 +18,7 @@
                 style="display: block;"
                 :not-after="today"
                 :shortcuts="shortcuts"
-                :inputClass="'input form-control'"
+                :inputClass="'mx-input form-control'"
                 v-model="date"
                 type="date"
                 format="yyyy-MM-dd"

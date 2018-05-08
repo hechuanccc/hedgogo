@@ -114,7 +114,7 @@
                                     style="display: block;"
                                     :not-after="yesterday"
                                     :shortcuts="shortcuts"
-                                    :inputClass="'input form-control'"
+                                    :inputClass="'mx-input form-control'"
                                     type="date"
                                     v-model="created_at"
                                     format="yyyy-MM-dd"
