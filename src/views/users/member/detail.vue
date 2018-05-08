@@ -20,7 +20,7 @@
           <div class="row">
             <div class="col-xs-4">
               <h2><strong>{{member.username}}</strong>
-                <span class="label success text-sm" v-if="member.account_type === 1" >{{$t('member.real_account')}}</span>
+                <span class="label success text-sm" v-if="member.account_type !== 0" >{{$t('member.real_account')}}</span>
               </h2>
               <span class="text-muted text-sm" v-if="member.created_at">于 {{ member.created_at | moment("YYYY-MM-DD HH:mm")}} {{$t('common.register')}}</span>
             </div>

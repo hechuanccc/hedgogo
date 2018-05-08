@@ -25,7 +25,7 @@
             <div class="row">
               <div class="col-xs-3 text-right">{{$t('common.member')}}</div>
               <div class="col-xs-8" v-if="betrecords.member">
-                <router-link :to="'/member/' + betrecords.member.id" v-if="betrecords.member.account_type" class="text-md v-m m-r">
+                <router-link :to="'/member/' + betrecords.member.id" v-if="betrecords.member.account_type" class="v-m m-r">
                   {{betrecords.member.username}}
                 </router-link>
                 <span v-else>{{ $t('member.visitor') }}</span>

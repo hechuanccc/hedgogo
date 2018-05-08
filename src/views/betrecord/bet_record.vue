@@ -324,7 +324,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="pull-left" v-if="pageSelected === 'realtime'">
-                    <label class="check m-b-0">
+                    <label class="check m-b-0 pointer">
                         <input type="checkbox" value="1" name="account_type" v-model="account_type"/>
                         <i class="blue"></i>
                         {{ $t('action.filter_trial_account') }}
@@ -346,7 +346,7 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th>{{ $t('common.settledat') }}</th>
+                        <th class="text-center">{{ $t('common.settledat') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('common.game') }}</th>
@@ -354,16 +354,16 @@
                         <th>{{ $t('game_manage.play') }}</th>
                         <th>{{ $t('common.betamount') }}</th>
                         <th>{{ $t('common.settlementamount') }}</th>
-                        <th>{{ $t('game_manage.odds') }}</th>
-                        <th>{{ $t('common.profit') }}</th>
-                        <th>{{ $t('common.status') }}</th>
-                        <th>{{ $t('betrecord.cancel_bet') }}</th>
+                        <th>{{ $t('game_manage.odds') }}&nbsp;/&nbsp;{{ $t('bill.return') }}&nbsp;(%)</th>
+                        <th class="text-right">{{ $t('common.profit') }}</th>
+                        <th class="text-center" width="5%">{{ $t('common.status') }}</th>
+                        <th class="text-center">{{ $t('betrecord.cancel_bet') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="t in queryset" :key="t.id">
                         <td><router-link :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link></td>
-                        <td>{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td class="text-center p-l-0 p-r-0 text-sm">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
                         <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
                         <td>{{ t.game.display_name }}</td>
@@ -371,11 +371,9 @@
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
                         <td>{{ t.bet_amount | currency('￥') }}</td>
                         <td>{{ t.settlement_amount | currency('￥') }}</td>
-                        <td>{{ t.odds }}</td>
-                        <td v-if="t.profit">{{ t.profit | currency('￥') }}</td>
-                        <td v-else-if="t.profit == 0">{{ 0 | currency('￥') }}</td>
-                        <td v-else>-</td>
-                        <td>
+                        <td>{{ t.odds }}&nbsp;/&nbsp;{{ t.return_rate | fixed }}&nbsp;%</td>
+                        <td class="text-right">{{ t.profit || 0 | currency('￥') }}</td>
+                        <td class="text-center p-l-xs p-r-xs">
                             <div class="flex-value status">
                                 <span class="label danger" v-if="t.status === 'lose'">{{ $t('betrecord.lose') }}</span>
                                 <span class="label success" v-if="t.status === 'win'">{{ $t('betrecord.win') }}</span>
@@ -385,9 +383,9 @@
                                 <span class="label ongoing" v-if="t.status === 'no_draw'">{{ $t('game_history.no_draw') }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td class="text-center p-r-xs p-l-xs">
                             <span v-if="(t.status === 'ongoing' || t.status === 'no_draw') && $root.permissions.includes('cancel_bet')">
-                                <button type="button" class="btn btn-xs blue-300 sm-btn m-b-sm f-b" @click="cancelBet(t, 'cancelled', true, $event)">{{ $t('betrecord.cancel_bet') }}</button> <br>
+                                <button type="button" class="btn btn-xs blue sm-btn m-b-sm f-b text-xs" @click="cancelBet(t, 'cancelled', true, $event)">{{ $t('betrecord.cancel_bet') }}</button> <br>
                             </span>
                             <span v-else>-</span>
                         </td>
@@ -400,35 +398,35 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th>{{ $t('common.settledat') }}</th>
+                        <th class="text-center">{{ $t('common.settledat') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('member.account_type') }}</th>
                         <th>{{ $t('common.game') }}</th>
                         <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_manage.play') }}</th>
-                        <th>{{ $t('game_manage.return_rate') }}(%)</th>
-                        <th>{{ $t('common.betamount') }}</th>
+                        <th>{{ $t('game_manage.odds') }}&nbsp;/&nbsp;{{ $t('game_manage.return_rate') }}&nbsp;(%)</th>
+                        <th class="text-right">{{ $t('common.betamount') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="t in queryset" :key="t.id">
                         <td>
-                            <router-link v-if="t.member.account_type === 1" :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link>
+                            <router-link v-if="t.member.account_type !== 0" :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link>
                             <span v-else>{{ t.id }}</span>
                         </td>
-                        <td>{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td class="text-center text-sm">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>
-                            <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type === 1">{{ t.member.username }}</router-link>
+                            <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type !== 0">{{ t.member.username }}</router-link>
                             <span v-else>{{ $t('member.visitor') }}</span>
                         </td>
                         <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
-                        <td>{{ t.member.account_type === 1 ? $t('member.real_account') : $t('member.trial_account') }}</td>
+                        <td>{{ t.member.account_type !== 0 ? $t('member.real_account') : $t('member.trial_account') }}</td>
                         <td>{{ t.game.display_name }}</td>
                         <td>{{ t.issue_number }}</td>
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
-                        <td>{{ t.return_rate }}%</td>
-                        <td>{{ t.bet_amount | currency('￥') }}</td>
+                        <td>{{ t.odds }}&nbsp;/&nbsp;{{ t.return_rate | fixed }}&nbsp;%</td>
+                        <td class="text-right">{{ t.bet_amount | currency('￥') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -501,8 +499,8 @@
                 this.submit()
             },
             account_type (newObj, old) {
-                if (newObj === true) {
-                    this.query.account_type = '1'
+                if (newObj) {
+                    this.query.account_type = '1,2'
                 } else {
                     this.query.account_type = ''
                 }
@@ -551,7 +549,7 @@
             pageSelected (newObj) {
                 if (newObj === 'realtime') {
                     this.query = Object.assign({}, {
-                        account_type: '1'
+                        account_type: '1,2'
                     })
                 } else {
                     this.query = {}
@@ -605,7 +603,7 @@
                 let query = this.$route.query
                 this.platform = query.platform || ''
                 if (this.$route.path === '/report/betrecord/today') {
-                    this.extra = `report_flag=true&account_type=1&created_at_0=${this.today}&created_at_1=${this.today}`
+                    this.extra = `account_type=1,2&created_at_0=${this.today}&created_at_1=${this.today}`
                     this.game = query.game_q || ''
                     this.game_category = query.category || ''
                     this.status = query.status || ''
@@ -616,7 +614,7 @@
                     } else {
                         this.created_at = [undefined, undefined]
                     }
-                    this.extra = `report_flag=true&account_type=1&created_at_1=${this.yesterday}`
+                    this.extra = `account_type=1,2&created_at_1=${this.yesterday}`
                     this.game = query.game_q || ''
                     this.game_category = query.category || ''
                     this.status = query.status || ''
@@ -627,8 +625,8 @@
                     } else {
                         this.filter_game = []
                     }
-                    this.extra = `report_flag=true&created_at_0=${this.today}&created_at_1=${this.today}`
-                    this.account_type = (query.account_type === '1') || undefined
+                    this.extra = `created_at_0=${this.today}&created_at_1=${this.today}`
+                    this.account_type = (query.account_type === '1,2') || undefined
                     this.period = 10 * 1000
                     this.pageSelected = 'realtime'
                 }
@@ -688,7 +686,7 @@
             clearAll () {
                 if (this.pageSelected === 'realtime') {
                     this.query = Object.assign({}, {
-                        account_type: '1'
+                        account_type: '1,2'
                     })
                 } else {
                     this.query = {}
@@ -696,6 +694,17 @@
                 this.$nextTick(() => {
                     this.submit()
                 })
+            }
+        },
+        filters: {
+            fixed (val) {
+                if (Number.isInteger(val)) {
+                    return val
+                } else if (val) {
+                    return val.toFixed(2)
+                } else {
+                    return 0
+                }
             }
         },
         components: {
