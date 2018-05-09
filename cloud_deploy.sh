@@ -19,7 +19,7 @@ npm run build
 # Upload the changes
 /root/bin/az storage blob delete-batch --source $ENV_CONTAINER
 /root/bin/az storage blob upload-batch --content-cache-control "public, max-age=$MAX_AGE" --destination $ENV_CONTAINER --source dist
-
+/root/bin/az storage blob upload --content-cache-control "public, max-age=0" --file dist/index.html --container-name $ENV_CONTAINER --name index.html
 
 # To start purging the CDN
 # CDN is cached and will not reflect any change until purged
