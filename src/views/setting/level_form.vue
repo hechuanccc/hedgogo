@@ -90,6 +90,7 @@
                             </label>
                             <div class="row text-muted">
                                 <label class="col-xs-2">{{ $t('level.reg_present_status') }}</label>
+                                <label class="col-xs-3">{{ $t('level.reg_present_need_bankinfo') }}</label>
                                 <label class="col-xs-3">{{ $t('level.reg_present_amount') }}</label>
                                 <label class="col-xs-3">{{ $t('level.reg_present_check_amount') }}</label>
                             </div>
@@ -97,6 +98,12 @@
                                 <div class="col-xs-2">
                                     <label class="ui-switch blue m-t-xs m-r">
                                         <input type="checkbox" v-model="level.reg_present.status">
+                                        <i></i>
+                                    </label>
+                                </div>
+                                <div class="col-xs-3">
+                                    <label class="ui-switch blue m-t-xs m-r">
+                                        <input type="checkbox" v-model="level.reg_present.need_bankinfo">
                                         <i></i>
                                     </label>
                                 </div>
@@ -325,7 +332,8 @@ export default {
                 reg_present: {
                     status: 0,
                     amount: 0,
-                    check_amount: 0
+                    check_amount: 0,
+                    need_bankinfo: 0
                 },
                 deposit_check: {
                     remit_pay: '',

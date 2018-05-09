@@ -22,6 +22,15 @@ if (HTTPS && HTTPS.replace(/"/g, '') === '1') {
     }
 }
 
+let navLang = navigator.language || navigator.userLanguage
+if (navLang === 'zh-CN' || navLang === 'zh-cn') {
+    Vue.config.lang = 'cn'
+} else if (navLang === 'en-US' || navLang === 'en-us') {
+    Vue.config.lang = 'en'
+} else {
+    Vue.config.lang = 'cn'
+}
+
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 Vue.prototype.$http = axios
@@ -55,24 +64,9 @@ axios.interceptors.response.use(response => {
     } else {
         return Promise.reject(handleError(response.data.msg))
     }
-}, error => {
-    router.push({
-        name: 'error',
-        query: {
-            status: (error.response && error.response.status) || ''
-        }
-    })
-    return Promise.reject(error)
+}, () => {
+    return Promise.reject(Vue.config.lang === 'cn' ? '服务异常，请稍后再试' : 'An error occured. Please try again later.')
 })
-
-let navLang = navigator.language || navigator.userLanguage
-if (navLang === 'zh-CN' || navLang === 'zh-cn') {
-    Vue.config.lang = 'cn'
-} else if (navLang === 'en-US' || navLang === 'en-us') {
-    Vue.config.lang = 'en'
-} else {
-    Vue.config.lang = 'cn'
-}
 
 Object.keys(locales).forEach(lang => {
     Vue.locale(lang, locales[lang])
