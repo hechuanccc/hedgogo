@@ -387,7 +387,8 @@ export default {
         off_time: 'Off Time',
         required: 'Required',
         not_required: 'Not Required',
-        click_submit_and_clear: 'Please click submit button and save.'
+        click_submit_and_clear: 'Please click submit button and save.',
+        server_error: 'An error occured. Please try again later.'
     },
     bank: {
         bank_title: 'Bank Information',

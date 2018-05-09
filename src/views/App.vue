@@ -110,11 +110,7 @@ export default {
                     this.username = data.username
                     this.userType = data.type
                     this.getPermissions()
-                } else {
-                    this.toLoginPage()
                 }
-            }, () => {
-                this.toLoginPage()
             })
         },
         refresh () {

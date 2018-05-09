@@ -82,6 +82,7 @@
 <script>
 import Vue from 'vue'
 import _ from 'lodash'
+import $ from '../utils/util'
 // to perform a pulling, parent componet need to boardcast 'rebase' event
 // once the comopnent is ready, and might trigger 'rebase' everytime needed
 export default {
@@ -239,7 +240,10 @@ export default {
                 this.next = data.next
                 this.loading = false
             }, () => {
-                this.$router.push('/login?next=' + this.$route.fullPath)
+                $.notify({
+                    message: this.$t('common.server_error'),
+                    type: 'danger'
+                })
             })
             this.$emit('query-param', this.myQuery)
         },
