@@ -130,20 +130,30 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
-            <th>{{ $t('common.date') }}</th>
-            <th>{{ $t('common.overview.label.amount') }}</th>
-            <th>{{ $t('common.overview.label.betrecord_count') }}</th>
-            <th>{{ $t('bill.deposit_amount') }}</th>
-            <th>{{ $t('common.overview.label.profit') }}</th>
+            <th class="text-center">{{ $t('common.date') }}</th>
+            <th class="text-right">{{ $t('common.overview.label.amount') }}</th>
+            <th class="text-right">{{ $t('common.overview.label.betrecord_count') }}</th>
+            <th class="text-right">{{ $t('bill.deposit_amount') }}</th>
+            <th class="text-right">{{ $t('bill.withdraw') + $t('common.amount') }}</th>
+            <th class="text-right">{{ $t('common.overview.label.profit') }}</th>
           </tr>
         </thead>
-        <tbody v-if="queryset.length > 0">
+        <tbody v-if="queryset.length > 0" class="text-right">
           <tr v-for="data in queryset" :key="data.time">
-            <td>{{ data.time | moment('YYYY-MM-DD') }}</td>
+            <td class="text-center">{{ data.time | moment('YYYY-MM-DD') }}</td>
             <td>{{ data.amount | currency('￥') }}</td>
             <td>{{ data.betrecord_count.toLocaleString() }}</td>
             <td>{{ data.deposit_amount | currency('￥') }}</td>
+            <td>{{ data.withdraw_amount | currency('￥') }}</td>
             <td :class="data.profit < 0 ? 'text-danger' : 'text-success'">{{ data.profit | currency('￥') }}</td>
+          </tr>
+          <tr class="_600">
+              <td class="text-center">{{ $t('common.total') }}</td>
+              <td>{{ totalAmount | currency('￥') }}</td>
+              <td>{{ totalBetCount.toLocaleString() }}</td>
+              <td>{{ totalDeposit | currency('￥') }}</td>
+              <td>{{ totalWithdraw | currency('￥') }}</td>
+              <td :class="totalProfit < 0 ? 'text-danger' : 'text-success'">{{ totalProfit | currency('￥') }}</td>
           </tr>
         </tbody>
       </table>
@@ -157,6 +167,11 @@
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
+        @amount="(v) => totalAmount = v"
+        @profit="(v) => totalProfit = v"
+        @bet-count="(v) => totalBetCount = v"
+        @deposit="(v) => totalDeposit = v"
+        @withdraw="(v) => totalWithdraw = v"
         ref="pulling"
       />
     </div>
@@ -199,7 +214,12 @@ export default {
                 end: date[element][1]
             })),
             defaultDate: ['', ''],
-            loading: true
+            loading: true,
+            totalAmount: 0,
+            totalBetCount: 0,
+            totalDeposit: 0,
+            totalWithdraw: 0,
+            totalProfit: 0
         }
     },
     created () {

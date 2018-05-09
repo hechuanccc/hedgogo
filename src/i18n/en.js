@@ -387,7 +387,8 @@ export default {
         off_time: 'Off Time',
         required: 'Required',
         not_required: 'Not Required',
-        click_submit_and_clear: 'Please click submit button and save.'
+        click_submit_and_clear: 'Please click submit button and save.',
+        server_error: 'An error occured. Please try again later.'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -704,6 +705,7 @@ export default {
         deposit_audit_ratio: 'Deposit Audit Ratio',
         reg_present: 'Register Prize',
         reg_present_status: 'Status',
+        reg_present_need_bankinfo: 'Need Bank Info',
         reg_present_allow_add: 'Allow Adding',
         reg_present_amount: 'Amount',
         reg_present_check_amount: 'Check Amount',

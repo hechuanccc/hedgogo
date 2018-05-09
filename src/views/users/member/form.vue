@@ -226,7 +226,6 @@ export default {
         return {
             id: '',
             member: {
-                account_type: '1',
                 id: '',
                 username: '',
                 agent: '',

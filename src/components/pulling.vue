@@ -82,6 +82,7 @@
 <script>
 import Vue from 'vue'
 import _ from 'lodash'
+import $ from '../utils/util'
 // to perform a pulling, parent componet need to boardcast 'rebase' event
 // once the comopnent is ready, and might trigger 'rebase' everytime needed
 export default {
@@ -218,9 +219,6 @@ export default {
         },
         // pull queryset form back-end
         pull () {
-            let amount = ''
-            let profit = ''
-            let totalBet = ''
             this.busy = true
             this.loading = true
             this.$http.get(this.next).then(data => {
@@ -228,18 +226,11 @@ export default {
                     this.prevPage()
                     return
                 }
-                if (data.total_amount) {
-                    amount = data.total_amount
-                }
-                if (data.total_profit) {
-                    profit = data.total_profit
-                }
-                if (data.total_bet_amount) {
-                    totalBet = data.total_bet_amount
-                }
-                this.$emit('amount', amount)
-                this.$emit('profit', profit)
-                this.$emit('totalBet', totalBet)
+                this.$emit('amount', data.total_amount || 0)
+                this.$emit('profit', data.total_profit || 0)
+                this.$emit('bet-count', data.total_betrecord_count || 0)
+                this.$emit('deposit', data.total_deposit_amount || 0)
+                this.$emit('withdraw', data.total_withdraw_amount || 0)
                 this.count = data.count
                 this.getPage()
                 this.busy = false
@@ -249,7 +240,10 @@ export default {
                 this.next = data.next
                 this.loading = false
             }, () => {
-                this.$router.push('/login?next=' + this.$route.fullPath)
+                $.notify({
+                    message: this.$t('common.server_error'),
+                    type: 'danger'
+                })
             })
             this.$emit('query-param', this.myQuery)
         },

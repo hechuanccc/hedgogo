@@ -244,11 +244,7 @@
                                 this.withdraw_count = data.withdraw_count
                                 this.online_member = data.online_member
                                 this.abnormal_count = data.abnormal_count
-                            } else {
-                                this.$root.toLoginPage()
                             }
-                        }, () => {
-                            this.$root.toLoginPage()
                         })
                     } else {
                         this.$root.toLoginPage()

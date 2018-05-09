@@ -236,18 +236,18 @@
               <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
             </td>
             <td>
-              <span v-if="member.account_type === 1">{{ $t('member.real_account') }}</span>
+              <span v-if="member.account_type !== 0">{{ $t('member.real_account') }}</span>
               <span v-else>{{ $t('member.trial_account') }}</span>
             </td>
             <td>
-              <router-link :to="'/member/' + member.id" v-if="member.account_type === 1">{{ member.username }}</router-link>
+              <router-link :to="'/member/' + member.id" v-if="member.account_type !== 0">{{ member.username }}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
               <br/>
               <span class="label success" v-if="member.status===1">{{ $t('status.active') }}</span>
               <span class="label" v-else>{{ $t('status.inactive') }}</span>
             </td>
             <td>
-              <div v-if="member.account_type === 1">
+              <div v-if="member.account_type !== 0">
                 {{ member.real_name || '-' }}
                 <div v-if="member.realname_repeated">
                   <span class="label danger">{{ $t('common.repeat') }}</span>
@@ -277,7 +277,7 @@
               <span>{{ member.agent.name }}</span>
             </td>
             <td class="text-center">
-              <router-link v-if="member.level && member.account_type === 1" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
+              <router-link v-if="member.level && member.account_type !== 0" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
               <span v-else>-</span>
             </td>
             <td><div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div></td>
