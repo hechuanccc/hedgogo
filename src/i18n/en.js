@@ -705,6 +705,7 @@ export default {
         deposit_audit_ratio: 'Deposit Audit Ratio',
         reg_present: 'Register Prize',
         reg_present_status: 'Status',
+        reg_present_need_bankinfo: 'Need Bank Info',
         reg_present_allow_add: 'Allow Adding',
         reg_present_amount: 'Amount',
         reg_present_check_amount: 'Check Amount',

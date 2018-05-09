@@ -704,6 +704,7 @@ export default {
         deposit_audit_ratio: '存款稽核比',
         reg_present: '注册送彩金',
         reg_present_status: '是否启用',
+        reg_present_need_bankinfo: '需银行资讯',
         reg_present_allow_add: '管端新增',
         reg_present_amount: '赠送金额',
         reg_present_check_amount: '稽核金额',

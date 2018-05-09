@@ -128,6 +128,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">{{ $t('level.reg_present_status') }}</th>
+                                <th class="text-center">{{ $t('level.reg_present_need_bankinfo') }}</th>
                                 <th class="text-center">{{ $t('level.reg_present_amount') }}</th>
                                 <th class="text-center">{{ $t('level.reg_present_check_amount') }}</th>
                             </tr>
@@ -137,6 +138,10 @@
                                 <td>
                                     <span class="label success" v-if="reg_present.status == 1">{{ $t('status.active') }}</span>
                                     <span class="label danger" v-else>{{ $t('status.disabled') }}</span>
+                                </td>
+                                <td>
+                                    <span class="label success" v-if="reg_present.need_bankinfo == 1">{{ $t('common.yes') }}</span>
+                                    <span class="label danger" v-else>{{ $t('common.no') }}</span>
                                 </td>
                                 <td>{{ reg_present.amount }}</td>
                                 <td>{{ reg_present.check_amount }}</td>
@@ -257,7 +262,8 @@ export default {
             reg_present: {
                 status: 0,
                 amount: '',
-                checkAmount: ''
+                checkAmount: '',
+                need_bankinfo: 0
             },
             deposit_check: {
                 company: '',
