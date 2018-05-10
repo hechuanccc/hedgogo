@@ -62,7 +62,7 @@
                                 v-model="level.online_limit.upper"
                             />
                         </div>
-                        <div class="form-group b-b p-b">
+                        <div class="form-group p-b">
                             <label
                                 for="withdraw-limit"
                                 class="label-width"
@@ -80,6 +80,18 @@
                                 type="number"
                                 placeholder="上限或留空"
                                 v-model="level.withdraw_limit.upper"
+                            />
+                        </div>
+                        <div class="form-group p-b b-b">
+                            <label
+                                for="withdraw-limit"
+                                class="label-width-md"
+                            >{{ $t('level.max_withdraw_count_per_day') }}
+                            </label>
+                            <input
+                                class="form-control w-sm inline"
+                                type="number"
+                                v-model="level.max_withdraw_count_per_day"
                             />
                         </div>
                         <div class="form-group m-t-md b-b">
@@ -328,6 +340,7 @@ export default {
                     lower: '',
                     upper: ''
                 },
+                max_withdraw_count_per_day: null,
                 memo: '',
                 reg_present: {
                     status: 0,
@@ -383,6 +396,9 @@ export default {
             this.loading = true
             this.verifyDiscounts(this.level.remit_discounts)
             this.verifyDiscounts(this.level.online_discounts)
+            if (!this.level.max_withdraw_count_per_day) {
+                this.level.max_withdraw_count_per_day = null
+            }
             if (this.level.id) {
                 this.$http.put(api.level + this.level.id + '/', this.level).then(data => {
                     this.$router.push('/level/' + data.id)
@@ -426,7 +442,7 @@ export default {
                     }]
                 }
                 for (let key in data) {
-                    if (!data[key]) delete data[key]
+                    if (data[key] === null) delete data[key]
                 }
                 this.level = Object.assign(this.level, data)
                 this.loading = false

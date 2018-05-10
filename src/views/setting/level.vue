@@ -13,10 +13,11 @@
             <thead>
                 <tr>
                     <th>{{ $t('common.name') }}</th>
-                    <th>{{ $t('common.status') }}</th>
-                    <th>{{ $t('level.remit_limit') }}</th>
-                    <th>{{ $t('level.online_pay_limit') }}</th>
-                    <th>{{ $t('level.withdraw_limit') }}</th>
+                    <th class="text-center">{{ $t('common.status') }}</th>
+                    <th class="text-center">{{ $t('level.remit_limit') }}</th>
+                    <th class="text-center">{{ $t('level.online_pay_limit') }}</th>
+                    <th class="text-center">{{ $t('level.withdraw_limit') }}</th>
+                    <th class="text-center">{{ $t('level.max_withdraw_count_per_day') }}</th>
                     <th>{{ $t('level.discount') }}</th>
                     <th>{{ $t('common.member_count') }}</th>
                 </tr>
@@ -24,11 +25,11 @@
             <tbody v-if="!loading">
                 <tr :key="l.id" v-for="l in levels">
                     <td><router-link :to="'/level/' + l.id">{{ l.name }}</router-link></td>
-                    <td>
+                    <td class="text-center">
                         <span v-if="l.status === 1" class="label success">{{ $t('status.active') }}</span>
                         <span v-else-if="l.status === 0" class="label danger">{{ $t('status.inactive') }}</span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <div v-if="l.remit_limit && (l.remit_limit.lower || l.remit_limit.upper)">
                             <span v-if="l.remit_limit.upper && l.remit_limit.lower">{{ l.remit_limit.lower }} 至 {{ l.remit_limit.upper }}</span>
                             <span v-else-if="!l.remit_limit.lower">{{ l.remit_limit.upper }} 以下</span>
@@ -38,7 +39,7 @@
                             {{ $t('common.not_set') }}
                         </span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <div v-if="l.online_limit && (l.online_limit.lower || l.online_limit.upper)">
                             <span v-if="l.online_limit.upper && l.online_limit.lower">{{ l.online_limit.lower }} 至 {{ l.online_limit.upper }}</span>
                             <span v-else-if="!l.online_limit.lower">{{ l.online_limit.upper }} 以下</span>
@@ -48,7 +49,7 @@
                             {{ $t('common.not_set') }}
                         </span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <div v-if="l.withdraw_limit && (l.withdraw_limit.lower || l.withdraw_limit.upper)">
                             <span v-if="l.withdraw_limit.upper && l.withdraw_limit.lower">{{ l.withdraw_limit.lower }} 至 {{ l.withdraw_limit.upper }}</span>
                             <span v-else-if="!l.withdraw_limit.lower">{{ l.withdraw_limit.upper }} 以下</span>
@@ -57,6 +58,13 @@
                         <span v-else>
                             {{ $t('common.not_set') }}
                         </span>
+                    </td>
+
+                    <td class="text-center">
+                        <span v-if="l.max_withdraw_count_per_day !== null">
+                            {{ l.max_withdraw_count_per_day }}
+                        </span>
+                        <span v-else>{{ $t('common.not_set') }}</span>
                     </td>
                     
                     <td class="text-sm">
