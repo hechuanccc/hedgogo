@@ -1,217 +1,287 @@
 <template>
-  <div>
+<div>
     <div class="box" v-if="queryset.length > 0">
-      <table st-table="rowCollectionBasic" class="table table-striped b-t v-m">
-          <thead>
-          <tr>
-            <th width="20%" class="text-center align-middle">{{ $t('global_parameters.name') }}</th>
-            <th class="v-m">{{ $t('global_parameters.value') }}</th>
-            <th
-                width="10%"
-                class="v-m"
-                v-if="$root.permissions.includes('update_global_parameters_setting')"
-            >{{ $t('global_parameters.operating') }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(preference, index) in queryset" :key="index" class="align-middle">
-                <td class="text-center align-middle">{{ preference.display_name }}</td>
-                <td v-if="listMode.includes(index)">
-                    <div v-if="typeof preference.newValue === 'object'">
-                        <div
-                            class="inline m-r-xs"
-                            v-for="(element, index) in preference.newValue"
-                            :key="index">
-                            <label class="form-control-label">{{ element.display_name }}</label>
-                            <input class="form-control" v-model="element.value"/>
+        <table st-table="rowCollectionBasic" class="table table-striped b-t v-m">
+            <thead>
+                <tr>
+                    <th width="15%" class="text-center">{{ $t('global_parameters.name') }}</th>
+                    <th>{{ $t('global_parameters.value') }}</th>
+                    <th
+                        width="7%"
+                        class="text-center"
+                        v-if="$root.permissions.includes('update_global_parameters_setting')"
+                    >{{ $t('global_parameters.operating') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody v-if="!loading">
+                <tr
+                    v-for="(preference, index) in queryset"
+                    :key="index"
+                    class="align-middle"
+                >
+                    <td class="text-center align-middle">{{ preference.display_name }}</td>
+                    <td>
+                        <div v-if="preference.type === 1 && typeof preference.value === 'object'">
+                            <span
+                                v-for="(e, i) in preference.value"
+                                :key="e.key"
+                                class="m-b-0"
+                            >
+                                <span>{{ `${!i ? '' : ' , '}${e.display_name}: ` }}</span>
+                                <span
+                                    :class="e.value == 1 ? 'success' : 'danger'"
+                                    class="label"
+                                    v-if="e.type === 2"
+                                >
+                                    {{ e.value ? $t('status.active') : $t('status.inactive') }}
+                                </span>
+                                <span v-else>{{ e.value }}</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="form-group m-t-sm p-a-0" v-else-if="preference.newValue === 'true' || preference.newValue === 'false'">
-                        <label class="radio-inline">
-                            <input type="radio" :value="'true'" v-model="preference.newValue"> True
+                        <span
+                            :class="preference.value ? 'success' : 'danger'"
+                            class="label m-r-sm"
+                            v-else-if="preference.type === 3"
+                        >
+                            {{ preference.value ? $t('status.active') : $t('status.inactive') }}
+                        </span>
+                        <span v-else>{{ preference.value }}</span>
+                        <label
+                            class="md-switch m-r m-t-xs"
+                            v-if="preference.type === 3"
+                        >
+                            <input
+                                type="checkbox"
+                                v-model="preference.value"
+                                @change="updatePreference(Object.assign({}, preference, {
+                                    displayName: preference.display_name,
+                                    index
+                                }))"
+                            />
+                            <i class="success"></i>
                         </label>
-                        <label class="radio-inline">
-                            <input type="radio" :value="'false'" v-model="preference.newValue"> False
-                        </label>
-                    </div>
-                    <div  v-else>
-                        <input class="form-control" v-model="preference.newValue">
-                    </div>
-                </td>
-                <td v-else>
-                    <div v-if="typeof preference.value === 'object'">
-                        <div class="m-r-xs inline" v-for="(element, index) in preference.value" :key="index">
-                            <label class="form-control-label">{{ element.display_name }}</label>
-                            <input class="form-control" v-model="element.value" disabled/>
-                        </div>
-                    </div>
-                    <div class="radio disabled m-t-sm p-a-0" v-else-if="preference.value === 'true' || preference.value === 'false'">
-                        <label class="radio-inline disabled">
-                            <input type="radio" :value="'true'" v-model="preference.value" disabled> True
-                        </label>
-                        <label class="radio-inline disabled">
-                            <input type="radio" :value="'false'" v-model="preference.value" disabled> False
-                        </label>
-                    </div>
-                    <div v-else>
-                        {{ preference.value }}
-                    </div>
-                </td>
-                <td class="align-middle" v-if="$root.permissions.includes('update_global_parameters_setting')">
-                    <a class="p-l-xs" @click="changeMode(index)">{{ listMode.includes(index) ? $t('action.confirm') : $t('global_parameters.modify') }}</a>
-                    <a class="p-l-xs" v-if="listMode.includes(index)" @click="cancel(index)">{{ $t('global_parameters.cancel') }}</a>
-                </td>
-            </tr>
-          </tbody>
+                        
+                    </td>
+                    <td class="text-center align-middle">
+                        <a @click="openModal(index, preference)" v-if="preference.type !== 3">{{ $t('action.update') }}</a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
+        <div class="row" v-if="loading">
+            <div class="text-center m-a">
+                <i class="fa fa-spin fa-spinner"></i>
+                <b>{{ $t('common.loading') }}</b>
+            </div>
+        </div>
+        <div class="row" v-if="!loading && !queryset.length">
+            <div class="text-center m-a">
+                <span>{{ $t('common.no_record') }}</span>
+            </div>
+        </div>
     </div>
-    <div class="modal" v-if="modal.isShow">
-        <div class="modal-backdrop fade in" @click="hideModal"></div>
+    <div class="modal" v-if="modal.showModal">
+        <div class="modal-backdrop fade in" @click="modal.showModal = false"></div>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <strong>{{ $t('global_parameters.sure_update_parameter') }}</strong>
-                    <button type="button" class="close" aria-hidden="true" @click="hideModal">×</button>
+                    <strong>{{ $t('action.update') }} - {{ modal.displayName }}</strong>
+                    <button type="button" class="close" aria-hidden="true" @click="modal.showModal = false">×</button>
                 </div>
                 <div class="modal-body">
-                    <table st-table="rowCollectionBasic" class="table b-t">
-                    <thead>
-                        <tr>
-                            <th>{{ $t('global_parameters.name') }}</th>
-                            <th>{{ $t('global_parameters.value') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ modal.globalPreferenceResult.display_name }}</td>
-                            <td v-if="typeof modal.displayValue === 'object'">
-                                <span v-for="element in modal.displayValue" :key="element.key">
-                                    {{ element.display_name }}: {{ element.value }}<br/>
-                                </span>
-                            </td>
-                            <td class="text-break-all" v-else><span>{{ modal.displayValue }}</span></td>
-                        </tr>
-                    </tbody>
-                    </table>
-                    <div class="row m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
-                    </div>   
+                    <form class="m-l m-r" @submit.prevent="updatePreference(modal)">
+                        <div v-if="modal.type === 1 && typeof modal.value === 'object'">
+                            <label
+                                class="form-control-label p-b-0"
+                            >{{ $t('global_parameters.value') }}
+                            </label>
+                            <div class="row m-t-xs" v-for="(e, index) in modal.value" :key="index">
+                                <div class="col-sm-4 col-sm-offset-1 text-right">
+                                    <label class="form-control-label p-r-0 text-xs">{{ e.display_name }}</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input
+                                        class="form-control"
+                                        v-model.trim="e.value"
+                                        v-if="e.type !== 2"
+                                    />
+                                    <span
+                                        class="label m-r-sm"
+                                        :class="e.value ? 'success' : 'danger'"
+                                        v-else-if="e.type === 2"
+                                    >{{ e.value ? $t('status.active') : $t('status.inactive') }}
+                                    </span>
+                                    <label class="md-switch m-r m-t-xs" v-if="e.type === 2">
+                                        <input type="checkbox" v-model="e.value"/>
+                                        <i class="success"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <label class="form-control-label p-b-0" >
+                                {{ $t('global_parameters.value') }}
+                            </label>
+                            <textarea
+                                v-model.trim="modal.value"
+                                rows="8"
+                                spellcheck="false"
+                                class="form-control"
+                                ref="modalContent"
+                                v-if="modal.type === 6"
+                            />
+                            <input
+                                v-model.trim="modal.value"
+                                spellcheck="false"
+                                class="form-control"
+                                ref="modalContent"
+                                v-else
+                            />
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn blue" @click="updateGlobalPreference">{{ $t('action.update') }}</button>
-                    <button type="button" class="btn btn-default" @click="hideModal">{{ $t('staff.close') }}</button>
+                    <button class="btn blue w-xs" @click="updatePreference(modal)">
+                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <i class="fa fa-spin fa-spinner" v-else></i>
+                    </button>
+                    <button class="btn w-xs" @click="modal.showModal = false">
+                        {{ $t('action.cancel') }}
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-  </div>
+</div>
 </template>
 <script>
 import api from '../../api'
-import alertMsg from '../../components/alertMsg'
 import $ from '../../utils/util'
-
+/*
+TYPE_STR = 1
+TYPE_IMAGE = 2
+TYPE_BOOLEAN = 3
+TYPE_INT = 4
+TYPE_FLOAT = 5
+TYPE_TEXT = 6
+*/
 export default {
     data () {
         return {
-            globalPreferencesApi: api.global_preferences,
-            query: {},
             queryset: [],
             modal: {
-                isShow: false,
+                showModal: false,
                 index: '',
                 key: '',
-                displayValue: '',
-                globalPreferenceResult: {
-                    display_name: '',
-                    value: ''
-                },
-                msg: ''
+                value: '',
+                loading: false
             },
-            listMode: []
+            loading: true
         }
     },
     created () {
-        this.getGlobalParameters()
+        this.getPreference()
     },
     methods: {
-        getGlobalParameters () {
+        getPreference () {
             this.$http.get(api.global_preferences).then(data => {
                 this.queryset = data
-                this.queryset.map(element => {
-                    if ($.isJsonString(element.value)) {
-                        return Object.assign(element, {
-                            value: JSON.parse(element.value)
-                        })
-                    } else {
-                        return element
-                    }
+                this.queryset.forEach(e => {
+                    this.typeTransform(e)
                 })
-            })
-        },
-        changeMode (index) {
-            if (this.listMode.includes(index)) {
-                this.modal = Object.assign(this.modal, {
-                    key: this.queryset[index].key,
-                    index: index,
-                    displayValue: this.queryset[index].newValue,
-                    globalPreferenceResult: {
-                        value: this.queryset[index].newValue,
-                        display_name: this.queryset[index].display_name
-                    },
-                    isShow: true
-                })
-            } else {
-                if (typeof this.queryset[index].value === 'object') {
-                    this.$set(this.queryset[index], 'newValue', this.queryset[index].value.map(element => Object({
-                        key: element.key,
-                        value: element.value,
-                        display_name: element.display_name
-                    })))
-                } else {
-                    this.$set(this.queryset[index], 'newValue', this.queryset[index].value)
-                }
-                this.listMode.push(index)
-            }
-        },
-        cancel (index) {
-            delete this.queryset[index].newValue
-            this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
-        },
-        updateGlobalPreference () {
-            if (typeof this.modal.globalPreferenceResult.value === 'object') {
-                let result = {}
-                this.modal.globalPreferenceResult.value.forEach(element => {
-                    result[element.key] = element.value
-                })
-                this.modal.globalPreferenceResult.value = JSON.stringify(result)
-            }
-            this.$http.patch(this.globalPreferencesApi + this.modal.key + '/', this.modal.globalPreferenceResult)
-            .then(data => {
-                this.queryset[this.modal.index].value = $.isJsonString(data.value) ? Object.assign(JSON.parse(data.value)) : data.value
-                this.modal.msg = this.$t('game_manage.modify_success')
-                this.$refs.alertMsg.trigger('success', 1, true)
-                this.listMode.splice(this.listMode.indexOf(this.modal.index), 1)
+                this.loading = false
             }, error => {
-                this.modal.msg = error
-                this.$refs.alertMsg.trigger('danger', 1, true)
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.loading = false
             })
         },
-        showModal () {
-            this.modal.isShow = true
+        typeTransform (e) {
+            if (e.type === 3) {
+                Object.assign(e, {
+                    value: e.value === 'True' || e.value === 'true'
+                })
+            }
+            if ($.isJsonString(e.value)) {
+                Object.assign(e, {
+                    value: JSON.parse(e.value)
+                })
+                e.value.forEach(element => {
+                    element.value = element.type === 2 ? parseInt(element.value) : element.value
+                })
+            }
         },
-        hideModal () {
-            this.modal.isShow = false
+        openModal (index, {
+            display_name: displayName,
+            key,
+            value,
+            type
+        }) {
+            Object.assign(this.modal, {
+                showModal: true,
+                displayName,
+                key,
+                value,
+                type,
+                index,
+                loading: false
+            })
+            if (type === 1 && typeof value === 'object') {
+                this.modal.value = this.modal.value.map(e => Object.assign({}, e))
+            } else {
+                this.$nextTick(() => {
+                    this.$refs.modalContent.focus()
+                    this.$refs.modalContent.select()
+                })
+            }
+        },
+        updatePreference ({
+            index,
+            key,
+            value,
+            displayName: display_name,
+            type
+        }) {
+            this.modal.loading = true
+            let result = {
+                display_name,
+                value: ''
+            }
+            if (type === 1 && typeof value === 'object') {
+                result.value = JSON.stringify(Object.assign({}, ...value.map(e => ({
+                    [e.key]: e.type === 2
+                    ? (e.value ? '1' : '0')
+                    : e.value
+                }))))
+            } else if (type === 3) {
+                result.value = value ? 'true' : 'false'
+            } else {
+                result.value = value
+            }
+            this.$http.patch(`${api.global_preferences}${key}/`, result).then(data => {
+                $.notify({
+                    message: this.$t('action.update') + this.$t('status.success')
+                })
+                this.typeTransform(data)
+                Object.assign(this.queryset[index], data)
+                this.modal.showModal = false
+                this.modal.loading = false
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.modal.loading = false
+            })
         }
-    },
-    components: {
-        alertMsg
     }
 }
 </script>
 <style scoped>
 .align-middle td{
-  vertical-align:middle;
+  vertical-align: middle;
 }
 </style>
