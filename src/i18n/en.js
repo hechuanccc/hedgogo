@@ -246,7 +246,9 @@ export default {
         dongfangkf_alert_msg: '此操作会直接将订单状态更改为成功，请确认是否收到款项后再执行此操作',
         withdraw_audit_alert_msg: '确认此笔取款交易申请要直接审核通过吗？',
         withdraw_payee: '代付打款',
-        deposit_info: 'Deposit Info'
+        deposit_info: 'Deposit Info',
+        payer_type: 'Payer Type',
+        manual_withdraw: 'Manual Withdraw'
     },
     common: {
         default_agent_password: 'Default Agent Password',
