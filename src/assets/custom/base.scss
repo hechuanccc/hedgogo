@@ -130,3 +130,8 @@ span.time-picker{
   color: #808080;
   border-radius: 6px;
 }
+
+.modal-body {
+  overflow-y: auto;
+  max-height: 60vh;
+}

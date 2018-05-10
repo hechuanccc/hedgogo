@@ -171,8 +171,7 @@
             <thead>
                 <tr>
                     <th>{{ $t('common.member') }}</th>
-                    <th>{{ $t('member.level') }}</th>
-                    <th width="11%" class="text-center">
+                    <th width="11%" class="text-center p-l-xs p-r-xs text-sm">
                         {{ $t('common.applied_at') }}&nbsp;/
                         <br/>
                         {{ $t('common.status_updated_at') }}
@@ -183,8 +182,10 @@
                         <br/>
                         {{ $t('common.balance_after') }}
                     </th>
-                    <th class="text-center">{{ $t('common.amount') }}</th>
+                    <th class="text-center p-r-xs">{{ $t('common.amount') }}</th>
                     <th>{{ $t('bank.bank_title') }}</th>
+                    <th>{{ $t('bill.operator') }}</th>
+                    <th class="text-center">{{ $t('bill.payer_type') }}</th>
                     <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('common.operate') }}</th>
@@ -193,40 +194,49 @@
             </thead>
             <tbody>
                 <tr v-for="t in queryset" :key="t.id">
-                    <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
-                    <td><router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link></td>
-                    <td class="text-center">
+                    <td class="p-r-xs">
+                        <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
+                        <br/>
+                        <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
+                    </td>
+                    <td class="text-center text-sm p-l-xs p-r-xs">
                         {{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}&nbsp;/
                         <br/>
                         {{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}
                     </td>
-                    <td v-if="t.ip_info">
+                    <td v-if="t.ip_info" class="text-sm p-r-xs">
                         <span>{{ t.ip_info.ip || '-' }}</span>
                         <br/>
                         <span class="text-muted">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>
                     </td>
                     <td v-else>-</td>
-                    <td class="text-right">
-                        <p class="m-b-xs" v-if="t.balance_before || t. balance_before === 0">{{ t.balance_before | currency('￥') }} /</p>
+                    <td class="text-right p-r-xs">
+                        <p class="m-b-xs" v-if="t.balance_before || t. balance_before === 0">{{ t.balance_before | currency('￥') }}</p>
                         <p class="m-b-xs" v-else>-</p>
                         <p class="m-b-0" v-if="t.balance_after || t.balance_after === 0">{{ t.balance_after | currency('￥') }}</p>
                         <p class="m-b-0" v-else>-</p>
                     </td>
-                    <td class="text-right">{{ t.amount | currency('￥') }}</td>
+                    <td class="text-right p-r-xs">{{ t.amount | currency('￥') }}</td>
                     <td>
                         <p class="m-b-xs">{{ `${$t('bank.name')}: ${t.member.bank.name}` }}</p>
                         <p class="m-b-xs">{{ `${$t('bank.account')}: ${t.member.bank.account}` }}</p>
                         <p class="m-b-0">{{ `${$t('bank.address')}: ${t.member.bank.city}, ${t.member.bank.province}` }}</p>
                     </td>
-                    <td class="text-center">
+                    <td class="p-r-xs">{{ ( t.updated_by && t.updated_by.username ) || '-' }}</td>
+                    <td class="p-l-xs p-r-xs text-sm text-center">
+                        <span v-if="t.online_payer && t.online_payer.name">{{ ( t.online_payer && t.online_payer.name ) }}</span>
+                        <span v-else-if="t.status === 1">{{ $t('bill.manual_withdraw') }}</span>
+                        <span v-else>-</span>
+                    </td>
+                    <td class="text-center p-r-xs p-l-xs">
                         <span v-if="t.audit_status" class="t-green">{{ $t('member.pass') }}</span>
                         <span v-else class="t-red">{{ $t('member.failed') }}</span>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center p-l-xs p-r-xs">
                         <transaction-status :transaction="t"/>
                     </td>
-                    <td class="text-center">
-                        <span v-if="t.status !== 3">{{ $t('status.handled') }}</span>
+                    <td class="text-center p-l-xs p-r-xs">
+                        <span v-if="t.status !== 3" class="text-sm">{{ $t('status.handled') }}</span>
                         <template v-else>
                             <button 
                                 type="button"
@@ -272,7 +282,7 @@
                             />
                         </template>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center p-l-xs p-r-xs">
                         <router-link :to="'/transaction/' + t.id">{{$t('action.view')}}</router-link>
                     </td>
                 </tr>
