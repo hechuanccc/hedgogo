@@ -686,6 +686,7 @@ export default {
         withdraw_limit: '单次取款限额',
         withdraw_fee_rate: '取款手续费',
         withdraw_fee_type: '取款手续费收取方式',
+        max_withdraw_count_per_day: '每日取款次数限制',
         discount: '入款优惠',
         report_flag: '显示会员报表',
         display_report: '是否显示该等级会员的所有报表',

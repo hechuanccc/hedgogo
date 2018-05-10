@@ -687,6 +687,7 @@ export default {
         withdraw_limit: 'Withdraw Limit',
         withdraw_fee_rate: 'Withdraw Fee Rate',
         withdraw_fee_type: 'Withdraw Fee Type',
+        max_withdraw_count_per_day: 'Withdraw Limit Per Day',
         discount: 'Discount',
         report_flag: 'Report Flag',
         display_report: 'Display Report for this Member Level',

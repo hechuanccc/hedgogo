@@ -32,7 +32,7 @@
         </div>
         <div class="box-body">
             <div class="row m-b p-b b-b">
-                <div class="col-md-4">
+                <div class="col-xs-3">
                     <span class="text-muted">{{ $t('level.remit_limit') }}</span>
                     <div v-if="remit_limit && (remit_limit.lower || remit_limit.upper)">
                         <span v-if="remit_limit.upper && remit_limit.lower">{{ remit_limit.lower }} 至 {{ remit_limit.upper }}</span>
@@ -43,7 +43,7 @@
                         {{ $t('common.not_set') }}
                     </p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-3">
                     <span class="text-muted">{{ $t('level.online_pay_limit') }}</span>
                     <div v-if="online_limit && (online_limit.lower || online_limit.upper)">
                         <span v-if="online_limit.upper && online_limit.lower">{{ online_limit.lower }} 至 {{ online_limit.upper }}</span>
@@ -54,7 +54,7 @@
                         {{ $t('common.not_set') }}
                     </p>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <span class="text-muted">{{ $t('level.withdraw_limit') }}</span>
                     <div v-if="withdraw_limit && (withdraw_limit.lower || withdraw_limit.upper)">
                         <span v-if="withdraw_limit.upper && withdraw_limit.lower">{{ withdraw_limit.lower }} 至 {{ withdraw_limit.upper }}</span>
@@ -63,6 +63,13 @@
                     </div>
                     <p v-else>
                         {{ $t('common.not_set') }}
+                    </p>
+                </div>
+                <div class="col-xs-3">
+                    <span class="text-muted">{{ $t('level.max_withdraw_count_per_day') }}</span>
+                    <p>
+                        <span v-if="max_withdraw_count_per_day !== null">{{ max_withdraw_count_per_day }}</span>
+                        <span v-else>{{ $t('common.not_set') }}</span>
                     </p>
                 </div>
             </div>
@@ -258,6 +265,7 @@ export default {
                 lower: '',
                 upper: ''
             },
+            max_withdraw_count_per_day: '',
             memo: '',
             reg_present: {
                 status: 0,
