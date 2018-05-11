@@ -52,12 +52,12 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.updated_by}"
-                    >{{ $t('common.operator') }}
+                    >{{ $t('bill.operator') }}
                     </label>
                     <input
                         v-model.trim="query.updated_by"
                         class="form-control w-sm"
-                        :placeholder="$t('common.operator')"
+                        :placeholder="$t('bill.operator')"
                         @input="search"
                     />
                 </div>

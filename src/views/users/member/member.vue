@@ -213,7 +213,7 @@
       </div>
     </div>
     <div class="row m-l-sm" v-else>
-      <label class="check m-b-0 pull-left" >
+      <label class="check m-b-0 pull-left pointer" v-if="queryset.length">
         <input type="checkbox" v-model="visitorFilter"/>
         <i class="blue"></i>
         {{ $t('member.visitor_filter') }}
@@ -460,7 +460,11 @@ export default {
     methods: {
         setQueryAll () {
             if (this.$route.path === '/online_member') {
-                this.extra = `logined=1&account_type=1,2`
+                if (this.visitorFilter) {
+                    this.extra = `logined=1&account_type=1,2`
+                } else {
+                    this.extra = `logined=1`
+                }
                 this.pageSelected = 'onlineMember'
             } else {
                 this.extra = `account_type=1,2`
