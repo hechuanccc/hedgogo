@@ -10,7 +10,7 @@
         </router-link>
       </div>
     </div>
-    <div class="row m-b-sm m-r-xs m-l-xs" v-else>
+    <div class="row m-b-0 m-r-xs m-l-xs" v-else>
       <button
         class="md-btn blue pull-right btn w-sm"
         type="button"
@@ -212,7 +212,14 @@
         </div>
       </div>
     </div>
-    <div class="box m-t-xs" v-if="queryset.length > 0">
+    <div class="row m-l-sm" v-else>
+      <label class="check m-b-0 pull-left" >
+        <input type="checkbox" v-model="visitorFilter"/>
+        <i class="blue"></i>
+        {{ $t('member.visitor_filter') }}
+      </label>
+    </div>
+    <div class="box" v-if="queryset.length > 0">
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'onlineMember'">
         <thead>
           <tr class="text-center">
@@ -399,6 +406,7 @@ export default {
             ],
             userInfoSelect: '',
             userInfo_q: '',
+            visitorFilter: true,
             loading: true
         }
     },
@@ -429,6 +437,14 @@ export default {
         },
         userInfoSelect (newObj) {
             this.setUserInfo()
+        },
+        visitorFilter (newObj) {
+            if (newObj) {
+                this.extra = `logined=1&account_type=1,2`
+            } else {
+                this.extra = `logined=1`
+            }
+            this.rebase()
         }
     },
     computed: {
@@ -444,7 +460,7 @@ export default {
     methods: {
         setQueryAll () {
             if (this.$route.path === '/online_member') {
-                this.extra = `logined=1`
+                this.extra = `logined=1&account_type=1,2`
                 this.pageSelected = 'onlineMember'
             } else {
                 this.extra = `account_type=1,2`
