@@ -213,7 +213,7 @@
       </div>
     </div>
     <div class="row m-l-sm" v-else>
-      <label class="check m-b-0 pull-left" >
+      <label class="check m-b-0 pull-left pointer" v-if="queryset.length">
         <input type="checkbox" v-model="visitorFilter"/>
         <i class="blue"></i>
         {{ $t('member.visitor_filter') }}
