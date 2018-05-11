@@ -101,7 +101,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-4 col-md-offset-1">
+            <div class="col-xs-5 col-md-offset-2">
               <strong class="text-muted title">{{$t('member.audit_list')}}</strong>
               <div class="label-width-eq m-t-sm">
                 <div v-for="t in member.transaction_info.ongoing">
@@ -138,20 +138,26 @@
                 </template>
               </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-xs-5 col-xs-offset-1">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <span class="text-muted">{{$t('common.member') + $t('betrecord.win')}}</span>
                   <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <span class="text-muted">{{$t('common.member') + $t('betrecord.lose')}}</span>
                   <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link></div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <span class="text-muted">{{$t('returnrate.return_amount')}}</span>
                   <div>
                     <span :class="{'text-muted': !member.total_return_amount}">{{member.total_return_amount | currency('￥')}}</span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <span class="text-muted">{{$t('member.total_ongoing_amount')}}</span>
+                  <div>
+                    <span :class="{'text-muted': !member.total_ongoing_amount}">{{member.total_ongoing_amount | currency('￥')}}</span>
                   </div>
                 </div>
               </div>
@@ -216,7 +222,7 @@
                 <span v-else>{{$t('action.view_detailed_infos')}} <i class="fa fa-angle-down"></i></span>
               </a>
             </div>
-            <div class="col-xs-5" v-if="member.level">
+            <div class="col-xs-5 col-xs-offset-1" v-if="member.level">
               <span class="text-muted">{{$t('member.level')}}</span>
               <div>
                 <router-link :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
@@ -249,7 +255,7 @@
               </div>
               <div v-else class="text-muted"><small>{{$t('common.no_record')}}</small></div>
             </div>
-            <div class="col-xs-5">
+            <div class="col-xs-5 col-xs-offset-1">
               <router-link v-if="member.last_login" class="m-r" :to="'/login_record?member=' + member.username">{{$t('member.view_all_login')}}</router-link>
               <router-link v-if="member.last_login" :to="'/login_record?ipaddr=' + member.last_login.ipaddr">{{$t('member.view_login_by_ip')}}</router-link>
             </div>
