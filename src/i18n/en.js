@@ -195,7 +195,8 @@ export default {
         trial_member_count: 'Num. of Trial Member per day',
         visitor: 'Visitor',
         username_form_validation_msg: '{digit} letters or numbers.',
-        visitor_filter: 'Visitor Filter'
+        visitor_filter: 'Visitor Filter',
+        total_ongoing_amount: 'Ongoing Amount'
     },
     bill: {
         commission_report: 'Commission Report',

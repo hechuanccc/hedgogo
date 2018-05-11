@@ -195,7 +195,8 @@ export default {
         trial_member_count: '试玩会员人数',
         visitor: '游客',
         username_form_validation_msg: '{digit}位英数字',
-        visitor_filter: '过滤游客'
+        visitor_filter: '过滤游客',
+        total_ongoing_amount: '未结金额'
     },
     bill: {
         commission_report: '佣金计算',
