@@ -59,7 +59,11 @@
                     <td v-else>{{paymentType.name}}</td>
                     <td>{{paymentType.display_name || '-'}}</td>
                     <td v-if="paymentType.detail.length">
-                        <router-link :to="'/online_payee/' + payee.id" v-for="payee in paymentType.detail" :key="payee.id">
+                        <router-link
+                            :to="'/online_payee/' + payee.payee_id"
+                            v-for="payee in paymentType.detail"
+                            :key="payee.payee_id"
+                        >
                             {{payee.name}} &nbsp;
                         </router-link>
                     </td>
