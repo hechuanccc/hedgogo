@@ -1,6 +1,23 @@
 <template>
 <div>
-    <form class="form box" @submit.prevent="submit">
+    <div class="m-b-xs text-right" v-if="$root.permissions.includes('export_remit_report')">
+        <a
+            :href="href"
+            :getReport="getReport"
+            v-if="queryset.length"
+            class="md-btn w-sm text-white-dk blue"
+        >
+            <span>
+                {{ $t('action.download_report') }}
+                <i class="fa fa-download"></i>
+            </span>
+        </a>
+        <span class="m-t-sm m-r-sm" disabled v-else>
+            {{ $t('action.download_report') }}
+            <i class="fa fa-download"></i>
+        </span>
+    </div>
+    <form class="form box m-b-sm" @submit.prevent="submit">
         <div class="box-body clearfix form-input-sm">
             <div class="row m-l-xs m-r-xs">
                 <div class="pull-left m-r-xs">
@@ -190,21 +207,7 @@
         </div>
     </form>
     <div class="row m-l-xs m-r-xs">
-        <div class="pull-right" v-if="$root.permissions.includes('export_remit_report')">
-            <a
-                :href="href"
-                :getReport="getReport"
-                v-if="queryset.length"
-            >
-                {{ $t('action.download_report') }}
-                <i class="fa fa-download"></i>
-            </a>
-            <span v-else>
-                {{ $t('action.download_report') }}
-                <i class="fa fa-download"></i>
-            </span>
-        </div>
-        <b class="pull-right m-r text-danger">
+        <b class="pull-right text-danger">
             {{ $t('common.total') }}&nbsp;{{ $t('nav.remit') }}:&nbsp;{{ (total_amount || 0) | currency('￥') }}
         </b>
     </div>
