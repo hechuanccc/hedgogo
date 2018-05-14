@@ -74,6 +74,9 @@
             <i class="fa fa-spin fa-spinner"></i>
             <b>{{ $t('common.loading') }}&nbsp;...</b>
         </div>
+        <div class="row text-center p-a" v-if="!loading && !commissionsettings.length">
+            {{ $t('common.no_record') }}
+        </div>
     </div>
 </div>
 </template>

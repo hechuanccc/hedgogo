@@ -213,6 +213,7 @@ export default {
         remit_payee: '入款帐号',
         view_detailed: '查看详情',
         depositor: '存款人',
+        deposit_type: '存款类型',
         deposited_at: '存款时间',
         merchant_status: '商户状态',
         manual_confirm: '补单',

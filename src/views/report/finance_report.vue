@@ -59,7 +59,7 @@
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': transaction_type}"
-              >{{ $t('bill.transaction_type') }}
+              >{{ $t('bill.deposit_type') }}
               </label>
               <transaction-type-selector
                 style="display: block;"

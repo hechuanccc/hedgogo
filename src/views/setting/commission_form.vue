@@ -48,6 +48,7 @@
                                 v-model="commissionsetting.name"
                                 required
                                 :disabled="!updateCommissionSettingPermission"
+                                ref="name"
                             >
                         </div>
                     </div>
@@ -142,7 +143,7 @@ export default {
                 name: '',
                 status: 1,
                 groups: [{
-                    member_num: '',
+                    member_num: 0,
                     rates: [{
                         rate: '',
                         income_threshold: ''
@@ -161,6 +162,9 @@ export default {
             this.getCommissionSetting(id)
         } else {
             this.loading = false
+            this.$nextTick(() => {
+                this.$refs.name.select()
+            })
         }
     },
     computed: {
@@ -197,8 +201,9 @@ export default {
                 return element.income_threshold !== '' && element.rate !== ''
             })
             data.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
-            if (typeof this.incomeThresholdValidate(data.groups[0].rates) === 'number') {
-                this.$refs.income_threshold[this.incomeThresholdValidate(data.groups[0].rates)].select()
+            let validation = this.incomeThresholdValidate(data.groups[0].rates)
+            if (typeof validation === 'number') {
+                this.$refs.income_threshold[validation].select()
                 $.notify({
                     message: this.$t('commission.income_threshold') + this.$t('common.repeat') + this.$t('action.key_in'),
                     type: 'warning'

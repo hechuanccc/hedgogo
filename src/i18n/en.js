@@ -213,6 +213,7 @@ export default {
         remit_payee: 'Remit Payee',
         view_detailed: 'View Details',
         depositor: 'Depositor',
+        deposit_type: 'Deposit Type',
         deposited_at: 'Order Date',
         merchant_status: 'Merchant Status',
         manual_confirm: 'Manual Confirm',
