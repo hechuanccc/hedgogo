@@ -1,16 +1,33 @@
 <template>
   <div>
-    <div class="m-l-xs m-t-0 row" v-if="pageSelected === 'allMember'">
-      <div class="inline m-r-xs" v-if="$root.permissions.includes('add_new_member')">
+    <div class="row" v-if="pageSelected === 'allMember'">
+      <div class="col-md-6"  v-if="$root.permissions.includes('add_new_member')">
         <router-link
           tag="button"
-          class="md-btn w-sm blue pull-right"
+          class="md-btn w-sm blue"
           to="/member/add"
         >{{ $t('action.add_member') }}
         </router-link>
       </div>
+      <div class="col-md-6" v-if="$root.permissions.includes('export_member_report')">
+        <button :href="href" :getReport="getReport" v-if="queryset.length" class="md-btn w-sm blue pull-right">
+          <span>
+            {{ $t('action.download_report') }}
+            <i class="fa fa-download"></i>
+          </span>
+        </button>
+        <span disabled v-else>
+          {{ $t('action.download_report') }}
+          <i class="fa fa-download"></i>
+        </span>
+      </div>
     </div>
-    <div class="row m-b-0 m-r-xs m-l-xs" v-else>
+    <div class="row m-b m-r-xs m-l-xs" v-else>
+      <label class="md-switch m-t-sm">
+        <input type="checkbox" v-model="visitorFilter" class="has-value">
+        <i class="blue"></i>
+        {{ $t('member.visitor_filter') }}
+      </label>
       <button
         class="md-btn blue pull-right btn w-sm"
         type="button"
@@ -196,62 +213,31 @@
         </div>
       </div>
     </form>
-    <div class="row" v-if="pageSelected === 'allMember'">
-      <div class="col-xs-12">
-        <div class="pull-right" v-if="$root.permissions.includes('export_member_report')">
-          <a :href="href" :getReport="getReport" v-if="queryset.length">
-            <span>
-              {{ $t('action.download_report') }}
-              <i class="fa fa-download"></i>
-            </span>
-          </a>
-          <span disabled v-else>
-            {{ $t('action.download_report') }}
-            <i class="fa fa-download"></i>
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="row m-l-sm" v-else>
-      <label class="check m-b-0 pull-left pointer" v-if="queryset.length">
-        <input type="checkbox" v-model="visitorFilter"/>
-        <i class="blue"></i>
-        {{ $t('member.visitor_filter') }}
-      </label>
-    </div>
+    
     <div class="box" v-if="queryset.length > 0">
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'onlineMember'">
         <thead>
           <tr class="text-center">
-            <th width="6%" class="text-center">{{ $t('common.login_status') }}</th>
-            <th width="6%">{{ $t('member.account_type') }}</th>
-            <th width="7%">{{ $t('member.account') }}</th>
-            <th width="10%">{{ $t('common.real_name') }}</th>
-            <th width="15%">{{ $t('member.last_login') }}</th>
-            <th width="15%">{{ $t('member.loggedin_infos') }}</th>
-            <th width="10%">{{ $t('member.login_platform') }}</th>
-            <th width="15%">{{ $t('member.area') }}</th>
-            <th width="10%">{{ $t('member.agent') }}</th>
-            <th width="12%" class="text-center">{{ $t('member.level') }}</th>
-            <th width="5%">{{ $t('member.balance') }}</th>
+            <th>{{ $t('member.account') }}</th>
+            <th>{{ $t('common.real_name') }}</th>
+            <th>{{ $t('member.last_login') }}</th>
+            <th>{{ $t('member.loggedin_infos') }}</th>
+            <th>{{ $t('member.login_platform') }}</th>
+            <th>{{ $t('member.area') }}</th>
+            <th>{{ $t('member.agent') }}</th>
+            <th class="text-center">{{ $t('member.level') }}</th>
+            <th>{{ $t('member.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset" :key="member.id">
             <td>
-              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</div>
-              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
-            </td>
-            <td>
-              <span v-if="member.account_type !== 0">{{ $t('member.real_account') }}</span>
-              <span v-else>{{ $t('member.trial_account') }}</span>
-            </td>
-            <td>
+              <span class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</span>
+              <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
               <router-link :to="'/member/' + member.id" v-if="member.account_type !== 0">{{ member.username }}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
               <br/>
-              <span class="label success" v-if="member.status===1">{{ $t('status.active') }}</span>
-              <span class="label" v-else>{{ $t('status.inactive') }}</span>
+              <span class="label red" v-if="member.status!==1">{{ $t('status.inactive') }}</span>
             </td>
             <td>
               <div v-if="member.account_type !== 0">
@@ -272,7 +258,7 @@
               <span class="text-muted">{{ member.loggedin_ip || '-' }}</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{ member.last_login.platform }}</span>
+              <span v-if="member.last_login">{{ $t('manage.' + member.last_login.platform.toLowerCase()) }}</span>
               <span v-else>-</span>
             </td>
             <td>
@@ -281,20 +267,19 @@
             </td>
 
             <td v-if="member.agent.name">
-              <span>{{ member.agent.name }}</span>
+              <router-link :to="'/agent/' + member.agent.id">{{ member.agent.name }}</router-link>
             </td>
             <td class="text-center">
               <router-link v-if="member.level && member.account_type !== 0" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
               <span v-else>-</span>
             </td>
-            <td><div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div></td>
+            <td><div v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</div></td>
           </tr>
         </tbody>
       </table>
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
         <thead>
           <tr>
-            <th width="5%" class="text-center">{{ $t('common.login_status') }}</th>
             <th>{{ $t('member.account') }}</th>
             <th>{{ $t('common.real_name') }}</th>
             <th>{{ $t('member.created_ip') }}</th>
@@ -310,14 +295,11 @@
         <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset" :key="member.id">
             <td>
-              <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</div>
-              <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
-            </td>
-            <td>
+              <span class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</span>
+              <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
               <router-link :to="'/member/' + member.id">{{ member.username }}</router-link>
               <br/>
-              <span class="label success" v-if="member.status === 1">{{ $t('status.active') }}</span>
-              <span class="label" v-else>{{ $t('status.inactive') }}</span>
+              <span class="label red" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
             </td>
             <td>
               {{ member.real_name || '-' }}
@@ -335,7 +317,7 @@
               <span v-else>-</span>
             </td>
             <td v-if="member.agent.name">
-              <span>{{ member.agent.name }}</span>
+              <router-link :to="'/agent/' + member.agent.id">{{ member.agent.name }}</router-link>
             </td>
             <td>
               <router-link v-if="member.level" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
@@ -349,7 +331,7 @@
               <router-link :to="`/report/betrecord/history?member=${member.username}&status=lose&created_at_1=${today}`">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
             <td class="text-right">
-              <div v-if="member.balance">{{ member.balance.balance | currency('￥') }}</div>
+              <div v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</div>
             </td>
           </tr>
         </tbody>

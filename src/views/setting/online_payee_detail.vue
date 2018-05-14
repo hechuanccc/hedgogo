@@ -104,7 +104,7 @@
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('nav.setting_level')}}</span>
                         <div>
-                            <router-link class="m-r-sm" :to="'/level/' + l.id" v-for="l in level">
+                            <router-link class="m-r-sm" :to="'/level/' + l.id" v-for="l in level" :key="l.id">
                             {{l.name}}
                             </router-link>
                         </div>

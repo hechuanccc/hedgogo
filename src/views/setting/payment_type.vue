@@ -7,23 +7,21 @@
         </div>
     </div>
     <div class="box p-a">
-        <div class="b-b nav-active-blue">
-            <ul class="nav nav-tabs">
-                <li class="nav-item" v-if="mode || type === 0">
-                    <a
-                    class="nav-link"
-                    :class="{ 'active': type === 0 }"
-                    @click="changeType(0)"
-                    ><b>{{$t('manage.pc')}}</b>
-                    </a>
+        <div class="b-b nav-active-blue" v-if="mode" >
+            <ul class="nav nav-tabs m-l" >
+                <li class="nav-item" if="type === 0">
+                    <router-link :to="'/paymenttype/?type=0'"
+                        class="nav-link"
+                        :class="{'active': type === 0 }"
+                        ><b>{{$t('manage.pc')}}</b>
+                    </router-link>
                 </li>
-                <li class="nav-item" v-if="mode || type === 1">
-                    <a
-                    class="nav-link"
-                    :class="{ 'active': type === 1 }"
-                    @click="changeType(1)"
-                    ><b>{{$t('manage.mobile')}}</b>
-                    </a>
+                <li class="nav-item" if="type === 1">
+                    <router-link :to="'/paymenttype/?type=1'"
+                        class="nav-link"
+                        :class="{'active': type === 1 }"
+                        ><b>{{$t('manage.mobile')}}</b>
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -31,21 +29,22 @@
             <thead>
                 <tr>
                     <th v-show="!mode" width="3%"></th>
-                    <th width="25%">{{$t('common.name')}}</th>
-                    <th width="25%">{{$t('setting.display_name')}}</th>
-                    <th width="25%">{{$t('setting.payee')}}</th>
-                    <th width="22%" class="text-center">{{$t('common.status')}}</th>
+                    <th width="20%">{{$t('common.name')}}</th>
+                    <th width="20%">{{$t('setting.display_name')}}</th>
+                    <th width="20%">{{$t('setting.payee')}}</th>
+                    <th width="20%">{{$t('setting.description')}}</th>
+                    <th width="20%" class="text-center">{{$t('common.status')}}</th>
                 </tr>
             </thead>
             <draggable
-                v-model="filerPaymentTypes"
+                v-model="filteredPaymentTypes"
                 :element="'tbody'"
                 :options="{
                     disabled: mode
                 }"
             >
                 <tr
-                    v-for="paymentType in filerPaymentTypes"
+                    v-for="paymentType in filteredPaymentTypes"
                     :key="paymentType.id"
                     :class="{
                         'pointer': !mode 
@@ -60,11 +59,14 @@
                     <td v-else>{{paymentType.name}}</td>
                     <td>{{paymentType.display_name || '-'}}</td>
                     <td v-if="paymentType.detail.length">
-                        <span v-for="payee in paymentType.detail" :key="payee.id">
-                            {{payee.name}}
-                        </span> 
+                        <router-link :to="'/online_payee/' + payee.id" v-for="payee in paymentType.detail" :key="payee.id">
+                            {{payee.name}} &nbsp;
+                        </router-link>
                     </td>
                     <td v-else>-</td>
+                    <td>
+                        {{ paymentType.description }}
+                    </td>
                     <td class="text-center">
                         <span class="label success m-r" v-if="paymentType.status==1">{{$t('status.active')}}</span>
                         <span class="label danger m-r" v-else>{{$t('status.disabled')}}</span>
@@ -88,12 +90,17 @@ export default {
         return {
             mode: 1,
             paymentTypes: [],
-            filerPaymentTypes: [],
-            type: 0
+            filteredPaymentTypes: [],
+            type: parseInt(this.$route.query.type || 0)
         }
     },
     created () {
         this.getPaymentType()
+    },
+    watch: {
+        '$route.query.type': function (newType) {
+            this.changeType(parseInt(newType))
+        }
     },
     methods: {
         toggleStatus (paymentType) {
@@ -114,7 +121,7 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(`${api.paymenttype}rank/?opt_expand=1`, this.filerPaymentTypes.map((p, index) => Object({
+                this.$http.post(`${api.paymenttype}rank/?opt_expand=1`, this.filteredPaymentTypes.map((p, index) => Object({
                     id: p.id,
                     [`${this.type ? 'mobile' : 'pc'}_rank`]: index + 1
                 }))).then(data => {
@@ -140,7 +147,7 @@ export default {
         changeType (type) {
             if (this.mode) {
                 this.type = type
-                this.filerPaymentTypes = this.paymentTypes
+                this.filteredPaymentTypes = this.paymentTypes
                 .filter(element => element.platform === 2 || element.platform === this.type)
                 .sort((a, b) => {
                     let attribute = this.type ? 'mobile_rank' : 'pc_rank'

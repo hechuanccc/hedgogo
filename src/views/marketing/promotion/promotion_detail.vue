@@ -79,7 +79,7 @@
                     <div class="col-xs-5">
                         <span class="text-muted">适用会员等级</span>
                         <div>
-                            <router-link class="m-r-sm" :to="'/level/' + l.id" v-for="l in promotion.level">
+                            <router-link class="m-r-sm" :to="'/level/' + l.id" v-for="l in promotion.level" :key="l.id">
                             {{l.name}}
                             </router-link>
                         </div>
