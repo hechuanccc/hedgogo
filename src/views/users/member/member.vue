@@ -10,13 +10,18 @@
         </router-link>
       </div>
       <div class="col-md-6" v-if="$root.permissions.includes('export_member_report')">
-        <button :href="href" :getReport="getReport" v-if="queryset.length" class="md-btn w-sm blue pull-right">
+        <a
+          :href="href"
+          :getReport="getReport"
+          v-if="queryset.length"
+          class="md-btn w-sm text-white-dk blue pull-right"
+        >
           <span>
             {{ $t('action.download_report') }}
             <i class="fa fa-download"></i>
           </span>
-        </button>
-        <span disabled v-else>
+        </a>
+        <span class="pull-right m-t-sm m-r" disabled v-else>
           {{ $t('action.download_report') }}
           <i class="fa fa-download"></i>
         </span>
@@ -237,7 +242,7 @@
               <router-link :to="'/member/' + member.id" v-if="member.account_type !== 0">{{ member.username }}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
               <br/>
-              <span class="label red" v-if="member.status!==1">{{ $t('status.inactive') }}</span>
+              <span class="label red m-l" v-if="member.status!==1">{{ $t('status.inactive') }}</span>
             </td>
             <td>
               <div v-if="member.account_type !== 0">
@@ -299,7 +304,7 @@
               <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
               <router-link :to="'/member/' + member.id">{{ member.username }}</router-link>
               <br/>
-              <span class="label red" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
+              <span class="label red m-l" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
             </td>
             <td>
               {{ member.real_name || '-' }}

@@ -1,7 +1,24 @@
 <template>
-  <div>
+<div>
+    <div class="m-b-xs text-right" v-if="$root.permissions.includes('export_membership_report')">
+        <a
+            :href="href"
+            :getReport="getReport"
+            v-if="queryset.length"
+            class="md-btn w-sm text-white-dk blue"
+        >
+            <span>
+                {{ $t('action.download_report') }}
+                <i class="fa fa-download"></i>
+            </span>
+        </a>
+        <span class="m-t-sm m-r-sm" disabled v-else>
+            {{ $t('action.download_report') }}
+            <i class="fa fa-download"></i>
+        </span>
+    </div>
     <form 
-      class="form"
+      class="form m-b-sm"
       @submit.prevent="submit"
     >
       <div class="box m-t-sm m-b-sm">
@@ -108,20 +125,6 @@
         </div>
       </div>
     </form>
-    <div class="row m-t-md">
-        <div class="col-xs-12">
-        <div class="pull-right" v-if="$root.permissions.includes('export_membership_report')">
-            <a :href="href" :getReport="getReport" v-if="queryset.length">
-                {{ $t('action.download_report') }}
-                <i class="fa fa-download"></i>
-            </a>
-            <span disabled v-else>
-                {{ $t('action.download_report') }}
-                <i class="fa fa-download"></i>
-            </span>
-        </div>
-        </div>
-    </div>
     <div class="box m-t-xs" v-if="queryset.length > 0">
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
@@ -155,7 +158,7 @@
         ref="pulling"
       />
     </div>
-	</div>
+</div>
 </template>
 
 <script>

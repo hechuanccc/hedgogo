@@ -1,6 +1,6 @@
 <template>
 <div>
-    <form class="form box" v-on:submit.prevent="submit">
+    <form class="form box m-b-sm" @submit.prevent="submit">
         <div class="box-body clearfix form-input-sm">
             <div class="row m-l-xs m-r-xs">
                 <div class="pull-left m-r-xs">
