@@ -48,7 +48,7 @@
                         <span v-if="payee.sum_fund !== null">{{payee.sum_fund | currency('￥')}}</span>
                         <span v-else>-</span>
                       </td>
-                      <td><router-link class="m-r" v-for="l in payee.level" :to="'/level/' + l.id">{{l.name}}</router-link></td>
+                      <td><router-link class="m-r" v-for="l in payee.level" :to="'/level/' + l.id" :key="l.id">{{l.name}}</router-link></td>
                       <td>
                         <span class="label success m-r" v-if="payee.status==1" @click="toggleStatus(payee)">{{$t('status.active')}}</span>
                         <span class="label danger m-r" v-if="payee.status==0" @click="toggleStatus(payee)">{{$t('status.disabled')}}</span>
@@ -70,7 +70,7 @@
                         <span v-if="payee.sum_fund !== null">{{payee.sum_fund | currency('￥')}}</span>
                         <span v-else>-</span>
                       </td>
-                      <td><router-link class="m-r" v-for="l in payee.level" :to="'/level/' + l.id">{{l.name}}</router-link></td>
+                      <td><router-link class="m-r" v-for="l in payee.level" :to="'/level/' + l.id" :key="l.id">{{l.name}}</router-link></td>
                       <td>
                         <span class="label success m-r" v-if="payee.status==1" @click="toggleStatus(payee)">{{$t('status.active')}}</span>
                         <span class="label danger m-r" v-if="payee.status==0" @click="toggleStatus(payee)">{{$t('status.disabled')}}</span>

@@ -98,7 +98,7 @@
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('nav.setting_level')}}</span>
                         <div>
-                            <router-link class="m-r-sm" :to="'/level/' + l.id" v-for="l in remit_payee.level">
+                            <router-link class="m-r-sm" :to="'/level/' + l.id" v-for="l in remit_payee.level" :key="l.id">
                                 {{l.name}}
                             </router-link>
                         </div>

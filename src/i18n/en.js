@@ -724,6 +724,7 @@ export default {
         not_allowed: 'Not Allowed'
     },
     setting: {
+        description: 'Description',
         sum_fund: 'Sum Fund',
         payment_type: 'Payment Type',
         remit_type: 'Remit Type',

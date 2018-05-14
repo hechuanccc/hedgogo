@@ -97,6 +97,9 @@
                 if (this.payment.id) {
                     this.$http.put(api.paymenttype + this.payment.id + '/', this.payment).then(() => {
                         this.updated = true
+                        setTimeout(() => {
+                            this.$router.push('/paymenttype/?type=' + this.payment.platform)
+                        }, 500)
                     })
                 }
             },

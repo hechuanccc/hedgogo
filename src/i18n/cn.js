@@ -183,7 +183,7 @@ export default {
         recent_action: '最近操作',
         current_audit: '当前稽核：',
         account_type: '帐户类型',
-        trial_account: '试玩账户',
+        trial_account: '试玩',
         real_account: '真实账户',
         pass: '通过',
         failed: '未通过',
@@ -370,10 +370,10 @@ export default {
                 register_count: '注册人数'
             },
             title: {
-                amount: '过去7日下注金额',
-                betrecord_count: '过去7日注单数量',
-                profit: '过去7日营运商损益情况',
-                register_count: '过去7日注册人数'
+                amount: '7日下注金额',
+                betrecord_count: '7日注单数量',
+                profit: '7日盈利',
+                register_count: '7日注册'
             }
         },
         loading: '载入中',
@@ -434,7 +434,7 @@ export default {
         sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
         cancelled_bets: '赌注被取消了',
-        total_valid_bet_record: '有效投注总笔数',
+        total_valid_bet_record: '有效投注',
         options: '投注选项',
         opts_combos_count: '组合选项计数'
     },
@@ -723,6 +723,7 @@ export default {
         not_allowed: '不允许'
     },
     setting: {
+        description: '备注',
         sum_fund: '目前累计',
         payment_type: '支付方式',
         remit_type: '汇款类型',

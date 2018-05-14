@@ -1,6 +1,9 @@
 @import "../scss/variables.md.scss";
 @import "../resultsball.sass";
-body{font-family: NotoSansHans-Regular,AvenirNext-Regular,arial,Hiragino Sans GB,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;}
+body{
+    font-family: NotoSansHans-Regular,AvenirNext-Regular,arial,Hiragino Sans GB,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;
+    min-width: 1240px;
+}
 
 .app-body a {
     color: $blue;
@@ -8,7 +11,6 @@ body{font-family: NotoSansHans-Regular,AvenirNext-Regular,arial,Hiragino Sans GB
 .app-body a:hover {
     color: $blue-800;
 }
-
 
 .lh-md {
     line-height: 1.8;
@@ -138,4 +140,8 @@ span.time-picker{
 .modal-body {
   overflow-y: auto;
   max-height: 60vh;
+}
+
+.table td {
+  font-size: 0.8125rem;
 }
