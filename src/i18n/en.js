@@ -932,6 +932,8 @@ export default {
         member_threshold: 'Member Threshold',
         commission_rate: 'Commision Rate',
         income_threshold: 'Income Threshold',
-        confirm_delete: 'Confirm delete?'
+        profit: 'Profit',
+        confirm_delete: 'Confirm delete?',
+        total: 'Total Commission Amount'
     }
 }

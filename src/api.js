@@ -35,7 +35,7 @@ export default {
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: managePrefix + 'bank/',
-    agentlevel: managePrefix + 'agentlevel/',
+    agent_level: managePrefix + 'agent_level/',
     commission: managePrefix + 'commissionsetting/',
     login: prefix + 'login/',
     resetmember: prefix + 'password/member/',
@@ -80,6 +80,7 @@ export default {
     report_overview: managePrefix + 'report/overview/',
     member_report: managePrefix + 'report/count/membership/',
     finance_report: managePrefix + 'report/assets/finance/',
+    commission_report: managePrefix + 'report/agent/profit/',
     check_member: host + '/v1/member/username/',
     search_member: memberPrefix + 'search_member/',
     robot: chatHost + 'robot/'

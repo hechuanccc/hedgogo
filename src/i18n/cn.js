@@ -931,6 +931,8 @@ export default {
         member_threshold: '有效会员',
         commission_rate: '佣金比例',
         income_threshold: '盈利范围',
-        confirm_delete: '确定删除？'
+        profit: '盈利',
+        confirm_delete: '确定删除？',
+        total: '总佣金'
     }
 }

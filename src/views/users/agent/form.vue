@@ -26,7 +26,7 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.level')}}</label>
                   <div class="inline-form-control">
-                    <agentlevel :level="agent.level" :default="4" disabled @agentLevel="agentLevel"></agentlevel>
+                    <agentlevel :level="agent.level || 4" disabled @agentLevel="agentLevel"></agentlevel>
                   </div>
                 </div>
 
