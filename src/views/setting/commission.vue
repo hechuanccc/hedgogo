@@ -1,71 +1,133 @@
 <template>
-    <div>
-        <div class="m-b" v-if="$root.permissions.includes('add_commission_setting')">
-            <router-link tag="button" class="md-btn blue w-sm" to="/commission/add">{{$t('setting.setting_commission_add_btn')}}</router-link>
-        </div>
-        <div class="box">
-            <table class="table table-striped b-t">
-                <thead>
-                    <tr>
-                        <th>{{$t('common.name')}}</th>
-                        <th>{{$t('common.status')}}</th>
-                        <th>{{$t('setting.min_member_bet_amt')}}</th>
-                        <th>{{$t('setting.max_deposit')}}</th>
-                        <th>{{$t('setting.max_withdraw')}}</th>
-                        <th>{{$t('common.agent_count')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="setting in commissionsettings" >
-                        <td><router-link :to="'/commission/' + setting.id + '/edit'">{{setting.name}}</router-link></td>
-                        <td>
-                            <span class="label success" v-if="setting.status==1">{{$t('status.active')}}</span>
-                            <span class="label danger" v-if="setting.status==0">{{$t('status.disabled')}}</span>
-                            <template v-if="$root.permissions.includes('update_commission_setting_status')">
-                                <a class="text-sm m-l" @click="toggleStatus(setting)" v-if="setting.status==1" >{{$t('status.inactive')}}</a>
-                                <a class="text-sm m-l" @click="toggleStatus(setting)" v-else >{{$t('status.active')}}</a>
-                            </template>
-                        </td>
-                        <td>{{setting.invest_least}}</td>
-                        <td>{{setting.deposit_fee}} <span v-if="deposit_fee_max">上限：{{setting.deposit_fee_max}}</span></td>
-                        <td>{{setting.withdraw_fee}} <span v-if="withdraw_fee_max">上限：{{setting.withdraw_fee_max}}</span></td>
-                        <td>
-                            <router-link v-if="setting.agent_count !== 0" :to="'/agent/?commission_settings=' + setting.id ">{{setting.agent_count}}</router-link>
-                            <span v-else>{{setting.agent_count}}</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div>
+    <div class="m-b" v-if="$root.permissions.includes('add_commission_setting')">
+        <router-link
+            tag="button"
+            class="md-btn blue w-sm"
+            to="/commission/add"
+        >{{ $t('setting.setting_commission_add_btn') }}
+        </router-link>
+    </div>
+    <div class="box p-b-xs">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ $t('common.name') }}</th>
+                    <th class="text-center">{{ $t('common.status') }}</th>
+                    <th class="text-center">{{ $t('commission.member_threshold') }}</th>
+                    <th class="text-center">{{ $t('commission.name') }}</th>
+                    <th class="text-center">{{ $t('common.agent_count') }}</th>
+                </tr>
+            </thead>
+            <tbody v-if="!loading">
+                <tr v-for="(commission, index) in commissionsettings" :key="index">
+                    <td>
+                        <router-link :to="`/commission/${commission.id}/edit`">
+                            {{ commission.name }}
+                        </router-link>
+                    </td>
+                    <td class="text-center text-sm">
+                        <span class="label success" v-if="commission.status === 1">{{ $t('status.active') }}</span>
+                        <span class="label danger" v-if="commission.status === 0">{{ $t('status.disabled') }}</span>
+                        <template v-if="$root.permissions.includes('update_commission_setting_status')">
+                            <a class="m-l-sm" @click="toggleStatus(index, commission)" v-if="!toggleLoading[index] && commission.status == 1">{{ $t('status.inactive') }}</a>
+                            <a class="m-l-sm" @click="toggleStatus(index, commission)" v-else-if="!toggleLoading[index]">{{ $t('status.active') }}</a>
+                            <span class="m-l-sm text-blue" v-else>
+                                &nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;
+                            </span>
+                        </template>
+                    </td>
+                    <td class="text-center">{{ commission.member_num || 0 }}</td>
+                    <td class="p-a-0 text-xs text-center" v-if="commission.rates && commission.rates.length">
+                        <table class="table table-condensed m-b-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center _600" width="60%">{{ $t('commission.income_threshold') }}</th>
+                                    <th class="text-center _600" width="40%">{{ $t('commission.commission_rate') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="(r, i) in commission.rates"
+                                    :key="i"
+                                    class="b-t-0"
+                                >
+                                    <td class="p-t-xs p-b-xs">
+                                        <span>{{ r.income_threshold | currency('￥', 0) }}</span>
+                                        &nbsp;~&nbsp;
+                                        <span v-if="i + 1 < commission.rates.length">{{ commission.rates[i+1].income_threshold - 0.01 | currency('￥', 2) }}</span>
+                                    </td>
+                                    <td class="p-t-xs p-b-xs">{{ r.rate }}&nbsp;%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="text-center" v-else>{{ $t('action.no_setting') }}</td>
+                    <td class="text-center">
+                        <router-link v-if="commission.agent_count !== 0" :to="'/agent/?commicommissions=' + commission.id ">{{ commission.agent_count }}</router-link>
+                        <span v-else>{{ commission.agent_count || 0 }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row text-center p-a" v-if="loading">
+            <i class="fa fa-spin fa-spinner"></i>
+            <b>{{ $t('common.loading') }}&nbsp;...</b>
         </div>
     </div>
+</div>
 </template>
-
 <script>
 import api from '../../api'
+import $ from '../../utils/util'
 export default {
     data () {
         return {
-            tips: [],
             commissionsettings: [],
             deposit_fee_max: '',
-            withdraw_fee_max: ''
+            withdraw_fee_max: '',
+            toggleLoading: {},
+            loading: true
         }
     },
     created () {
-        this.getCommissionsettings()
+        this.getCommissionsetting()
     },
     methods: {
-        toggleStatus (setting) {
-            this.$http.put(api.commission + setting.id + '/', {
-                'status': setting.status === 0 ? 1 : 0
-            }).then(data => {
-                setting.status = data.status
+        getCommissionsetting () {
+            this.$http.get(api.commission).then(data => {
+                data.forEach(c => {
+                    c.groups && c.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
+                    Object.assign(c, c.groups[0], {
+                        id: c.id
+                    })
+                })
+                this.commissionsettings = data
+                this.loading = false
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.loading = false
             })
         },
-        getCommissionsettings () {
-            let fields = '?opt_fields=invest_least,id,name,status,deposit_fee,deposit_fee_max,withdraw_fee,withdraw_fee_max,member_count,agent_count'
-            this.$http.get(api.commission + fields).then(data => {
-                this.commissionsettings = data
+        toggleStatus (index, commission) {
+            this.$set(this.toggleLoading, index, true)
+            this.$http.put(`${api.commission}${commission.id}/`, {
+                status: `${commission.status ^ 1}`
+            }).then(data => {
+                commission.status = data.status
+                $.notify({
+                    message: this.$t('action.update') + this.$t('common.status') + this.$t('status.success')
+                })
+                this.$delete(this.toggleLoading, index)
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.$delete(this.toggleLoading, index)
             })
         }
     }

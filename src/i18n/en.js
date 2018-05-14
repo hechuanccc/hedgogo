@@ -280,6 +280,7 @@ export default {
         less_fields: 'Show less fields',
         status: 'Status',
         basic_info: 'Basic Information',
+        basic_setting: 'Basic Setting',
         real_name: 'Real Name',
         memo: 'Memo',
         no_memo: 'No memo',
@@ -482,7 +483,9 @@ export default {
         view: 'View',
         inform: 'Inform',
         please_fill_object: 'Please fill {object}',
-        reset_condition: 'Reset'
+        reset_condition: 'Reset',
+        add_group: 'Add Group',
+        key_in: 'Key In'
     },
     staff: {
         roles: 'Roles / Permission',
@@ -922,5 +925,12 @@ export default {
     robot: {
         manager: '管理员',
         member: '普通会员'
+    },
+    commission: {
+        name: 'Commission Setting',
+        member_threshold: 'Member Threshold',
+        commission_rate: 'Commision Rate',
+        income_threshold: 'Income Threshold',
+        confirm_delete: 'Confirm delete?'
     }
 }
