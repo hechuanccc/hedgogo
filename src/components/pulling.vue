@@ -244,6 +244,8 @@ export default {
                     message: this.$t('common.server_error'),
                     type: 'danger'
                 })
+                this.$emit('query-data', [])
+                this.loading = false
             })
             this.$emit('query-param', this.myQuery)
         },

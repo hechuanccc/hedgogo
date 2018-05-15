@@ -670,6 +670,7 @@ export default {
         dft_member_lv: '预设会员等级',
         dft_return_setting: '预设反水设定',
         member_count: '会员数量',
+        agent_count: '代理数量',
         reset_confirm: '确认要{action}吗？',
         ip: 'IP 地址',
         updated_by: '操作人',
@@ -680,7 +681,10 @@ export default {
         link: '推广地址',
         account_type: '帐户类型',
         reset_agent_password: '代理登录密码已修改为:',
-        domain_label: '多个域名请用 “英文逗号” 隔开'
+        domain_label: '多个域名请用 “英文逗号” 隔开',
+        commission_name: '佣金名称',
+        income_threshold: '盈利范围',
+        commission_rate: '佣金比例'
     },
     level: {
         remit_limit: '公司入款限额',

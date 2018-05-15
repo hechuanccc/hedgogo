@@ -671,6 +671,7 @@ export default {
         dft_member_lv: 'Default Member Level',
         dft_return_setting: 'Default Return Setting',
         member_count: 'Member Count',
+        agent_count: 'Agent Count',
         reset_confirm: 'Are you sure want to {action}？',
         ip: 'IP Address',
         updated_by: 'Updated By',
@@ -681,7 +682,10 @@ export default {
         link: 'Promotion address',
         account_type: 'Account Type',
         reset_agent_password: 'The agent password has been modified to:',
-        domain_label: 'Multiple Domains should be separated by "comma".'
+        domain_label: 'Multiple Domains should be separated by "comma".',
+        commission_name: 'Commission Name',
+        income_threshold: 'Income Threshold',
+        commission_rate: 'Commission Rate'
     },
     level: {
         remit_limit: 'Remit Limit',
