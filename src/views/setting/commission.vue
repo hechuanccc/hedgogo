@@ -64,7 +64,7 @@
                     </td>
                     <td class="text-center" v-else>{{ $t('action.no_setting') }}</td>
                     <td class="text-center">
-                        <router-link v-if="commission.agent_count !== 0" :to="'/agent/?commicommissions=' + commission.id ">{{ commission.agent_count }}</router-link>
+                        <router-link v-if="commission.agent_count !== 0" :to="'/agent/?commission_settings=' + commission.id ">{{ commission.agent_count }}</router-link>
                         <span v-else>{{ commission.agent_count || 0 }}</span>
                     </td>
                 </tr>
