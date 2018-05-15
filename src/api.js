@@ -35,7 +35,7 @@ export default {
     level: managePrefix + 'level/',
     return: managePrefix + 'returnsetting/',
     bank: managePrefix + 'bank/',
-    agentlevel: managePrefix + 'agentlevel/',
+    agentlevel: managePrefix + 'agent_level/',
     commission: managePrefix + 'commissionsetting/',
     login: prefix + 'login/',
     resetmember: prefix + 'password/member/',

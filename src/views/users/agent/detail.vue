@@ -20,7 +20,7 @@
             <div class="col-xs-3">
               <h2><strong>{{agent.username}}</strong>
               </h2>
-              <span class="text-muted" v-if="agent.created_by">{{agent.created_at | moment( "YYYY-MM-DD HH:mm")}} 加盟</span>
+              <span class="text-muted text-sm" v-if="agent.created_by">{{agent.created_at | moment( "YYYY-MM-DD HH:mm")}} 加盟</span>
             </div>
             <div class="col-xs-8 col-md-offset-1 text-right">
               <router-link class="md-btn md-flat m-r-sm" :to="`/report/finance_report/${agent.id}?${agent.default_member_lv ? `member_level=${agent.default_member_lv.id}` : ''}`">{{$t('action.view_agent_report')}}</router-link>
@@ -32,75 +32,90 @@
           </div>
         </div>
         <div class="box-body">
-          <div class="row m-b">
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.level')}}</span>
-              <div >{{agent.level.name}}</div>
-            </div>
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.parent_agent')}}</span>
-              <div>
-                <router-link v-if="agent.parent_agent" :to="'/agent/' + agent.parent_agent.id">{{agent.parent_agent.name}}</router-link>
-                <span class="text-muted" v-else>{{$t('agent.no_parent')}}</span>
+          <div class="row b-b">
+            <div class="m-b col-xs-8">
+              <div class="col-xs-6">
+                <span>{{$t('agent.level')}}</span>
+                <p class="m-b-0 text-muted">{{agent.level.name}}</p>
               </div>
-            </div>
-          </div>
-          <div class="row m-b">
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('common.status')}} </span>
-              <div>
-                <span class="label success" v-if="agent.status==1" @click="toggleStatus">{{$t('status.active')}}</span>
-                <span class="label" v-else  @click="toggleStatus">{{$t('status.inactive')}}</span>
-                <template v-if="$root.permissions.includes('update_agent_status')">
-                  <a class="text-sm m-l" @click="toggleStatus" v-if="agent.status==1" >{{$t('status.inactive')}}</a>
-                  <a class="text-sm m-l" @click="toggleStatus" v-else >{{$t('status.active')}}</a>
-                </template>
-                <span class="text-success" v-show="statusUpdated" @click="toggleStatus()">{{$t('common.status_updated')}}</span>
-              </div>
-            </div>
 
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.member_count')}}</span>
-              <div >
-                <router-link  :to="'/member?agent=' + agent.username">{{agent.member_count}}</router-link>
+              <div class="col-xs-6">
+                <span>{{$t('agent.parent_agent')}}</span>
+                <p class="m-b-0 text-muted">
+                  <router-link v-if="agent.parent_agent" :to="'/agent/' + agent.parent_agent.id">{{agent.parent_agent.name}}</router-link>
+                  <span class="text-muted" v-else>{{$t('agent.no_parent')}}</span>
+                </p>
               </div>
-            </div>
 
-          </div>
-          <div class="row p-b b-b">
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.commission_setting')}}</span>
-              <div>
-                <router-link v-if="agent.commission_settings" :to="'/commission/' + agent.commission_settings.id + '/edit'">{{agent.commission_settings.name}}</router-link>
-                <span class="label" v-else>未设定</span>
+              <div class="col-xs-6 m-t-sm">
+                <span>{{$t('agent.agent_count')}}</span>
+                <div>
+                  <!-- <router-link :to="'/agent?parent_agent_q=' + agent.username" v-if="agent.agent_count">{{agent.agent_count}}</router-link> -->
+                  <span v-if="agent.agent_count">{{agent.agent_count}}</span>
+                  <span class="text-muted" v-else>{{agent.agent_count}}</span>
+                </div>
+              </div>
+
+              <div class="col-xs-6 m-t-sm">
+                <span>{{$t('agent.member_count')}}</span>
+                <div>
+                  <router-link :to="'/member?agent=' + agent.username">{{agent.member_count}}</router-link>
+                </div>
+              </div>
+              <div class="col-xs-6 m-t-sm">
+                <span>{{$t('common.status')}} </span>
+                <div>
+                  <span class="label success" v-if="agent.status === 1" @click="toggleStatus">{{$t('status.active')}}</span>
+                  <span class="label" v-else @click="toggleStatus">{{$t('status.inactive')}}</span>
+                  <template v-if="$root.permissions.includes('update_agent_status')">
+                    <a class="text-sm m-l-sm" @click="toggleStatus" v-if="agent.status === 1" >{{$t('status.inactive')}}</a>
+                    <a class="text-sm m-l-sm" @click="toggleStatus" v-else>{{$t('status.active')}}</a>
+                  </template>
+                </div>
+              </div>
+              <div class="col-xs-6 m-t-sm">
+                <span>{{$t('agent.dft_member_lv')}}</span>
+                <div>
+                  <router-link v-if="agent.default_member_lv" :to="'/level/' + agent.default_member_lv.id ">{{agent.default_member_lv.name}}</router-link>
+                  <span class="label" v-else>未设定</span>
+                </div>
               </div>
             </div>
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.dft_member_lv')}}</span>
-              <div>
-                <router-link v-if="agent.default_member_lv" :to="'/level/' + agent.default_member_lv.id ">{{agent.default_member_lv.name}}</router-link>
-                <span class="label" v-else>未设定</span>
+              <p class="m-b-0">{{$t('agent.commission_setting')}}</p>
+              <div v-if="agent.commission_settings" class="text-sm">
+                <div class="m-t-xs">
+                  <span class="text-muted m-r-sm">{{$t('agent.commission_name')}}</span>
+                  <router-link :to="`/commission/${agent.commission_settings.id}/edit`" class="m-b-0">{{ agent.commission_settings.name }}</router-link>
+                </div>
+                <div class="m-t-xs text-muted">
+                  <span class="m-r-sm">{{$t('setting.valid_member')}}</span>
+                  <span v-if="agent.member_number !== null">{{agent.commission_settings.member_number}}</span>
+                  <span v-else>未填写</span>
+                </div>
+                <div class="p-a-sm m-a m-t-sm grey-50">
+                  <div class="row m-l-sm text-muted text-center">
+                    <div class="col-xs-8">{{$t('agent.income_threshold')}}</div>
+                    <div class="col-xs-4">{{$t('agent.commission_rate')}}</div>
+                  </div>
+                  <div class="row m-l-sm text-center text-black-dk r" v-for="(p, i) in agent.commission_settings.profit_set" :key="i">
+                    <div class="col-xs-8">
+                      <span>{{p.income_threshold | currency('￥', 2)}}</span>
+                      ~
+                      <span v-if="i + 1 < agent.commission_settings.profit_set.length">{{ agent.commission_settings.profit_set[i+1].income_threshold - 0.01 | currency('￥', 2) }}</span>
+                    </div>
+                    <div class="col-xs-4">{{p.rate}}&nbsp;%</div>
+                  </div>
+                </div>
               </div>
+              <p class="label m-b-0" v-else>未设定</p>
             </div>
           </div>
-          <div class="row p-b b-b m-t">
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.promo_code')}}</span>
-              <div >{{agent.promo_code}}</div>
-            </div>
-          </div>
+
           <div class="row m-b p-t p-b b-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('common.basic_info')}}</span>
-              <div  v-if="!showDetail">
-                {{$t('common.real_name')}}：
-                <span v-if="agent.real_name">{{agent.real_name}}</span>
-                <span class="label" v-else>未填写</span>，{{$t('common.phone')}}：
-                <span v-if="agent.phone">{{agent.phone}}</span>
-                <span class="label" v-else>未填写</span>
-              </div>
-
-              <div class="p-a grey-50 lh-md m-t-sm label-width-eq" v-else>
+              <span>{{$t('common.basic_info')}}</span>
+              <div class="p-a grey-50 lh-md m-t-sm label-width-eq">
                 <div>
                   <span class="text-muted title">{{$t('common.real_name')}}</span>
                   <span v-if="agent.real_name">{{agent.real_name}}</span>
@@ -138,17 +153,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-4">
-              <a @click="showDetail = !showDetail">
-                <span v-if="showDetail">{{$t('action.close_detailed_infos')}}</span>
-                <span v-else>{{$t('action.view_detailed_infos')}}</span>
-              </a>
-            </div>
-          </div>
 
-          <div class="row m-b b-b p-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('bank.bank_title')}}</span>
+              <span>{{$t('bank.bank_title')}}</span>
               <div v-if="!agent.bank">
                 <span class="label" >尚未建立</span>
               </div>
@@ -174,23 +181,27 @@
           </div>
 
           <div class="row m-b b-b p-b">
-            <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.domain')}}</span>
-              <div  v-if="isArray(agent.domain)" class="domain">
+            <div class="col-xs-3">
+              <span>{{$t('agent.domain')}}</span>
+              <div v-if="isArray(agent.domain)" class="domain">
                 <label class="m-r" v-for="domain in agent.domain">{{domain}}</label>
               </div>
               <div class="text-muted" v-else-if="!agent.domain">{{$t('agent.unDomain')}}</div>
               <div class="text-muted" v-else>{{agent.domain}}</div>
             </div>
+            <div class="col-xs-3">
+              <span>{{$t('agent.promo_code')}}</span>
+              <div class="text-muted">{{agent.promo_code}}</div>
+            </div>
             <div class="col-xs-6">
-              <span class="text-muted">{{$t('agent.link')}}</span>
+              <span>{{$t('agent.link')}}</span>
               <div class="t-red">首页地址?r=推广码 如：http://rico-st8ging.azureedge.net/#/?r={{agent.promo_code}}</div>
             </div>
           </div>
 
           <div class="row">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('common.memo')}}</span>
+              <span>{{$t('common.memo')}}</span>
               <div  v-if="agent.memo">{{agent.memo}}</div>
               <div class="text-muted" v-else>{{$t('common.no_memo')}}</div>
             </div>
@@ -202,6 +213,7 @@
 
 <script>
     import api from '../../../api'
+    import $ from '../../../utils/util'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
 
@@ -209,7 +221,6 @@
         data () {
             return {
                 showDetail: false,
-                statusUpdated: false,
                 passwordChanged: false,
                 newPassword: '',
                 memberLevels: [],
@@ -249,15 +260,13 @@
                 this.getAgent(this.$route.params.agentId)
             },
             toggleStatus () {
-                this.statusUpdated = false
                 this.$http.put(api.agent + this.agent.id + '/?opt_fields=status', {
-                    status: this.agent.status === 1 ? 0 : 1
+                    status: this.agent.status ^ 1
                 }).then(data => {
                     this.agent.status = data.status
-                    this.statusUpdated = true
-                    setTimeout(() => {
-                        this.statusUpdated = false
-                    }, 3000)
+                    $.notify({
+                        message: this.$t('common.status_updated')
+                    })
                 })
             },
             resetPassword (event) {
@@ -287,6 +296,9 @@
             getAgent (id) {
                 let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
                 this.$http.get(api.agent + id + '/?opt_expand=' + fields).then(data => {
+                    if (data.commission_settings) {
+                        data.commission_settings.profit_set.sort((a, b) => a.income_threshold - b.income_threshold)
+                    }
                     this.agent = data
                     this.account_id = {'account_id': data.id}
                 })
@@ -299,12 +311,12 @@
 </script>
 <style scoped>
 .label-width-eq .title{
-    text-align: right;
-    display: inline-block;
-    margin-right: 10px;
-    width: 80px;
+  text-align: right;
+  display: inline-block;
+  margin-right: 10px;
+  width: 80px;
 }
 .domain {
-        word-break: break-all;
-    }
+  word-break: break-all;
+}
 </style>
