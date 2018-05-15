@@ -41,7 +41,7 @@
 
               <div class="col-xs-6">
                 <span>{{$t('agent.parent_agent')}}</span>
-                <p class="m-b-0 text-muted">
+                <p class="m-b-0">
                   <router-link v-if="agent.parent_agent" :to="'/agent/' + agent.parent_agent.id">{{agent.parent_agent.name}}</router-link>
                   <span class="text-muted" v-else>{{$t('agent.no_parent')}}</span>
                 </p>

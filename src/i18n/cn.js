@@ -196,7 +196,9 @@ export default {
         visitor: '游客',
         username_form_validation_msg: '{digit}位英数字',
         visitor_filter: '过滤游客',
-        total_ongoing_amount: '未结金额'
+        total_ongoing_amount: '未结金额',
+        total_deposit: '总存款',
+        total_withdraw: '总取款'
     },
     bill: {
         commission_report: '佣金计算',

@@ -22,9 +22,10 @@
                     :to="'/level/' + id + '/edit'"
                 >{{ $t('action.edit_level') }}
                 </router-link>
+                <!-- test member and normal member couldn't be deleted -->
                 <a
                     class="md-btn md-flat"
-                    v-if="$root.permissions.includes('delete_member_level')"
+                    v-if="$root.permissions.includes('delete_member_level') && !(id == 1 || id == 2)"
                     @click="deleteLevel(id, $event)"
                 >{{ $t('action.delete_level') }}
                 </a>

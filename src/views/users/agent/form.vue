@@ -26,14 +26,65 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.level')}}</label>
                   <div class="inline-form-control">
-                    <agentlevel :level="agent.level || 4" disabled @agentLevel="agentLevel"></agentlevel>
+                    <select
+                      class="form-control c-select w-sm"
+                      v-model.number="agent.level"
+                      v-if="!agentLevelLoading && filteredAgentLevels.length"
+                      :disabled="true"
+                    >
+                      <option
+                        class="form-control"
+                        :value="l.id"
+                        v-for="(l, i) in filteredAgentLevels"
+                        :key="i"
+                      >{{ l.name }}
+                      </option>
+                    </select>
+                    <span
+                      class="p-b-xs p-t-sm form-control w-sm"
+                      v-else-if="agentLevelLoading"
+                    >
+                      <i class="fa fa-spin fa-spinner"></i>
+                    </span>
+                    <span
+                      class="p-b-xs p-t-sm form-control w-sm"
+                      v-else-if="!filteredAgentLevels.length"
+                    >
+                      {{ $t('common.no_record') }}
+                    </span>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="agent"  class="label-width">{{$t('agent.parent_agent')}} </label>
                   <div class="inline-form-control">
-                    <input type="text" class="form-control" name="parent_agent" :value="agent.parent_agent_name" disabled>
+                    <select
+                        class="form-control c-select w-sm"
+                        v-model.number="agent.parent_agent"
+                        v-if="filteredParentAgents.length && agent.level !== 1"
+                        :disabled="true"
+                    >
+                        <option value="">{{ $t('common.please_select') }}</option>
+                        <option
+                            class="form-control"
+                            :value="pa.id"
+                            v-for="(pa, i) in filteredParentAgents"
+                            :key="i"
+                        >{{ pa.username }}
+                        </option>
+                    </select>
+                    <span
+                        class="p-b-xs p-t-sm form-control w-sm inline"
+                        v-else-if="agentLevelLoading"
+                    >
+                        <i class="fa fa-spin fa-spinner"></i>
+                    </span>
+                    <input
+                        class="p-b-xs p-t-sm form-control w-sm inline"
+                        v-else-if="!filteredParentAgents.length"
+                        :placeholder="agent.parent_agent_name"
+                        disabled
+                    />
                   </div>
                 </div>
                 <div class="form-group" v-if="agent.id!=''">
@@ -56,7 +107,7 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.dft_member_lv')}}</label>
                   <div class="inline-form-control">
-                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="true" :disabled="!updateAgentPermission('settings')"/>
+                    <level :level="agent.default_member_lv" @level-select="levelSelect" :req="false" :disabled="!updateAgentPermission('settings')"/>
                   </div>
                 </div>
 
@@ -81,14 +132,14 @@
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('agent.domain')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" placeholder="123.com, abc.com" v-model="agent.domain" :disabled="!updateAgentPermission('settings')" required>
+                    <input class="form-control input-lg" placeholder="123.com, abc.com" v-model="agent.domain" :disabled="!updateAgentPermission('settings')">
                   </div>
                   <label class="t-red"> {{$t('agent.domain_label')}}</label>
                 </div>
                 <div class="form-group" >
                   <label for="phone" class="label-width">{{$t('common.phone')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" type="number"  name="agent" placeholder="比如：13856789876" v-model="agent.phone" :disabled="!updateAgentPermission('name_phone_mail')" required>
+                    <input class="form-control" type="number"  name="agent" placeholder="比如：13856789876" v-model="agent.phone" :disabled="!updateAgentPermission('name_phone_mail')">
                   </div>
                 </div>
               </div>
@@ -97,7 +148,7 @@
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('common.real_name')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name" :disabled="!updateAgentPermission('name_phone_mail')" required>
+                    <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name" :disabled="!updateAgentPermission('name_phone_mail')">
                   </div>
                 </div>
 
@@ -121,7 +172,7 @@
                 <div class="form-group">
                   <label for="email" class="label-width">{{$t('common.email')}}</label>
                   <div class="inline-form-control">
-                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email" :disabled="!updateAgentPermission('name_phone_mail')" required>
+                    <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email" :disabled="!updateAgentPermission('name_phone_mail')">
                   </div>
                 </div>
 
@@ -138,29 +189,50 @@
                 <h6 class="b-b p-b m-b m-t-lg">{{$t('bank.bank_title')}}</h6>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.name')}}</label>
-                  <bank :bank="agent.bank.bank" :req="true" @bank-select="bankSelect" :disabled="!updateAgentPermission('bank')"></bank>
+                  <bank
+                    :bank="agent.bank.bank"
+                    :req="bankFilled"
+                    @bank-select="bankSelect"
+                    :disabled="!updateAgentPermission('bank')"
+                />
                 </div>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.province')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.province" :disabled="!updateAgentPermission('bank')" required>
+                    <input
+                        class="form-control"
+                        v-model="agent.bank.province"
+                        :disabled="!updateAgentPermission('bank')"
+                        :required="bankFilled"
+                    />
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="realname" class="label-width">{{$t('bank.city')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control" v-model="agent.bank.city" :disabled="!updateAgentPermission('bank')" required>
+                    <input
+                        class="form-control"
+                        v-model="agent.bank.city"
+                        :disabled="!updateAgentPermission('bank')"
+                        :required="bankFilled"
+                    />
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('bank.account')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" type="number" placeholder="" v-model="agent.bank.account" :disabled="!updateAgentPermission('bank')" required>
+                    <input
+                        class="form-control input-lg"
+                        type="number"
+                        v-model="agent.bank.account"
+                        :disabled="!updateAgentPermission('bank')"
+                        :required="bankFilled"
+                    />
                   </div>
                 </div>
 
                 <div class="form-group" >
-                  <label for="memo" >{{$t('common.memo')}}</label>
+                  <label for="memo">{{$t('common.memo')}}</label>
                   <textarea class="form-control" rows="3" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="agent.memo" :disabled="!updateAgentPermission('details')"></textarea>
                 </div>
               </div>
@@ -179,206 +251,246 @@
     </div>
 </template>
 <script>
-    import VueTypeahead from 'vue-typeahead'
-    import DatePicker from 'vue2-datepicker'
-    import api from '../../../api'
-    import Vue from 'vue'
-    const format = 'YYYY-MM-DD'
-    export default {
-        extends: VueTypeahead,
-        data () {
-            return {
-                agentValid: '',
-                data: {
-                    opt_fields: 'username,id'
-                },
-                limit: 5,
-                minChars: 1,
-                query: '',
-                errorMsg: '',
-                birthdayFormat: '',
-                agent: {
-                    id: '',
-                    level: '',
-                    username: '',
-                    promo_code: '',
-                    parent_agent: '3',
-                    parent_agent_name: 'gagent',
-                    commission_settings: '',
-                    default_member_lv: '',
-                    real_name: '',
-                    phone: '',
-                    birthday: '',
-                    wechat: '',
-                    gender: '',
-                    email: '',
-                    memo: '',
-                    bank: {
-                        bank: '',
-                        province: ''
-                    },
-                    domain: '',
-                    password: '123456'
-                },
-                initAgent: {},
-                done: false,
-                statusUpdated: false
-            }
-        },
-        computed: {
-            bankFilled () {
-                let bankinfo = this.agent.bank
-                return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
+import VueTypeahead from 'vue-typeahead'
+import DatePicker from 'vue2-datepicker'
+import api from '../../../api'
+import $ from '../../../utils/util'
+import Vue from 'vue'
+const format = 'YYYY-MM-DD'
+export default {
+    extends: VueTypeahead,
+    data () {
+        return {
+            agentValid: '',
+            data: {
+                opt_fields: 'username,id'
             },
-            src () {
-                return api.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=' + this.parentLevel
+            limit: 5,
+            minChars: 1,
+            query: '',
+            errorMsg: '',
+            birthdayFormat: '',
+            agent: {
+                id: '',
+                level: 4,
+                username: '',
+                promo_code: '',
+                parent_agent: 3,
+                commission_settings: '',
+                default_member_lv: 1,
+                real_name: '',
+                phone: '',
+                birthday: '',
+                wechat: '',
+                gender: '',
+                email: '',
+                memo: '',
+                bank: {
+                    bank: '',
+                    province: ''
+                },
+                domain: '',
+                password: '123456'
             },
-            parentLevel () {
-                let level = this.agent.level - 1
-                level = level <= 0 ? 1 : level
-                return level
-            }
+            initAgent: {},
+            done: false,
+            statusUpdated: false,
+            agentLevelLoading: true,
+            agentLevels: []
+        }
+    },
+    computed: {
+        bankFilled () {
+            let bankinfo = this.agent.bank
+            return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
         },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if (vm.agent.username === '') {
-                    vm.initAgent = Object.assign(vm.initAgent, vm.agent)
+        src () {
+            return api.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=' + this.parentLevel
+        },
+        parentLevel () {
+            let level = this.agent.level - 1
+            level = level <= 0 ? 1 : level
+            return level
+        },
+        filteredParentAgents () {
+            if (this.agent.level && this.agent.level === 1 && this.agentLevels.legnth) {
+                return []
+            } else {
+                let level = this.agentLevels.find(a => a.level === this.agent.level - 1)
+                if (level && level.agents) {
+                    return level.agents
                 } else {
-                    vm.agent = vm.initAgent
+                    return []
+                }
+            }
+        },
+        filteredAgentLevels () {
+            return this.agentLevels.filter(l => l.level !== 1)
+        }
+    },
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            if (vm.agent.username === '') {
+                vm.initAgent = Object.assign(vm.initAgent, vm.agent)
+            } else {
+                vm.agent = vm.initAgent
+            }
+            let id = to.params.agentId
+            if (id) {
+                vm.getAgent(id)
+            }
+            vm.getAgentLevels()
+        })
+    },
+    watch: {
+        '$route' (to, from) {
+            let _this = this
+            this.queryset = []
+            setTimeout(() => {
+                if (_this.agent.username === '') {
+                    _this.initAgent = Object.assign(_this.initAgent, _this.agent)
+                } else {
+                    _this.agent = _this.initAgent
                 }
                 let id = to.params.agentId
                 if (id) {
-                    vm.getAgent(id)
+                    _this.getAgent(id)
                 }
+            }, 100)
+        },
+        'agent.birthday' (newObj, old) {
+            if (newObj) {
+                this.agent.birthday = Vue.moment(this.agent.birthday).format(format)
+            }
+        },
+        'agent.level' (newObj, old) {
+            if (parseInt(newObj) !== parseInt(old) && !this.filteredParentAgents.find(a => a.id === this.agent.parent_agent)) {
+                this.agent.parent_agent = ''
+            }
+        }
+    },
+    methods: {
+        updateAgentPermission (field) {
+            return this.$route.name === 'agent-edit' ? this.$root.permissions.includes(`update_agent_${field}`) : this.$root.permissions.includes('add_new_agent')
+        },
+        bankSelect (bank) {
+            this.agent.bank.bank = bank
+        },
+        levelSelect (val) {
+            this.agent.default_member_lv = val
+        },
+        agentLevel (val) {
+            this.agent.level = val
+            if (val === '1') {
+                    // reset agent validation and parent_agent query input
+                this.agentValid = ''
+                this.query = ''
+            }
+        },
+        myCommission (val) {
+            this.agent.commission_settings = val
+        },
+        onSubmit (e) {
+            if (!this.agent.parent_agent && parseInt(this.agent.level) !== 1) {
+                this.errorMsg = '请选择正确的上线'
+                return
+            } else {
+                this.errorMsg = ''
+            }
+            this.initAgent = Object.assign({}, this.initAgent, this.agent)
+            if (!this.initAgent.bank.bank) {
+                this.$delete(this.initAgent, 'bank')
+            }
+            if (!this.initAgent.domain) {
+                this.$delete(this.initAgent, 'domain')
+            }
+            if (this.agent.id) {
+                this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(data => {
+                    this.statusUpdated = true
+                    setTimeout(() => {
+                        this.$router.push('/agent/' + data.id)
+                    }, 2000)
+                }, error => {
+                    this.errorMsg = error
+                })
+            } else {
+                this.$http.post(api.agent, this.initAgent).then(data => {
+                    this.statusUpdated = true
+                    setTimeout(() => {
+                        this.$router.push('/agent/' + data.id)
+                    }, 2000)
+                }, error => {
+                    this.errorMsg = error
+                })
+            }
+        },
+        checkAgent () {
+            if (this.query !== '') {
+                this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
+                    if (data.length === 1) {
+                        this.agentValid = true
+                        this.agent.parent_agent = data[0].id
+                    } else {
+                        this.agentValid = false
+                        this.agent.parent_agent = ''
+                    }
+                })
+            } else {
+                this.agentValid = false
+                this.agent.parent_agent = ''
+            }
+        },
+        getAgent (id) {
+            this.$http.get(api.agent + id + '/?opt_expand=parent_agent').then(data => {
+                if (!data.bank) {
+                    data.bank = {bank: '', province: ''}
+                }
+                this.agent = data
+                if (this.agent.birthday === null) {
+                    this.agent.birthday = ''
+                }
+                // for nested objects parent_agent, level... we get json object from api, need to
+                // transfer to plain string
+                if (data.parent_agent) {
+                    this.agent.parent_agent_name = data.parent_agent.name
+                    this.agent.parent_agent = data.parent_agent.id
+                }
+                // this.commission_settings = data.commission_settings.id
             })
         },
-        watch: {
-            '$route' (to, from) {
-                let _this = this
-                this.queryset = []
-                setTimeout(() => {
-                    if (_this.agent.username === '') {
-                        _this.initAgent = Object.assign(_this.initAgent, _this.agent)
-                    } else {
-                        _this.agent = _this.initAgent
-                    }
-                    let id = to.params.agentId
-                    if (id) {
-                        _this.getAgent(id)
-                    }
-                }, 100)
-            },
-            'agent.birthday' (newObj, old) {
-                if (newObj) {
-                    this.agent.birthday = Vue.moment(this.agent.birthday).format(format)
-                }
-            }
-        },
-        methods: {
-            updateAgentPermission (field) {
-                return this.$route.name === 'agent-edit' ? this.$root.permissions.includes(`update_agent_${field}`) : this.$root.permissions.includes('add_new_agent')
-            },
-            bankSelect (bank) {
-                this.agent.bank.bank = bank
-            },
-            levelSelect (val) {
-                this.agent.default_member_lv = val
-            },
-            agentLevel (val) {
-                this.agent.level = val
-                if (val === '1') {
-                      // reset agent validation and parent_agent query input
-                    this.agentValid = ''
-                    this.query = ''
-                }
-            },
-            myCommission (val) {
-                this.agent.commission_settings = val
-            },
-            onSubmit (e) {
-                if (!this.agent.parent_agent && parseInt(this.agent.level) !== 1) {
-                    this.errorMsg = '请选择正确的上线'
-                    return
-                } else {
-                    this.errorMsg = ''
-                }
-                this.initAgent = Object.assign(this.initAgent, this.agent)
-                if (this.agent.id) {
-                    this.$http.put(api.agent + this.agent.id + '/', this.initAgent).then(data => {
-                        this.statusUpdated = true
-                        setTimeout(() => {
-                            this.$router.push('/agent/' + data.id)
-                        }, 2000)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                } else {
-                    this.$http.post(api.agent, this.initAgent).then(data => {
-                        this.statusUpdated = true
-                        setTimeout(() => {
-                            this.$router.push('/agent/' + data.id)
-                        }, 2000)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                }
-            },
-            checkAgent () {
-                if (this.query !== '') {
-                    this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
-                        if (data.length === 1) {
-                            this.agentValid = true
-                            this.agent.parent_agent = data[0].id
-                        } else {
-                            this.agentValid = false
-                            this.agent.parent_agent = ''
-                        }
-                    })
-                } else {
-                    this.agentValid = false
-                    this.agent.parent_agent = ''
-                }
-            },
-            getAgent (id) {
-                this.$http.get(api.agent + id + '/?opt_expand=parent_agent').then(data => {
-                    if (!data.bank) {
-                        data.bank = {bank: '', province: ''}
-                    }
-                    this.agent = data
-                    if (this.agent.birthday === null) {
-                        this.agent.birthday = ''
-                    }
-                    // for nested objects parent_agent, level... we get json object from api, need to
-                    // transfer to plain string
-                    if (data.parent_agent) {
-                        this.agent.parent_agent_name = data.parent_agent.name
-                        this.agent.parent_agent = data.parent_agent.id
-                    }
-                    // this.commission_settings = data.commission_settings.id
+        getAgentLevels () {
+            this.$http.get(api.agent_level).then(data => {
+                this.agentLevels = data
+                this.agentLevelLoading = false
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
                 })
-            },
-            reset () {
-                this.checkAgent()
-            },
-            // for agent field typeahead
-            onHit (item) {
-                this.items = []
-                this.query = item.username
-                this.checkAgent()
-            },
-            // for agent field typeahead
-            prepareResponseData (data) {
-                return data
-            }
+            })
         },
-        components: {
-            DatePicker,
-            bank: require('../../../components/bank'),
-            level: require('../../../components/level'),
-            agentlevel: require('../../../components/agentlevel'),
-            commissionsetting: require('../../../components/commissionsetting')
+        reset () {
+            this.checkAgent()
+        },
+        // for agent field typeahead
+        onHit (item) {
+            this.items = []
+            this.query = item.username
+            this.checkAgent()
+        },
+        // for agent field typeahead
+        prepareResponseData (data) {
+            return data
         }
+    },
+    components: {
+        DatePicker,
+        bank: require('../../../components/bank'),
+        level: require('../../../components/level'),
+        agentlevel: require('../../../components/agentlevel'),
+        commissionsetting: require('../../../components/commissionsetting')
     }
+}
 </script>
 <style scoped>
 .input-lg{
