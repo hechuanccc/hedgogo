@@ -231,6 +231,7 @@ export default {
                 this.$emit('bet-count', data.total_betrecord_count || 0)
                 this.$emit('deposit', data.total_deposit_amount || 0)
                 this.$emit('withdraw', data.total_withdraw_amount || 0)
+                this.$emit('commission', data.total_commission_amount || 0)
                 this.count = data.count
                 this.getPage()
                 this.busy = false

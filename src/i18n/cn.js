@@ -215,6 +215,7 @@ export default {
         remit_payee: '入款帐号',
         view_detailed: '查看详情',
         depositor: '存款人',
+        deposit_type: '存款类型',
         deposited_at: '存款时间',
         merchant_status: '商户状态',
         manual_confirm: '补单',
@@ -282,6 +283,7 @@ export default {
         less_fields: '隐藏高级查询条件',
         status: '状态',
         basic_info: '基本资料',
+        basic_setting: '基本设定',
         real_name: '真实姓名',
         memo: '备注',
         no_memo: '暂无备注',
@@ -484,7 +486,9 @@ export default {
         view: '查看',
         inform: '通知',
         please_fill_object: '请填写{object}',
-        reset_condition: '重置条件'
+        reset_condition: '重置条件',
+        add_group: '新增一组',
+        key_in: '输入'
     },
     staff: {
         roles: '角色 / 权限',
@@ -928,5 +932,14 @@ export default {
     robot: {
         manager: '管理员',
         member: '普通会员'
+    },
+    commission: {
+        name: '佣金设定',
+        member_threshold: '有效会员',
+        commission_rate: '佣金比例',
+        income_threshold: '盈利范围',
+        profit: '盈利',
+        confirm_delete: '确定删除？',
+        total: '总佣金'
     }
 }
