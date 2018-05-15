@@ -276,6 +276,7 @@ export default {
                 username: '',
                 promo_code: '',
                 parent_agent: 3,
+                parent_agent_name: 'gagent',
                 commission_settings: '',
                 default_member_lv: 1,
                 real_name: '',
