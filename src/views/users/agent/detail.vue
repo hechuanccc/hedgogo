@@ -85,20 +85,21 @@
               <p class="m-b-0">{{$t('agent.commission_setting')}}</p>
               <div v-if="agent.commission_settings" class="text-sm">
                 <div class="m-t-xs">
-                  <span class="text-muted m-r-sm">{{$t('agent.commission_name')}}</span>
-                  <router-link :to="`/commission/${agent.commission_settings.id}/edit`" class="m-b-0">{{ agent.commission_settings.name }}</router-link>
+                  <!-- <span class="text-muted m-r-sm">{{$t('agent.commission_name')}}</span> -->
+                  <!-- <router-link :to="`/commission/${agent.commission_settings.id}/edit`" class="m-b-0">{{ agent.commission_settings.name }}</router-link> -->
+                  <span class="text-muted">{{agent.commission_settings.name}}</span>
                 </div>
-                <div class="m-t-xs text-muted">
+                <div class="m-t-xs text-muted" v-if="agent.member_number">
                   <span class="m-r-sm">{{$t('setting.valid_member')}}</span>
                   <span v-if="agent.member_number !== null">{{agent.commission_settings.member_number}}</span>
                   <span v-else>未填写</span>
                 </div>
-                <div class="p-a-sm m-a m-t-sm grey-50">
+                <div class="p-a-sm m-a m-t-sm grey-50" v-if="agent.commission_settings.profit_set">
                   <div class="row m-l-sm text-muted text-center">
                     <div class="col-xs-8">{{$t('agent.income_threshold')}}</div>
                     <div class="col-xs-4">{{$t('agent.commission_rate')}}</div>
                   </div>
-                  <div class="row m-l-sm text-center text-black-dk r" v-for="(p, i) in agent.commission_settings.profit_set" :key="i">
+                  <div class="row m-l-sm text-center text-black-dk r" v-for="(p, i) in agent.commission_settings.profit_set" :key="i" v-if="agent.commission_settings.profit_set">
                     <div class="col-xs-8">
                       <span>{{p.income_threshold | currency('￥', 2)}}</span>
                       ~
@@ -296,7 +297,7 @@
             getAgent (id) {
                 let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
                 this.$http.get(api.agent + id + '/?opt_expand=' + fields).then(data => {
-                    if (data.commission_settings) {
+                    if (data.commission_settings && data.commission_settings.profit_set) {
                         data.commission_settings.profit_set.sort((a, b) => a.income_threshold - b.income_threshold)
                     }
                     this.agent = data
