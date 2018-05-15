@@ -27,11 +27,11 @@
         </span>
       </div>
     </div>
-    <div class="row m-b m-r-xs m-l-xs" v-else>
+    <div class="row m-b m-r-xs m-l-xs m-b-sm" v-else>
       <label class="md-switch m-t-sm">
-        <input type="checkbox" v-model="visitorFilter" class="has-value">
+        <input type="checkbox" v-model="visitorFilter" class="has-value pull-right">
         <i class="blue"></i>
-        {{ $t('member.visitor_filter') }}
+        <span class="pull-right p-t-xs">{{ $t('member.visitor_filter') }}</span>
       </label>
       <button
         class="md-btn blue pull-right btn w-sm"
@@ -290,9 +290,9 @@
             <th>{{ $t('member.created_ip') }}</th>
             <th>{{ $t('member.last_login') }}</th>
             <th>{{ $t('member.agent') }}</th>
-            <th width="5%">{{ $t('member.level') }}</th>
+            <th class="text-right">{{ $t('member.total_deposit') }}</th>
+            <th class="text-right">{{ $t('member.total_withdraw') }}</th>
             <th class="text-right" width="7%">{{ $t('betrecord.total_valid_bet_record') }}</th>
-            <th class="text-right">{{ $t('betrecord.total_bet_amount') }}</th>
             <th class="text-right">{{ `${$t('common.member')}${$t('betrecord.win')}${$t('betrecord.lose')}` }}</th>
             <th class="text-right">{{ $t('member.balance') }}</th>
           </tr>
@@ -302,9 +302,10 @@
             <td>
               <span class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</span>
               <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
-              <router-link :to="'/member/' + member.id">{{ member.username }}</router-link>
+              <router-link :to="'/member/' + member.id" class="m-b-0">{{ member.username }}</router-link>
+              <span class="label red" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
               <br/>
-              <span class="label red m-l" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
+              <router-link v-if="member.level" :to="'/level/' + member.level.id" class="text-xs m-l">{{ member.level.name }}</router-link>
             </td>
             <td>
               {{ member.real_name || '-' }}
@@ -324,11 +325,16 @@
             <td v-if="member.agent.name">
               <router-link :to="'/agent/' + member.agent.id">{{ member.agent.name }}</router-link>
             </td>
-            <td>
-              <router-link v-if="member.level" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
+            <td class="text-right">
+              {{ member.total_deposit | currency('￥') }}
             </td>
-            <td class="text-right">{{ member.total_betrecords }} 笔</td>
-            <td class="text-right">{{ member.total_amount | currency('￥') }}</td>
+            <td class="text-right">
+              {{ member.total_withdraw | currency('￥') }}
+            </td>
+            <td class="text-right">
+              <p class="m-b-0">{{ member.total_betrecords }} 笔</p>
+              <p class="m-b-xs">{{ member.total_amount | currency('￥') }}</p>
+            </td>
             <td class="text-right">
               <span class="text-success">{{ $t('betrecord.win') }}: </span>
               <router-link :to="`/report/betrecord/history?member=${member.username}&status=win&created_at_1=${today}`">{{ member.total_gain | currency('￥') }}</router-link><br/>

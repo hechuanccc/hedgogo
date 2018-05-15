@@ -32,6 +32,7 @@
                       class="form-control c-select w-sm"
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
+                      :disabled="true"
                     >
                       <option
                         class="form-control"
@@ -68,6 +69,7 @@
                     class="form-control c-select w-sm"
                     v-model.number="agent.parent_agent"
                     v-else-if="filteredParentAgents.length && !agentLevelLoading"
+                    :disabled="true"
                   >
                     <option value="">{{ $t('common.please_select') }}</option>
                     <option
@@ -84,12 +86,12 @@
                   >
                     <i class="fa fa-spin fa-spinner"></i>
                   </span>
-                  <span
+                  <input
                     class="p-b-xs p-t-sm form-control w-sm inline"
                     v-else-if="!filteredParentAgents.length"
-                  >
-                    {{ $t('common.no_record') }}
-                  </span>
+                    :placeholder="agent.parent_agent_name"
+                    disabled
+                  />
                 </div>
                 <div class="form-group" v-if="agent.id">
                   <label class="label-width">{{$t('common.status')}}</label>
@@ -105,7 +107,7 @@
                 <div class="form-group m-t-md">
                   <label class="label-width">{{$t('agent.commission_setting')}}</label>
                   <div class="inline-form-control">
-                    <commissionsetting :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="false"/>
+                    <commissionsetting :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true"/>
                   </div>
                 </div>
 
@@ -476,7 +478,7 @@ export default {
                 return []
             } else {
                 let level = this.agentLevels.find(a => a.level === this.agent.level - 1)
-                if (level) {
+                if (level && level.agnets) {
                     return level.agents
                 } else {
                     return []
@@ -596,6 +598,7 @@ export default {
                 }
                 if (data.parent_agent) {
                     this.agent.parent_agent = parseInt(data.parent_agent.id)
+                    this.agent.parent_agent_name = data.parent_agent.name
                 }
             })
         },

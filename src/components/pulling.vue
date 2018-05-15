@@ -230,6 +230,7 @@ export default {
                 this.$emit('profit', data.total_profit || 0)
                 this.$emit('bet-count', data.total_betrecord_count || 0)
                 this.$emit('deposit', data.total_deposit_amount || 0)
+                this.$emit('manual-operation', data.total_manual_operation_amount || 0)
                 this.$emit('withdraw', data.total_withdraw_amount || 0)
                 this.$emit('commission', data.total_commission_amount || 0)
                 this.count = data.count

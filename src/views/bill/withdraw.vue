@@ -1,5 +1,22 @@
 <template>
 <div>
+    <div class="m-b-xs text-right">
+        <a
+            :href="href"
+            :getReport="getReport"
+            v-if="queryset.length"
+            class="md-btn w-sm text-white-dk blue"
+        >
+            <span>
+                {{ $t('action.download_report') }}
+                <i class="fa fa-download"></i>
+            </span>
+        </a>
+        <span class="m-t-sm m-r-sm" disabled v-else>
+            {{ $t('action.download_report') }}
+            <i class="fa fa-download"></i>
+        </span>
+    </div>
     <form class="form box m-b-sm" @submit.prevent="submit">
         <div class="box-body clearfix form-input-sm">
             <div class="row m-l-xs m-r-xs">
@@ -177,7 +194,7 @@
                         {{ $t('common.status_updated_at') }}
                     </th>
                     <th>{{ $t('common.ip_info') }}</th>
-                    <th class="text-right">
+                    <th class="text-right text-sm p-r-xs">
                         {{ $t('common.balance_before') }} /
                         <br/>
                         {{ $t('common.balance_after') }}
@@ -200,9 +217,7 @@
                         <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                     </td>
                     <td class="text-center text-sm p-l-xs p-r-xs">
-                        {{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}&nbsp;/
-                        <br/>
-                        {{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}
+                        {{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}<br/>{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}
                     </td>
                     <td v-if="t.ip_info" class="text-sm p-r-xs">
                         <span>{{ t.ip_info.ip || '-' }}</span>
@@ -350,6 +365,7 @@
             :total_amount="total_amount"
             @query-data="queryData"
             @query-param="queryParam"
+            @export-query="exportQuery"
             @amount="totalAmount"
             ref="pulling"
         />
@@ -365,6 +381,7 @@
     import onlinePayerSelector from '../../components/onlinePayerSelector'
     import withdrawPayeeModal from '../../components/withdrawPayeeModal'
     import DatePicker from 'vue2-datepicker'
+    import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import { debounce } from 'lodash'
 
@@ -374,6 +391,7 @@
                 queryset: [],
                 api: api.bill,
                 query: {},
+                href: '',
                 status: '',
                 created_at: ['', ''],
                 updated_at: ['', ''],
@@ -456,6 +474,11 @@
             })
         },
         computed: {
+            getReport () {
+                this.$refs.pulling.getExportQuery()
+                this.href = `${api.report_withdraw}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                return this.queryset.length
+            },
             isQueryEmpty () {
                 return $.compareQuery(this.query, {})
             }
@@ -489,6 +512,9 @@
             },
             totalAmount (amount) {
                 this.total_amount = amount
+            },
+            exportQuery (expor) {
+                this.export_query = expor
             },
             submit () {
                 if (!$.compareQuery(this.query, this.$route.query)) {

@@ -196,7 +196,9 @@ export default {
         visitor: 'Visitor',
         username_form_validation_msg: '{digit} letters or numbers.',
         visitor_filter: 'Visitor Filter',
-        total_ongoing_amount: 'Ongoing Amount'
+        total_ongoing_amount: 'Ongoing Amount',
+        total_deposit: 'Total Deposit',
+        total_withdraw: 'Total Withdraw'
     },
     bill: {
         commission_report: 'Commission Report',
