@@ -33,6 +33,7 @@
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
                       required
+                      disabled
                     >
                       <option
                         class="form-control"
@@ -83,7 +84,7 @@
                   <input
                     class="p-b-xs p-t-sm form-control w-sm inline"
                     v-else-if="!filteredParentAgents.length"
-                    :placeholder="$t('common.no_record')"
+                    :placeholder="agent.parent_agent_name || $t('common.no_record')"
                     disabled
                   />
                 </div>
@@ -525,7 +526,7 @@ export default {
                 this.$delete(agent, 'bank')
             }
             if (!agent.default_member_lv) {
-                agent.default_member_lv = 1
+                agent.default_member_lv = 2
             }
             if (!agent.parent_agent && parseInt(agent.level) !== 1) {
                 this.formError = '请选择正确的上线'

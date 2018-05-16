@@ -30,7 +30,7 @@
                       class="form-control c-select w-sm"
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
-                      :disabled="$route.name === 'agent-edit'"
+                      :disabled="$route.name === 'agent-edit' && true"
                       required
                     >
                       <option
@@ -83,7 +83,7 @@
                     <input
                         class="p-b-xs p-t-sm form-control w-sm inline"
                         v-else-if="!filteredParentAgents.length"
-                        :placeholder="$t('common.no_record')"
+                        :placeholder="agent.parent_agent_name || $t('common.no_record')"
                         disabled
                     />
                   </div>
@@ -402,6 +402,9 @@ export default {
             this.initAgent = Object.assign({}, this.initAgent, this.agent)
             if (!this.initAgent.bank.bank) {
                 this.$delete(this.initAgent, 'bank')
+            }
+            if (!this.initAgent.default_member_lv) {
+                this.initAgent.default_member_lv = 2
             }
             if (!this.initAgent.domain) {
                 this.$delete(this.initAgent, 'domain')
