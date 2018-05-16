@@ -194,14 +194,15 @@
                 <thead>
                     <tr>
                         <th width="7%" class="text-center">{{ $t("common.login_status") }}</th>
-                        <th>{{ $t("agent.parent_agent") }}</th>
-                        <th>{{ $t("agent.account") }}</th>
+                        <th>{{ $t('agent.account') }}</th>
+                        <th>{{ $t('agent.level') }}</th>
+                        <th>{{ $t('agent.parent_agent') }}</th>
                         <th>{{ $t('common.real_name') }}</th>
-                        <th>{{ $t("agent.member_count") }}</th>
-                        <th>{{ $t("agent.joined_at") }}</th>
-                        <th width="240">{{ $t("agent.domain") }}</th>
-                        <th>{{ $t("agent.level") }}</th>
-                        <th>{{ $t("common.memo") }}</th>
+                        <th class="text-center">{{ $t('agent.member_count') }}</th>
+                        <th class="text-center">{{ $t('agent.joined_at') }}</th>
+                        <th class="text-center">{{ $t('agent.commission_setting') }}</th>
+                        <th width="240">{{ $t('agent.domain') }}</th>
+                        <th>{{ $t('common.memo') }}</th>
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length">
@@ -209,10 +210,6 @@
                         <td>
                             <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="agent.is_logged_in==true">&#x25CF;</div>
                             <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
-                        </td>
-                        <td>
-                            <span v-if="agent.parent_agent">{{ agent.parent_agent.name }}</span>
-                            <span v-else>-</span>
                         </td>
                         <td>
                             <router-link :to="'/agent/' + agent.id">
@@ -223,33 +220,41 @@
                             <span class="label" v-else>{{ $t('status.inactive') }}</span>
                         </td>
                         <td>
+                            <span v-if="agent.level">{{ agent.level.name }}</span>
+                            <span v-else>-</span>
+                        </td>
+                        <td>
+                            <span v-if="agent.parent_agent">{{ agent.parent_agent.name }}</span>
+                            <span v-else>-</span>
+                        </td>
+                        <td>
                             <span v-if="agent.real_name">{{ agent.real_name }}</span>
                             <span v-else>-</span>
                         </td>
-                        <td>
-                            <router-link :to="'/member/?agent=' + agent.username">
-                                {{ agent.member_count }}
-                            </router-link>
+                        <td class="text-center">
+                            {{ agent.member_count }}
                         </td>
-                        <td>
+                        <td class="text-center text-sm">
                             <span v-if="agent.created_at">{{ agent.created_at | moment("YYYY-MM-DD HH:mm") }}</span>
                             <span v-else>-</span>
                         </td>
+                        <td class="text-center">
+                            <router-link :to="`/commission/${agent.commission_settings.id}/edit`" v-if="agent.commission_settings && agent.commission_settings.id">
+                                {{ agent.commission_settings.name }}
+                            </router-link>
+                            <span v-else>{{ $t('action.no_setting') }}</span>
+                        </td>
                         <td>
                             <span v-if="agent.domain && isArray(agent.domain.split(','))">
-                                <label
-                                    class="m-r-sm deamin-label"
+                                <p
+                                    class="m-b-xs"
                                     v-for="deamin in agent.domain.split(',')"
                                     :key="deamin"
                                 >
                                     {{ deamin }}
-                                </label>
+                                </p>
                             </span>
                             <span v-else-if="agent.domain">{{ agent.domain }}</span>
-                            <span v-else>-</span>
-                        </td>
-                        <td>
-                            <span v-if="agent.level">{{ agent.level.name }}</span>
                             <span v-else>-</span>
                         </td>
                         <td>
@@ -289,7 +294,7 @@ export default {
             queryset: [],
             query: {},
             created_at: ['', ''],
-            optexpand: 'level,parent_agent',
+            optexpand: 'level,commission_settings,parent_agent',
             status: '',
             level: '',
             commission_settings: '',
@@ -413,16 +418,3 @@ export default {
     }
 }
 </script>
-<style scoped lang="scss">
-    table {
-        table-layout: fixed;
-    }
-    td{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    td .deamin-label{
-        display: inline;
-    }
-</style>

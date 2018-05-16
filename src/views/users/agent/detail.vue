@@ -59,7 +59,7 @@
               <div class="col-xs-6 m-t-sm">
                 <span>{{ $t('agent.member_count') }}</span>
                 <div>
-                  <router-link :to="'/member?agent=' + agent.username">{{ agent.member_count }}</router-link>
+                  {{ agent.member_count }}
                 </div>
               </div>
               <div class="col-xs-6 m-t-sm">
