@@ -33,7 +33,6 @@
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
                       required
-                      disabled
                     >
                       <option
                         class="form-control"
@@ -65,7 +64,6 @@
                     v-model.number="agent.parent_agent"
                     v-if="filteredParentAgents.length && !agentLevelLoading"
                     required
-                    disabled
                   >
                     <option value="">{{ $t('common.please_select') }}</option>
                     <option
@@ -85,7 +83,7 @@
                   <input
                     class="p-b-xs p-t-sm form-control w-sm inline"
                     v-else-if="!filteredParentAgents.length"
-                    :placeholder="agent.parent_agent_name || $t('common.no_record')"
+                    :placeholder="$t('common.no_record')"
                     disabled
                   />
                 </div>
