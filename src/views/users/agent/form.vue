@@ -328,7 +328,7 @@ export default {
             }
         },
         filteredAgentLevels () {
-            return this.agentLevels.filter(l => l.level !== 1)
+            return this.agentLevels.filter(l => this.agent.level === l.level || l.level !== 1)
         }
     },
     beforeRouteEnter (to, from, next) {
