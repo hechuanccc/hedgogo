@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-12 text-right" v-if="$root.permissions.includes('export_member_report')">
+      <div class="col-md-12 text-right" v-if="$root.permissions.includes('export_agent_commission_report')">
         <a
           :href="href"
           :getReport="getReport"
@@ -35,7 +35,7 @@
               <date-picker
                 width='244'
                 style="display: block;"
-                :not-after="today"
+                :not-after="yesterday"
                 :shortcuts="shortcuts"
                 :inputClass="'input form-control'"
                 v-model="date"
@@ -116,14 +116,7 @@
             <td>{{ data.commission_amount | currency('￥') }}</td>
           </tr>
           <tr class="_600">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">{{ $t('commission.total') }}</td>
+            <td colspan="8" class="text-right">{{ $t('commission.total') }}</td>
             <td>{{ totalCommissionAmount | currency('￥', 2) }}</td>
           </tr>
         </tbody>
@@ -167,7 +160,7 @@ export default {
             extra: '',
             href: '',
             export_query: [],
-            today: date.today[0],
+            yesterday: date.yesterday[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
                 start: date[element][0],
@@ -179,7 +172,7 @@ export default {
         }
     },
     created () {
-        this.defaultDate = [Vue.moment(this.today).subtract(6, 'days').format(format), this.today]
+        this.defaultDate = [Vue.moment(this.yesterday).subtract(6, 'days').format(format), this.yesterday]
         this.setQueryAll()
         this.rebase()
     },
