@@ -1,9 +1,10 @@
 <template>
   <select
-    class="form-control c-select"
+    class="form-control c-select w-sm"
     v-model="selectedPayer"
     v-if="!loading && mode === 'selector' && payerList.length"
   >
+    <option value="" v-if="clearable">{{ $t('common.please_select') }}</option>
     <option
       class="form-control"
       :value="p.id"
@@ -22,13 +23,13 @@
     </a>
   </div>
   <span
-    class="p-b-xs p-t-sm form-control"
+    class="p-b-xs p-t-sm form-control w-sm"
     v-else-if="loading && mode === 'selector'"
   >
     <i class="fa fa-spin fa-spinner"></i>
   </span>
   <span
-    class="p-b-xs p-t-sm form-control"
+    class="p-b-xs p-t-sm form-control w-sm"
     v-else-if="!payerList.length && mode === 'selector'"
   >
     {{ $t('common.no_record') }}
@@ -39,6 +40,10 @@
 import api from '../api'
 export default {
     props: {
+        clearable: {
+            default: false,
+            type: Boolean
+        },
         member: {
             default: ''
         },
@@ -83,7 +88,7 @@ export default {
     },
     methods: {
         getPayer (id) {
-            this.$http.get(`${api.online_payer}?member=${id}`).then(data => {
+            this.$http.get(`${api.online_payer}?${id ? `member=${id}` : ''}`).then(data => {
                 this.payerList = data
                 if (data.length && this.mode === 'selector' && !this.payer) {
                     this.selectedPayer = data[0].id

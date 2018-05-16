@@ -106,6 +106,19 @@
                         />
                     </div>
                 </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': payerType}"
+                    >{{ $t('bill.payer_type') }}
+                    </label>
+                    <online-payer-selector
+                        style="display: block;"
+                        :clearable="true"
+                        :payer="payerType"
+                        @payer-select="payerTypeSelect"
+                    />
+                </div>
             </div>
             <div class="row m-r-xs m-l-xs m-t-sm">
                 <div class="pull-left m-r-xs">
@@ -288,13 +301,15 @@
                                 v-if="$root.permissions.includes('refuse_withdraw_transaction')"
                             >{{ $t('bill.declined') }}
                             </button>
-                            <online-payer-selector
-                                :member="t.member.id"
-                                :mode="'linklist'"
-                                :transaction="t"
-                                @get-transaction="openWithdrawPayeeModal"
-                                @payer-select="payerSelect"
-                            />
+                            <a
+                                @click="openWithdrawPayeeModal(t, p.id)"
+                                class="m-r-xs m-l-xs"
+                                :key="p.id"
+                                v-for="p in t.available_payers"
+                                v-if="t.available_payers && t.available_payers.length"
+                            >
+                                {{ p.name }}
+                            </a>
                         </template>
                     </td>
                     <td class="text-center p-l-xs p-r-xs">
@@ -393,6 +408,7 @@
                 query: {},
                 href: '',
                 status: '',
+                payerType: '',
                 created_at: ['', ''],
                 updated_at: ['', ''],
                 selected: '0',
@@ -497,10 +513,15 @@
                     this.updated_at = [undefined, undefined]
                 }
                 this.status = this.$route.query.status || ''
+                this.payerType = this.$route.query.online_payer || ''
                 this.query = Object.assign({}, this.$route.query)
             },
             levelSelect (val) {
                 this.query.member_level = val
+                this.submit()
+            },
+            payerTypeSelect (val) {
+                this.query.online_payer = val
                 this.submit()
             },
             queryData (queryset) {
@@ -543,12 +564,10 @@
                     username
                 })
             },
-            openWithdrawPayeeModal (val) {
+            openWithdrawPayeeModal (val, payer = '') {
                 Object.assign(this.withdrawPayeeTransaction, val)
+                this.withdrawPayee = payer
                 this.showWithdrawPayeeModal = true
-            },
-            payerSelect (val) {
-                this.withdrawPayee = val
             },
             updateWithdraw ({
                 transactionId,
