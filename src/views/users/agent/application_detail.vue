@@ -33,7 +33,6 @@
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
                       required
-                      disabled
                     >
                       <option
                         class="form-control"
@@ -84,7 +83,7 @@
                   <input
                     class="p-b-xs p-t-sm form-control w-sm inline"
                     v-else-if="!filteredParentAgents.length"
-                    :placeholder="agent.parent_agent_name || $t('common.no_record')"
+                    :placeholder="$t('common.no_record')"
                     disabled
                   />
                 </div>
