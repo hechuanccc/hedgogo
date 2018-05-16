@@ -30,7 +30,8 @@
                       class="form-control c-select w-sm"
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
-                      :disabled="true"
+                      :disabled="$route.name === 'agent-edit'"
+                      required
                     >
                       <option
                         class="form-control"
@@ -62,7 +63,8 @@
                         class="form-control c-select w-sm"
                         v-model.number="agent.parent_agent"
                         v-if="filteredParentAgents.length && agent.level !== 1"
-                        :disabled="true"
+                        :disabled="$route.name === 'agent-edit'"
+                        required
                     >
                         <option value="">{{ $t('common.please_select') }}</option>
                         <option
@@ -82,7 +84,7 @@
                     <input
                         class="p-b-xs p-t-sm form-control w-sm inline"
                         v-else-if="!filteredParentAgents.length"
-                        :placeholder="agent.parent_agent_name"
+                        :placeholder="$t('common.no_record')"
                         disabled
                     />
                   </div>
@@ -365,7 +367,7 @@ export default {
             }
         },
         'agent.level' (newObj, old) {
-            if (parseInt(newObj) !== parseInt(old) && !this.filteredParentAgents.find(a => a.id === this.agent.parent_agent)) {
+            if (parseInt(newObj) !== parseInt(old) && this.filteredParentAgents.length && !this.filteredParentAgents.find(a => a.id === this.agent.parent_agent)) {
                 this.agent.parent_agent = ''
             }
         }

@@ -32,7 +32,7 @@
                       class="form-control c-select w-sm"
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
-                      :disabled="true"
+                      required
                     >
                       <option
                         class="form-control"
@@ -59,17 +59,11 @@
 
                 <div class="form-group">
                   <label class="label-width">{{$t('agent.parent_agent')}}</label>
-                  <input
-                    v-if="agent.level === 1"
-                    placeholder="大股东无需填写"
-                    class="inline w-sm form-control"
-                    disabled
-                  />
                   <select
                     class="form-control c-select w-sm"
                     v-model.number="agent.parent_agent"
-                    v-else-if="filteredParentAgents.length && !agentLevelLoading"
-                    :disabled="true"
+                    v-if="filteredParentAgents.length && !agentLevelLoading"
+                    required
                   >
                     <option value="">{{ $t('common.please_select') }}</option>
                     <option
@@ -89,7 +83,7 @@
                   <input
                     class="p-b-xs p-t-sm form-control w-sm inline"
                     v-else-if="!filteredParentAgents.length"
-                    :placeholder="agent.parent_agent_name"
+                    :placeholder="$t('common.no_record')"
                     disabled
                   />
                 </div>
@@ -221,7 +215,7 @@
             </div>
             <div>
               <div class="alert alert-danger" v-if="formError">
-                <span v-for="(msg,index) in formError">[{{index}}]  {{msg}} <br/> </span>
+                <span>{{formError}}<br/> </span>
               </div>
               <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
             </div>
@@ -455,7 +449,7 @@ export default {
     },
     watch: {
         'agent.level' (newObj, old) {
-            if (parseInt(newObj) !== parseInt(old) && !this.filteredParentAgents.find(a => a.id === this.agent.parent_agent)) {
+            if (parseInt(newObj) !== parseInt(old) && this.filteredParentAgents.length && !this.filteredParentAgents.find(a => a.id === this.agent.parent_agent)) {
                 this.agent.parent_agent = ''
             }
         }
@@ -478,7 +472,7 @@ export default {
                 return []
             } else {
                 let level = this.agentLevels.find(a => a.level === this.agent.level - 1)
-                if (level && level.agnets) {
+                if (level && level.agents) {
                     return level.agents
                 } else {
                     return []

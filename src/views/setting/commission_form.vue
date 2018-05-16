@@ -88,6 +88,7 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
+                                :max="1000000000"
                                 class="form-control text-right"
                                 v-model.number="rate.income_threshold"
                                 :ref="'income_threshold'"
