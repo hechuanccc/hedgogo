@@ -63,7 +63,6 @@
                         class="form-control c-select w-sm"
                         v-model.number="agent.parent_agent"
                         v-if="filteredParentAgents.length && agent.level !== 1"
-                        :disabled="$route.name === 'agent-edit'"
                         required
                     >
                         <option value="">{{ $t('common.please_select') }}</option>
