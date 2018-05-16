@@ -403,6 +403,9 @@ export default {
             if (!this.initAgent.bank.bank) {
                 this.$delete(this.initAgent, 'bank')
             }
+            if (!this.initAgent.default_member_lv) {
+                this.initAgent.default_member_lv = 2
+            }
             if (!this.initAgent.domain) {
                 this.$delete(this.initAgent, 'domain')
             }

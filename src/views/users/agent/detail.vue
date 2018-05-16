@@ -58,7 +58,7 @@
 
               <div class="col-xs-6 m-t-sm">
                 <span>{{ $t('agent.member_count') }}</span>
-                <div>
+                <div class="text-muted">
                   {{ agent.member_count }}
                 </div>
               </div>
@@ -88,7 +88,7 @@
                   <span class="text-muted m-r-sm">{{ $t('agent.commission_name') }}</span>
                   <router-link :to="`/commission/${agent.commission_settings.id}/edit`" class="m-b-0">{{ agent.commission_settings.name }}</router-link>
                 </div>
-                <div class="m-t-xs text-muted">
+                <div class="m-t-xs text-muted" v-if="agent.commission_settings.member_number">
                   <span class="m-r-sm">{{ $t('setting.valid_member') }}</span>
                   <span v-if="agent.commission_settings.member_number !== null">{{ agent.commission_settings.member_number }}</span>
                   <span v-else>未填写</span>

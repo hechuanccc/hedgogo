@@ -525,7 +525,7 @@ export default {
                 this.$delete(agent, 'bank')
             }
             if (!agent.default_member_lv) {
-                agent.default_member_lv = 1
+                agent.default_member_lv = 2
             }
             if (!agent.parent_agent && parseInt(agent.level) !== 1) {
                 this.formError = '请选择正确的上线'
