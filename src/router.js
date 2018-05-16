@@ -802,7 +802,7 @@ export default new Router({
             require(['./views/marketing/manage/banner.vue'], resolve)
         },
         meta: {
-            group: 'marketing',
+            group: 'manage',
             auth: true,
             title: Vue.t('manage.title_banner')
         }
@@ -813,7 +813,7 @@ export default new Router({
             require(['./views/marketing/manage/announcement.vue'], resolve)
         },
         meta: {
-            group: 'marketing',
+            group: 'manage',
             auth: true,
             title: Vue.t('manage.title_announcement')
         }
@@ -824,7 +824,7 @@ export default new Router({
             require(['./views/marketing/manage/website.vue'], resolve)
         },
         meta: {
-            group: 'marketing',
+            group: 'manage',
             auth: true,
             title: Vue.t('manage.title_website')
         }
@@ -836,7 +836,7 @@ export default new Router({
             require(['./views/marketing/message/messages.vue'], resolve)
         },
         meta: {
-            group: 'marketing',
+            group: 'manage',
             title: Vue.t('nav.message'),
             auth: true
         }
@@ -873,7 +873,7 @@ export default new Router({
             require(['./views/marketing/promotion/promotion.vue'], resolve)
         },
         meta: {
-            group: 'marketing',
+            group: 'manage',
             auth: true,
             title: Vue.t('promotion.title')
         }
