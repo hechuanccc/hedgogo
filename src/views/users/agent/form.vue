@@ -30,7 +30,7 @@
                       class="form-control c-select w-sm"
                       v-model.number="agent.level"
                       v-if="!agentLevelLoading && filteredAgentLevels.length"
-                      :disabled="$route.name === 'agent-edit' && true"
+                      :disabled="$route.name === 'agent-edit'"
                       required
                     >
                       <option
@@ -83,7 +83,7 @@
                     <input
                         class="p-b-xs p-t-sm form-control w-sm inline"
                         v-else-if="!filteredParentAgents.length"
-                        :placeholder="agent.parent_agent_name || $t('common.no_record')"
+                        :placeholder="$t('common.no_record')"
                         disabled
                     />
                   </div>
