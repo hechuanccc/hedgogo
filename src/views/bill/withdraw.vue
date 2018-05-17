@@ -93,9 +93,7 @@
                             :placeholder="$t('common.min_amount')"
                             @input="search"
                         />
-                        <span>
-                            ~
-                        </span>
+                        ~
                         <input
                             type="number"
                             v-model="query.amount_lte"
@@ -106,7 +104,7 @@
                         />
                     </div>
                 </div>
-                <div class="pull-left m-r-xs" v-show="!noPayerType">
+                <div class="pull-left m-r-xs fade" :class="{'in': !noPayerType}">
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': payerType}"
@@ -116,6 +114,10 @@
                         style="display: block;"
                         :clearable="true"
                         :payer="payerType"
+                        :addOptions="[{
+                            id: 'null',
+                            name: $t('bill.manual_withdraw')
+                        }]"
                         @payer-select="payerTypeSelect"
                         @no-payer="v => noPayerType = v"
                     />
@@ -302,15 +304,18 @@
                                 v-if="$root.permissions.includes('refuse_withdraw_transaction')"
                             >{{ $t('bill.declined') }}
                             </button>
-                            <a
-                                @click="openWithdrawPayeeModal(t, p.id)"
-                                class="m-r-xs m-l-xs"
-                                :key="p.id"
-                                v-for="p in t.available_payers"
-                                v-if="t.available_payers && t.available_payers.length"
-                            >
-                                {{ p.name }}
-                            </a>
+                            <div v-if="!withdrawLoading[t.id]">
+                                <a
+                                    @click="openWithdrawPayeeModal(t, p.id)"
+                                    class="m-r-xs m-l-xs"
+                                    :key="p.id"
+                                    v-for="p in t.available_payers"
+                                    v-if="t.available_payers && t.available_payers.length"
+                                >
+                                    {{ p.name }}
+                                </a>
+                            </div>
+                            <i class="fa fa-spin fa-spinner text-blue" v-else-if="withdrawLoading[t.id]"></i>
                         </template>
                     </td>
                     <td class="text-center p-l-xs p-r-xs">
@@ -435,7 +440,9 @@
                 },
                 showWithdrawPayeeModal: false,
                 withdrawPayeeTransaction: {},
-                withdrawPayee: ''
+                withdrawPayee: '',
+                isAutoWithdraw: true,
+                withdrawLoading: {}
             }
         },
         watch: {
@@ -524,6 +531,10 @@
             },
             payerTypeSelect (val) {
                 this.query.online_payer = val
+                // if user choses manually withdraw as payer type, transaction's status must be successed
+                if (val === 'null') {
+                    this.query.status = '1'
+                }
                 this.submit()
             },
             queryData (queryset) {
@@ -566,10 +577,38 @@
                     username
                 })
             },
-            openWithdrawPayeeModal (val, payer = '') {
-                Object.assign(this.withdrawPayeeTransaction, val)
-                this.withdrawPayee = payer
-                this.showWithdrawPayeeModal = true
+            openWithdrawPayeeModal (transaction, payer = '') {
+                if (this.isAutoWithdraw) {
+                    this.autoWithdraw(transaction, payer)
+                } else {
+                    Object.assign(this.withdrawPayeeTransaction, transaction)
+                    this.withdrawPayee = payer
+                    this.showWithdrawPayeeModal = true
+                }
+            },
+            autoWithdraw (transaction = {}, payer = '') {
+                if (transaction && transaction.id && payer) {
+                    this.$set(this.withdrawLoading, transaction.id, true)
+                    this.$http.put(`${api.transaction_withdraw}${transaction.id}/`, {
+                        memo: transaction.memo,
+                        member: transaction.member.id,
+                        online_payer: payer,
+                        transaction_type: parseInt(transaction.transaction_type.id),
+                        status: 1
+                    }).then(data => {
+                        $.notify({
+                            message: this.$t('bill.withdraw_payee') + this.$t('status.success')
+                        })
+                        this.$refs.pulling.rebase()
+                        this.$delete(this.withdrawLoading, transaction.id)
+                    }, error => {
+                        $.notify({
+                            message: error,
+                            type: 'danger'
+                        })
+                        this.$delete(this.withdrawLoading, transaction.id)
+                    })
+                }
             },
             updateWithdraw ({
                 transactionId,
