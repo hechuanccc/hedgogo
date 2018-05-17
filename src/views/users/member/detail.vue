@@ -28,6 +28,11 @@
               <div>
                 <router-link
                   class="md-btn md-flat m-r-sm"
+                  :to="`/report/betrecord/history?member=${member.username}`"
+                >{{$t('action.view_history_bet_record')}}
+                </router-link>
+                <router-link
+                  class="md-btn md-flat m-r-sm"
                   :to="`/report/betrecord/today?member=${member.username}&created_at_0=${today}&created_at_1=${today}`"
                 >{{$t('action.view_todays_bet_record')}}
                 </router-link>

@@ -197,15 +197,15 @@
             <thead>
                 <tr>
                     <th>{{ $t('common.member') }}</th>
-                    <th width="5%" class="text-center">{{ $t('member.level') }}</th>
-                    <th width="11%" class="text-center">{{ $t('common.applied_at') }}</th>
+                    <th class="text-center">{{ $t('member.level') }}</th>
+                    <th class="text-center">{{ $t('common.applied_at') }}</th>
                     <th>{{ $t('common.merchant') }}</th>
                     <th class="text-center">{{ $t('common.balance_before') }}</th>
                     <th class="text-center">{{ $t('common.balance_after') }}</th>
                     <th class="text-center">{{ $t('common.amount') }}</th>
-                    <th width="11%" class="text-center">{{ $t('common.status_updated_at') }}</th>
-                    <th width="5%" class="text-center">{{ $t('common.status') }}</th>
-                    <th width="5%" class="text-center">{{ $t('bill.order_detail') }}</th>
+                    <th class="text-center">{{ $t('common.status_updated_at') }}</th>
+                    <th class="text-center">{{ $t('common.status') }}</th>
+                    <th class="text-center">{{ $t('bill.order_detail') }}</th>
                 </tr>
             </thead>
             <tbody>

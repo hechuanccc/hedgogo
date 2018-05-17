@@ -122,11 +122,11 @@ export default {
     data () {
         return {
             count: 0,
-            limit: 20,
+            limit: 50,
             next: '',
             busy: false,
             loading: true,
-            pageSize: 20,
+            pageSize: 50,
             pageInput: 1,
             showPageGo: 1,
             offset: 0,

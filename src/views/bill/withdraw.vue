@@ -230,6 +230,8 @@
                     <td class="p-r-xs">
                         <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
                         <br/>
+                        {{ t.member.real_name }}
+                        <br/>
                         <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                     </td>
                     <td class="text-center text-sm p-l-xs p-r-xs">
