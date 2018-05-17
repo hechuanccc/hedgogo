@@ -39,8 +39,10 @@
                   <agent-selector
                     :agent="member.agent.id || member.agent"
                     :req="true"
+                    :extra="'level=4'"
                     @agent-select="(val) => member.agent = parseInt(val)"
                   />
+                  <!-- member is under only agent level 4 ( not 3 and above ) -->
                 </div>
 
                 <div class="form-group b-b p-b">
