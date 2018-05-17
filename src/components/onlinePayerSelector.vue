@@ -90,9 +90,10 @@ export default {
         getPayer (id) {
             this.$http.get(`${api.online_payer}?${id ? `member=${id}` : ''}`).then(data => {
                 this.payerList = data
-                if (data.length && this.mode === 'selector' && !this.payer) {
+                if (data.length && this.mode === 'selector' && !this.payer && !this.clearable) {
                     this.selectedPayer = data[0].id
                 }
+                this.$emit('no-payer', !data.length)
                 this.loading = false
             })
         },

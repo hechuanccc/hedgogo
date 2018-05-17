@@ -106,7 +106,7 @@
                         />
                     </div>
                 </div>
-                <div class="pull-left m-r-xs">
+                <div class="pull-left m-r-xs" v-show="!noPayerType">
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': payerType}"
@@ -117,6 +117,7 @@
                         :clearable="true"
                         :payer="payerType"
                         @payer-select="payerTypeSelect"
+                        @no-payer="v => noPayerType = v"
                     />
                 </div>
             </div>
@@ -409,6 +410,7 @@
                 href: '',
                 status: '',
                 payerType: '',
+                noPayerType: true,
                 created_at: ['', ''],
                 updated_at: ['', ''],
                 selected: '0',
