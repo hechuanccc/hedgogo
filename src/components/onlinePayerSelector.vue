@@ -55,6 +55,10 @@ export default {
         },
         transaction: {
             default: ''
+        },
+        addOptions: {
+            default: () => [],
+            type: Array
         }
     },
     data () {
@@ -89,9 +93,12 @@ export default {
     methods: {
         getPayer (id) {
             this.$http.get(`${api.online_payer}?${id ? `member=${id}` : ''}`).then(data => {
-                this.payerList = data
                 if (data.length && this.mode === 'selector' && !this.payer && !this.clearable) {
                     this.selectedPayer = data[0].id
+                }
+                this.payerList = data
+                if (this.addOptions.length) {
+                    this.payerList = [...this.payerList, ...this.addOptions]
                 }
                 this.$emit('no-payer', !data.length)
                 this.loading = false
