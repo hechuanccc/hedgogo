@@ -289,6 +289,8 @@ export default {
         real_name: '真实姓名',
         memo: '备注',
         no_memo: '暂无备注',
+        client_memo: '前台备注',
+        dashboard_memo: '后台备注',
         username: '用户名',
         status_updated: '状态已更新',
         please_select: '请选择',

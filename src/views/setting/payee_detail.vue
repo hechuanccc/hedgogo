@@ -56,8 +56,12 @@
                                 <td>{{remit_payee.account || '-'}}</td>
                             </tr>
                             <tr>
-                                <th class="grey-50">{{$t('common.memo')}}</th>
+                                <th class="grey-50">{{$t('common.dashboard_memo')}}</th>
                                 <td>{{remit_payee.memo || '-'}}</td>
+                            </tr>
+                            <tr>
+                                <th class="grey-50">{{$t('common.client_memo')}}</th>
+                                <td>{{remit_payee.client_description || '-'}}</td>
                             </tr>
                             </tbody>
                             <tbody v-else>

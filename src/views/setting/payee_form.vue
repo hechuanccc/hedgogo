@@ -109,9 +109,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group" >
-                              <label for="memo">{{$t('common.memo')}}</label>
-                              <textarea class="form-control" name="memo" rows="2" cols="4" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="payee.memo"></textarea>
+                            <div class="form-group">
+                                <label for="memo">{{$t('common.dashboard_memo')}}</label>
+                                <textarea class="form-control" name="memo" rows="2" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="payee.memo"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="memo">{{ $t('common.client_memo') }}</label>
+                                <textarea class="form-control" name="client_description" rows="2" v-model="payee.client_description"></textarea>
                             </div>
                         </div>
                         <div class="col-md-12 b-b m-b p-b">
@@ -145,6 +149,7 @@
                     account: '',
                     address: '',
                     memo: '',
+                    client_description: '',
                     level: [],
                     qr_code: [],
                     remit_type: '1'
@@ -182,6 +187,7 @@
                     formData.append('remit_type', this.payee.remit_type)
                     formData.append('nickname', this.payee.nickname)
                     formData.append('memo', this.payee.memo)
+                    formData.append('client_description', this.payee.client_description)
                     formData.append('level', this.payee.level)
                     if (this.hasImage) {
                         formData.append('qr_code', this.payee.qr_code)
@@ -193,6 +199,7 @@
                     formData.append('address', this.payee.address)
                     formData.append('account', this.payee.account)
                     formData.append('memo', this.payee.memo)
+                    formData.append('client_description', this.payee.client_description)
                     formData.append('level', this.payee.level)
                 }
 

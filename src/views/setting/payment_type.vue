@@ -10,17 +10,19 @@
         <div class="b-b nav-active-blue" v-if="mode" >
             <ul class="nav nav-tabs m-l" >
                 <li class="nav-item" if="type === 0">
-                    <router-link :to="'/paymenttype/?type=0'"
-                        class="nav-link"
+                    <router-link
+                        :to="'/paymenttype/?type=0'"
+                        class="nav-link _600"
                         :class="{'active': type === 0 }"
-                        ><b>{{$t('manage.pc')}}</b>
+                    >{{ $t('manage.pc') }}
                     </router-link>
                 </li>
                 <li class="nav-item" if="type === 1">
-                    <router-link :to="'/paymenttype/?type=1'"
-                        class="nav-link"
+                    <router-link
+                        :to="'/paymenttype/?type=1'"
+                        class="nav-link _600"
                         :class="{'active': type === 1 }"
-                        ><b>{{$t('manage.mobile')}}</b>
+                    >{{ $t('manage.mobile') }}
                     </router-link>
                 </li>
             </ul>
@@ -29,42 +31,41 @@
             <thead>
                 <tr>
                     <th v-show="!mode" width="3%"></th>
-                    <th width="20%">{{$t('common.name')}}</th>
-                    <th width="20%">{{$t('setting.display_name')}}</th>
-                    <th width="20%">{{$t('setting.payee')}}</th>
-                    <th width="20%">{{$t('setting.description')}}</th>
-                    <th width="20%" class="text-center">{{$t('common.status')}}</th>
+                    <th width="20%">{{ $t('common.name') }}</th>
+                    <th width="20%">{{ $t('setting.display_name') }}</th>
+                    <th width="20%">{{ $t('setting.payee') }}</th>
+                    <th width="20%">{{ $t('common.dashboard_memo') }}</th>
+                    <th width="20%" class="text-center">{{ $t('common.status') }}</th>
                 </tr>
             </thead>
             <draggable
                 v-model="filteredPaymentTypes"
                 :element="'tbody'"
-                :options="{
-                    disabled: mode
-                }"
+                :options="{ disabled: mode }"
+                v-if="filteredPaymentTypes.length"
             >
                 <tr
                     v-for="paymentType in filteredPaymentTypes"
                     :key="paymentType.id"
-                    :class="{
-                        'pointer': !mode 
-                    }"
+                    :class="{ 'pointer': !mode }"
                 >
-                    <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
+                    <td v-show="!mode">
+                        <i class="fa fa-reorder text-blue"></i>
+                    </td>
                     <td v-if="$root.permissions.includes('update_onlinepayment')">
                         <router-link :to="'/paymenttype/' + paymentType.id + '/edit'">
-                            {{paymentType.name}}
+                            {{ paymentType.name }}
                         </router-link>
                     </td>
-                    <td v-else>{{paymentType.name}}</td>
-                    <td>{{paymentType.display_name || '-'}}</td>
+                    <td v-else>{{ paymentType.name }}</td>
+                    <td>{{ paymentType.display_name || '-' }}</td>
                     <td v-if="paymentType.detail.length">
                         <router-link
                             :to="'/online_payee/' + payee.payee_id"
                             v-for="payee in paymentType.detail"
                             :key="payee.payee_id"
                         >
-                            {{payee.name}} &nbsp;
+                            {{ payee.name }} &nbsp;
                         </router-link>
                     </td>
                     <td v-else>-</td>
@@ -72,16 +73,27 @@
                         {{ paymentType.description || '-' }}
                     </td>
                     <td class="text-center">
-                        <span class="label success m-r" v-if="paymentType.status==1">{{$t('status.active')}}</span>
-                        <span class="label danger m-r" v-else>{{$t('status.disabled')}}</span>
+                        <span class="label success m-r-sm" v-if="paymentType.status==1">{{ $t('status.active') }}</span>
+                        <span class="label danger m-r-sm" v-else>{{ $t('status.disabled') }}</span>
                         <template v-if="$root.permissions.includes('update_onlinepayment_status')">
-                            <a @click="toggleStatus(paymentType)" v-if="paymentType.status==1">{{$t('status.disabled')}}</a>
-                            <a @click="toggleStatus(paymentType)" v-else>{{$t('status.active')}}</a>
+                            <a @click="toggleStatus(paymentType)" v-if="!toggleLoading[paymentType.id] &&paymentType.status === 1">{{ $t('status.disabled') }}</a>
+                            <a @click="toggleStatus(paymentType)" v-else-if="!toggleLoading[paymentType.id]">{{ $t('status.active') }}</a>
+                            <span class="text-blue" v-else>
+                                &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
+                            </span>
                         </template>
                     </td>
                 </tr>
             </draggable>
         </table>
+        
+        <div class="row text-center p-a" v-if="loading">
+            <i class="fa fa-spin fa-spinner"></i>
+            <b>{{ $t('common.loading') }}&nbsp;...</b>
+        </div>
+        <div class="row text-center p-a" v-if="!loading && !filteredPaymentTypes.length">
+            {{ $t('common.no_record') }}
+        </div>
     </div>
 </div>
 </template>
@@ -95,7 +107,9 @@ export default {
             mode: 1,
             paymentTypes: [],
             filteredPaymentTypes: [],
-            type: parseInt(this.$route.query.type) || 0
+            type: parseInt(this.$route.query.type) || 0,
+            loading: true,
+            toggleLoading: {}
         }
     },
     created () {
@@ -108,10 +122,22 @@ export default {
     },
     methods: {
         toggleStatus (paymentType) {
+            this.$set(this.toggleLoading, paymentType.id, true)
             this.$http.put(api.paymenttype + paymentType.id + '/', {
-                'status': paymentType.status === 0 ? 1 : 0
+                'status': paymentType.status ^ 1
             }).then(data => {
                 paymentType.status = data.status
+                $.notify({
+                    message: this.$t('game_manage.modify_success')
+                })
+                this.$delete(this.toggleLoading, paymentType.id)
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.changeType(this.type)
+                this.$delete(this.toggleLoading, paymentType.id)
             })
         },
         getPaymentType () {
@@ -130,8 +156,7 @@ export default {
                     [`${this.type ? 'mobile' : 'pc'}_rank`]: index + 1
                 }))).then(data => {
                     $.notify({
-                        message: this.$t('game_manage.modify_success'),
-                        type: 'success'
+                        message: this.$t('game_manage.modify_success')
                     })
                     this.getPaymentType()
                 }, error => {
@@ -157,6 +182,7 @@ export default {
                     let attribute = this.type ? 'mobile_rank' : 'pc_rank'
                     return a[attribute] - b[attribute]
                 })
+                this.loading = false
             }
         }
     },

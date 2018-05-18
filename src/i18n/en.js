@@ -287,6 +287,8 @@ export default {
         basic_info: 'Basic Information',
         basic_setting: 'Basic Setting',
         real_name: 'Real Name',
+        client_memo: 'Client End Memo',
+        dashboard_memo: 'Dashboard Memo',
         memo: 'Memo',
         no_memo: 'No memo',
         username: 'Username',
