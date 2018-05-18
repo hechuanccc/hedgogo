@@ -396,7 +396,8 @@ export default {
         required: 'Required',
         not_required: 'Not Required',
         click_submit_and_clear: 'Please click submit button and save.',
-        server_error: 'An error occured. Please try again later.'
+        server_error: 'An error occured. Please try again later.',
+        accurate_search: 'Accurate'
     },
     bank: {
         bank_title: 'Bank Information',
