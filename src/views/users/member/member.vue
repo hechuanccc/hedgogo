@@ -287,7 +287,7 @@
           <tr>
             <th>{{ $t('member.account') }}</th>
             <th>{{ $t('common.real_name') }}</th>
-            <th>{{ $t('member.created_ip') }}</th>
+            <th>{{ $t('member.created_ip') }}&nbsp;/&nbsp;{{ $t('common.time') }}</th>
             <th>{{ $t('member.last_login') }}</th>
             <th>{{ $t('member.agent') }}</th>
             <th class="text-right">{{ $t('member.total_deposit') }}</th>
@@ -314,8 +314,11 @@
               </div>
             </td>
             <td>
-            <div>{{ member.register_ip || '-' }}
-              <div><span class="label danger" v-if="member.ip_repeated">{{ $t('common.repeat') }}</span></div>
+            <div>
+              <span>{{ member.register_ip || '-' }}</span>
+              <span class="label danger" v-if="member.ip_repeated">{{ $t('common.repeat') }}</span>
+              <br/>
+              <span class="text-muted text-xs">{{ member.created_at | moment("YYYY-MM-DD HH:mm") }}</span>
             </div>
             </td>
             <td>
