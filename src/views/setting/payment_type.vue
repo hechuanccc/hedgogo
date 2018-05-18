@@ -69,7 +69,7 @@
                     </td>
                     <td v-else>-</td>
                     <td>
-                        {{ paymentType.description }}
+                        {{ paymentType.description || '-' }}
                     </td>
                     <td class="text-center">
                         <span class="label success m-r" v-if="paymentType.status==1">{{$t('status.active')}}</span>
@@ -95,7 +95,7 @@ export default {
             mode: 1,
             paymentTypes: [],
             filteredPaymentTypes: [],
-            type: parseInt(this.$route.query.type || 0)
+            type: parseInt(this.$route.query.type) || 0
         }
     },
     created () {
@@ -103,7 +103,7 @@ export default {
     },
     watch: {
         '$route.query.type': function (newType) {
-            this.changeType(parseInt(newType))
+            this.changeType(parseInt(newType) || 0)
         }
     },
     methods: {
