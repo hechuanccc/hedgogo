@@ -289,6 +289,8 @@ export default {
         real_name: '真实姓名',
         memo: '备注',
         no_memo: '暂无备注',
+        client_memo: '前台备注',
+        dashboard_memo: '后台备注',
         username: '用户名',
         status_updated: '状态已更新',
         please_select: '请选择',
@@ -396,7 +398,8 @@ export default {
         required: '必填',
         not_required: '非必填',
         click_submit_and_clear: '请按下提交按钮后才能成功清除',
-        server_error: '服务异常，请稍后再试'
+        server_error: '服务异常，请稍后再试',
+        accurate_search: '精准搜索'
     },
     bank: {
         bank_title: '银行资讯',

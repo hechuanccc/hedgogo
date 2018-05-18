@@ -81,7 +81,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4" v-if="false">
               <p class="m-b-0">{{ $t('agent.commission_setting') }}</p>
               <div v-if="agent.commission_settings" class="text-sm">
                 <div class="m-t-xs">

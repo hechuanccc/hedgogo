@@ -31,11 +31,13 @@
                             <div class="pull-left m-r-xs">
                                 <label
                                     class="form-control-label p-b-0"
-                                    :class="{'text-blue': query.member_q}"
-                                >{{ $t('common.member') }}
+                                    :class="{'text-blue': query.member}"
+                                >
+                                    {{ $t('common.member') }}
+                                    <span class="text-muted">({{ $t('common.accurate_search') }})</span>
                                 </label>
                                 <input
-                                    v-model.trim="query.member_q"
+                                    v-model.trim="query.member"
                                     class="form-control w-sm"
                                     :placeholder="$t('common.member')"
                                     @input="search"
@@ -228,11 +230,13 @@
                                 <div class="pull-left m-r-xs">
                                     <label
                                         class="form-control-label p-b-0"
-                                        :class="{'text-blue': query.member_q}"
-                                    >{{ $t('common.member') }}
+                                        :class="{'text-blue': query.member}"
+                                    >
+                                        {{ $t('common.member') }}
+                                        <span class="text-muted">({{ $t('common.accurate_search') }})</span>
                                     </label>
                                     <input
-                                        v-model="query.member_q"
+                                        v-model="query.member"
                                         class="form-control w-sm"
                                         :placeholder="$t('common.member')"
                                         @input="search"

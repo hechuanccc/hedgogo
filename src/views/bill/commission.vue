@@ -48,7 +48,9 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.agent}"
-              >{{ $t('common.agent') }}
+              >
+                {{ $t('common.agent') }}
+                <span class="text-muted">({{ $t('common.accurate_search') }})</span>
               </label>
               <input
                 v-model.trim="query.agent"

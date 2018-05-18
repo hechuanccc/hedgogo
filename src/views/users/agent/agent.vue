@@ -200,7 +200,7 @@
                         <th>{{ $t('common.real_name') }}</th>
                         <th class="text-center">{{ $t('agent.member_count') }}</th>
                         <th class="text-center">{{ $t('agent.joined_at') }}</th>
-                        <th class="text-center">{{ $t('agent.commission_setting') }}</th>
+                        <th class="text-center" v-if="false">{{ $t('agent.commission_setting') }}</th>
                         <th width="240">{{ $t('agent.domain') }}</th>
                         <th>{{ $t('common.memo') }}</th>
                     </tr>
@@ -238,7 +238,7 @@
                             <span v-if="agent.created_at">{{ agent.created_at | moment("YYYY-MM-DD HH:mm") }}</span>
                             <span v-else>-</span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center" v-if="false">
                             <router-link :to="`/commission/${agent.commission_settings.id}/edit`" v-if="agent.commission_settings && agent.commission_settings.id">
                                 {{ agent.commission_settings.name }}
                             </router-link>

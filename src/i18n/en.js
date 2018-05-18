@@ -287,6 +287,8 @@ export default {
         basic_info: 'Basic Information',
         basic_setting: 'Basic Setting',
         real_name: 'Real Name',
+        client_memo: 'Client End Memo',
+        dashboard_memo: 'Dashboard Memo',
         memo: 'Memo',
         no_memo: 'No memo',
         username: 'Username',
@@ -396,7 +398,8 @@ export default {
         required: 'Required',
         not_required: 'Not Required',
         click_submit_and_clear: 'Please click submit button and save.',
-        server_error: 'An error occured. Please try again later.'
+        server_error: 'An error occured. Please try again later.',
+        accurate_search: 'Accurate'
     },
     bank: {
         bank_title: 'Bank Information',
