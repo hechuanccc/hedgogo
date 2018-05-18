@@ -126,7 +126,7 @@
                                 <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>
                                 <li><router-link to="/online_payer"><span class="nav-text">{{$t("nav.setting_online_payer")}}</span></router-link></li>
                                 <li><router-link to="/remit_payee"><span class="nav-text">{{$t("nav.setting_remit_payee")}}</span></router-link></li>
-                                <li><router-link to="/commission"><span class="nav-text">{{$t("nav.setting_commission")}}</span></router-link></li>
+                                <li v-if="false"><router-link to="/commission"><span class="nav-text">{{$t("nav.setting_commission")}}</span></router-link></li>
                                 <!-- <li><router-link to="/envelope_settings"><span class="nav-text">{{$t("nav.envelope_setting")}}</span></router-link></li> -->
                             </ul>
                         </li>
@@ -141,7 +141,7 @@
                                 <!-- <li><router-link to="/errors"><span class="nav-text">{{$t("nav.errors")}}</span></router-link></li> -->
                             </ul>
                         </li>
-                        <li :class="$route.meta.group == 'agent' ? 'active' : ''" v-if="$root.permissions.includes('export_agent_commission_report')">
+                        <li :class="$route.meta.group == 'agent' ? 'active' : ''" v-if="$root.permissions.includes('export_agent_commission_report') && false">
                             <a>
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FB;</i>代理结算</span>
                             </a>
