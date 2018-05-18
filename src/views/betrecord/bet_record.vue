@@ -350,7 +350,7 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th class="text-center">{{ $t('common.settledat') }}</th>
+                        <th class="text-center">{{ $t('betrecord.betted_at') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('common.game') }}</th>
@@ -402,7 +402,7 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th class="text-center">{{ $t('common.settledat') }}</th>
+                        <th class="text-center">{{ $t('betrecord.betted_at') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('member.account_type') }}</th>

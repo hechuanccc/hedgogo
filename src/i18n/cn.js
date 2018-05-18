@@ -443,7 +443,8 @@ export default {
         cancelled_bets: '赌注被取消了',
         total_valid_bet_record: '有效投注',
         options: '投注选项',
-        opts_combos_count: '组合选项计数'
+        opts_combos_count: '组合选项计数',
+        betted_at: '投注时间'
     },
     action: {
         view_today_report: '查看今日报表',
