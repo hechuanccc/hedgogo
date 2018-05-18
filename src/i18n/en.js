@@ -444,7 +444,8 @@ export default {
         total_valid_bet_record: 'Total Valid Bet Records',
         options: 'Bet Options',
         opts_combos_count: 'Combo Options Count',
-        visitor: 'Visitor'
+        visitor: 'Visitor',
+        betted_at: 'Betted at'
     },
     action: {
         view_today_report: 'View today\'s Report',

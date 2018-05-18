@@ -169,6 +169,7 @@ export default {
                         message: error,
                         type: 'danger'
                     })
+                    this.loading = false
                 })
             }
         },
