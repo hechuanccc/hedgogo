@@ -242,9 +242,7 @@ export default {
                     bank: '',
                     province: ''
                 },
-                level: '',
-                password: '123456',
-                withdraw_password: '123456'
+                level: ''
             },
             loading: false
         }
