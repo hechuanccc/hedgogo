@@ -15,7 +15,6 @@
                                 style="display: block;"
                                 :not-after="today"
                                 :shortcuts="shortcuts"
-                                :inputClass="'input form-control'"
                                 type="date"
                                 v-model="action_time"
                                 format="yyyy-MM-dd"

@@ -21,7 +21,7 @@
                     class="align-middle"
                 >
                     <td class="text-center align-middle">{{ preference.display_name }}</td>
-                    <td>
+                    <td class="text-break-all">
                         <div v-if="preference.type === 1 && typeof preference.value === 'object'">
                             <span
                                 v-for="(e, i) in preference.value"
@@ -61,7 +61,6 @@
                             />
                             <i class="success"></i>
                         </label>
-                        
                     </td>
                     <td class="text-center align-middle">
                         <a @click="openModal(index, preference)" v-if="preference.type !== 3">{{ $t('action.update') }}</a>

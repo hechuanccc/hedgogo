@@ -198,7 +198,9 @@ export default {
         visitor_filter: '过滤游客',
         total_ongoing_amount: '未结金额',
         total_deposit: '总存款',
-        total_withdraw: '总取款'
+        total_withdraw: '总取款',
+        history_loggedin_ip: '历史登录 IP',
+        confirm_ban: '确定禁用？'
     },
     bill: {
         commission_report: '佣金计算',
@@ -495,7 +497,8 @@ export default {
         please_fill_object: '请填写{object}',
         reset_condition: '重置条件',
         add_group: '新增一组',
-        key_in: '输入'
+        key_in: '输入',
+        batch_ban: '批量禁用'
     },
     staff: {
         roles: '角色 / 权限',

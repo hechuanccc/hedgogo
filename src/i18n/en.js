@@ -198,7 +198,9 @@ export default {
         visitor_filter: 'Visitor Filter',
         total_ongoing_amount: 'Ongoing Amount',
         total_deposit: 'Total Deposit',
-        total_withdraw: 'Total Withdraw'
+        total_withdraw: 'Total Withdraw',
+        history_loggedin_ip: 'History Loggedin IP',
+        confirm_ban: 'Confirm'
     },
     bill: {
         commission_report: 'Commission Report',
@@ -494,7 +496,8 @@ export default {
         please_fill_object: 'Please fill {object}',
         reset_condition: 'Reset',
         add_group: 'Add Group',
-        key_in: 'Key In'
+        key_in: 'Key In',
+        batch_ban: 'Batch Ban'
     },
     staff: {
         roles: 'Roles / Permission',

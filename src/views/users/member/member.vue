@@ -63,6 +63,7 @@
                 class="form-control w-sm"
                 :placeholder="$t('common.username')"
                 @input="search"
+                :disabled="mode !== 'normal'"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -76,6 +77,7 @@
                 class="form-control w-sm"
                 :placeholder="$t('common.real_name')"
                 @input="search"
+                :disabled="mode !== 'normal'"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -89,6 +91,7 @@
                 class="form-control w-sm"
                 :placeholder="$t('common.agent')"
                 @input="search"
+                :disabled="mode !== 'normal'"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -101,6 +104,7 @@
                 :level="query.level"
                 @level-select="levelSelect"
                 style="display: block;"
+                :disabled="mode !== 'normal'"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -113,6 +117,7 @@
                 class="form-control c-select w-sm"
                 style="display: block;"
                 v-model="status"
+                :disabled="mode !== 'normal'"
               >
                 <option value="">{{ $t('common.please_select') }}</option>
                 <option value="1">{{ $t('status.active') }}</option>
@@ -133,6 +138,7 @@
                   :max="query.balance_lte"
                   :placeholder="$t('common.min_amount')"
                   @input="search"
+                  :disabled="mode !== 'normal'"
                 />
                 ~
                 <input
@@ -142,11 +148,10 @@
                   :min="query.balance_gte"
                   :placeholder="$t('common.max_amount')"
                   @input="search"
+                  :disabled="mode !== 'normal'"
                 />
               </div>
             </div>
-          </div>
-          <div class="row m-t-xs m-l-xs m-r-xs">
             <div class="pull-left m-r-xs">
               <label
                 class="form-control-label p-b-0"
@@ -157,6 +162,7 @@
                 <select
                   class="pull-left form-control w-sm c-select no-b-r"
                   v-model="userInfoSelect"
+                  :disabled="mode !== 'normal'"
                 >
                   <option value="">{{ $t('common.please_select') }}</option>
                   <option value="0">{{ $t('common.phone') }}</option>
@@ -168,10 +174,12 @@
                   v-model.trim="userInfo_q"
                   class="form-control w-sm"
                   style="width: 122px;"
-                  :disabled="!userInfoSelect"
+                  :disabled="!userInfoSelect || mode !== 'normal'"
                 />
               </div>
             </div>
+          </div>
+          <div class="row m-t-xs m-l-xs m-r-xs">
             <div class="pull-left m-r-xs">
               <label
                 class="form-control-label p-b-0"
@@ -183,7 +191,8 @@
                 style="display: block;"
                 :not-after="today"
                 :shortcuts="shortcuts"
-                :inputClass="'input form-control'"
+                :inputClass="mode === 'normal' ? 'mx-input form-control pointer' : 'form-control'"
+                :disabled="mode !== 'normal'"
                 type="date"
                 v-model="created_at"
                 format="yyyy-MM-dd"
@@ -194,7 +203,9 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.register_ip}"
-              >{{ $t('member.created_ip') }}
+              >
+                {{ $t('member.created_ip') }}
+                <span class="text-muted">({{ $t('common.accurate_search') }})</span>
               </label>
               <input
                 v-model.trim="query.register_ip"
@@ -202,7 +213,69 @@
                 style="width: 244px;"
                 :placeholder="$t('member.created_ip')"
                 @input="search"
+                :disabled="mode !== 'normal'"
               />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.last_login_ip}"
+              >
+                {{ $t('member.history_loggedin_ip') }}
+                <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+              </label>
+              <input
+                v-model.trim="query.last_login_ip"
+                class="form-control w-sm"
+                style="width: 244px;"
+                :placeholder="$t('member.history_loggedin_ip')"
+                @input="search"
+              />
+            </div>
+            <div
+              class="pull-left w-xs m-r-xs"
+              style="height: 60px; position: relative;"
+              v-if="mode === 'ban'"
+            >
+              <button
+                class="md-btn w-xs btn danger"
+                style="position: absolute; bottom: 0;"
+                type="button"
+                :disabled="!queryset.length"
+                @click="mode = 'confirm-ban'"
+              >
+                <i class="fa fa-ban"></i> 
+                <span>{{ $t('action.batch_ban') }}</span>
+              </button>
+            </div>
+            <div
+              class="pull-left w-xs m-r-xs"
+              style="height: 60px; position: relative;"
+              v-if="mode === 'confirm-ban'"
+            >
+              <button
+                class="md-btn w-xs btn blue"
+                style="position: absolute; bottom: 0;"
+                type="button"
+                @click="batchBan"
+              >
+                <span v-if="!batchBanLoading">{{ $t('member.confirm_ban') }}</span>
+                <i class="fa fa-spin fa-spinner" v-else></i>
+              </button>
+            </div>
+            <div
+              class="pull-left w-xs m-r-xs"
+              style="height: 60px; position: relative;"
+              v-if="mode === 'confirm-ban'"
+            >
+              <button
+                class="md-btn w-xs btn"
+                style="position: absolute; bottom: 0;"
+                type="button"
+                @click="mode = 'ban'"
+              >
+                {{ $t('action.cancel') }}
+              </button>
             </div>
             <button
               class="md-btn w-xs pull-right btn m-t-md"
@@ -322,7 +395,11 @@
             </div>
             </td>
             <td>
-              <span v-if="member.last_login">{{ member.last_login.login_at | moment("YYYY-MM-DD HH:mm") }}</span>
+              <p class="m-b-0" v-if="member.last_login">
+                <span>{{ member.last_login.ipaddr || '-' }}</span>
+                <br/>
+                <span class="text-sm text-muted">{{ member.last_login.login_at | moment("YYYY-MM-DD HH:mm") }}</span>
+              </p>
               <span v-else>-</span>
             </td>
             <td v-if="member.agent.name">
@@ -388,6 +465,7 @@ export default {
             href: '',
             export_query: [],
             pageSelected: '',
+            mode: 'normal',
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
@@ -403,7 +481,8 @@ export default {
             userInfoSelect: '',
             userInfo_q: '',
             visitorFilter: true,
-            loading: true
+            loading: true,
+            batchBanLoading: false
         }
     },
     created () {
@@ -441,6 +520,16 @@ export default {
                 this.extra = `logined=1`
             }
             this.rebase()
+        },
+        'query.last_login_ip' (newObj) {
+            if (newObj) {
+                this.query = Object.assign({}, {
+                    last_login_ip: newObj
+                })
+                this.mode = 'ban'
+            } else {
+                this.mode = 'normal'
+            }
         }
     },
     computed: {
@@ -527,6 +616,26 @@ export default {
                 this.query[element + '_q'] = element === key ? this.userInfo_q : ''
             })
             this.search()
+        },
+        batchBan () {
+            if (!this.batchBanLoading && this.query.last_login_ip && this.queryset.length) {
+                this.batchBanLoading = true
+                this.$http.put(api.batch_ban, {
+                    ip: this.query.last_login_ip
+                }).then(data => {
+                    $.notify({
+                        message: this.$t('action.batch_ban') + this.$t('status.success')
+                    })
+                    this.refresh()
+                    this.batchBanLoading = false
+                }, error => {
+                    $.notify({
+                        message: error,
+                        type: 'danger'
+                    })
+                    this.batchBanLoading = false
+                })
+            }
         }
     },
     components: {
