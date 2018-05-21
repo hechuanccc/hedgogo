@@ -59,6 +59,21 @@
                             <div class="pull-left m-r-xs">
                                 <label
                                     class="form-control-label p-b-0"
+                                    :class="{'text-blue': query.issue_number}"
+                                >
+                                    {{ $t('game_history.periods') }}
+                                    <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                                </label>
+                                <input
+                                    v-model.trim="query.issue_number"
+                                    class="form-control w-sm"
+                                    :placeholder="$t('game_history.periods')"
+                                    @input="search"
+                                />
+                            </div>
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
                                     :class="{'text-blue': status}"
                                 >{{ $t('common.status') }}
                                 </label>
@@ -258,11 +273,13 @@
                                 <div class="pull-left m-r-xs">
                                     <label
                                         class="form-control-label p-b-0"
-                                        :class="{'text-blue': query.issue_number_q}"
-                                    >{{ $t('game_history.periods') }}
+                                        :class="{'text-blue': query.issue_number}"
+                                    >
+                                        {{ $t('game_history.periods') }}
+                                        <span class="text-muted">({{ $t('common.accurate_search') }})</span>
                                     </label>
                                     <input
-                                        v-model="query.issue_number_q"
+                                        v-model="query.issue_number"
                                         class="form-control w-sm"
                                         :placeholder="$t('game_history.periods')"
                                         @input="search"
