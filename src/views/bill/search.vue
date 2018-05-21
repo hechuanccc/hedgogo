@@ -53,6 +53,25 @@
                 <div class="pull-left m-r-xs">
                     <label
                         class="form-control-label p-b-0"
+                        :class="{'text-blue': status}"
+                    >{{ $t('common.status') }}
+                    </label>
+                    <select
+                        class="form-control w-sm c-select"
+                        style="display: block;"
+                        v-model="status"
+                    >
+                        <option value="">{{ $t('common.please_select') }}</option>
+                        <option value="1">{{ $t('status.success') }}</option>
+                        <option value="2">{{ $t('status.failed') }}</option>
+                        <option value="3">{{ $t('status.ongoing') }}</option>
+                        <option value="4">{{ $t('status.cancelled') }}</option>
+                        <option value="5">{{ $t('status.declined') }}</option>
+                    </select>
+                </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
                         :class="{'text-blue': !$route.query.member && query.member_level}"
                     >{{ $t('member.level') }}
                     </label>
@@ -241,6 +260,7 @@
                     agent: {},
                     level: {}
                 },
+                status: '',
                 member_level: '',
                 // use selectd transaction types
                 transaction_type: '',
@@ -270,6 +290,10 @@
             created_at (newObj) {
                 [this.query.created_at_0, this.query.created_at_1] = [...newObj]
                 this.submit()
+            },
+            status (newObj) {
+                this.query.status = newObj
+                this.submit()
             }
         },
         created () {
@@ -295,6 +319,7 @@
                 } else {
                     this.created_at = [undefined, undefined]
                 }
+                this.status = this.$route.query.status || ''
                 this.transaction_type = this.$route.query.transaction_type || ''
                 this.query = Object.assign({}, this.$route.query)
             },

@@ -366,7 +366,7 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th class="text-center">{{ $t('betrecord.betted_at') }}</th>
+                        <th class="text-center">{{ $t('betrecord.betted_at') }}&nbsp;/&nbsp;{{ $t('common.settledat') }}</th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('common.game') }}</th>
@@ -383,7 +383,11 @@
                 <tbody>
                     <tr v-for="t in queryset" :key="t.id">
                         <td><router-link :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link></td>
-                        <td class="text-center p-l-0 p-r-0 text-sm">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td class="text-center p-l-0 p-r-0 text-xs">
+                            <span>{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
+                            <span v-if="t.settled_at">{{ t.settled_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
+                            <span v-else>-</span>
+                        </td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
                         <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
                         <td>{{ t.game.display_name }}</td>
