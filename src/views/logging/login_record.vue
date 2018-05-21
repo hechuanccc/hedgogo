@@ -95,7 +95,9 @@
                 <tbody v-if="queryset.length > 0">
                     <tr v-for="report in queryset" :key="report.id">
                         <td class="text-center">{{ report.logindate | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                        <td>{{ report.member.username }}</td>
+                        <td>
+                            <router-link :to="'/member/' + report.member.id">{{ report.member.username }}</router-link>
+                        </td>
                         <td>
                             <span>{{ report.ipaddr }}</span><br/>
                             <span class="text-muted">{{ report.address.country || '-' }} {{ report.address.region || '-' }} {{ report.address.city || '-' }}</span>
