@@ -37,7 +37,6 @@
                 style="display: block;"
                 :not-after="yesterday"
                 :shortcuts="shortcuts"
-                :inputClass="'input form-control'"
                 v-model="date"
                 type="date"
                 format="yyyy-MM-dd"
