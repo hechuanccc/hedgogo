@@ -65,6 +65,7 @@
                         <option value="1">{{ $t('status.success') }}</option>
                         <option value="2">{{ $t('status.failed') }}</option>
                         <option value="3">{{ $t('status.ongoing') }}</option>
+                        <option value="6">{{ $t('status.payment_pending') }}</option>
                         <option value="4">{{ $t('status.cancelled') }}</option>
                         <option value="5">{{ $t('status.declined') }}</option>
                     </select>
@@ -185,7 +186,7 @@
                 <th>{{ $t('common.member') }}</th>
                 <th>{{ $t('common.agent') }}</th>
                 <th class="text-center">{{ $t('bill.created_at') }}</th>
-                <th>{{ $t('bill.transaction_type') }}</th>
+                <th class="text-center">{{ $t('bill.transaction_type') }}</th>
                 <th class="text-center">{{ $t('common.balance_before') }}</th>
                 <th class="text-center">{{ $t('common.balance_after') }}</th>
                 <th class="text-center">{{ $t('common.amount') }}</th>
@@ -200,7 +201,7 @@
                 </td>
                 <td><router-link :to="'/agent/' + t.member.agent.id ">{{ t.member.agent.username }}</router-link></td>
                 <td class="text-center">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                <td>{{ t.transaction_type.display_name }}</td>
+                <td class="text-center">{{ t.transaction_type.display_name }}</td>
                 <td class="text-right">
                     <span v-if="t.balance_before || t.balance_before === 0">{{ t.balance_before | currency('￥') }}</span>
                     <span v-else>-</span>
