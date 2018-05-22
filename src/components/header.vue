@@ -208,7 +208,7 @@
                 let title = ''
                 if (messageType === 'remit') {
                     url = '/bill/remit?status=' + vm.status
-                    title = '公司入款通知'
+                    title = '转帐充值通知'
                 } else if (messageType === 'withdraw') {
                     url = '/bill/withdraw?status=' + vm.status
                     title = '取款通知'
