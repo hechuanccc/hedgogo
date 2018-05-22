@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="m-b-xs text-right">
+    <div class="m-b-xs text-right" v-if="$root.permissions.includes('export_withdraw_report')">
         <a
             :href="href"
             :getReport="getReport"
