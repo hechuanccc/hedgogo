@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="pageSelected === 'today' || pageSelected === 'history'">
+        <div v-if="pageSelected === 'normal'">
             <form
                 class="form text-sm"
                 @submit.prevent="submit"
@@ -120,7 +120,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="pull-left m-r-xs" v-if="pageSelected === 'history'">
+                            <div class="pull-left m-r-xs">
                                 <label
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
@@ -129,7 +129,6 @@
                                 <date-picker
                                     width='244'
                                     style="display: block;"
-                                    :not-after="yesterday"
                                     :shortcuts="shortcuts"
                                     type="date"
                                     v-model="created_at"
@@ -229,7 +228,7 @@
                         </div>
                         <div class="row m-l-xs m-r-xs">
                             <div class="col-xs-12">
-                                <label class="check m-r m-b" v-for="game in gamelist" :key="game.id">
+                                <label class="check m-r m-b pointer" v-for="game in gamelist" :key="game.id">
                                     <input
                                         name="game"
                                         type="checkbox"
@@ -350,7 +349,7 @@
                         {{ $t('action.filter_trial_account') }}
                     </label>
                 </div>
-                <div class="pull-right total-amount" v-show="pageSelected === 'today' || pageSelected === 'history'">
+                <div class="pull-right total-amount" v-show="pageSelected === 'normal'">
                     <span>{{ $t('betrecord.total_profit') }} : </span>
                     <span v-if="queryset.length">{{ total_profit | currency('￥') }}</span>
                     <span v-else>{{ 0 | currency('￥') }}</span>
@@ -361,7 +360,7 @@
                 </div>
             </div>
         </div>
-        <div class="box" v-if="pageSelected === 'today' || pageSelected === 'history'">
+        <div class="box" v-if="pageSelected === 'normal'">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -409,7 +408,12 @@
                         </td>
                         <td class="text-center p-r-xs p-l-xs">
                             <span v-if="(t.status === 'ongoing' || t.status === 'no_draw') && $root.permissions.includes('cancel_bet')">
-                                <button type="button" class="btn btn-xs blue sm-btn m-b-sm f-b text-xs" @click="cancelBet(t, 'cancelled', true, $event)">{{ $t('betrecord.cancel_bet') }}</button> <br>
+                                <button
+                                    type="button"
+                                    class="btn btn-xs blue sm-btn m-b-sm f-b text-xs"
+                                    @click="cancelBet(t, 'cancelled', true, $event)"
+                                >{{ $t('betrecord.cancel_bet') }}
+                                </button>
                             </span>
                             <span v-else>-</span>
                         </td>
@@ -504,7 +508,7 @@
                 total_bet_amount: '',
                 today: date.today[0],
                 yesterday: date.yesterday[0],
-                shortcuts: ['yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                     text: this.$t(`common.${element}`),
                     start: date[element][0],
                     end: date[element][1]
@@ -626,23 +630,17 @@
             getPageAccessed () {
                 let query = this.$route.query
                 this.platform = query.platform || ''
-                if (this.$route.path === '/report/betrecord/today') {
-                    this.extra = `account_type=1,2&created_at_0=${this.today}&created_at_1=${this.today}`
-                    this.game = query.game_q || ''
-                    this.game_category = query.category || ''
-                    this.status = query.status || ''
-                    this.pageSelected = 'today'
-                } else if (this.$route.path === '/report/betrecord/history') {
+                if (this.$route.name === 'report_betrecord') {
                     if (query.created_at_0 || query.created_at_1) {
                         this.created_at = [query.created_at_0, query.created_at_1]
                     } else {
                         this.created_at = [undefined, undefined]
                     }
-                    this.extra = `account_type=1,2&created_at_1=${this.yesterday}`
+                    this.extra = 'account_type=1,2'
                     this.game = query.game_q || ''
                     this.game_category = query.category || ''
                     this.status = query.status || ''
-                    this.pageSelected = 'history'
+                    this.pageSelected = 'normal'
                 } else if (this.$route.path === '/report/betrecord/realtime') {
                     if (query.game_q) {
                         this.filter_game = query.game_q.split(',')

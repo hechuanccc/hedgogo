@@ -3,7 +3,7 @@
     <div class="m-b">
       <ol class="breadcrumb">
         <li class="active">
-          <router-link :to="'/report/betrecord/today?report_flag=true&created_at_0=' + today + '&created_at_1=' + today">{{$t('nav.recent_bet_records')}}</router-link></li>
+          <router-link to="/report/betrecord">{{$t('nav.bet_record')}}</router-link></li>
         <li class="active">{{$route.meta.title}}</li>
       </ol>
     </div>
