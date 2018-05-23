@@ -90,7 +90,8 @@ export default {
         role_add: '新增角色',
         role_edit: '修改角色',
         global_parameters: '系统参数配置',
-        robot_management: '机器人配置',
+        chatroom_management: '聊天室配置',
+        update_chatroom_management: '修改聊天室配置',
         logging: '日志管理',
         login_logs: '登录日志',
         action_logs: '操作日志',
@@ -401,7 +402,8 @@ export default {
         not_required: '非必填',
         click_submit_and_clear: '请按下提交按钮后才能成功清除',
         server_error: '服务异常，请稍后再试',
-        accurate_search: '精准搜索'
+        accurate_search: '精准搜索',
+        manager: '管理员'
     },
     bank: {
         bank_title: '银行资讯',
@@ -951,5 +953,18 @@ export default {
         profit: '盈利',
         confirm_delete: '确定删除？',
         total: '总佣金'
+    },
+    chatroom: {
+        preference_setting: '聊天室参数设置',
+        setting: '聊天室设置',
+        list: '聊天室列表',
+        default_chatroom: '默认聊天室',
+        game_room: '游戏房间',
+        manager: '管理员',
+        plan_maker: '计划员',
+        keyin_tips: '请输入会员帐号，多个以逗号 ”,“ 隔开',
+        plan_robot: '聊天室计划机器人',
+        bulletin: '聊天室公告',
+        bulletin_content: '公告内容'
     }
 }

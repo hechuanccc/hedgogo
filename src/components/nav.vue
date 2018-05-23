@@ -120,7 +120,7 @@
                                 <!-- <li><router-link to="/permissions"><span class="nav-text">{{$t("nav.permissions")}}</span></router-link></li> -->
                                 <li><router-link to="/roles"><span class="nav-text">{{$t("nav.roles")}}</span></router-link></li>
                                 <li v-if="$root.permissions.includes('view_global_parameters_setting')"><router-link to="/global_parameters"><span class="nav-text">{{$t("nav.global_parameters")}}</span></router-link></li>
-                                <li><router-link to="/robots"><span class="nav-text">{{$t("nav.robot_management")}}</span></router-link></li>
+                                <li><router-link to="/chatroom"><span class="nav-text">{{$t("nav.chatroom_management")}}</span></router-link></li>
                                 <li><router-link to="/level"><span class="nav-text">{{$t("nav.setting_level")}}</span></router-link></li>
                                 <li><router-link to="/paymenttype"><span class="nav-text">{{$t("nav.payment_type_setting")}}</span></router-link></li>
                                 <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>

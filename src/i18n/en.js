@@ -90,7 +90,8 @@ export default {
         role_add: 'Add Role Setting',
         role_edit: 'Edit Role Setting',
         global_parameters: 'Global Parameters',
-        robot_management: 'Robot Management',
+        chatroom_management: 'Chatroom Management',
+        update_chatroom_management: 'Update Chatroom Management',
         logging: 'Logging',
         login_logs: 'Login Logs',
         action_logs: 'Action Logs',
@@ -401,7 +402,8 @@ export default {
         not_required: 'Not Required',
         click_submit_and_clear: 'Please click submit button and save.',
         server_error: 'An error occured. Please try again later.',
-        accurate_search: 'Accurate'
+        accurate_search: 'Accurate',
+        manager: 'Manager'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -951,5 +953,18 @@ export default {
         profit: 'Profit',
         confirm_delete: 'Confirm delete?',
         total: 'Total Commission Amount'
+    },
+    chatroom: {
+        preference_setting: 'Chatroom Preference Setting',
+        setting: 'Chatroom Setting',
+        list: 'Chatroom List',
+        default_chatroom: 'Default Chatroom',
+        gamne_room: 'Game Room',
+        manager: 'Manager',
+        plan_maker: 'Plan Maker',
+        keyin_tips: 'Key in Member account and saperate by \',\'.',
+        plan_robot: 'Chatroom Plan Robot',
+        bulletin: 'Chatroom Bulletin',
+        bulletin_content: 'Bulletin Content'
     }
 }
