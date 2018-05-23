@@ -28,8 +28,8 @@ COPY --from=hedwig /usr/src/app/config/dev.env.js /usr/src/app/config/dev.env.js
 COPY . .
 
 # Cannot be made into one line as it has a possibility that it will return a 'text file busy' making the shell script unexecutable
-RUN chmod u+x cloud_deploy.sh
-RUN ./cloud_deploy.sh
+#RUN chmod u+x cloud_deploy.sh
+#RUN ./cloud_deploy.sh
 
 EXPOSE 8888
 CMD npm run dev
