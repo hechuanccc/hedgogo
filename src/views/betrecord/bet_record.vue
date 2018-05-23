@@ -574,13 +574,15 @@
                 clearInterval(this.interval)
                 this.interval = setInterval(this.getBetRecord, parseInt(this.period))
             },
-            pageSelected (newObj) {
-                if (newObj === 'realtime') {
-                    this.query = Object.assign({}, {
-                        account_type: '1,2'
-                    })
-                } else {
-                    this.query = {}
+            pageSelected (newObj, old) {
+                if (old) {
+                    if (newObj === 'realtime') {
+                        this.query = Object.assign({}, {
+                            account_type: '1,2'
+                        })
+                    } else if (newObj === 'normal') {
+                        this.query = {}
+                    }
                 }
             }
         },
@@ -609,7 +611,7 @@
                 this.loading = false
             },
             queryParam (query) {
-                this.query = Object.assign(this.query, query)
+                Object.assign(this.query, query)
             },
             totalAmount (amount) {
                 this.total_amount = amount
