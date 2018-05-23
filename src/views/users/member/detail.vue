@@ -28,12 +28,12 @@
               <div>
                 <router-link
                   class="md-btn md-flat m-r-sm"
-                  :to="`/report/betrecord/history?member=${member.username}`"
+                  :to="`/report/betrecord?member=${member.username}`"
                 >{{$t('action.view_history_bet_record')}}
                 </router-link>
                 <router-link
                   class="md-btn md-flat m-r-sm"
-                  :to="`/report/betrecord/today?member=${member.username}&created_at_0=${today}&created_at_1=${today}`"
+                  :to="`/report/betrecord?member=${member.username}&created_at_0=${today}&created_at_1=${today}`"
                 >{{$t('action.view_todays_bet_record')}}
                 </router-link>
                 <template>
@@ -147,11 +147,11 @@
               <div class="row">
                 <div class="col-md-3">
                   <span class="text-muted">{{$t('common.member') + $t('betrecord.win')}}</span>
-                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=win&created_at_1=' + today">{{member.total_gain | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/?member=' + member.username + '&status=win'">{{member.total_gain | currency('￥')}}</router-link></div>
                 </div>
                 <div class="col-md-3">
                   <span class="text-muted">{{$t('common.member') + $t('betrecord.lose')}}</span>
-                  <div><router-link :to="'/report/betrecord/history?member=' + member.username + '&status=lose&created_at_1=' + today">{{member.total_loss | currency('￥')}}</router-link></div>
+                  <div><router-link :to="'/report/betrecord/?member=' + member.username + '&status=lose'">{{member.total_loss | currency('￥')}}</router-link></div>
                 </div>
                 <div class="col-md-3">
                   <span class="text-muted">{{$t('returnrate.return_amount')}}</span>

@@ -745,32 +745,6 @@ export default new Router({
         }
     },
     {
-        path: '/report/betrecord/today',
-        name: 'report_betrecord_today',
-        component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            disable_tabs: true,
-            title: `${Vue.t('nav.bet_record')} - ${Vue.t('nav.recent_bet_records')}`,
-            group: 'betrecord'
-        }
-    },
-    {
-        path: '/report/betrecord/history',
-        name: 'report_betrecord_history',
-        component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
-        },
-        meta: {
-            auth: true,
-            disable_tabs: true,
-            title: `${Vue.t('nav.bet_record')} - ${Vue.t('nav.bet_record_history')}`,
-            group: 'betrecord'
-        }
-    },
-    {
         path: '/report/betrecord/realtime',
         name: 'report_betrecord_realtime',
         component: function (resolve) {

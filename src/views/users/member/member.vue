@@ -417,9 +417,9 @@
             </td>
             <td class="text-right">
               <span class="text-success">{{ $t('betrecord.win') }}: </span>
-              <router-link :to="`/report/betrecord/history?member=${member.username}&status=win&created_at_1=${today}`">{{ member.total_gain | currency('￥') }}</router-link><br/>
+              <router-link :to="`/report/betrecord/?member=${member.username}&status=win&created_at_1=${today}`">{{ member.total_gain | currency('￥') }}</router-link><br/>
               <span class="text-danger">{{ $t('betrecord.lose') }}: </span>
-              <router-link :to="`/report/betrecord/history?member=${member.username}&status=lose&created_at_1=${today}`">{{ member.total_loss | currency('￥') }}</router-link>
+              <router-link :to="`/report/betrecord/?member=${member.username}&status=lose&created_at_1=${today}`">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
             <td class="text-right">
               <div v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</div>
