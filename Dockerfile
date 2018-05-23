@@ -22,7 +22,6 @@ COPY package.json package.json
 RUN npm install
 
 COPY --from=hedwig /root /root
-COPY --from=hedwig /usr/src/app/config/dev.env.js /usr/src/app/config/dev.env.js
 
 # To include everything
 COPY . .
