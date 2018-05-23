@@ -442,7 +442,7 @@ export default {
         }
     },
     created () {
-        this.$route.params.chatroomId && (this.id = this.$route.params.chatroomId)
+        this.$route.params.chatroomId && (this.id = parseInt(this.$route.params.chatroomId))
         this.isDefaultChatroom = (this.id === defaultChatroomID)
         this.getChatroom()
         this.getGamesName()
