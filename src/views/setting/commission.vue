@@ -33,7 +33,7 @@
                             <a class="m-l-sm" @click="toggleStatus(index, commission)" v-if="!toggleLoading[index] && commission.status == 1">{{ $t('status.inactive') }}</a>
                             <a class="m-l-sm" @click="toggleStatus(index, commission)" v-else-if="!toggleLoading[index]">{{ $t('status.active') }}</a>
                             <span class="m-l-sm text-blue" v-else>
-                                &nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;
+                                &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
                             </span>
                         </template>
                     </td>
