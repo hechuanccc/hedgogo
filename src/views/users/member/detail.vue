@@ -82,8 +82,8 @@
                 <div v-for="t in member.transaction_info.confirmed">
                   <span class="text-muted">{{t.transaction_type__display_name}}</span>
                   <span class="pull-right">
-                      <span class="t-red" v-if="t.transaction_type__code === 'withdraw' || parseFloat(t.amount__sum) < 0"> {{t.amount__sum}}</span>
-                      <span class="t-green" v-else> + {{t.amount__sum}}</span>
+                      <span class="t-red" v-if="t.transaction_type__code === 'withdraw' || parseFloat(t.amount__sum) < 0"> {{t.amount__sum | currency('￥')}}</span>
+                      <span class="t-green" v-else> + {{t.amount__sum | currency('￥')}}</span>
                       <router-link class="link-width" :to="{
                         path: '/bill/search/',
                         query: {
@@ -101,7 +101,7 @@
                   <span>{{$t('member.fund_sum')}}</span>
                   <span class="pull-right">
                       <strong class="t-green">{{sumAmount | currency('￥')}}</strong>
-                      <a class="link-width">&nbsp;</a>
+                      <span class="link-width"></span>
                   </span>
                 </div>
               </div>
@@ -415,7 +415,7 @@
     .link-width {
         text-align: right;
         display: inline-block;
-        width: 40px;
+        width: 5rem;
     }
 }
 .loading {
