@@ -43,7 +43,7 @@
                         :class="{'text-blue': transaction_type}"
                     >{{ $t('bill.transaction_type') }}
                     </label>
-                    <transaction-type-selector
+                    <selector-transaction-type
                         style="display: block;"
                         :transactionType="transaction_type"
                         :attribute="'code'"
@@ -76,7 +76,7 @@
                         :class="{'text-blue': !$route.query.member && query.member_level}"
                     >{{ $t('member.level') }}
                     </label>
-                    <level
+                    <selector-member-level
                         style="display: block;"
                         :level="query.member_level"
                         :disabled="$route.query.member"
@@ -239,11 +239,11 @@
 <script>
     import api from '../../api'
     import DatePicker from 'vue2-datepicker'
-    import transactionStatus from '../../components/transaction_status'
-    import transactionTypeSelector from '../../components/transactionTypeSelector'
-    import pulling from '../../components/pulling'
+    import TransactionStatus from '../../components/TransactionStatus'
+    import SelectorTransactionType from '../../components/SelectorTransactionType'
+    import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
-    import level from '../../components/level'
+    import SelectorMemberLevel from '../../components/SelectorMemberLevel'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import _ from 'lodash'
@@ -361,10 +361,10 @@
         },
         components: {
             DatePicker,
-            pulling,
-            transactionStatus,
-            transactionTypeSelector,
-            level
+            Pulling,
+            TransactionStatus,
+            SelectorTransactionType,
+            SelectorMemberLevel
         }
     }
 </script>

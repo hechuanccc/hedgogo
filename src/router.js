@@ -25,7 +25,7 @@ export default new Router({
         name: 'login',
         path: '/login',
         component: function (resolve) {
-            require(['./views/login.vue'], resolve)
+            require(['./views/Login.vue'], resolve)
         },
         meta: {
             agentPermission: 'true',
@@ -37,7 +37,7 @@ export default new Router({
         path: '/',
         name: 'overview',
         component: function (resolve) {
-            require(['./views/overview.vue'], resolve)
+            require(['./views/Overview.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -51,7 +51,7 @@ export default new Router({
         path: '/bill/remit',
         name: 'bill-remit',
         component: function (resolve) {
-            require(['./views/bill/remit.vue'], resolve)
+            require(['./views/Bill/Remit.vue'], resolve)
         },
         meta: {
             group: 'financing',
@@ -65,7 +65,7 @@ export default new Router({
         path: '/bill/online_pay',
         name: 'bill-online',
         component: function (resolve) {
-            require(['./views/bill/online.vue'], resolve)
+            require(['./views/Bill/OnlinePay.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -78,7 +78,7 @@ export default new Router({
         path: '/bill/withdraw',
         name: 'bill-withdraw',
         component: function (resolve) {
-            require(['./views/bill/withdraw.vue'], resolve)
+            require(['./views/Bill/Withdraw.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -92,7 +92,7 @@ export default new Router({
         path: '/bill/search',
         name: 'bill-search',
         component: function (resolve) {
-            require(['./views/bill/search.vue'], resolve)
+            require(['./views/Bill/Search.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -104,7 +104,7 @@ export default new Router({
     {
         path: '/envelope_settings',
         component: function (resolve) {
-            require(['./views/marketing/envelope/envelope_config.vue'], resolve)
+            require(['./views/Marketing/EnvelopeConfig.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -114,7 +114,7 @@ export default new Router({
     }, {
         path: '/envelope_settings/add',
         component: function (resolve) {
-            require(['./views/marketing/envelope/envelope_config_form.vue'], resolve)
+            require(['./views/Marketing/EnvelopeConfigForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -125,7 +125,7 @@ export default new Router({
     }, {
         path: '/envelope_settings/:envelopeId/edit',
         component: function (resolve) {
-            require(['./views/marketing/envelope/envelope_config_form.vue'], resolve)
+            require(['./views/Marketing/EnvelopeConfigForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -135,7 +135,7 @@ export default new Router({
     }, {
         path: '/envelope',
         component: function (resolve) {
-            require(['./views/marketing/envelope/envelope.vue'], resolve)
+            require(['./views/Marketing/Envelope.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -145,7 +145,7 @@ export default new Router({
     }, {
         path: '/envelope/add',
         component: function (resolve) {
-            require(['./views/marketing/envelope/envelope_form.vue'], resolve)
+            require(['./views/Marketing/EnvelopeForm.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -155,7 +155,7 @@ export default new Router({
     }, {
         path: '/envelope/:envelopeId/edit',
         component: function (resolve) {
-            require(['./views/marketing/envelope/envelope_form.vue'], resolve)
+            require(['./views/Marketing/EnvelopeForm.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -167,7 +167,7 @@ export default new Router({
         path: '/transaction/:id',
         name: 'transaction',
         component: function (resolve) {
-            require(['./views/bill/detail.vue'], resolve)
+            require(['./views/Bill/Detail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -180,7 +180,7 @@ export default new Router({
         path: '/bill/operation',
         name: 'bill-operation',
         component: function (resolve) {
-            require(['./views/bill/operation.vue'], resolve)
+            require(['./views/Bill/Operation.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -194,7 +194,7 @@ export default new Router({
         path: '/agent/commission',
         name: 'bill-commission',
         component: function (resolve) {
-            require(['./views/bill/commission.vue'], resolve)
+            require(['./views/Report/Commission.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -209,7 +209,7 @@ export default new Router({
         path: '/member',
         name: 'member',
         component: function (resolve) {
-            require(['./views/users/member/member.vue'], resolve)
+            require(['./views/User/Member.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -223,7 +223,7 @@ export default new Router({
         path: '/online_member',
         name: 'online_member',
         component: function (resolve) {
-            require(['./views/users/member/member.vue'], resolve)
+            require(['./views/User/Member.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -237,7 +237,7 @@ export default new Router({
         path: '/member/add',
         name: 'member-add',
         component: function (resolve) {
-            require(['./views/users/member/form.vue'], resolve)
+            require(['./views/User/MemberForm.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -251,7 +251,7 @@ export default new Router({
         path: '/member/:memberId',
         name: 'member-detail',
         component: function (resolve) {
-            require(['./views/users/member/detail.vue'], resolve)
+            require(['./views/User/MemberDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -264,7 +264,7 @@ export default new Router({
         path: '/member/:memberId/edit',
         name: 'member-edit',
         component: function (resolve) {
-            require(['./views/users/member/form.vue'], resolve)
+            require(['./views/User/MemberForm.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -277,7 +277,7 @@ export default new Router({
         path: '/game_list',
         name: 'game_list',
         component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
+            require(['./views/Game/Game.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -290,7 +290,7 @@ export default new Router({
         path: '/game_detail/:id',
         name: 'game_detail',
         component: function (resolve) {
-            require(['./views/game_manage/detail.vue'], resolve)
+            require(['./views/Game/GameDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -303,7 +303,7 @@ export default new Router({
         path: '/game_history',
         name: 'game_history',
         component: function (resolve) {
-            require(['./views/game_history/overview.vue'], resolve)
+            require(['./views/Result/History.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -315,7 +315,7 @@ export default new Router({
         path: '/game_history/:id',
         name: 'history_detail',
         component: function (resolve) {
-            require(['./views/game_history/detail_schedule.vue'], resolve)
+            require(['./views/Result/HistoryDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -327,7 +327,7 @@ export default new Router({
         path: '/staff',
         name: 'staff',
         component: function (resolve) {
-            require(['./views/users/staff/staff.vue'], resolve)
+            require(['./views/User/Staff.vue'], resolve)
         },
         meta: {
             group: 'users',
@@ -340,7 +340,7 @@ export default new Router({
         path: '/staff/add',
         name: 'staff_add',
         component: function (resolve) {
-            require(['./views/users/staff/staff_form.vue'], resolve)
+            require(['./views/User/StaffForm.vue'], resolve)
         },
         meta: {
             group: 'users',
@@ -353,7 +353,7 @@ export default new Router({
         path: '/staff/:staffId',
         name: 'staff_detail',
         component: function (resolve) {
-            require(['./views/users/staff/staff_detail.vue'], resolve)
+            require(['./views/User/StaffDetail.vue'], resolve)
         },
         meta: {
             group: 'users',
@@ -365,7 +365,7 @@ export default new Router({
         path: '/staff/:staffId/edit',
         name: 'staff_edit',
         component: function (resolve) {
-            require(['./views/users/staff/staff_form.vue'], resolve)
+            require(['./views/User/StaffForm.vue'], resolve)
         },
         meta: {
             group: 'users',
@@ -377,7 +377,7 @@ export default new Router({
         path: '/agent',
         name: 'agent',
         component: function (resolve) {
-            require(['./views/users/agent/agent.vue'], resolve)
+            require(['./views/User/Agent.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -390,7 +390,7 @@ export default new Router({
         path: '/agent/add',
         name: 'agent-add',
         component: function (resolve) {
-            require(['./views/users/agent/form.vue'], resolve)
+            require(['./views/User/AgentForm.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -404,7 +404,7 @@ export default new Router({
         path: '/agent/applications',
         name: 'agent-applications',
         component: function (resolve) {
-            require(['./views/users/agent/applications.vue'], resolve)
+            require(['./views/User/AgentApplication.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -417,7 +417,7 @@ export default new Router({
         path: '/agent/:agentId',
         name: 'agent-detail',
         component: function (resolve) {
-            require(['./views/users/agent/detail.vue'], resolve)
+            require(['./views/User/AgentDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -430,7 +430,7 @@ export default new Router({
         path: '/agent/:agentId/edit',
         name: 'agent-edit',
         component: function (resolve) {
-            require(['./views/users/agent/form.vue'], resolve)
+            require(['./views/User/AgentForm.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -443,7 +443,7 @@ export default new Router({
         path: '/agent_application/:agentId',
         name: 'ageapplication_detail',
         component: function (resolve) {
-            require(['./views/users/agent/application_detail.vue'], resolve)
+            require(['./views/User/AgentApplicationDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -455,7 +455,7 @@ export default new Router({
     {
         path: '/level',
         component: function (resolve) {
-            require(['./views/setting/level.vue'], resolve)
+            require(['./views/Setting/MemberLevel.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -466,7 +466,7 @@ export default new Router({
     {
         path: '/level/add',
         component: function (resolve) {
-            require(['./views/setting/level_form.vue'], resolve)
+            require(['./views/Setting/MemberLevelForm.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -478,7 +478,7 @@ export default new Router({
     {
         path: '/level/:levelId',
         component: function (resolve) {
-            require(['./views/setting/level_detail.vue'], resolve)
+            require(['./views/Setting/MemberLevelDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -489,7 +489,7 @@ export default new Router({
     {
         path: '/level/:levelId/edit',
         component: function (resolve) {
-            require(['./views/setting/level_form.vue'], resolve)
+            require(['./views/Setting/MemberLevelForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -501,7 +501,7 @@ export default new Router({
     {
         path: '/online_payee',
         component: function (resolve) {
-            require(['./views/setting/online_payee.vue'], resolve)
+            require(['./views/Setting/OnlinePayee.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -512,7 +512,7 @@ export default new Router({
     {
         path: '/online_payee/add',
         component: function (resolve) {
-            require(['./views/setting/online_payee_form.vue'], resolve)
+            require(['./views/Setting/OnlinePayeeForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -524,7 +524,7 @@ export default new Router({
     {
         path: '/online_payee/:online_payeeId',
         component: function (resolve) {
-            require(['./views/setting/online_payee_detail.vue'], resolve)
+            require(['./views/Setting/OnlinePayeeDetail.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -535,7 +535,7 @@ export default new Router({
     {
         path: '/online_payee/:online_payeeId/edit',
         component: function (resolve) {
-            require(['./views/setting/online_payee_form.vue'], resolve)
+            require(['./views/Setting/OnlinePayeeForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -548,7 +548,7 @@ export default new Router({
     {
         path: '/online_payer',
         component: function (resolve) {
-            require(['./views/setting/online_payer.vue'], resolve)
+            require(['./views/Setting/OnlinePayer.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -559,7 +559,7 @@ export default new Router({
     {
         path: '/online_payer/add',
         component: function (resolve) {
-            require(['./views/setting/online_payer_form.vue'], resolve)
+            require(['./views/Setting/OnlinePayerForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -570,7 +570,7 @@ export default new Router({
     {
         path: '/online_payer/:online_payerId',
         component: function (resolve) {
-            require(['./views/setting/online_payer_detail.vue'], resolve)
+            require(['./views/Setting/OnlinePayerDetail.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -581,7 +581,7 @@ export default new Router({
     {
         path: '/online_payer/:online_payerId/edit',
         component: function (resolve) {
-            require(['./views/setting/online_payer_form.vue'], resolve)
+            require(['./views/Setting/OnlinePayerForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -592,7 +592,7 @@ export default new Router({
     {
         path: '/paymenttype',
         component: function (resolve) {
-            require(['./views/setting/payment_type.vue'], resolve)
+            require(['./views/Setting/PaymentType.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -603,7 +603,7 @@ export default new Router({
     {
         path: '/paymenttype/:id/edit',
         component: function (resolve) {
-            require(['./views/setting/payment_form.vue'], resolve)
+            require(['./views/Setting/PaymentTypeForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -615,7 +615,7 @@ export default new Router({
     {
         path: '/remit_payee',
         component: function (resolve) {
-            require(['./views/setting/payee.vue'], resolve)
+            require(['./views/Setting/RemitPayee.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -626,7 +626,7 @@ export default new Router({
     {
         path: '/remit_payee/add',
         component: function (resolve) {
-            require(['./views/setting/payee_form.vue'], resolve)
+            require(['./views/Setting/RemitPayeeForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -638,7 +638,7 @@ export default new Router({
     {
         path: '/remit_payee/:payeeId',
         component: function (resolve) {
-            require(['./views/setting/payee_detail.vue'], resolve)
+            require(['./views/Setting/RemitPayeeDetail.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -649,7 +649,7 @@ export default new Router({
     {
         path: '/remit_payee/:payeeId/edit',
         component: function (resolve) {
-            require(['./views/setting/payee_form.vue'], resolve)
+            require(['./views/Setting/RemitPayeeForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -661,7 +661,7 @@ export default new Router({
     {
         path: '/commission',
         component: function (resolve) {
-            require(['./views/setting/commission.vue'], resolve)
+            require(['./views/Setting/Commission.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -672,7 +672,7 @@ export default new Router({
     {
         path: '/commission/add',
         component: function (resolve) {
-            require(['./views/setting/commission_form.vue'], resolve)
+            require(['./views/Setting/CommissionForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -684,7 +684,7 @@ export default new Router({
     {
         path: '/commission/:commissionId/edit',
         component: function (resolve) {
-            require(['./views/setting/commission_form.vue'], resolve)
+            require(['./views/Setting/CommissionForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -696,7 +696,7 @@ export default new Router({
         path: '/login_record',
         name: 'report_login',
         component: function (resolve) {
-            require(['./views/logging/login_record.vue'], resolve)
+            require(['./views/Log/Login.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -709,7 +709,7 @@ export default new Router({
         path: '/actionrecord',
         name: 'action_record',
         component: function (resolve) {
-            require(['./views/logging/action_record.vue'], resolve)
+            require(['./views/Log/Action.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -718,24 +718,11 @@ export default new Router({
             group: 'logging'
         }
     },
-    // {
-    //     path: '/errors',
-    //     name: 'errors',
-    //     component: function (resolve) {
-    //         require(['./views/logging/error.vue'], resolve)
-    //     },
-    //     meta: {
-    //         auth: true,
-    //         disable_tabs: true,
-    //         title: Vue.t('nav.errors'),
-    //         group: 'logging'
-    //     }
-    // },
     {
         path: '/report/betrecord',
         name: 'report_betrecord',
         component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
+            require(['./views/Report/BetRecord.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -748,7 +735,7 @@ export default new Router({
         path: '/report/betrecord/realtime',
         name: 'report_betrecord_realtime',
         component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
+            require(['./views/Report/BetRecord.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -761,7 +748,7 @@ export default new Router({
         path: '/report/betrecord/:betrecordId',
         name: 'betrecord_detail',
         component: function (resolve) {
-            require(['./views/betrecord/betrecord_detail.vue'], resolve)
+            require(['./views/Report/BetRecordDetail.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -773,7 +760,7 @@ export default new Router({
     {
         path: '/banner',
         component: function (resolve) {
-            require(['./views/marketing/manage/banner.vue'], resolve)
+            require(['./views/Marketing/Banner.vue'], resolve)
         },
         meta: {
             group: 'manage',
@@ -784,7 +771,7 @@ export default new Router({
     {
         path: '/announcement',
         component: function (resolve) {
-            require(['./views/marketing/manage/announcement.vue'], resolve)
+            require(['./views/Marketing/Announcement.vue'], resolve)
         },
         meta: {
             group: 'manage',
@@ -795,7 +782,7 @@ export default new Router({
     {
         path: '/website',
         component: function (resolve) {
-            require(['./views/marketing/manage/website.vue'], resolve)
+            require(['./views/Marketing/Website.vue'], resolve)
         },
         meta: {
             group: 'manage',
@@ -807,7 +794,7 @@ export default new Router({
         path: '/messages',
         name: 'message',
         component: function (resolve) {
-            require(['./views/marketing/message/messages.vue'], resolve)
+            require(['./views/Marketing/Message.vue'], resolve)
         },
         meta: {
             group: 'manage',
@@ -819,7 +806,7 @@ export default new Router({
         path: '/messages/add',
         name: 'messages_add',
         component: function (resolve) {
-            require(['./views/marketing/message/messages_form.vue'], resolve)
+            require(['./views/Marketing/MessageForm.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -832,7 +819,7 @@ export default new Router({
         path: '/messages/:messagesId',
         name: 'messages_detail',
         component: function (resolve) {
-            require(['./views/marketing/message/messages_detail.vue'], resolve)
+            require(['./views/Marketing/MessageDetail.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -844,7 +831,7 @@ export default new Router({
         path: '/promotion',
         name: 'promotion',
         component: function (resolve) {
-            require(['./views/marketing/promotion/promotion.vue'], resolve)
+            require(['./views/Marketing/Promotion.vue'], resolve)
         },
         meta: {
             group: 'manage',
@@ -856,7 +843,7 @@ export default new Router({
         path: '/promotion/add',
         name: 'promotion_add',
         component: function (resolve) {
-            require(['./views/marketing/promotion/promotion_form.vue'], resolve)
+            require(['./views/Marketing/PromotionForm.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -869,7 +856,7 @@ export default new Router({
         path: '/promotion/:promotionId',
         name: 'promotion_detail',
         component: function (resolve) {
-            require(['./views/marketing/promotion/promotion_detail.vue'], resolve)
+            require(['./views/Marketing/PromotionDetail.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -881,7 +868,7 @@ export default new Router({
         path: '/promotion/:promotionId/edit',
         name: 'promotion_edit',
         component: function (resolve) {
-            require(['./views/marketing/promotion/promotion_form.vue'], resolve)
+            require(['./views/Marketing/PromotionForm.vue'], resolve)
         },
         meta: {
             group: 'marketing',
@@ -894,7 +881,7 @@ export default new Router({
         path: '/change_password',
         name: 'change_password',
         component: function (resolve) {
-            require(['./views/setting/change_password.vue'], resolve)
+            require(['./views/ChangePassword.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -907,7 +894,7 @@ export default new Router({
         path: '/report/finance_report/:agentId',
         name: 'agent_report',
         component: function (resolve) {
-            require(['./views/report/finance_report.vue'], resolve)
+            require(['./views/Report/Finance.vue'], resolve)
         },
         meta: {
             group: 'reporting',
@@ -920,7 +907,7 @@ export default new Router({
         path: '/report/finance_report',
         name: 'finance_report',
         component: function (resolve) {
-            require(['./views/report/finance_report.vue'], resolve)
+            require(['./views/Report/Finance.vue'], resolve)
         },
         meta: {
             group: 'reporting',
@@ -933,7 +920,7 @@ export default new Router({
         path: '/report/member_report',
         name: 'member_report',
         component: function (resolve) {
-            require(['./views/report/member_report.vue'], resolve)
+            require(['./views/Report/Membership.vue'], resolve)
         },
         meta: {
             group: 'reporting',
@@ -946,7 +933,7 @@ export default new Router({
         path: '/betrecord/instant_view',
         name: 'instant_view',
         component: function (resolve) {
-            require(['./views/betrecord/bet_record.vue'], resolve)
+            require(['./views/Report/BetRecord.vue'], resolve)
         },
         meta: {
             group: 'betrecord',
@@ -959,7 +946,7 @@ export default new Router({
         path: '/lottery_draw',
         name: 'lottery_draw',
         component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
+            require(['./views/Game/Game.vue'], resolve)
         },
         meta: {
             group: 'game_manage',
@@ -972,7 +959,7 @@ export default new Router({
         path: '/game_play',
         name: 'game_plays',
         component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
+            require(['./views/Game/Game.vue'], resolve)
         },
         meta: {
             group: 'game_manage',
@@ -985,7 +972,7 @@ export default new Router({
         path: '/odds',
         name: 'odds',
         component: function (resolve) {
-            require(['./views/game_manage/list.vue'], resolve)
+            require(['./views/Game/Game.vue'], resolve)
         },
         meta: {
             group: 'game_manage',
@@ -995,23 +982,10 @@ export default new Router({
         }
     },
     {
-        path: '/permissions',
-        name: 'permissions',
-        component: function (resolve) {
-            require(['./views/permission_manage/list.vue'], resolve)
-        },
-        meta: {
-            group: 'setting',
-            auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.permissions')
-        }
-    },
-    {
         path: '/roles',
         name: 'roles',
         component: function (resolve) {
-            require(['./views/setting/roles.vue'], resolve)
+            require(['./views/Setting/Role.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -1024,7 +998,7 @@ export default new Router({
         path: '/roles/add',
         name: 'role_add',
         component: function (resolve) {
-            require(['./views/setting/role_form.vue'], resolve)
+            require(['./views/Setting/RoleForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -1037,7 +1011,7 @@ export default new Router({
         path: '/roles/:roleId',
         name: 'role_detail',
         component: function (resolve) {
-            require(['./views/setting/role_detail.vue'], resolve)
+            require(['./views/Setting/RoleDetail.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -1049,7 +1023,7 @@ export default new Router({
         path: '/roles/:roleId/edit',
         name: 'role_edit',
         component: function (resolve) {
-            require(['./views/setting/role_form.vue'], resolve)
+            require(['./views/Setting/RoleForm.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -1062,7 +1036,7 @@ export default new Router({
         path: '/global_parameters',
         name: 'global_parameters',
         component: function (resolve) {
-            require(['./views/setting/global_parameters.vue'], resolve)
+            require(['./views/Setting/GlobalParameter.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -1076,7 +1050,7 @@ export default new Router({
         path: '/robots',
         name: 'robots',
         component: function (resolve) {
-            require(['./views/setting/robots.vue'], resolve)
+            require(['./views/Setting/Robot.vue'], resolve)
         },
         meta: {
             group: 'setting',
@@ -1089,7 +1063,7 @@ export default new Router({
         path: '/ban',
         name: 'ban',
         component: function (resolve) {
-            require(['./views/ban.vue'], resolve)
+            require(['./views/Ban.vue'], resolve)
         },
         meta: {
             auth: true,
@@ -1100,7 +1074,7 @@ export default new Router({
         path: '/error/',
         name: 'error',
         component: function (resolve) {
-            require(['./views/error.vue'], resolve)
+            require(['./views/Error.vue'], resolve)
         },
         meta: {
             auth: false
