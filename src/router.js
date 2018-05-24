@@ -28,7 +28,6 @@ export default new Router({
             require(['./views/login.vue'], resolve)
         },
         meta: {
-            agentPermission: 'true',
             title: Vue.t('nav.login'),
             auth: false
         }
@@ -42,7 +41,6 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            agentPermission: 'true',
             title: Vue.t('nav.overview'),
             group: 'overview'
         }
@@ -200,7 +198,6 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.commission_report'),
-            agentPermission: 'true',
             permission: 'export_agent_commission_report',
             group: 'agent'
         }
@@ -215,7 +212,6 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.member'),
-            agentPermission: 'true',
             group: 'users'
         }
     },
@@ -229,7 +225,6 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             title: Vue.t('nav.online_member_list'),
-            agentPermission: 'true',
             group: 'users'
         }
     },
@@ -282,7 +277,6 @@ export default new Router({
         meta: {
             auth: true,
             title: Vue.t('nav.game_list'),
-            agentPermission: 'true',
             group: 'game_manage'
         }
     },
@@ -295,7 +289,6 @@ export default new Router({
         meta: {
             auth: true,
             title: Vue.t('nav.game_manage'),
-            agentPermission: 'true',
             group: 'game_manage'
         }
     },
@@ -899,7 +892,6 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.change_password')
         }
     },
@@ -912,7 +904,6 @@ export default new Router({
         meta: {
             group: 'reporting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.agent_report')
         }
     },
@@ -925,7 +916,6 @@ export default new Router({
         meta: {
             group: 'reporting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.finance_report')
         }
     },
@@ -938,7 +928,6 @@ export default new Router({
         meta: {
             group: 'reporting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.member_report')
         }
     },
@@ -951,7 +940,6 @@ export default new Router({
         meta: {
             group: 'betrecord',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.instant_view')
         }
     },
@@ -964,7 +952,6 @@ export default new Router({
         meta: {
             group: 'game_manage',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.game_settings')
         }
     },
@@ -977,7 +964,6 @@ export default new Router({
         meta: {
             group: 'game_manage',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.game_play_configurations')
         }
     },
@@ -990,7 +976,6 @@ export default new Router({
         meta: {
             group: 'game_manage',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.odds_management')
         }
     },
@@ -1003,7 +988,6 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.permissions')
         }
     },
@@ -1016,7 +1000,6 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.roles')
         }
     },
@@ -1067,22 +1050,32 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            agentPermission: 'true',
             title: Vue.t('nav.global_parameters'),
             permission: 'view_global_parameters_setting'
         }
     },
     {
-        path: '/robots',
-        name: 'robots',
+        path: '/chatroom',
+        name: 'chatroom',
         component: function (resolve) {
-            require(['./views/setting/robots.vue'], resolve)
+            require(['./views/setting/chatroom.vue'], resolve)
         },
         meta: {
             group: 'setting',
             auth: true,
-            agentPermission: 'true',
-            title: Vue.t('nav.robot_management')
+            title: Vue.t('nav.chatroom_management')
+        }
+    },
+    {
+        path: '/chatroom/:chatroomId/edit',
+        name: 'chatroom_edit',
+        component: function (resolve) {
+            require(['./views/setting/chatroom_form.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            auth: true,
+            title: Vue.t('nav.update_chatroom_management')
         }
     },
     {
