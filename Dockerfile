@@ -4,6 +4,7 @@ FROM unnotechlottery/hedwig:latest as hedwig
 FROM node:9.1
 
 WORKDIR /usr/src/app
+EXPOSE 8888
 
 ARG AZURE_STORAGE_ACCOUNT
 ARG AZURE_STORAGE_ACCESS_KEY
@@ -17,19 +18,16 @@ ARG HTTPS
 
 # using multiple copies to continously keep the environment and avoid the maximum image layer error
 COPY --from=hedwig /usr/src/app/node_modules node_modules
-
 COPY package.json package.json
 RUN npm install
 
 COPY --from=hedwig /root /root
-COPY --from=hedwig /usr/src/app/config/dev.env.js /usr/src/app/config/dev.env.js
 
 # To include everything
 COPY . .
 
 # Cannot be made into one line as it has a possibility that it will return a 'text file busy' making the shell script unexecutable
-RUN chmod u+x cloud_deploy.sh
-RUN ./cloud_deploy.sh
+#RUN chmod u+x cloud_deploy.sh
+#RUN ./cloud_deploy.sh
 
-EXPOSE 8888
 CMD npm run dev

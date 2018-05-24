@@ -85,5 +85,6 @@ export default {
     commission_report: managePrefix + 'report/agent/profit/',
     check_member: host + '/v1/member/username/',
     search_member: memberPrefix + 'search_member/',
-    robot: chatHost + 'robot/'
+    robot: chatHost + 'robot/',
+    chatroom: chatHost + 'manage/room/'
 }

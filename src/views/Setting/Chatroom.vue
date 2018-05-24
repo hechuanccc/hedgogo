@@ -1,6 +1,7 @@
 <template>
 <div>
-    <div class="box" v-if="queryset.length > 0">
+    <h6>{{ $t('chatroom.preference_setting') }}</h6>
+    <div class="box">
         <table st-table="rowCollectionBasic" class="table table-striped b-t v-m">
             <thead>
                 <tr>
@@ -14,9 +15,9 @@
                     </th>
                 </tr>
             </thead>
-            <tbody v-if="!loading">
+            <tbody v-if="!preferenceLoading">
                 <tr
-                    v-for="(preference, index) in queryset"
+                    v-for="(preference, index) in preferences"
                     :key="index"
                     class="align-middle"
                 >
@@ -68,18 +69,68 @@
                 </tr>
             </tbody>
         </table>
-        <div class="row" v-if="loading">
-            <div class="text-center m-a">
-                <i class="fa fa-spin fa-spinner"></i>
-                <b>{{ $t('common.loading') }}</b>
-            </div>
+        <div class="row text-center p-a" v-if="preferenceLoading">
+            <i class="fa fa-spin fa-spinner"></i>
+            <b>{{ $t('common.loading') }}&nbsp;...</b>
         </div>
-        <div class="row" v-if="!loading && !queryset.length">
+        <div class="row" v-if="!preferenceLoading && !preferences.length">
             <div class="text-center m-a">
                 <span>{{ $t('common.no_record') }}</span>
             </div>
         </div>
     </div>
+
+    <h6>{{ $t('chatroom.list') }}</h6>
+    <div class="box">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{ $t('setting.display_name') }}</th>
+                    <th>{{ $t('chatroom.game_room') }}</th>
+                    <th>{{ $t('chatroom.manager') }}</th>
+                    <th>{{ $t('chatroom.plan_maker') }}</th>
+                    <th class="text-center">{{ $t('common.status') }}</th>
+                </tr>
+            </thead>
+            <tbody v-if="!listLoading">
+                <tr :key="chatroom.id" v-for="(chatroom, index) in chatrooms">
+                    <td class="text-uppercase"><router-link :to="`/chatroom/${chatroom.id}/edit`">{{ chatroom.title || $t('action.no_setting') }}</router-link></td>
+                    <td class="text-uppercase">{{ gamesMapping[chatroom.id] || '-' }}</td>
+                    <td v-if="chatroom.managers.length">
+                        <p class="m-b-0" v-for="(m, i) in chatroom.managers" :key="i">
+                            {{ m }}
+                        </p>
+                    </td>
+                    <td v-else>-</td>
+                    <td v-if="chatroom.plan_makers.length">
+                        <p class="m-b-0" v-for="(p, i) in chatroom.plan_makers" :key="i">
+                            {{ p }}
+                        </p>
+                    </td>
+                    <td v-else>-</td>
+                    <td class="text-center text-sm">
+                        <span class="label success" v-if="chatroom.status === 1">{{ $t('status.active') }}</span>
+                        <span class="label danger" v-if="chatroom.status === 0">{{ $t('status.disabled') }}</span>
+                        <a class="m-l-sm" @click="toggleStatus(index, chatroom)" v-if="!toggleLoading[index] && chatroom.status === 1">{{ $t('status.inactive') }}</a>
+                        <a class="m-l-sm" @click="toggleStatus(index, chatroom)" v-else-if="!toggleLoading[index]">{{ $t('status.active') }}</a>
+                        <span class="m-l-sm text-blue" v-else>
+                            &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row text-center p-a" v-if="listLoading">
+            <i class="fa fa-spin fa-spinner"></i>
+            <b>{{ $t('common.loading') }}&nbsp;...</b>
+        </div>
+        <div class="row" v-if="!listLoading && !chatrooms.length">
+            <div class="text-center m-a">
+                <span>{{ $t('common.no_record') }}</span>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" v-if="modal.showModal">
         <div class="modal-backdrop fade in" @click="modal.showModal = false"></div>
         <div class="modal-dialog">
@@ -154,21 +205,17 @@
     </div>
 </div>
 </template>
+
 <script>
 import api from '../../api'
 import $ from '../../utils/util'
-/*
-TYPE_STR = 1
-TYPE_IMAGE = 2
-TYPE_BOOLEAN = 3
-TYPE_INT = 4
-TYPE_FLOAT = 5
-TYPE_TEXT = 6
-*/
+const defaultChatroomID = 100000
+
 export default {
     data () {
         return {
-            queryset: [],
+            preferences: [],
+            chatrooms: [],
             modal: {
                 showModal: false,
                 index: '',
@@ -176,26 +223,25 @@ export default {
                 value: '',
                 loading: false
             },
-            loading: true
+            gamesMapping: {},
+            preferenceLoading: true,
+            listLoading: true,
+            toggleLoading: {}
         }
     },
     created () {
-        this.getPreference()
+        this.getChatrooms()
+        this.getPreferences()
+        this.getGamesName()
     },
     methods: {
-        getPreference () {
-            this.$http.get(`${api.global_preferences}?settings=lottery`).then(data => {
-                this.queryset = data
-                this.queryset.forEach(e => {
+        getPreferences () {
+            this.$http.get(`${api.global_preferences}?settings=chatroom`).then(data => {
+                this.preferences = data
+                this.preferences.forEach(e => {
                     this.typeTransform(e)
                 })
-                this.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
-                this.loading = false
+                this.preferenceLoading = false
             })
         },
         typeTransform (e) {
@@ -213,6 +259,45 @@ export default {
                 })
             }
         },
+        getChatrooms () {
+            this.$http.get(`${api.chatroom}`).then(data => {
+                // Find default chatroom and put it to the 1st place.
+                let defaultChatroom = data.findIndex(c => c.id === defaultChatroomID)
+                if (defaultChatroom >= 0) {
+                    this.chatrooms = data.splice(defaultChatroom, 1)
+                    this.$set(this.gamesMapping, defaultChatroomID, this.$t('chatroom.default_chatroom'))
+                }
+                this.chatrooms = [...this.chatrooms, ...data]
+                this.listLoading = false
+            })
+        },
+        getGamesName () {
+            this.$http.get(`${api.game_list}?opt_fields=id,display_name`).then(data => {
+                data.forEach(game => {
+                    this.$set(this.gamesMapping, game.id, game.display_name)
+                })
+            })
+        },
+        toggleStatus (index, chatroom) {
+            this.$set(this.toggleLoading, index, true)
+            this.$http.put(`${api.chatroom}${chatroom.id}/`, {
+                title: chatroom.title,
+                status: chatroom.status ^ 1
+            }).then(data => {
+                chatroom.status = data.status
+                $.notify({
+                    message: this.$t('action.update') + this.$t('common.status') + this.$t('status.success')
+                })
+                this.$delete(this.toggleLoading, index)
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.$delete(this.toggleLoading, index)
+            })
+        },
+
         openModal (index, {
             display_name: displayName,
             key,
@@ -265,7 +350,7 @@ export default {
                     message: this.$t('action.update') + this.$t('status.success')
                 })
                 this.typeTransform(data)
-                Object.assign(this.queryset[index], data)
+                Object.assign(this.preferences[index], data)
                 this.modal.showModal = false
                 this.modal.loading = false
             }, error => {
@@ -279,8 +364,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.align-middle td{
-  vertical-align: middle;
-}
-</style>
