@@ -305,7 +305,7 @@
             </div>
         </div>
     </div>
-    <withdraw-payee-modal
+    <modal-withdraw-payee
         :show="withdrawPayeeModalShow"
         :transaction="transaction"
         @withdraw-payee-showmodal="changeWithdrawPayeeModal"
@@ -316,8 +316,8 @@
 <script>
 import api from '../../api'
 import $ from '../../utils/util'
-import transactionStatus from '../../components/transaction_status'
-import withdrawPayeeModal from '../../components/withdrawPayeeModal'
+import TransactionStatus from '../../components/TransactionStatus'
+import ModalWithdrawPayee from '../../components/ModalWithdrawPayee'
 
 export default {
     data () {
@@ -444,8 +444,8 @@ export default {
         }
     },
     components: {
-        transactionStatus,
-        withdrawPayeeModal
+        TransactionStatus,
+        ModalWithdrawPayee
     }
 }
 </script>

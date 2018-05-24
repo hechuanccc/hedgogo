@@ -46,7 +46,7 @@
                         :class="{'text-blue': query.member_level}"
                     >{{ $t('member.level') }}
                     </label>
-                    <level
+                    <selector-member-level
                         style="display: block;"
                         :level="query.member_level"
                         @level-select="levelSelect"
@@ -110,7 +110,7 @@
                         :class="{'text-blue': payerType}"
                     >{{ $t('bill.payer_type') }}
                     </label>
-                    <online-payer-selector
+                    <selector-online-payer
                         style="display: block;"
                         :clearable="true"
                         :payer="payerType"
@@ -372,7 +372,7 @@
             </div>
         </div>
     </div>
-    <withdraw-payee-modal
+    <modal-withdraw-payee
         :show="showWithdrawPayeeModal"
         :transaction="withdrawPayeeTransaction"
         :payer="withdrawPayee"
@@ -397,12 +397,12 @@
 </template>
 <script>
     import api from '../../api'
-    import pulling from '../../components/pulling'
+    import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
-    import level from '../../components/level'
-    import transactionStatus from '../../components/transaction_status'
-    import onlinePayerSelector from '../../components/onlinePayerSelector'
-    import withdrawPayeeModal from '../../components/withdrawPayeeModal'
+    import SelectorMemberLevel from '../../components/SelectorMemberLevel'
+    import TransactionStatus from '../../components/TransactionStatus'
+    import SelectorOnlinePayer from '../../components/SelectorOnlinePayer'
+    import ModalWithdrawPayee from '../../components/ModalWithdrawPayee'
     import DatePicker from 'vue2-datepicker'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
@@ -652,11 +652,11 @@
         },
         components: {
             DatePicker,
-            pulling,
-            transactionStatus,
-            onlinePayerSelector,
-            withdrawPayeeModal,
-            level
+            Pulling,
+            TransactionStatus,
+            SelectorOnlinePayer,
+            ModalWithdrawPayee,
+            SelectorMemberLevel
         }
     }
 </script>

@@ -10,7 +10,7 @@ import { handleError } from './utils/handleError'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
 import axios from 'axios'
-import Notifications from './components/NotificationPlugin'
+import Notifications from './plugin/NotificationPlugin'
 
 import App from './views/App'
 

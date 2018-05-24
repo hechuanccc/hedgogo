@@ -15,7 +15,7 @@
             </div>
             <div class="collapse navbar-toggleable-sm" id="collapse">
                 <div class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m">
-                    <member-search-input/>
+                    <input-member-search/>
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
     import VueCookie from 'vue-cookie'
     import INotify from 'title-notify'
     import axios from 'axios'
-    import MemberSearchInput from './MemberSearchInput'
+    import InputMemberSearch from './InputMemberSearch'
 
     export default {
         data () {
@@ -262,7 +262,7 @@
             }
         },
         components: {
-            MemberSearchInput
+            InputMemberSearch
         }
     }
 </script>

@@ -62,7 +62,7 @@
                         :class="{'text-blue': query.member_level}"
                     >{{ $t('member.level') }}
                     </label>
-                    <level
+                    <selector-member-level
                         style="display: block;"
                         :level="query.member_level"
                         @level-select="levelSelect"
@@ -312,10 +312,9 @@
 <script>
     import api from '../../api'
     import DatePicker from 'vue2-datepicker'
-    import pulling from '../../components/pulling'
+    import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
-    import level from '../../components/level'
-    import transactionStatus from '../../components/transaction_status'
+    import SelectorMemberLevel from '../../components/SelectorMemberLevel'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import { debounce } from 'lodash'
@@ -485,9 +484,8 @@
         },
         components: {
             DatePicker,
-            pulling,
-            transactionStatus,
-            level
+            Pulling,
+            SelectorMemberLevel
         }
     }
 </script>
