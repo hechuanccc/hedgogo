@@ -153,8 +153,8 @@ export default {
     },
     components: {
         pageStyle: require('../components/style.vue'),
-        asideMenu: require('../components/Nav.vue'),
-        pageHeader: require('../components/Header.vue')
+        asideMenu: require('../components/nav.vue'),
+        pageHeader: require('../components/header.vue')
     }
 }
 </script>
