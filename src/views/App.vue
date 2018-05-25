@@ -152,12 +152,13 @@ export default {
         }
     },
     components: {
-        pageStyle: require('../components/Style.vue'),
+        pageStyle: require('../components/style.vue'),
         asideMenu: require('../components/Nav.vue'),
         pageHeader: require('../components/Header.vue')
     }
 }
 </script>
+
 <style scoped lang="scss">
     .loading-layer {
         display: block;
