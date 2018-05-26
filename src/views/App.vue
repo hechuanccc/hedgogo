@@ -2,7 +2,7 @@
     <div class="app">
         <aside-menu :show-nav="showNav"></aside-menu>
         <div id="content" :class="['content app-content box-shadow-z2 box-radius-1x', showNav ? '' : 'm-l-0']">
-            <header :show-nav="showNav"/>
+            <page-header :show-nav="showNav"/>
             <div class="app-body">
                 <div class="padding">
                     <div v-if="authErrors.length" class="alert alert-danger">
