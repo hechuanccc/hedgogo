@@ -33,9 +33,12 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import $ from '../utils/util'
 import api from '../api'
-import axios from 'axios'
+import AsideMenu from '../components/AsideMenu.vue'
+import PageHeader from '../components/Header.vue'
+
 export default {
     data () {
         return {
@@ -152,12 +155,13 @@ export default {
         }
     },
     components: {
-        pageStyle: require('../components/style.vue'),
-        asideMenu: require('../components/nav.vue'),
-        pageHeader: require('../components/header.vue')
+        PageStyle: require('../components/style.vue'),
+        AsideMenu,
+        PageHeader
     }
 }
 </script>
+
 <style scoped lang="scss">
     .loading-layer {
         display: block;
