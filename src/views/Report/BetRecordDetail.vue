@@ -138,7 +138,7 @@
         },
         methods: {
             getBetRecord (id) {
-                this.$http.get(api.betrecords + id + '/?opt_expand=details').then(data => {
+                this.$http.get(api.bet.record + id + '/?opt_expand=details').then(data => {
                     this.betrecords = data
                 })
             },

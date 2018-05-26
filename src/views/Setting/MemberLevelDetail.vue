@@ -297,7 +297,7 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(api.level + id).then(() => {
+            this.$http.delete(api.setting.memberLevel + id).then(() => {
                 this.$router.push('/level')
             }, error => {
                 $.notify({
@@ -307,7 +307,7 @@ export default {
             })
         },
         getLevel (id) {
-            this.$http.get(`${api.level}${id}/`).then(data => {
+            this.$http.get(`${api.setting.memberLevel}${id}/`).then(data => {
                 for (let key in data) {
                     this[key] = data[key]
                 }

@@ -53,7 +53,7 @@ import Pulling from '../../components/Pulling'
 export default {
     data () {
         return {
-            api: api.agentapplication,
+            api: api.user.agentApplication,
             queryset: [],
             query: {}
         }

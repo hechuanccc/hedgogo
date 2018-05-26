@@ -131,7 +131,7 @@ export default {
     data () {
         return {
             mode: true,
-            api: api.banner,
+            api: api.setting.banner,
             queryset: [],
             banner: {
                 platform: 2,

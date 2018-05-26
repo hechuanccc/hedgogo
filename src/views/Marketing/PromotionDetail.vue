@@ -114,7 +114,7 @@
         },
         methods: {
             getPromotion (id) {
-                this.$http.get(api.promotion + id + '/?opt_expand=level').then(data => {
+                this.$http.get(api.setting.promotion + id + '/?opt_expand=level').then(data => {
                     this.promotion = data
                 })
             },
@@ -126,7 +126,7 @@
                         return
                     }
                 }
-                this.$http.delete(api.promotion + id + '/').then(() => {
+                this.$http.delete(api.setting.promotion + id + '/').then(() => {
                     this.$router.push('/promotion')
                 })
             }

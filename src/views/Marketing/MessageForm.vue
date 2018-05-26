@@ -77,7 +77,7 @@
                         this.checkMember()
                         return
                     }
-                    this.$http.post(api.messages, this.message).then(() => {
+                    this.$http.post(api.setting.message, this.message).then(() => {
                         this.$router.push('/messages/')
                     }, error => {
                         this.errorMsg = error
@@ -89,7 +89,7 @@
             checkMember () {
                 this.errorMsg = ''
                 if (this.message.receiver) {
-                    this.$http.get(api.check_member + '?username=' + this.message.receiver).then(data => {
+                    this.$http.get(api.user.memberCheck + '?username=' + this.message.receiver).then(data => {
                         this.checkMembers = (data.length === 0)
                         this.errorMsg = data.length > 0 && `${data.join(',')} 会员名输入有误，请从新填写`
                     }, error => {

@@ -74,7 +74,7 @@ export default {
     },
     methods: {
         getOverviewData () {
-            this.$http.get(api.report_overview).then(data => {
+            this.$http.get(api.report.overview).then(data => {
                 if (data && data.length) {
                     this.fillData(data)
                 }

@@ -464,7 +464,7 @@ export default {
             return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
         },
         src () {
-            return api.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=' + this.parentLevel
+            return api.user.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=' + this.parentLevel
         },
         parentLevel () {
             let level = parseInt(this.agent.level) - parseInt(1)
@@ -516,7 +516,7 @@ export default {
             this.agent.bank.bank = val
         },
         getLevels () {
-            this.$http.get(api.level).then(data => {
+            this.$http.get(api.setting.memberLevel).then(data => {
                 this.levels = data
             })
         },
@@ -543,13 +543,13 @@ export default {
                         delete agent[x]
                     }
                 }
-                this.$http.put(api.agentapplication + agent.id + '/', agent).then(() => {
+                this.$http.put(api.user.agentApplication + agent.id + '/', agent).then(() => {
                     this.$router.push('/agent/applications/')
                 }, error => {
                     this.errorMsg = error
                 })
             } else {
-                this.$http.post(api.agentapplication, agent).then(() => {
+                this.$http.post(api.user.agentApplication, agent).then(() => {
                     this.$router.push('/agent/applications/')
                 }, error => {
                     this.errorMsg = error
@@ -558,7 +558,7 @@ export default {
         },
         checkAgent () {
             if (this.query !== '') {
-                this.$http.get(api.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
+                this.$http.get(api.user.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
                     if (data.length === 1) {
                         this.agentValid = true
                         this.agent.parent_agent = data[0].id
@@ -573,7 +573,7 @@ export default {
             }
         },
         getAgent (id) {
-            this.$http.get(api.agentapplication + id + '/?opt_expand=detail').then(data => {
+            this.$http.get(api.user.agentApplication + id + '/?opt_expand=detail').then(data => {
                 if (!data.bank) {
                     data.bank = {
                         bank: ''
@@ -601,7 +601,7 @@ export default {
             })
         },
         getAgentLevels () {
-            this.$http.get(api.agent_level).then(data => {
+            this.$http.get(api.setting.agentLevel).then(data => {
                 this.agentLevels = data
                 this.agentLevelLoading = false
             }, error => {

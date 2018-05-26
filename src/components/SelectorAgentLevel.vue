@@ -53,7 +53,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.agent_level).then(data => {
+        this.$http.get(api.setting.agentLevel).then(data => {
             this.levels = data
             this.selectedLevel = this.level || ''
             this.loading = false

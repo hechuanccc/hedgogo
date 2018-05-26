@@ -106,13 +106,13 @@ export default {
     },
     methods: {
         getStaff (id) {
-            this.$http.get(api.staff + id + '/?opt_expand=group,permissions').then(data => {
+            this.$http.get(api.user.staff + id + '/?opt_expand=group,permissions').then(data => {
                 this.staff = data
             })
         },
         toggleStatus () {
             this.statusUpdated = false
-            this.$http.put(api.staff + this.staff.id + '/', {
+            this.$http.put(api.user.staff + this.staff.id + '/', {
                 username: this.staff.username,
                 group: this.staff.user_group.id,
                 status: this.staff.status ^ 1
@@ -132,7 +132,7 @@ export default {
                     return
                 }
             }
-            this.$http.delete(api.staff + id + '/').then(() => {
+            this.$http.delete(api.user.staff + id + '/').then(() => {
                 this.$router.push('/staff')
             })
         }

@@ -456,7 +456,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            memberApi: api.member,
+            memberApi: api.user.member,
             queryset: [],
             query: {},
             created_at: ['', ''],
@@ -536,7 +536,7 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${api.report_member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
+            this.href = `${api.report.member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
             return this.queryset.length
         },
         isQueryEmpty () {
@@ -621,7 +621,7 @@ export default {
         batchBan () {
             if (!this.batchBanLoading && this.query.last_login_ip && this.queryset.length) {
                 this.batchBanLoading = true
-                this.$http.put(api.batch_ban, {
+                this.$http.put(api.user.batchBan, {
                     ip: this.query.last_login_ip
                 }).then(data => {
                     $.notify({

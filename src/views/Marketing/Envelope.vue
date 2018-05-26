@@ -48,7 +48,7 @@ export default {
     data () {
         return {
             showAll: false,
-            envelopeApi: api.envelope,
+            envelopeApi: api.setting.envelope,
             queryset: [{}],
             query: {}
         }

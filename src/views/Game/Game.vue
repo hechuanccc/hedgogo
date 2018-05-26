@@ -201,7 +201,7 @@ export default {
     data () {
         return {
             mode: 1,
-            gameApi: api.game_list,
+            api: api.game.list,
             query: {},
             queryset: [],
             initialQueryset: [],
@@ -239,7 +239,7 @@ export default {
     },
     methods: {
         getGameList () {
-            this.$http.get(api.game_list).then(data => {
+            this.$http.get(this.api).then(data => {
                 this.queryset = data
                 this.loading = false
             })
@@ -251,7 +251,7 @@ export default {
                 code: game.code,
                 to_display: !game.to_display
             }
-            this.$http.put(api.game_list + game.id + '/', params).then(data => {
+            this.$http.put(this.api + game.id + '/', params).then(data => {
                 this.$set(this.queryset, index, data)
             }, error => {
                 $.notify({
@@ -267,7 +267,7 @@ export default {
                 code: game.code,
                 status: game.status === 0 ? 1 : 0
             }
-            this.$http.put(api.game_list + game.id + '/', params).then(data => {
+            this.$http.put(this.api + game.id + '/', params).then(data => {
                 this.$set(this.queryset, index, data)
             }, error => {
                 $.notify({
@@ -310,7 +310,7 @@ export default {
             } else {
                 endDate = ''
             }
-            this.$http.put(api.game_list + this.modal.id + '/', {
+            this.$http.put(this.api + this.modal.id + '/', {
                 display_name: this.modal.display_name,
                 start_date: startDate,
                 end_date: endDate
@@ -338,7 +338,7 @@ export default {
                 formData.append('display_name', this.modal.iconResult.display_name)
                 formData.append('code', this.modal.iconResult.code)
                 formData.append(attr, this.modal.iconResult[attr])
-                this.$http.put(api.game_list + this.modal.id + '/', formData)
+                this.$http.put(this.api + this.modal.id + '/', formData)
                 .then(() => {
                     this.getGameList()
                     this.modal.msg = this.$t('game_manage.modify_success')
@@ -354,7 +354,7 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(api.game_list, this.queryset.map((game, index) => Object({
+                this.$http.post(this.api, this.queryset.map((game, index) => Object({
                     id: game.id,
                     display_name: game.display_name,
                     rank: index + 1
@@ -386,7 +386,7 @@ export default {
         },
         submitName (id, name) {
             this.$set(this.editNameLoading, id, true)
-            this.$http.put(`${api.game_list}${id}/`, {
+            this.$http.put(`${this.api}${id}/`, {
                 display_name: name
             }).then(data => {
                 Object.assign(this.queryset.find(game => game.id === id), {

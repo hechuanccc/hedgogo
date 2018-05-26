@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         getRole (id) {
-            this.$http.get(api.managerole + id + '/?opt_expand=group,permissions').then(data => {
+            this.$http.get(api.setting.role + id + '/?opt_expand=group,permissions').then(data => {
                 this.role = data
                 this.permissions = data.manage_permissiongroup
             })
@@ -100,13 +100,13 @@ export default {
                 permissions: this.selectId[1]
             }
             if (this.role.id) {
-                this.$http.put(api.managerole + this.role.id + '/?opt_expand=group,permissions', roleResult).then(data => {
+                this.$http.put(api.setting.role + this.role.id + '/?opt_expand=group,permissions', roleResult).then(data => {
                     this.$router.push('/roles/' + data.id)
                 }, error => {
                     this.errorMsg = error
                 })
             } else {
-                this.$http.post(api.managerole + '?opt_expand=group,permissions', roleResult).then(data => {
+                this.$http.post(api.setting.role + '?opt_expand=group,permissions', roleResult).then(data => {
                     this.$router.push('/roles/' + data.id)
                 }, error => {
                     this.errorMsg = error
@@ -114,7 +114,7 @@ export default {
             }
         },
         getPermissionsAll () {
-            this.$http.get(api.permissions + '?opt_expand=permissions').then(data => {
+            this.$http.get(api.setting.permission + '?opt_expand=permissions').then(data => {
                 this.permissions = data
             }, error => {
                 this.errorMsg = error

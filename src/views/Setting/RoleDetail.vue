@@ -73,13 +73,13 @@ export default {
     },
     methods: {
         getRole (id) {
-            this.$http.get(api.managerole + id + '/?opt_expand=group,permissions').then(data => {
+            this.$http.get(api.setting.role + id + '/?opt_expand=group,permissions').then(data => {
                 this.role = data
             })
         },
         deleteRole (id) {
             if (window.confirm(this.$t('role_manage.sure_delete_role'))) {
-                this.$http.delete(api.managerole + id + '/').then(() => {
+                this.$http.delete(api.setting.role + id + '/').then(() => {
                     this.$router.push('/roles')
                 })
             }

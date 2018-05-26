@@ -273,7 +273,7 @@
         data () {
             return {
                 queryset: [],
-                api: api.bill,
+                api: api.transaction.bill,
                 query: {},
                 created_at: ['', ''],
                 updated_at: ['', ''],
@@ -345,7 +345,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report_onlinepay}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
+                this.href = `${api.report.onlinepay}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {

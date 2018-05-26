@@ -98,7 +98,7 @@ export default {
         this.reportFlag && (params['report_flag'] = 'True')
         params['opt_fields'] = (this.opt_fields && this.opt_fields + ',') + this.default_opt_fields
 
-        this.$http.get(api.level, {
+        this.$http.get(api.setting.memberLevel, {
             params
         }).then(data => {
             this.levels = data

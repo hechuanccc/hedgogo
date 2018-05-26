@@ -57,14 +57,14 @@ export default {
     },
     methods: {
         toggleStatus (payee) {
-            this.$http.put(api.onlinepayee + payee.id + '/', {
+            this.$http.put(api.transaction.onlinePayee + payee.id + '/', {
                 'status': payee.status === 0 ? 1 : 0
             }).then(data => {
                 payee.status = data.status
             })
         },
         getPayees () {
-            this.$http.get(api.onlinepayee + '?opt_expand=1').then(data => {
+            this.$http.get(api.transaction.onlinePayee + '?opt_expand=1').then(data => {
                 this.online_payees = data.sort((a, b) => a.id - b.id)
             })
         }

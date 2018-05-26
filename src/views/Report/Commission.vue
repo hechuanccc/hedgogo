@@ -155,7 +155,7 @@ export default {
     data () {
         return {
             date: ['', ''],
-            api: api.commission_report,
+            api: api.report.commission,
             queryset: [],
             query: {},
             extra: '',

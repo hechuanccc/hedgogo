@@ -82,7 +82,7 @@
     export default {
         data () {
             return {
-                memberApi: api.member,
+                memberApi: api.user.member,
                 query: {
                     username_q: ''
                 },
@@ -191,7 +191,7 @@
                 this.iNotify.setTitle(true)
             },
             logout () {
-                this.$http.post(api.logout).then(data => {
+                this.$http.post(api.identity.logout).then(data => {
                     this.$root.dropdown = false
                     this.loading = true
                     this.$router.push('/login')
@@ -238,7 +238,7 @@
 
                     let userCookie = VueCookie.get('access_token')
                     if (authenticationCookie === userCookie) {
-                        this.$http.get(api.metrics_count).then(data => {
+                        this.$http.get(api.count).then(data => {
                             if (data) {
                                 this.remit_count = data.remit_count
                                 this.withdraw_count = data.withdraw_count

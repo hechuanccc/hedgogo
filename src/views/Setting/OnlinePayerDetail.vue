@@ -106,7 +106,7 @@
         },
         methods: {
             getPayer (id) {
-                this.$http.get(`${api.online_payer}${id}/`).then(data => {
+                this.$http.get(`${api.transaction.onlinePayer}${id}/`).then(data => {
                     for (let key in data) {
                         this[key] = data[key]
                     }

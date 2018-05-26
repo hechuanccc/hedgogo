@@ -53,7 +53,7 @@ export default {
     },
     methods: {
         toggleStatus (payer) {
-            this.$http.put(`${api.online_payer}${payer.id}/`, Object.assign({}, payer, {
+            this.$http.put(`${api.transaction.onlinePayer}${payer.id}/`, Object.assign({}, payer, {
                 status: payer.status ^ 1,
                 withdraw_gateway: payer.withdraw_gateway.id
             })).then(data => {
@@ -69,7 +69,7 @@ export default {
             })
         },
         getPayers () {
-            this.$http.get(api.online_payer).then(data => {
+            this.$http.get(api.transaction.onlinePayer).then(data => {
                 this.onlinePayers = data
                 this.loading = false
             })

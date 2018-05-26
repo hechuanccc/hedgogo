@@ -236,7 +236,7 @@ export default {
             this.loading = true
             this.transaction.is_compensation = this.compensation === 1
 
-            this.$http.post(api.manual_transaction, this.transaction).then(data => {
+            this.$http.post(api.transaction.manulAdjust, this.transaction).then(data => {
                 this.loading = false
                 this.$router.push('/transaction/' + data.id)
                 $.notify({

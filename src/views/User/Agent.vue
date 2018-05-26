@@ -290,7 +290,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            agentApi: api.agent,
+            agentApi: api.user.agent,
             queryset: [],
             query: {},
             created_at: ['', ''],

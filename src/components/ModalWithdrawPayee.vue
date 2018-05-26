@@ -121,7 +121,7 @@ export default {
         update () {
             if (this.transaction.id && this.transaction.member.id && this.selectedPayer) {
                 this.modal.loading = true
-                this.$http.put(`${api.transaction_withdraw}${this.transaction.id}/`, {
+                this.$http.put(`${api.transaction.withdraw}${this.transaction.id}/`, {
                     memo: this.transaction.memo,
                     member: this.transaction.member.id,
                     online_payer: this.selectedPayer,

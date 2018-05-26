@@ -400,7 +400,7 @@ export default {
                 this.level.max_withdraw_count_per_day = null
             }
             if (this.level.id) {
-                this.$http.put(api.level + this.level.id + '/', this.level).then(data => {
+                this.$http.put(api.setting.memberLevel + this.level.id + '/', this.level).then(data => {
                     this.$router.push('/level/' + data.id)
                     this.notify({
                         message: this.$t('action.update') + this.$t('status.success')
@@ -412,7 +412,7 @@ export default {
                     })
                 })
             } else {
-                this.$http.post(api.level, this.level).then(data => {
+                this.$http.post(api.setting.memberLevel, this.level).then(data => {
                     this.$router.push('/level/' + data.id)
                     this.notify({
                         message: this.$t('action.update') + this.$t('status.success')
@@ -427,7 +427,7 @@ export default {
         },
         getLevel (id) {
             this.loading = true
-            this.$http.get(api.level + id + '/').then(data => {
+            this.$http.get(api.setting.memberLevel + id + '/').then(data => {
                 let onlineDiscounts = data.online_discounts
                 if (!onlineDiscounts.length) {
                     data.online_discounts = [{

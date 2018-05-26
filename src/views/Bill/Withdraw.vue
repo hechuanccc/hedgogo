@@ -412,7 +412,7 @@
         data () {
             return {
                 queryset: [],
-                api: api.bill,
+                api: api.transaction.bill,
                 query: {},
                 href: '',
                 status: '',
@@ -503,7 +503,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report_withdraw}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                this.href = `${api.report.withdraw}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {
@@ -591,7 +591,7 @@
             autoWithdraw (transaction = {}, payer = '') {
                 if (transaction && transaction.id && payer) {
                     this.$set(this.withdrawLoading, transaction.id, true)
-                    this.$http.put(`${api.transaction_withdraw}${transaction.id}/`, {
+                    this.$http.put(`${api.transaction.withdraw}${transaction.id}/`, {
                         memo: transaction.memo,
                         member: transaction.member.id,
                         online_payer: payer,
@@ -620,7 +620,7 @@
                 transactionType
             }) {
                 this.modal.loading = true
-                this.$http.put(api.transaction_withdraw + transactionId + '/', {
+                this.$http.put(api.transaction.withdraw + transactionId + '/', {
                     status,
                     memo,
                     member,

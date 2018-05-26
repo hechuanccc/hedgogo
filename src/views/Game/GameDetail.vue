@@ -151,7 +151,7 @@ export default {
     },
     methods: {
         getPlaySet (id) {
-            this.$http.get(api.playset, {
+            this.$http.get(api.game.playset, {
                 params: {
                     game: id
                 }
@@ -164,7 +164,7 @@ export default {
         },
         updatePlayset () {
             if (this.updatedPlaysets.length > 0) {
-                this.$http.post(`${api.playset}?game=${this.game.id}`, this.updatedPlaysets).then(data => {
+                this.$http.post(`${api.game.playset}?game=${this.game.id}`, this.updatedPlaysets).then(data => {
                     this.successMsg = `${this.$t('game_manage.modify_success')}`
                     setTimeout(() => {
                         this.successMsg = ''

@@ -206,13 +206,13 @@
                 }
 
                 if (this.payee.id) {
-                    this.$http.put(api.remitpayee + this.payee.id + '/', formData).then(data => {
+                    this.$http.put(api.transaction.remitPayee + this.payee.id + '/', formData).then(data => {
                         this.$router.push('/remit_payee/' + data.id)
                     }, error => {
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.remitpayee, formData).then(data => {
+                    this.$http.post(api.transaction.remitPayee, formData).then(data => {
                         this.$router.push('/remit_payee/' + data.id)
                     }, error => {
                         this.errorMsg = error
@@ -220,7 +220,7 @@
                 }
             },
             getPayee (id) {
-                this.$http.get(api.remitpayee + id + '/').then(data => {
+                this.$http.get(api.transaction.remitPayee + id + '/').then(data => {
                     data.remit_type += ''
                     this.payee = data
                 })

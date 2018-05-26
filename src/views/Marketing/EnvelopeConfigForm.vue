@@ -138,13 +138,13 @@
             },
             onSubmit (e) {
                 if (this.envelope.id) {
-                    this.$http.put(api.envelope_settings + this.envelope.id + '/', this.envelope).then(() => {
+                    this.$http.put(api.setting.envelopeConfig + this.envelope.id + '/', this.envelope).then(() => {
                         this.$router.push('/envelope_settings')
                     }, error => {
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.envelope_settings, this.envelope).then(() => {
+                    this.$http.post(api.setting.envelopeConfig, this.envelope).then(() => {
                         this.$router.push('/envelope_settings')
                     }, error => {
                         this.errorMsg = error
@@ -152,14 +152,14 @@
                 }
             },
             getEnvelopeGroup (id) {
-                this.$http.get(api.envelope_settings + id + '/?opt_expand=group').then(data => {
+                this.$http.get(api.setting.envelopeConfig + id + '/?opt_expand=group').then(data => {
                     setTimeout(() => {
                         this.envelope = data
                     }, 500)
                 })
             },
             getEnvelope () {
-                this.$http.get(api.envelope + '?status=1').then(data => {
+                this.$http.get(api.setting.envelope + '?status=1').then(data => {
                     this.envelopes = data
                 })
             },

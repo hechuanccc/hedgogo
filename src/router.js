@@ -1033,7 +1033,7 @@ export default new Router({
         path: '/chatroom',
         name: 'chatroom',
         component: function (resolve) {
-            require(['./views/setting/Chatroom.vue'], resolve)
+            require(['./views/Setting/Chatroom.vue'], resolve)
         },
         meta: {
             group: 'setting',

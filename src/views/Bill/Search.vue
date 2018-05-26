@@ -253,7 +253,7 @@
             return {
                 queryset: [],
                 created_at: ['', ''],
-                api: api.bill,
+                api: api.transaction.bill,
                 order_id: '',
                 query: {},
                 member: {
@@ -306,7 +306,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report_transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                this.href = `${api.report.transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {

@@ -311,7 +311,7 @@ export default {
     },
     methods: {
         getRobots () {
-            this.$http.get(api.robot).then(data => {
+            this.$http.get(api.setting.robot).then(data => {
                 data.forEach(element => {
                     element.day_of_week = this.splitDayOfWeek(element)
                 })
@@ -320,7 +320,7 @@ export default {
             })
         },
         getGames () {
-            this.$http.get(`${api.game_list}?opt_fields=code,display_name`).then(data => {
+            this.$http.get(`${api.game.list}?opt_fields=code,display_name`).then(data => {
                 this.games = data
             })
         },
@@ -354,7 +354,7 @@ export default {
             }
 
             this.modal.loading = true
-            this.$http.put(`${api.robot}${resultRobot.id}/`, result).then(data => {
+            this.$http.put(`${api.setting.robot}${resultRobot.id}/`, result).then(data => {
                 this.$set(this.robots, this.robots.findIndex(e => e.id === data.id), Object.assign(data, {
                     day_of_week: this.splitDayOfWeek(data)
                 }))

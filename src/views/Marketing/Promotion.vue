@@ -49,7 +49,7 @@ export default {
     data () {
         return {
             mode: true,
-            api: api.promotion,
+            api: api.setting.promotion,
             queryset: []
         }
     },

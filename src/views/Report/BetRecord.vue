@@ -490,7 +490,7 @@
             return {
                 pageSelected: '',
                 queryset: [],
-                betApi: api.betrecords,
+                betApi: api.bet.record,
                 extra: '',
                 query: {},
                 account_type: true,
@@ -593,12 +593,12 @@
         },
         methods: {
             getGameList () {
-                this.$http.get(api.game_list).then(data => {
+                this.$http.get(api.game.list).then(data => {
                     this.gamelist = data
                 })
             },
             getGameCategory (game) {
-                this.$http.get(`${api.gamecategory}?game=${this.query.game_q}&opt_fields=id,display_name`).then(data => {
+                this.$http.get(`${api.game.category}?game=${this.query.game_q}&opt_fields=id,display_name`).then(data => {
                     this.categories = data
                 })
             },
@@ -698,7 +698,7 @@
                     }
                 }
                 if (betrecord.id) {
-                    this.$http.put(api.cancel_bet + betrecord.id + '/', {
+                    this.$http.put(api.bet.retreat + betrecord.id + '/', {
                         status: status
                     }).then(data => {
                         betrecord.status = data.status

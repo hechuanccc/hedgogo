@@ -350,7 +350,7 @@
             },
             toggleStatus () {
                 this.statusUpdated = false
-                this.$http.put(api.member + this.member.id + '/?opt_fields=status', {
+                this.$http.put(api.user.member + this.member.id + '/?opt_fields=status', {
                     status: this.member.status === 1 ? 0 : 1
                 }).then(data => {
                     this.member.status = data.status
@@ -368,7 +368,7 @@
                 }))) {
                     return
                 }
-                let url = type === 1 ? api.resetmember : api.resetwithdraw
+                let url = type === 1 ? api.user.resetMemberPassword : api.user.resetWithdrawPassword
                 this.$http.post(url, {
                     'account_id': this.member.id
                 }, {emulateJSON: true}).then(data => {
@@ -380,7 +380,7 @@
                 })
             },
             getMember (id) {
-                this.$http.get(api.member + id + '/?opt_expand=bank&action').then(data => {
+                this.$http.get(api.user.member + id + '/?opt_expand=bank&action').then(data => {
                     this.member = data
                     this.member_id = {'account_id': data.id}
                 })
@@ -395,7 +395,7 @@
                         return
                     }
                 }
-                this.$http.put(api.member + id + '/?audit=' + id, {username: this.member.username, agent: this.member.agent.id, level: this.member.level.id})
+                this.$http.put(api.user.member + id + '/?audit=' + id, {username: this.member.username, agent: this.member.agent.id, level: this.member.level.id})
                 .then(data => {
                     this.member.balance.bet_amount = data.balance.bet_amount
                     this.member.balance.audit_amount = data.balance.audit_amount

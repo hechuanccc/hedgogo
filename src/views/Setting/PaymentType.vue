@@ -123,7 +123,7 @@ export default {
     methods: {
         toggleStatus (paymentType) {
             this.$set(this.toggleLoading, paymentType.id, true)
-            this.$http.put(api.paymenttype + paymentType.id + '/', {
+            this.$http.put(api.transaction.paymentType + paymentType.id + '/', {
                 'status': paymentType.status ^ 1
             }).then(data => {
                 paymentType.status = data.status
@@ -141,7 +141,7 @@ export default {
             })
         },
         getPaymentType () {
-            this.$http.get(`${api.paymenttype}?opt_expand=1`).then(data => {
+            this.$http.get(`${api.transaction.paymentType}?opt_expand=1`).then(data => {
                 this.paymentTypes = data
                 this.paymentTypes.forEach(paymentType => {
                     paymentType.detail = paymentType.detail.filter(payee => payee.activate)
@@ -151,7 +151,7 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(`${api.paymenttype}rank/?opt_expand=1`, this.filteredPaymentTypes.map((p, index) => Object({
+                this.$http.post(`${api.transaction.paymentType}rank/?opt_expand=1`, this.filteredPaymentTypes.map((p, index) => Object({
                     id: p.id,
                     [`${this.type ? 'mobile' : 'pc'}_rank`]: index + 1
                 }))).then(data => {

@@ -239,7 +239,7 @@ export default {
     },
     methods: {
         getWebsite () {
-            this.$http.get(api.website).then(data => {
+            this.$http.get(api.setting.website).then(data => {
                 this.setWebsiteData(data)
             })
         },
@@ -252,7 +252,7 @@ export default {
             })
         },
         getWebsiteDescription () {
-            this.$http.get(api.website_descriptions).then(data => {
+            this.$http.get(api.setting.websiteDescription).then(data => {
                 this.boxes = data.map(box => Object({
                     ...box,
                     mode: 0,
@@ -263,13 +263,13 @@ export default {
             })
         },
         getWebsiteAgreement () {
-            this.$http.get(api.website_agreement).then(data => {
+            this.$http.get(api.setting.websiteAgreement).then(data => {
                 this.websiteAgreement = data.description
             })
         },
         createBox () {
             this.boxes = [...this.boxes, {}]
-            this.$http.post(api.website_descriptions).then(data => {
+            this.$http.post(api.setting.websiteDescription).then(data => {
                 let box = Object({
                     ...data,
                     mode: 1,
@@ -289,7 +289,7 @@ export default {
             })
         },
         deleteBox (id, index) {
-            this.$http.delete(api.website_descriptions + id + '/').then(() => {
+            this.$http.delete(api.setting.websiteDescription + id + '/').then(() => {
                 if (this.boxes[index].mode) {
                     delete this.boxResults[id]
                     delete this.initialBoxes[id]
@@ -336,7 +336,7 @@ export default {
                 }
             }
             box.loading = true
-            this.$http.put(api.website_descriptions + id + '/', formData).then(data => {
+            this.$http.put(api.setting.websiteDescription + id + '/', formData).then(data => {
                 this.updateBoxSuccess(box.id, index)
                 this.$set(this.boxes, index, {
                     ...this.boxes[index],
@@ -367,7 +367,7 @@ export default {
             }, 2000)
         },
         updateRank () {
-            this.$http.post(api.website_descriptions_ranks, this.boxes.map((box, index) => Object({
+            this.$http.post(api.setting.websiteDescriptionRank, this.boxes.map((box, index) => Object({
                 id: box.id,
                 rank: index + 1
             }))).then(() => {
@@ -386,7 +386,7 @@ export default {
         },
         updateWebsiteAgreement () {
             this.websiteAgreementLoading = true
-            this.$http.put(api.website_agreement, {
+            this.$http.put(api.setting.websiteAgreement, {
                 description: this.websiteAgreement
             }).then(data => {
                 this.websiteAgreement = data.description
@@ -463,7 +463,7 @@ export default {
                     formData.append(snakeCase, '')
                 }
             })
-            this.$http.put(api.website, formData).then(data => {
+            this.$http.put(api.setting.website, formData).then(data => {
                 this.setWebsiteData(data)
                 $.notify({
                     message: this.$t('action.update') + this.$t('status.success')

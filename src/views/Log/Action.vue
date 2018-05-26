@@ -175,7 +175,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            actionrecordApi: api.action_record,
+            actionrecordApi: api.log.action,
             action_time: ['', ''],
             query: {},
             queryset: [],
