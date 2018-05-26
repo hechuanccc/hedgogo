@@ -29,12 +29,12 @@ npm run build --report
     ├──assets
     ├──components
     │   ├──AlertMsg.vue
+    │   ├──AsideMenu.vue
     │   ├──BarChart.js
     │   ├──Header.vue
     │   ├──InputMemberSearch.vue
     │   ├──LineChart.js
     │   ├──ModalWithdrawPayee.vue
-    │   ├──Nav.vue
     │   ├──Pulling.vue
     │   ├──SelectorAgent.vue
     │   ├──SelectorAgentLevel.vue
