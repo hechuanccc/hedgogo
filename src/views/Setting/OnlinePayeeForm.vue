@@ -192,13 +192,13 @@
         methods: {
             onSubmit (e) {
                 if (this.payee.id) {
-                    this.$http.put(api.onlinepayee + this.payee.id + '/', this.payee).then(data => {
+                    this.$http.put(api.transaction.onlinePayee + this.payee.id + '/', this.payee).then(data => {
                         this.$router.push('/online_payee/' + data.id)
                     }, error => {
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.onlinepayee, this.payee).then(data => {
+                    this.$http.post(api.transaction.onlinePayee, this.payee).then(data => {
                         this.$router.push('/online_payee/' + data.id)
                     }, error => {
                         this.errorMsg = error
@@ -206,12 +206,12 @@
                 }
             },
             getPaymentTypes () {
-                this.$http.get(api.paymentgateway).then(data => {
+                this.$http.get(api.transaction.paymentGateway).then(data => {
                     this.paymenttypes = data
                 })
             },
             getPayee (id) {
-                this.$http.get(api.onlinepayee + id + '/').then(data => {
+                this.$http.get(api.transaction.onlinePayee + id + '/').then(data => {
                     Object.assign(this.payee, data)
                 })
             },

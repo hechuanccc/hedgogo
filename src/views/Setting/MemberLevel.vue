@@ -108,7 +108,7 @@ export default {
     methods: {
         getLevels () {
             // account type === 1 is for filtering trial account ( 试玩会员 )
-            this.$http.get(`${api.level}?account_type=1`).then(data => {
+            this.$http.get(`${api.setting.memberLevel}?account_type=1`).then(data => {
                 this.levels = data
                 this.loading = false
             })

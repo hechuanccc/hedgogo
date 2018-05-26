@@ -54,7 +54,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.transactiontype}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
+        this.$http.get(`${api.transaction.type}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
             if (this.displayList.length > 0) {
                 this.transactionTypes = data.filter(e => this.displayList.includes(e.code))
             } else {

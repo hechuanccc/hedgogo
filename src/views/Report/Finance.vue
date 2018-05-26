@@ -204,7 +204,7 @@ export default {
         return {
             agentReport: false,
             date: ['', ''],
-            api: api.finance_report,
+            api: api.report.finance,
             queryset: [],
             query: {},
             extra: '',

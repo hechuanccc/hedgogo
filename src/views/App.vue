@@ -2,7 +2,7 @@
     <div class="app">
         <aside-menu :show-nav="showNav"></aside-menu>
         <div id="content" :class="['content app-content box-shadow-z2 box-radius-1x', showNav ? '' : 'm-l-0']">
-            <page-header :show-nav="showNav"></page-header>
+            <header :show-nav="showNav"/>
             <div class="app-body">
                 <div class="padding">
                     <div v-if="authErrors.length" class="alert alert-danger">
@@ -108,7 +108,7 @@ export default {
             if (!this.$cookie.get('access_token')) {
                 return
             }
-            this.$http.get(api.my).then(data => {
+            this.$http.get(api.identity.my).then(data => {
                 if (data) {
                     this.username = data.username
                     this.userType = data.type
@@ -121,7 +121,7 @@ export default {
             if (!refreshToken) {
                 return
             }
-            this.$http.post(api.refresh_token, {
+            this.$http.post(api.identity.refresh, {
                 refresh_token: this.$cookie.get('refresh_token')
             }).then(data => {
                 let d = new Date(data.expires_in)
@@ -133,7 +133,7 @@ export default {
             })
         },
         getPermissions () {
-            this.$http.get(api.permissionsUser).then(data => {
+            this.$http.get(api.identity.permission).then(data => {
                 this.permissions = data
                 // permissions must be loaded before we can handle other data
                 // 20180323 Remove refresh mechanism and extend access token expiry.

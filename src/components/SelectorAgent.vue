@@ -76,7 +76,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.agent}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}${this.extra && '&' + this.extra}`).then(data => {
+        this.$http.get(`${api.user.agent}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}${this.extra && '&' + this.extra}`).then(data => {
             this.agents = data
             this.loading = false
         })

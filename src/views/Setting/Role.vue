@@ -43,7 +43,7 @@ import Pulling from '../../components/Pulling'
 export default {
     data () {
         return {
-            roleApi: api.managerole,
+            roleApi: api.setting.role,
             queryset: [],
             query: {}
         }
@@ -56,7 +56,7 @@ export default {
     methods: {
         deleteRole (id) {
             if (window.confirm(this.$t('role_manage.sure_delete_role'))) {
-                this.$http.delete(api.managerole + id + '/').then(() => {
+                this.$http.delete(api.setting.role + id + '/').then(() => {
                     this.$refs.pulling.rebase()
                 })
             }

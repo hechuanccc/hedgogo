@@ -240,7 +240,7 @@ export default{
     methods: {
         getPeriods () {
             this.isLatest = false
-            this.$http.get(`${api.game_draw}?abnormal=5`).then(data => {
+            this.$http.get(`${api.game.draw}?abnormal=5`).then(data => {
                 this.gameDraw = data
                 this.isLatest = true
                 this.loading = false
@@ -248,7 +248,7 @@ export default{
         },
         getGameInfo (gameId) {
             return new Promise((resolve, reject) => {
-                this.$http.get(`${api.game_list}${gameId}/`).then(data => {
+                this.$http.get(`${api.game.list}${gameId}/`).then(data => {
                     resolve(data)
                 })
             })
@@ -295,7 +295,7 @@ export default{
                     this.modal.scheduleResult.result_str = result
                 }
                 this.modal.loading = true
-                this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
+                this.$http.post(api.game.result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.getPeriods()
@@ -312,7 +312,7 @@ export default{
         },
         noDrawHandler () {
             this.modal.loading = true
-            this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.game_schedule}/`, {
+            this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.game_schedule}/`, {
                 'status': 'no_draw',
                 'inform': this.modal.inform ? 1 : 0
             }).then(data => {

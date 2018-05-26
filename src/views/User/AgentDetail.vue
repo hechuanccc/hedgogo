@@ -260,7 +260,7 @@
                 this.getAgent(this.$route.params.agentId)
             },
             toggleStatus () {
-                this.$http.put(api.agent + this.agent.id + '/?opt_fields=status', {
+                this.$http.put(api.user.agent + this.agent.id + '/?opt_fields=status', {
                     status: this.agent.status ^ 1
                 }).then(data => {
                     this.agent.status = data.status
@@ -275,7 +275,7 @@
                 }))) {
                     return
                 }
-                this.$http.post(api.resetagent, { 'account_id': this.agent.id }, {emulateJSON: true}).then(data => {
+                this.$http.post(api.user.resetAgentPassword, { 'account_id': this.agent.id }, {emulateJSON: true}).then(data => {
                     this.passwordChanged = 1
                     this.newPassword = data.new_password
                 }, error => {
@@ -289,13 +289,13 @@
                 }))) {
                     return
                 }
-                this.$http.delete(api.agent + id + '/').then(() => {
+                this.$http.delete(api.user.agent + id + '/').then(() => {
                     this.$router.go('/agent')
                 })
             },
             getAgent (id) {
                 let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
-                this.$http.get(api.agent + id + '/?opt_expand=' + fields).then(data => {
+                this.$http.get(api.user.agent + id + '/?opt_expand=' + fields).then(data => {
                     if (data.commission_settings && data.commission_settings.profit_set) {
                         data.commission_settings.profit_set.sort((a, b) => a.income_threshold - b.income_threshold)
                     }

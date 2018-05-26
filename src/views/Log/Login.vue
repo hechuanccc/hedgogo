@@ -137,7 +137,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            api: api.loginrecord,
+            api: api.log.login,
             query: {},
             queryset: [],
             logindate: ['', ''],

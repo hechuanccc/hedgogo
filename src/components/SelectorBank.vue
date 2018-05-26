@@ -27,7 +27,7 @@ export default {
     created () {
         this.$nextTick(() => {
             let _this = this
-            _this.$http.get(api.bank).then(data => {
+            _this.$http.get(api.setting.bank).then(data => {
                 _this.banks = data
             })
             setTimeout(function () {

@@ -86,13 +86,13 @@
         methods: {
             onSubmit (e) {
                 if (this.envelope.id) {
-                    this.$http.put(api.envelope + this.envelope.id + '/', this.envelope).then(() => {
+                    this.$http.put(api.setting.envelope + this.envelope.id + '/', this.envelope).then(() => {
                         this.$router.push('/envelope')
                     }, error => {
                         this.errorMsg = error
                     })
                 } else {
-                    this.$http.post(api.envelope, this.envelope).then(() => {
+                    this.$http.post(api.setting.envelope, this.envelope).then(() => {
                         this.$router.push('/envelope')
                     }, error => {
                         this.errorMsg = error
@@ -100,7 +100,7 @@
                 }
             },
             getEnvelope (id) {
-                this.$http.get(api.envelope + id).then(data => {
+                this.$http.get(api.setting.envelope + id + '/').then(data => {
                     this.envelope = data
                 })
             }

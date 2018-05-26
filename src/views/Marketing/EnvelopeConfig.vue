@@ -40,7 +40,7 @@ export default {
     data () {
         return {
             showAll: false,
-            envelopeApi: api.envelope_settings,
+            envelopeApi: api.setting.envelopeConfig,
             queryset: [{}],
             query: {}
         }

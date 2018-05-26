@@ -105,14 +105,14 @@ export default {
     },
     methods: {
         toggleStatus (payee) {
-            this.$http.put(api.remitpayee + payee.id + '/', {
+            this.$http.put(api.transaction.remitPayee + payee.id + '/', {
                 'status': payee.status === 0 ? 1 : 0
             }).then(data => {
                 payee.status = data.status
             })
         },
         getPayees () {
-            this.$http.get(api.remitpayee + '?opt_expand=1').then(data => {
+            this.$http.get(api.transaction.remitPayee + '?opt_expand=1').then(data => {
                 this.payees = data
             })
         }

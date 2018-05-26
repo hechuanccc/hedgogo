@@ -52,7 +52,7 @@ import Pulling from '../../components/Pulling'
 export default {
     data () {
         return {
-            staffApi: api.staff,
+            staffApi: api.user.staff,
             query: {},
             queryset: [],
             optexpand: 'group'

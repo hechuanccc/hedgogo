@@ -463,7 +463,7 @@ export default {
     methods: {
         getChatroom (id = this.id) {
             if (id) {
-                this.$http.get(`${api.chatroom}${id}/`).then(data => {
+                this.$http.get(`${api.setting.chatroom}${id}/`).then(data => {
                     this.title = data.title
                     data.robots && data.robots.forEach(robot => {
                         robot.day_of_week = this.splitDayOfWeek(robot)
@@ -486,7 +486,7 @@ export default {
             }
         },
         getGamesName () {
-            this.$http.get(`${api.game_list}?opt_fields=code,display_name`).then(data => {
+            this.$http.get(`${api.game.list}?opt_fields=code,display_name`).then(data => {
                 data.forEach(game => {
                     this.$set(this.gamesMapping, game.code, game.display_name)
                 })
@@ -507,7 +507,9 @@ export default {
                 result.title = this.title
             } else if (category === 'setting') {
                 ['managers', 'plan_makers'].forEach(name => {
-                    if (typeof this.chatroom[name] === 'string') {
+                    if (!this.chatroom[name]) {
+                        result[name] = []
+                    } else if (typeof this.chatroom[name] === 'string') {
                         result[name] = this.chatroom[name].split(',')
                     }
                 })
@@ -516,7 +518,7 @@ export default {
             result.status = this.chatroom.status
 
             this[`${category}SubmitLoading`] = true
-            this.$http.put(`${api.chatroom}${this.id}/`, result).then(data => {
+            this.$http.put(`${api.setting.chatroom}${this.id}/`, result).then(data => {
                 if (category === 'bulletin') {
                     this.chatroom.bulletin.forEach(bulletin => {
                         Object.assign(bulletin, {
@@ -596,7 +598,7 @@ export default {
             }
 
             this.modal.loading = true
-            this.$http.put(`${api.robot}${resultRobot.id}/`, result).then(data => {
+            this.$http.put(`${api.setting.robot}${resultRobot.id}/`, result).then(data => {
                 this.$set(this.chatroom.robots, this.chatroom.robots.findIndex(e => e.id === data.id), Object.assign(data, {
                     day_of_week: this.splitDayOfWeek(data)
                 }))

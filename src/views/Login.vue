@@ -60,7 +60,7 @@
         },
         methods: {
             login () {
-                this.$http.post(api.login, qs.stringify(this.user), {
+                this.$http.post(api.identity.login, qs.stringify(this.user), {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }

@@ -158,7 +158,7 @@ export default {
                     formData.append('icon', '')
                 }
                 this.loading = true
-                this.$http.put(api.paymenttype + this.payment.id + '/', formData).then(() => {
+                this.$http.put(api.transaction.paymentType + this.payment.id + '/', formData).then(() => {
                     this.loading = false
                     this.$router.push('/paymenttype/?type=' + this.payment.platform)
                     $.notify({
@@ -174,7 +174,7 @@ export default {
             }
         },
         getPaymentType (id) {
-            this.$http.get(api.paymenttype + id + '/?opt_expand=1').then(data => {
+            this.$http.get(api.transaction.paymentType + id + '/?opt_expand=1').then(data => {
                 if (data.detail && data.detail.length) {
                     data.detail.forEach(payee => {
                         this.$set(this.checkboxPayees, payee.payee_id, payee.activate)

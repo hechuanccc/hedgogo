@@ -59,7 +59,7 @@
         },
         methods: {
             onSubmit (e) {
-                this.$http.post(api.changePassword, this.user).then(data => {
+                this.$http.post(api.identity.changePassword, this.user).then(data => {
                     this.errorMsg = ''
                     this.success = true
                 }, error => {

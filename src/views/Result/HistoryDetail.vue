@@ -519,7 +519,7 @@ export default {
         if (this.mode) {
             // abnormal message
             this.extra = `game=${gameid}&date=${this.today}&abnormal=True`
-            this.pullingApi = api.game_schedule
+            this.pullingApi = api.game.schedule
         } else {
             // game result in detail
             if (this.timeRangeGames.includes(this.game.code)) {
@@ -527,7 +527,7 @@ export default {
             } else {
                 this.extra = `date=${this.today}`
             }
-            this.pullingApi = api.game_history
+            this.pullingApi = api.game.history
             this.getRetreatedSchedules(gameid)
         }
         this.$nextTick(() => {
@@ -548,11 +548,11 @@ export default {
         mode (newMode) {
             if (this.mode) {
                 this.extra = `game=${this.game.id}&date=${this.today}&abnormal=True`
-                this.pullingApi = api.game_schedule
+                this.pullingApi = api.game.schedule
                 clearInterval(this.timingRetreatShced)
             } else {
                 this.extra = `date=${this.today}`
-                this.pullingApi = api.game_history
+                this.pullingApi = api.game.history
                 this.timingRetreatShced = setInterval(() => {
                     this.getRetreatedSchedules()
                 }, 5 * 1000)
@@ -563,7 +563,7 @@ export default {
             })
         },
         queryCondition (condition) {
-            this.pullingApi = api.game_history
+            this.pullingApi = api.game.history
             this.queryset = []
             clearInterval(this.timingPulling)
             this.extra = `game_code=${this.game.code}${condition}`
@@ -581,13 +581,13 @@ export default {
     methods: {
         getRetreatedSchedules (gameid) {
             gameid = gameid || this.game.id
-            this.$http.get(`${api.game_schedule}?game=${gameid}&ongoing=True`)
+            this.$http.get(`${api.game.schedule}?game=${gameid}&ongoing=True`)
             .then(data => {
                 this.retreatedScheds = data
             })
         },
         getGameInfo (gameid) {
-            this.$http.get(api.game_list + gameid).then(data => {
+            this.$http.get(api.game.list + gameid).then(data => {
                 this.game = data
             })
         },
@@ -630,7 +630,7 @@ export default {
         },
         retreatSchedule () {
             this.modal.loading = true
-            this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.id}/`, {
+            this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.id}/`, {
                 'status': 'cancelled'
             }).then(data => {
                 this.modal.msg = this.$t('game_history.schedule_cancelled')
@@ -645,7 +645,7 @@ export default {
         },
         noDrawHandler () {
             this.modal.loading = true
-            this.$http.put(`${api.game_schedretreat}${this.modal.scheduleResult.game_schedule}/`, {
+            this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.game_schedule}/`, {
                 'status': 'no_draw',
                 'inform': this.modal.inform ? 1 : 0
             }).then(data => {
@@ -670,7 +670,7 @@ export default {
                     this.modal.scheduleResult.result_str = result
                 }
                 this.modal.loading = true
-                this.$http.post(api.game_result, this.modal.scheduleResult).then(() => {
+                this.$http.post(api.game.result, this.modal.scheduleResult).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.$refs.pulling.rebase()

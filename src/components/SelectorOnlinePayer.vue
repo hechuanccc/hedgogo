@@ -92,7 +92,7 @@ export default {
     },
     methods: {
         getPayer (id) {
-            this.$http.get(`${api.online_payer}?${id ? `member=${id}` : ''}`).then(data => {
+            this.$http.get(`${api.transaction.onlinePayer}?${id ? `member=${id}` : ''}`).then(data => {
                 if (data.length && this.mode === 'selector' && !this.payer && !this.clearable) {
                     this.selectedPayer = data[0].id
                 }

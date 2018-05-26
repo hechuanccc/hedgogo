@@ -139,7 +139,7 @@ export default {
         return {
             mode: true,
             showAll: false,
-            api: api.announcement,
+            api: api.setting.announcement,
             queryset: [],
             announcement: {
                 platform: '2',

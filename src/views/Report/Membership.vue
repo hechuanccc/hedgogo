@@ -179,7 +179,7 @@ export default {
     data () {
         return {
             date: ['', ''],
-            api: api.member_report,
+            api: api.report.membership,
             queryset: [],
             query: {},
             agent: '',

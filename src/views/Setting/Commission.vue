@@ -98,7 +98,7 @@ export default {
     },
     methods: {
         getCommissionsetting () {
-            this.$http.get(api.commission).then(data => {
+            this.$http.get(api.setting.commission).then(data => {
                 data.forEach(c => {
                     c.groups && c.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
                     Object.assign(c, c.groups[0], {
@@ -117,7 +117,7 @@ export default {
         },
         toggleStatus (index, commission) {
             this.$set(this.toggleLoading, index, true)
-            this.$http.put(`${api.commission}${commission.id}/`, {
+            this.$http.put(`${api.report.commission}${commission.id}/`, {
                 status: `${commission.status ^ 1}`
             }).then(data => {
                 commission.status = data.status

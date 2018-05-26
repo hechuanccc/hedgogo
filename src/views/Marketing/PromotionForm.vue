@@ -157,7 +157,7 @@ export default {
     data () {
         return {
             id: '',
-            api: api.promotion,
+            api: api.setting.promotion,
             promotion: {
                 id: '',
                 image: '',

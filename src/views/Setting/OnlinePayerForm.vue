@@ -175,7 +175,7 @@ export default {
             })
             this.$http({
                 method: this.id ? 'put' : 'post',
-                url: `${api.online_payer}${this.id && this.id + '/'}`,
+                url: `${api.transaction.onlinePayer}${this.id && this.id + '/'}`,
                 data
             }).then(data => {
                 if (data) {
@@ -194,14 +194,14 @@ export default {
             })
         },
         getPayer (id) {
-            this.$http.get(`${api.online_payer}${id}/`).then(data => {
+            this.$http.get(`${api.transaction.onlinePayer}${id}/`).then(data => {
                 Object.assign(this.payer, data, {
                     withdraw_gateway: data.withdraw_gateway.id
                 })
             })
         },
         getWithdrawGateway () {
-            this.$http.get(api.withdrawgateway).then(data => {
+            this.$http.get(api.transaction.withdrawGateway).then(data => {
                 this.withdrawGateway = data
                 if (this.withdrawGateway.length && !this.$route.params.online_payerId) {
                     this.payer.withdraw_gateway = data[0].id

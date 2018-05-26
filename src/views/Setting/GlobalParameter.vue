@@ -184,7 +184,7 @@ export default {
     },
     methods: {
         getPreference () {
-            this.$http.get(`${api.global_preferences}?settings=lottery`).then(data => {
+            this.$http.get(`${api.setting.parameter}?settings=lottery`).then(data => {
                 this.queryset = data
                 this.queryset.forEach(e => {
                     this.typeTransform(e)
@@ -260,7 +260,7 @@ export default {
             } else {
                 result.value = value
             }
-            this.$http.patch(`${api.global_preferences}${key}/`, result).then(data => {
+            this.$http.patch(`${api.setting.parameter}${key}/`, result).then(data => {
                 $.notify({
                     message: this.$t('action.update') + this.$t('status.success')
                 })

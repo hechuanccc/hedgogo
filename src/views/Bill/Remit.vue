@@ -323,7 +323,7 @@
         data () {
             return {
                 queryset: [],
-                api: api.bill,
+                api: api.transaction.bill,
                 query: {},
                 remit_type: '',
                 status: '',
@@ -403,7 +403,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report_deposit}?token=${VueCookie.get('access_token')}&report=remit&${this.export_query}`
+                this.href = `${api.report.deposit}?token=${VueCookie.get('access_token')}&report=remit&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {
@@ -470,7 +470,7 @@
                     }
                 }
                 if (transaction.id) {
-                    this.$http.put(api.bill + transaction.id + '/?opt_expand=bank,updated_by', {
+                    this.$http.put(api.transaction.bill + transaction.id + '/?opt_expand=bank,updated_by', {
                         status: status
                     }).then(data => {
                         transaction.status = data.status

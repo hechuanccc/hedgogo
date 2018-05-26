@@ -148,7 +148,7 @@
         },
         methods: {
             getPayee (id) {
-                this.$http.get(api.remitpayee + id + '/?opt_expand=1').then(data => {
+                this.$http.get(api.transaction.remitPayee + id + '/?opt_expand=1').then(data => {
                     this.remit_payee = data
                 })
             },
@@ -161,7 +161,7 @@
                     }
                 }
                 if (!this.isActive) {
-                    this.$http.delete(api.remitpayee + id + '/').then(() => {
+                    this.$http.delete(api.transaction.remitPayee + id + '/').then(() => {
                         this.$router.push('/remit_payee')
                     })
                 } else {

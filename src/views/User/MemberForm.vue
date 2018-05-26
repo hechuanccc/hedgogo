@@ -78,7 +78,7 @@
                       :placeholder="`${$t('common.phone')}, ${$t('common.required')}`"
                       v-model="member.phone"
                       :disabled="!updateMemberPermission('details')"
-                      pattern="[\d]*"
+                      pattern="[1][3-9][\d]{9}"
                       required
                     />
                   </div>
@@ -156,7 +156,7 @@
                   <h5 class="m-b">{{$t('bank.bank_title')}} </h5>
                   <div class="form-group">
                     <label class="label-width">{{$t('bank.name')}}</label>
-                    <bank
+                    <selector-bank
                       :bank="member.bank.bank"
                       :req="bankFilled"
                       @bank-select="bankSelect"
@@ -291,7 +291,7 @@ export default {
 
             this.$http({
                 method: this.id ? 'put' : 'post',
-                url: `${api.member}${this.id && this.id + '/'}`,
+                url: `${api.user.member}${this.id && this.id + '/'}`,
                 data: memberResult
             }).then(data => {
                 $.notify({
@@ -307,7 +307,7 @@ export default {
             })
         },
         getMember (id) {
-            this.$http.get(api.member + id + '/?opt_expand=1').then(data => {
+            this.$http.get(api.user.member + id + '/?opt_expand=1').then(data => {
                 if (!data.bank) {
                     data.bank = {bank: '', province: ''}
                 }

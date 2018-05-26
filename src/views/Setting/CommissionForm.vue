@@ -136,7 +136,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            api: api.commission,
+            api: api.setting.commission,
             id: '',
             commissionsetting: {
                 name: '',
