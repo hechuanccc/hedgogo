@@ -383,13 +383,13 @@ export default {
             let url
             let routerLink
             if (type === 'remit') {
-                url = api.bill
+                url = api.transaction.bill
                 routerLink = '/bill/remit'
             } else if (type === 'onlinepay') {
                 this.loading = true
-                url = api.transaction_onlinepay
+                url = api.transaction.onlinePay
             } else {
-                url = api.transaction_withdraw
+                url = api.transaction.withdraw
                 routerLink = '/bill/withdraw?status=3'
                 this.member = this.transaction.member.id
                 this.transactiontype = parseInt(this.transaction.transaction_type.id)
@@ -416,7 +416,7 @@ export default {
         withdrawCheckOrder (id) {
             if (id) {
                 this.loading = true
-                this.$http.put(api.transaction_withdraw + id + '/refresh/').then(data => {
+                this.$http.put(api.transaction.withdraw + id + '/refresh/').then(data => {
                     this.loading = false
                     this.transaction = data
                     $.notify({
@@ -429,7 +429,7 @@ export default {
             }
         },
         getTransaction (id) {
-            this.$http.get(api.bill + id + '/?opt_expand=bank,updated_by').then(data => {
+            this.$http.get(api.transaction.bill + id + '/?opt_expand=bank,updated_by').then(data => {
                 this.transaction = data
             })
         },
