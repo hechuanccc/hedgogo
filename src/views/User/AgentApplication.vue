@@ -38,7 +38,7 @@
       <div class="row m-b-lg">
         <pulling
           :queryset="queryset"
-          :api="api"
+          :api="url.user.agentApplication"
           :query="query"
           ref="pulling"
           @query-data="queryData"
@@ -47,13 +47,13 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 
 export default {
     data () {
         return {
-            api: api.user.agentApplication,
+            url,
             queryset: [],
             query: {}
         }

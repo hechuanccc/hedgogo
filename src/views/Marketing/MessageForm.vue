@@ -20,7 +20,7 @@
                             <div class="form-group">
                                 <label  class="label-width">{{ $t('messages.receiver') }}</label>
                                 <div class="inline-form-control">
-                                    <input  type="text" class="form-control" @blur='checkMember' v-model="message.receiver" :disabled="!(!message.member_level)">
+                                    <input  type="text" class="form-control" @blur='checkMemberHandler' v-model="message.receiver" :disabled="!(!message.member_level)">
                                 </div>
                                 <label class="text-danger m-l">  * 接收人或群发只能选择一个，接收人可以同时填写多个（以英文 "," 隔开）</label>
                             </div>
@@ -53,6 +53,7 @@
 </template>
 <script>
     import api from '../../api'
+    import { checkMember } from '../../service'
     import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 
     export default {
@@ -74,7 +75,7 @@
             onSubmit (e) {
                 if (this.message.member_level || this.message.receiver) {
                     if (this.message.receiver && !this.checkMembers) {
-                        this.checkMember()
+                        this.checkMemberHandler()
                         return
                     }
                     this.$http.post(api.setting.message, this.message).then(() => {
@@ -86,10 +87,10 @@
                     this.errorMsg = '群发或接收人必须填写一个'
                 }
             },
-            checkMember () {
+            checkMemberHandler () {
                 this.errorMsg = ''
                 if (this.message.receiver) {
-                    this.$http.get(api.user.memberCheck + '?username=' + this.message.receiver).then(data => {
+                    checkMember({ username: this.message.receiver }).then(data => {
                         this.checkMembers = (data.length === 0)
                         this.errorMsg = data.length > 0 && `${data.join(',')} 会员名输入有误，请从新填写`
                     }, error => {

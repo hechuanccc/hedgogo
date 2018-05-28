@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getUser } from '../service'
 export default {
     props: {
         req: {
@@ -52,7 +52,7 @@ export default {
         },
         extra: {
             default: '',
-            type: String
+            type: Object
         }
     },
     data () {
@@ -76,7 +76,12 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.user.agent}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}${this.extra && '&' + this.extra}`).then(data => {
+        getUser('agent', {
+            params: {
+                opt_fields: `${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`,
+                ...this.extra
+            }
+        }).then(data => {
             this.agents = data
             this.loading = false
         })

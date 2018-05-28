@@ -13,7 +13,7 @@
                     <div class="m-b text-sm ng-binding">
                     管理后台 · 登录
                     </div>
-                    <form @submit.prevent="login" class="form">
+                    <form @submit.prevent="loginHandler" class="form">
                         <div class="md-form-group">
                             <input type="text" class="md-input" v-model="user.username" name="username" ref="input">
                             <label>Username</label>
@@ -23,7 +23,7 @@
                             <label>Password</label>
                         </div>
                         <div v-show="errorMsg" class="text-danger m-b-sm"> {{errorMsg}} </div>
-                        <button type="submit" class="btn primary btn-block p-x-md" @keyup.enter="login">登录</button>
+                        <button type="submit" class="btn primary btn-block p-x-md" @keyup.enter="loginHandler">登录</button>
                     </form>
                 </div>
             </div>
@@ -31,10 +31,9 @@
     </div>
 </template>
 <script>
-    import api from '../api'
+    import { login } from '../service'
     import $ from '../utils/util'
     import axios from 'axios'
-    import qs from 'qs'
     export default {
         data () {
             return {
@@ -59,12 +58,8 @@
             })
         },
         methods: {
-            login () {
-                this.$http.post(api.identity.login, qs.stringify(this.user), {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                }).then(data => {
+            loginHandler () {
+                login(this.user).then(data => {
                     if (data.type === 'agent') {
                         this.errorMsg = this.$t('common.agent_login_error')
                         return

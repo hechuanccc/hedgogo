@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { searchMember } from '../service'
 import _ from 'lodash'
 
 export default {
@@ -63,7 +63,7 @@ export default {
             _.debounce(function () {
                 if (this.username_q) {
                     this.results = []
-                    this.$http.get(api.user.memberSearch + '?username_q=' + this.username_q).then(data => {
+                    searchMember({ username_q: this.username_q }).then(data => {
                         this.searchLoading = false
                         if (data || data.length > 0) {
                             this.results = data.slice(0, Number(this.searchlimit))
