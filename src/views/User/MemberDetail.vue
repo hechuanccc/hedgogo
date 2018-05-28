@@ -279,7 +279,7 @@
 </template>
 
 <script>
-    import api from '../../api'
+    import { getUser, updateUser, resetMemberPassword } from '../../service'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
 
@@ -350,8 +350,14 @@
             },
             toggleStatus () {
                 this.statusUpdated = false
-                this.$http.put(api.user.member + this.member.id + '/?opt_fields=status', {
-                    status: this.member.status === 1 ? 0 : 1
+                updateUser('member', {
+                    id: this.member.id,
+                    data: {
+                        status: this.member.status ^ 1
+                    },
+                    params: {
+                        opt_fields: 'status'
+                    }
                 }).then(data => {
                     this.member.status = data.status
                     this.statusUpdated = true
@@ -368,10 +374,8 @@
                 }))) {
                     return
                 }
-                let url = type === 1 ? api.user.resetMemberPassword : api.user.resetWithdrawPassword
-                this.$http.post(url, {
-                    'account_id': this.member.id
-                }, {emulateJSON: true}).then(data => {
+
+                resetMemberPassword(this.member.id, type).then(data => {
                     this.passwordChanged = type
                     this.newPassword = data.new_password || data.new_withdraw_password
                 }, error => {
@@ -380,7 +384,12 @@
                 })
             },
             getMember (id) {
-                this.$http.get(api.user.member + id + '/?opt_expand=bank&action').then(data => {
+                getUser('member', {
+                    id,
+                    params: {
+                        opt_expand: 'bank'
+                    }
+                }).then(data => {
                     this.member = data
                     this.member_id = {'account_id': data.id}
                 })
@@ -395,8 +404,17 @@
                         return
                     }
                 }
-                this.$http.put(api.user.member + id + '/?audit=' + id, {username: this.member.username, agent: this.member.agent.id, level: this.member.level.id})
-                .then(data => {
+                updateUser('member', {
+                    id,
+                    data: {
+                        username: this.member.username,
+                        agent: this.member.agent.id,
+                        level: this.member.level.id
+                    },
+                    params: {
+                        audit: id
+                    }
+                }).then(data => {
                     this.member.balance.bet_amount = data.balance.bet_amount
                     this.member.balance.audit_amount = data.balance.audit_amount
                 })

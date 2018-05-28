@@ -210,9 +210,8 @@
       </div>
     </div>
 </template>
-
 <script>
-    import api from '../../api'
+    import { getUser, updateUser, deleteAgent, resetAgentPassword } from '../../service'
     import $ from '../../utils/util'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
@@ -260,8 +259,14 @@
                 this.getAgent(this.$route.params.agentId)
             },
             toggleStatus () {
-                this.$http.put(api.user.agent + this.agent.id + '/?opt_fields=status', {
-                    status: this.agent.status ^ 1
+                updateUser('agent', {
+                    id: this.agent.id,
+                    data: {
+                        status: this.agent.status ^ 1
+                    },
+                    params: {
+                        opt_fields: 'status'
+                    }
                 }).then(data => {
                     this.agent.status = data.status
                     $.notify({
@@ -275,7 +280,7 @@
                 }))) {
                     return
                 }
-                this.$http.post(api.user.resetAgentPassword, { 'account_id': this.agent.id }, {emulateJSON: true}).then(data => {
+                resetAgentPassword(this.agent.id).then(data => {
                     this.passwordChanged = 1
                     this.newPassword = data.new_password
                 }, error => {
@@ -289,13 +294,18 @@
                 }))) {
                     return
                 }
-                this.$http.delete(api.user.agent + id + '/').then(() => {
+                deleteAgent(id).then(() => {
                     this.$router.go('/agent')
                 })
             },
             getAgent (id) {
                 let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
-                this.$http.get(api.user.agent + id + '/?opt_expand=' + fields).then(data => {
+                getUser('agent', {
+                    id,
+                    params: {
+                        opt_expand: fields
+                    }
+                }).then(data => {
                     if (data.commission_settings && data.commission_settings.profit_set) {
                         data.commission_settings.profit_set.sort((a, b) => a.income_threshold - b.income_threshold)
                     }

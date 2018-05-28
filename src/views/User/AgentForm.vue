@@ -255,7 +255,8 @@
 import VueTypeahead from 'vue-typeahead'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
-import api from '../../api'
+import url from '../../service/url'
+import { getUser, updateUser } from '../../service'
 import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
@@ -309,9 +310,6 @@ export default {
         bankFilled () {
             let bankinfo = this.agent.bank
             return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
-        },
-        src () {
-            return api.user.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=' + this.parentLevel
         },
         parentLevel () {
             let level = this.agent.level - 1
@@ -413,44 +411,25 @@ export default {
             if (!this.initAgent.domain) {
                 this.$delete(this.initAgent, 'domain')
             }
-            if (this.agent.id) {
-                this.$http.put(api.user.agent + this.agent.id + '/', this.initAgent).then(data => {
-                    this.statusUpdated = true
-                    setTimeout(() => {
-                        this.$router.push('/agent/' + data.id)
-                    }, 2000)
-                }, error => {
-                    this.errorMsg = error
-                })
-            } else {
-                this.$http.post(api.user.agent, this.initAgent).then(data => {
-                    this.statusUpdated = true
-                    setTimeout(() => {
-                        this.$router.push('/agent/' + data.id)
-                    }, 2000)
-                }, error => {
-                    this.errorMsg = error
-                })
-            }
-        },
-        checkAgent () {
-            if (this.query !== '') {
-                this.$http.get(api.user.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
-                    if (data.length === 1) {
-                        this.agentValid = true
-                        this.agent.parent_agent = data[0].id
-                    } else {
-                        this.agentValid = false
-                        this.agent.parent_agent = ''
-                    }
-                })
-            } else {
-                this.agentValid = false
-                this.agent.parent_agent = ''
-            }
+            updateUser('agent', {
+                id: this.agent.id,
+                data: this.initAgent
+            }).then(data => {
+                this.statusUpdated = true
+                setTimeout(() => {
+                    this.$router.push('/agent/' + data.id)
+                }, 2000)
+            }, error => {
+                this.errorMsg = error
+            })
         },
         getAgent (id) {
-            this.$http.get(api.user.agent + id + '/?opt_expand=parent_agent').then(data => {
+            getUser('agent', {
+                id,
+                params: {
+                    opt_expand: 'parent_agent'
+                }
+            }).then(data => {
                 if (!data.bank) {
                     data.bank = {bank: '', province: ''}
                 }
@@ -468,7 +447,7 @@ export default {
             })
         },
         getAgentLevels () {
-            this.$http.get(api.setting.agentLevel).then(data => {
+            this.$http.get(url.setting.agentLevel).then(data => {
                 this.agentLevels = data
                 this.agentLevelLoading = false
             }, error => {
@@ -477,15 +456,6 @@ export default {
                     type: 'danger'
                 })
             })
-        },
-        reset () {
-            this.checkAgent()
-        },
-        // for agent field typeahead
-        onHit (item) {
-            this.items = []
-            this.query = item.username
-            this.checkAgent()
         },
         // for agent field typeahead
         prepareResponseData (data) {

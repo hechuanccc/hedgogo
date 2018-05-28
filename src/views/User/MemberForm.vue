@@ -39,7 +39,7 @@
                   <selector-agent
                     :agent="member.agent.id || member.agent"
                     :req="true"
-                    :extra="'level=4'"
+                    :extra="{level: 4}"
                     @agent-select="(val) => member.agent = parseInt(val)"
                   />
                   <!-- member is under only agent level 4 ( not 3 and above ) -->
@@ -220,7 +220,7 @@ import DatePicker from 'vue2-datepicker'
 import SelectorAgent from '../../components/SelectorAgent'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
-import api from '../../api'
+import { getUser, updateUser } from '../../service'
 import $ from '../../utils/util'
 import Vue from 'vue'
 const format = 'YYYY-MM-DD'
@@ -289,9 +289,8 @@ export default {
                 this.$delete(memberResult, 'bank')
             }
 
-            this.$http({
-                method: this.id ? 'put' : 'post',
-                url: `${api.user.member}${this.id && this.id + '/'}`,
+            updateUser('member', {
+                id: this.id,
                 data: memberResult
             }).then(data => {
                 $.notify({
@@ -307,7 +306,12 @@ export default {
             })
         },
         getMember (id) {
-            this.$http.get(api.user.member + id + '/?opt_expand=1').then(data => {
+            getUser('member', {
+                id,
+                params: {
+                    opt_expand: 1
+                }
+            }).then(data => {
                 if (!data.bank) {
                     data.bank = {bank: '', province: ''}
                 }
