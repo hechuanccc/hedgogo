@@ -1,0 +1,407 @@
+<template>
+<div>
+  <form 
+      class="form m-b-sm"
+      @submit.prevent="submit"
+    >
+      <div class="box m-t-sm m-b-sm">
+        <div class="box-body clearfix form-input-sm">
+          <div class="row m-l-xs m-r-xs">
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.start_date && query.end_date}"
+              >{{ $t('common.date') }}
+              </label>
+              <date-picker
+                width="244"
+                style="display: block;"
+                :shortcuts="shortcuts"
+                v-model="date"
+                type="date"
+                format="yyyy-MM-dd"
+                range
+              />
+            </div>
+            <div class="pull-left m-r-xs">
+              <label class="form-control-label">
+                {{ $t('report.game.dimension_displaying') }}
+              </label>
+              <div class="m-l">
+                <label class="m-r-xs pointer">
+                  <input
+                    type="checkbox"
+                    name="platform"
+                    v-model="dimension.platform"
+                    :disabled="!!(activeGame || activeCategory)"
+                  />
+                  <i class="blue"></i>
+                  {{ $t('manage.platform') }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="box m-t-xs">
+      <table st-table="rowCollectionBasic" class="table table-bordered b-t">
+        <thead>
+          <tr>
+            <th class="text-center" width="15%" v-if="gameList.length">{{ $t('common.game') }}</th>
+            <th class="text-center" v-if="activeGame" width="15%">{{ $t('report.game.category') }}</th>
+            <th class="text-center" v-if="activeGame && activeCategory" width="15%">{{ $t('report.game.play') }}</th>
+            <th class="text-center" v-if="activeGame || activeCategory || dimension.platform" width="5%">{{ $t('manage.platform') }}</th>
+            <th class="text-right" :width="`${otherColWidth}%`">{{ $t('report.game.amount') }}</th>
+            <th class="text-right" :width="`${otherColWidth}%`">{{ $t('report.game.member_count') }}</th>
+            <th class="text-right" :width="`${otherColWidth}%`">{{ $t('report.game.avg_amount') }}</th>
+            <th class="text-right" :width="`${otherColWidth}%`">{{ $t('report.game.profit') }}</th>
+          </tr>
+        </thead>
+        <tbody class="text-right">
+          <tr v-for="index in DataLength" :key="index" v-if="!loading.game">
+            <td
+              class="text-center pointer game-name v-m"
+              :class="{
+                'active-game': gameList[index-1].code === activeGame,
+                'text-black-lt': activeGame && gameList[index-1].code !== activeGame
+              }"
+              @click="clickGame({
+                game: gameList[index-1].code,
+                platform: 'default'
+              })"
+              :rowspan="gameListMode === 'double' ? 2 : 1"
+              v-if="index <= gameList.length && (index + 2) % ( gameListMode === 'double' ? 2 : index + 1)"
+            >
+              {{ gameList[index-1].display_name }}
+            </td>
+            <td v-else-if="index > gameList.length"></td>
+            <td
+              class="text-center pointer category-name"
+              :class="{
+                'not-select': !activeCategory,
+                'text-black-lt': activeCategory && filteredCategory[index-1].code !== activeCategory,
+                'active-category': filteredCategory[index-1].code === activeCategory  
+              }"
+              @click="clickCategory(filteredCategory[index-1].code)"
+              v-if="activeGame && index <= filteredCategory.length"
+            >
+              {{ filteredCategory[index-1].display_name }}
+            </td>
+            <td v-else-if="activeGame && activeCategory && index <= filteredPlay.length"></td>
+            <td v-if="activeGame && activeCategory && index <= filteredPlay.length" class="text-center">{{ filteredPlay[index-1].display_name }}</td>
+            <template v-if="index <= filteredData.length && !loading.category && !loading.play">
+              <td
+                v-if="!activeGame && !activeCategory && dimension.platform"
+                class="platform-filter pointer text-center"
+                @click="clickGame({
+                  game: gameList[index-1].code,
+                  platform: filteredData[index-1].platform
+                })"
+              >
+                {{ $t(`manage.${filteredData[index-1].platform}`) }}
+              </td>
+              <td v-else-if="activeGame || activeCategory || dimension.platform" class="text-center">{{ $t(`manage.${filteredData[index-1].platform}`) }}</td>
+              <td>{{ filteredData[index-1].amount | currency('￥') }}</td>
+              <td>{{ filteredData[index-1].member_count }}</td>
+              <td>{{ filteredData[index-1].avg_amount | currency('￥') }}</td>
+              <td :class="{
+                'text-success': filteredData[index-1].profit > 0,
+                'text-danger': filteredData[index-1].profit < 0,
+                'text-muted': filteredData[index-1].profit === 0
+              }" class="text-xs">{{ filteredData[index-1].profit | currency('￥') }}</td>
+            </template>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row text-center p-a" v-if="loading.game">
+        <i class="fa fa-spin fa-spinner"></i>
+        <b>{{ $t('common.loading') }}&nbsp;...</b>
+      </div>
+    </div>
+</div>
+</template>
+
+<script>
+import Vue from 'vue'
+import DatePicker from 'vue2-datepicker'
+import date from '../../utils/date'
+import api from '../../api'
+import $ from '../../utils/util'
+
+const format = 'YYYY-MM-DD'
+export default {
+    data () {
+        return {
+            query: {},
+            date: [],
+            dimension: {
+                platform: false
+            },
+            platform: 'default',
+            activeGame: '',
+            activeCategory: '',
+            gameData: {},
+            gameList: [],
+            gameListMode: 'normal',
+            categoryData: {},
+            categoryList: [],
+            playData: {},
+            playList: [],
+            yesterday: date.yesterday[0],
+            shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
+                text: this.$t(`common.${element}`),
+                start: date[element][0],
+                end: date[element][1]
+            })),
+            defaultDate: [],
+            loading: {
+                game: false,
+                category: false,
+                play: false
+            }
+        }
+    },
+    created () {
+        this.defaultDate = [Vue.moment(this.yesterday).subtract(6, 'days').format(format), this.yesterday]
+        this.setQueryAll()
+        this.getReport({type: 'game'})
+    },
+    watch: {
+        '$route': {
+            handler () {
+                this.setQueryAll()
+            },
+            deep: true
+        },
+        date (newObj, old) {
+            if (`${newObj}` === `${this.defaultDate}` || !newObj) {
+                this.$delete(this.query, 'start_date')
+                this.$delete(this.query, 'end_date')
+            } else {
+                [this.query.start_date, this.query.end_date] = newObj.map(d => Vue.moment(d).format(format))
+            }
+            if (this.query.start_date !== this.$route.query.start_date || this.query.end_date !== this.$route.query.end_date) {
+                this.getReport({type: 'game'})
+                this.activeGame = ''
+                this.activeCategory = ''
+                this.$router.push({
+                    path: '/report/game',
+                    query: this.query
+                })
+            }
+        },
+        'dimension.platform' (newObj) {
+            this.changeGameListMode(newObj ? 'double' : 'normal')
+        },
+        activeGame (newObj) {
+            if (this.dimension.platform) {
+                this.changeGameListMode(newObj ? 'normal' : 'double')
+            }
+        },
+        activeCategory (newObj) {
+            if (!newObj) {
+                this.playData = {}
+                this.playList = []
+            }
+        }
+    },
+    computed: {
+        filteredData () {
+            let ret = []
+            if (this.activeGame && this.activeCategory) {
+                ret = Object.entries(this.playData).map(([k, v]) => Object(v))
+            } else if (this.activeGame) {
+                ret = Object.entries(this.categoryData).map(([k, v]) => Object(v))
+            } else {
+                if (this.dimension.platform) {
+                    Object.entries(this.gameData).forEach(([k, v]) => {
+                        Object.assign(v['pc'], {
+                            platform: 'pc'
+                        })
+                        Object.assign(v['mobile'], {
+                            platform: 'mobile'
+                        })
+                        ret = [...ret, v['pc'], v['mobile']]
+                    })
+                    return ret
+                } else {
+                    return Object.entries(this.gameData).map(([k, v]) => Object(v[this.platform]))
+                }
+            }
+            return this.platform !== 'default' ? ret.filter(d => d.platform === this.platform) : ret
+        },
+        filteredCategory () {
+            return this.platform !== 'default' ? this.categoryList.filter(c => c.platform === this.platform) : this.categoryList
+        },
+        filteredPlay () {
+            return this.platform !== 'default' ? this.playList.filter(p => p.platform === this.platform) : this.playList
+        },
+        DataLength () {
+            return Math.max(this.gameList.length, this.filteredCategory.length, this.filteredPlay.length)
+        },
+        otherColWidth () {
+            return (85 - (this.activeGame ? 15 : 0) - (this.activeCategory ? 15 : 0) - (this.activeGame || this.activeCategory || this.dimension.platform ? 5 : 0)) / 4
+        }
+    },
+    methods: {
+        getReport ({
+            type,
+            game,
+            category
+        }) {
+            this.loading[type] = true
+            this[`${type}Data`] = {}
+            this[`${type}List`] = []
+            type === 'game' && (this.categoryData = this.playData = {}, this.categoryList = this.playList = [])
+            type === 'category' && (this.playData = {}, this.playList = [])
+            this.$http.get(api.report.game, {
+                params: {
+                    ...((type === 'category' || type === 'play') && { game_code: game }),
+                    ...(type === 'play' && { category }),
+                    ...(this.query.start_date && { start_date: this.query.start_date }),
+                    ...(this.query.end_date && { end_date: this.query.end_date })
+                }
+            }).then(data => {
+                this[`${type}Data`] = Object.assign({}, data)
+                this[`${type}List`] = Object.entries(data).map(([k, v]) => Object({
+                    code: k,
+                    display_name: v.display_name,
+                    platform: v.platform
+                }))
+                this.loading[type] = false
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.loading[type] = false
+            })
+        },
+        clickGame ({ game, platform }) {
+            platform && (this.platform = platform)
+            if (game === this.activeGame && !this.activeCategory) {
+                game = ''
+                this.categoryData = this.playData = {}
+                this.categoryList = this.playList = []
+            }
+            this.$router.push({
+                path: '/report/game/',
+                query: {
+                    ...(game && { game_code: game }),
+                    ...(this.query.start_date && { start_date: this.query.start_date }),
+                    ...(this.query.end_date && { end_date: this.query.end_date })
+                }
+            })
+        },
+        clickCategory (category) {
+            if (category === this.activeCategory) {
+                category = ''
+                this.playData = {}
+                this.playList = []
+            }
+            this.$router.push({
+                path: '/report/game/',
+                query: {
+                    ...(this.activeGame && { game_code: this.activeGame }),
+                    ...(category && { category }),
+                    ...(this.query.start_date && { start_date: this.query.start_date }),
+                    ...(this.query.end_date && { end_date: this.query.end_date })
+                }
+            })
+        },
+        setQueryAll () {
+            let query = this.$route.query
+
+            if (this.activeGame !== query.game_code && query.game_code) {
+                this.getReport({
+                    type: 'category',
+                    game: query.game_code
+                })
+            }
+            this.activeGame = query.game_code || ''
+
+            if (this.activeCategory !== query.category && this.activeGame && query.category) {
+                this.getReport({
+                    type: 'play',
+                    ...(this.activeGame && { game: this.activeGame }),
+                    category: query.category
+                })
+            }
+            this.activeCategory = query.category || ''
+
+            if (query.start_date || query.end_date) {
+                this.date = [query.start_date, query.end_date]
+            } else {
+                this.date = this.defaultDate
+            }
+
+            this.query = Object.assign({}, query)
+        },
+        changeGameListMode (mode = 'normal') {
+            if (this.gameListMode !== mode) {
+                this.gameListMode = mode
+                let newList = []
+                if (mode === 'normal') {
+                    for (let index = 0; index < this.gameList.length; index += 2) {
+                        newList = [...newList, this.gameList[index]]
+                    }
+                } else if (mode === 'double') {
+                    for (let g in this.gameList) {
+                        newList = [...newList, this.gameList[g], this.gameList[g]]
+                    }
+                }
+                this.gameList = newList
+            }
+        }
+    },
+    components: {
+        DatePicker
+    }
+}
+</script>
+<style lang="scss" scoped>
+.game-name {
+  transition: all .3s ease-in-out;
+  &.active-game, &.active-game:hover {
+    background-color: #d9ead3;
+  }
+
+  &:hover {
+    background-color: #d9ead381;
+  }
+
+  &:active, &.active-game:active {
+    background-color: #c9e0c1;
+  }
+}
+.category-name {
+  transition: all .3s ease-in-out;
+  &.active-category, &.active-category:hover {
+    background-color: #d9ead3;
+  }
+
+  &.not-select {
+    background-color: #d9ead3;
+  }
+
+  &:hover {
+    background-color: #d9ead381;
+  }
+
+  &:active, &.active-category:active {
+    background-color: #c9e0c1;
+  }
+}
+
+.platform-filter {
+  transition: all .3s ease-in-out;
+  &:hover {
+    background-color: #d9ead381;
+  }
+
+  &:active {
+    background-color: #c9e0c1;
+  }
+}
+</style>
