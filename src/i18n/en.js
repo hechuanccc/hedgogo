@@ -805,6 +805,16 @@ export default {
         sum_fund: 'Sum Fund.'
     },
     report: {
+        game: {
+            title: 'Game Report',
+            amount: 'Bet Amount',
+            member_count: 'Player Count',
+            avg_amount: 'Average Bet Amount',
+            profit: 'Profit',
+            category: 'Category',
+            play: 'Play',
+            dimension_displaying: 'Dimension Displaying'
+        },
         number_login: 'No.',
         no_record_found: 'No Record Found, Specify a New Query',
         bet_record_number: 'Bet Record ID',

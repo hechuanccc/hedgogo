@@ -34,7 +34,7 @@ export default {
         transcations_query: '交易记录查询',
         return_report: '反水计算',
         commission_report: '佣金计算',
-        game_report: '统计报表',
+        game_report: '游戏报表',
         returnrate: '反水',
         commission: '佣金',
         login: '登录',
@@ -805,6 +805,16 @@ export default {
         sum_fund: '目前累计'
     },
     report: {
+        game: {
+            title: '游戏报表',
+            amount: '注单总额',
+            member_count: '玩家数量',
+            avg_amount: '下注均价',
+            profit: '盈利',
+            category: '玩法分类',
+            play: '玩法',
+            dimension_displaying: '展示维度'
+        },
         number_login: '序号',
         no_record_found: '查无记录，请更换条件再查询',
         bet_record_number: '注单号',

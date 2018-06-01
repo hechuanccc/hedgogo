@@ -889,7 +889,7 @@ export default new Router({
             require(['./views/Report/Finance.vue'], resolve)
         },
         meta: {
-            group: 'reporting',
+            group: 'report',
             auth: true,
             title: Vue.t('nav.agent_report')
         }
@@ -901,7 +901,7 @@ export default new Router({
             require(['./views/Report/Finance.vue'], resolve)
         },
         meta: {
-            group: 'reporting',
+            group: 'report',
             auth: true,
             title: Vue.t('nav.finance_report')
         }
@@ -913,9 +913,21 @@ export default new Router({
             require(['./views/Report/Membership.vue'], resolve)
         },
         meta: {
-            group: 'reporting',
+            group: 'report',
             auth: true,
             title: Vue.t('nav.member_report')
+        }
+    },
+    {
+        path: '/report/game',
+        name: 'game_report',
+        component: function (resolve) {
+            require(['./views/Report/Game.vue'], resolve)
+        },
+        meta: {
+            group: 'report',
+            auth: true,
+            title: Vue.t('nav.game_report')
         }
     },
     {
