@@ -375,12 +375,13 @@ export default {
             label: {
                 amount: '下注金额',
                 betrecord_count: '注单数量',
-                profit: '损益情况',
+                bet_amount: '下注总和',
+                profit: '盈利',
                 register_count: '注册人数'
             },
             title: {
                 amount: '7日下注金额',
-                betrecord_count: '7日注单数量',
+                game: '7日游戏活跃度',
                 profit: '7日盈利',
                 register_count: '7日注册'
             }
