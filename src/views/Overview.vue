@@ -67,7 +67,7 @@ export default {
                 amount: 207,
                 profit: 262,
                 register_count: 18,
-                game: [38, 85]
+                game: [38, 0]
             },
             loading: true,
             options: {}
@@ -103,7 +103,7 @@ export default {
                             pointBackgroundColor: '#ffffff',
                             backgroundColor: `hsl(${this.color[category][0]}, 88%, 80%)`,
                             borderColor: `hsl(${this.color[category][0]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
-                            borderWidth: 2,
+                            borderWidth: this.lineChart.includes(category) ? 2 : 0,
                             data: data[category].bet_amount
                         }, {
                             label: this.$t('common.overview.label.profit'),
@@ -112,7 +112,7 @@ export default {
                             pointBackgroundColor: '#ffffff',
                             backgroundColor: `hsl(${this.color[category][1]}, 88%, 80%)`,
                             borderColor: `hsl(${this.color[category][1]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
-                            borderWidth: 2,
+                            borderWidth: this.lineChart.includes(category) ? 2 : 0,
                             data: data[category].profit
                         }]
                     })
