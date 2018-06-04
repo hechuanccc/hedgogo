@@ -64,10 +64,15 @@ export default {
                 'game'
             ],
             color: {
-                amount: 207,
-                profit: 262,
-                register_count: 18,
-                game: [38, 0]
+                // hsl
+                amount: [207, 88, 80],
+                profit: [262, 88, 80],
+                register_count: [18, 88, 80],
+                game: [
+                    [38, 88, 80],
+                    [0, 88, 80],
+                    [0, 0, 75]
+                ]
             },
             loading: true,
             options: {}
@@ -99,20 +104,16 @@ export default {
                         datasets: [{
                             label: this.$t('common.overview.label.bet_amount'),
                             yAxisID: 'bet_amount',
-                            pointBorderColor: `hsl(${this.color[category][0]}, 88%, 55%)`,
-                            pointBackgroundColor: '#ffffff',
-                            backgroundColor: `hsl(${this.color[category][0]}, 88%, 80%)`,
-                            borderColor: `hsl(${this.color[category][0]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
-                            borderWidth: this.lineChart.includes(category) ? 2 : 0,
+                            backgroundColor: this.hslTransform(this.color[category][0]),
+                            borderWidth: 0,
                             data: data[category].bet_amount
                         }, {
                             label: this.$t('common.overview.label.profit'),
                             yAxisID: 'profit',
-                            pointBorderColor: `hsl(${this.color[category][1]}, 88%, 55%)`,
-                            pointBackgroundColor: '#ffffff',
-                            backgroundColor: `hsl(${this.color[category][1]}, 88%, 80%)`,
-                            borderColor: `hsl(${this.color[category][1]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
-                            borderWidth: this.lineChart.includes(category) ? 2 : 0,
+                            backgroundColor: data[category].profit.map(p => p >= 0
+                                ? this.hslTransform(this.color[category][1])
+                                : this.hslTransform(this.color[category][2])),
+                            borderWidth: 0,
                             data: data[category].profit
                         }]
                     })
@@ -162,7 +163,7 @@ export default {
                                 }
                             }],
                             xAxes: [{
-                                barPercentage: 0.75
+                                barPercentage: 0.8
                             }]
                         },
                         legend: {
@@ -184,10 +185,10 @@ export default {
                         labels: data[category].label,
                         datasets: [{
                             label: this.$t(`common.overview.label.${category}`),
-                            pointBorderColor: `hsl(${this.color[category]}, 88%, 55%)`,
+                            pointBorderColor: `hsl(${this.color[category][0]}, 88%, 55%)`,
                             pointBackgroundColor: '#ffffff',
-                            backgroundColor: `hsl(${this.color[category]}, 88%, 80%)`,
-                            borderColor: `hsl(${this.color[category]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
+                            backgroundColor: this.hslTransform(this.color[category]),
+                            borderColor: `hsl(${this.color[category][0]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
                             borderWidth: 2,
                             data: data[category].data
                         }]
@@ -237,6 +238,9 @@ export default {
             } else if (item === 'game') {
                 return 'report/game'
             }
+        },
+        hslTransform (hsl) {
+            return `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`
         }
     },
     components: {
