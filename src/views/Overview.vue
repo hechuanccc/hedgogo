@@ -67,7 +67,7 @@ export default {
                 amount: 207,
                 profit: 262,
                 register_count: 18,
-                game: [45, 35]
+                game: [38, 85]
             },
             loading: true,
             options: {}
@@ -102,7 +102,7 @@ export default {
                             pointBorderColor: `hsl(${this.color[category][0]}, 88%, 55%)`,
                             pointBackgroundColor: '#ffffff',
                             backgroundColor: `hsl(${this.color[category][0]}, 88%, 80%)`,
-                            borderColor: `hsl(${this.color[category][0]}, 88%, 55%)`,
+                            borderColor: `hsl(${this.color[category][0]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
                             borderWidth: 2,
                             data: data[category].bet_amount
                         }, {
@@ -111,7 +111,7 @@ export default {
                             pointBorderColor: `hsl(${this.color[category][1]}, 88%, 55%)`,
                             pointBackgroundColor: '#ffffff',
                             backgroundColor: `hsl(${this.color[category][1]}, 88%, 80%)`,
-                            borderColor: `hsl(${this.color[category][1]}, 88%, 55%)`,
+                            borderColor: `hsl(${this.color[category][1]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
                             borderWidth: 2,
                             data: data[category].profit
                         }]
@@ -137,7 +137,7 @@ export default {
                                     chart.ticks.splice(0, 1)
                                 },
                                 gridLines: {
-                                    zeroLineWidth: 2,
+                                    zeroLineWidth: 1,
                                     display: true,
                                     drawOnChartArea: true
                                 }
@@ -162,7 +162,7 @@ export default {
                                 }
                             }],
                             xAxes: [{
-                                barPercentage: 0.6
+                                barPercentage: 0.75
                             }]
                         },
                         legend: {
@@ -187,7 +187,7 @@ export default {
                             pointBorderColor: `hsl(${this.color[category]}, 88%, 55%)`,
                             pointBackgroundColor: '#ffffff',
                             backgroundColor: `hsl(${this.color[category]}, 88%, 80%)`,
-                            borderColor: `hsl(${this.color[category]}, 88%, 55%)`,
+                            borderColor: `hsl(${this.color[category]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
                             borderWidth: 2,
                             data: data[category].data
                         }]
@@ -209,7 +209,7 @@ export default {
                                 }
                             }],
                             xAxes: [{
-                                barPercentage: 1.0
+                                barPercentage: 0.8
                             }]
                         },
                         legend: {
