@@ -814,7 +814,7 @@ export default {
             profit: '盈利',
             category: '玩法分类',
             play: '玩法',
-            dimension_displaying: '展示维度'
+            dimension_displaying: '展示项目'
         },
         number_login: '序号',
         no_record_found: '查无记录，请更换条件再查询',

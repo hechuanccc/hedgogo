@@ -24,6 +24,51 @@
               />
             </div>
             <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.game_code}"
+              >{{ $t('common.game') }}
+              </label>
+              <select
+                class="form-control w-sm c-select block"
+                v-model="query.game_code"
+                @change="clickGame()"
+              >
+                <option value="">{{ $t('common.please_select') }}</option>
+                <option
+                  class="form-control"
+                  :value="g.code"
+                  v-for="(g, i) in gameList"
+                  :key="g.code + i"
+                >
+                  {{ g.display_name }}
+                </option>
+              </select>
+            </div>
+            <div class="pull-left m-r-xs">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.category}"
+              >{{ $t('report.game.category') }}
+              </label>
+              <select
+                class="form-control w-md c-select block"
+                v-model="query.category"
+                @change="clickCategory()"
+                :disabled="!activeGame"
+              >
+                <option value="">{{ $t('common.please_select') }}</option>
+                <option
+                  class="form-control"
+                  :value="c.code"
+                  v-for="c in categoryList"
+                  :key="c.code"
+                >
+                  {{ c.display_name }}&nbsp;-&nbsp;{{ $t(`manage.${c.platform}`) }}
+                </option>
+              </select>
+            </div>
+            <div class="pull-left m-r-xs">
               <label class="form-control-label">
                 {{ $t('report.game.dimension_displaying') }}
               </label>
@@ -40,16 +85,26 @@
                 </label>
               </div>
             </div>
+            <button
+              class="md-btn w-xs pull-right btn m-t-md"
+              type="button"
+              @click="clearAll"
+              :disabled="isQueryEmpty"
+            >
+              <i v-if="loading.game" class="fa fa-spin fa-spinner"></i> 
+              <i v-else class="fa fa-trash-o"></i> 
+              <span>{{ $t('action.reset_condition') }}</span>
+            </button>
           </div>
         </div>
       </div>
     </form>
     <div class="box m-t-xs">
-      <table st-table="rowCollectionBasic" class="table table-bordered b-t">
+      <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
-            <th class="text-center" width="15%" v-if="gameList.length">{{ $t('common.game') }}</th>
-            <th class="text-center" v-if="activeGame" width="15%">{{ $t('report.game.category') }}</th>
+            <th class="text-center" width="15%" v-if="gameList.length && !activeGame">{{ $t('common.game') }}</th>
+            <th class="text-center" v-if="activeGame && !activeCategory" width="15%">{{ $t('report.game.category') }}</th>
             <th class="text-center" v-if="activeGame && activeCategory" width="15%">{{ $t('report.game.play') }}</th>
             <th class="text-center" v-if="activeGame || activeCategory || dimension.platform" width="5%">{{ $t('manage.platform') }}</th>
             <th class="text-right" :width="`${otherColWidth}%`">{{ $t('report.game.amount') }}</th>
@@ -61,45 +116,36 @@
         <tbody class="text-right">
           <tr v-for="index in DataLength" :key="index" v-if="!loading.game">
             <td
-              class="text-center pointer game-name v-m"
-              :class="{
-                'active-game': gameList[index-1].code === activeGame,
-                'text-black-lt': activeGame && gameList[index-1].code !== activeGame
-              }"
+              class="text-center v-m pointer"
               @click="clickGame({
                 game: gameList[index-1].code,
                 platform: 'default'
               })"
               :rowspan="gameListMode === 'double' ? 2 : 1"
-              v-if="index <= gameList.length && (index + 2) % ( gameListMode === 'double' ? 2 : index + 1)"
+              v-if="index <= gameList.length && (index + 2) % ( gameListMode === 'double' ? 2 : index + 1) && !activeGame"
             >
-              {{ gameList[index-1].display_name }}
+              <a>{{ gameList[index-1].display_name }}</a>
             </td>
-            <td v-else-if="index > gameList.length"></td>
+            <td v-else-if="index > gameList.length && !activeGame"></td>
             <td
-              class="text-center pointer category-name"
-              :class="{
-                'not-select': !activeCategory,
-                'text-black-lt': activeCategory && filteredCategory[index-1].code !== activeCategory,
-                'active-category': filteredCategory[index-1].code === activeCategory  
-              }"
+              class="text-center pointer"
               @click="clickCategory(filteredCategory[index-1].code)"
-              v-if="activeGame && index <= filteredCategory.length"
+              v-if="activeGame && !activeCategory && index <= filteredCategory.length"
             >
-              {{ filteredCategory[index-1].display_name }}
+              <a>{{ filteredCategory[index-1].display_name }}</a>
             </td>
-            <td v-else-if="activeGame && activeCategory && index <= filteredPlay.length"></td>
+            <td v-else-if="activeGame && !activeCategory && index <= filteredPlay.length"></td>
             <td v-if="activeGame && activeCategory && index <= filteredPlay.length" class="text-center">{{ filteredPlay[index-1].display_name }}</td>
             <template v-if="index <= filteredData.length && !loading.category && !loading.play">
               <td
                 v-if="!activeGame && !activeCategory && dimension.platform"
-                class="platform-filter pointer text-center"
+                class="pointer text-center"
                 @click="clickGame({
                   game: gameList[index-1].code,
                   platform: filteredData[index-1].platform
                 })"
               >
-                {{ $t(`manage.${filteredData[index-1].platform}`) }}
+                <a>{{ $t(`manage.${filteredData[index-1].platform}`) }}</a>
               </td>
               <td v-else-if="activeGame || activeCategory || dimension.platform" class="text-center">{{ $t(`manage.${filteredData[index-1].platform}`) }}</td>
               <td>{{ filteredData[index-1].amount | currency('￥') }}</td>
@@ -198,6 +244,11 @@ export default {
             if (this.dimension.platform) {
                 this.changeGameListMode(newObj ? 'normal' : 'double')
             }
+            if (!newObj) {
+                this.platform = 'default'
+                this.categoryData = this.playData = {}
+                this.categoryList = this.playList = []
+            }
         },
         activeCategory (newObj) {
             if (!newObj) {
@@ -241,7 +292,10 @@ export default {
             return Math.max(this.gameList.length, this.filteredCategory.length, this.filteredPlay.length)
         },
         otherColWidth () {
-            return (85 - (this.activeGame ? 15 : 0) - (this.activeCategory ? 15 : 0) - (this.activeGame || this.activeCategory || this.dimension.platform ? 5 : 0)) / 4
+            return (85 - (this.activeGame || this.activeCategory || this.dimension.platform ? 5 : 0)) / 4
+        },
+        isQueryEmpty () {
+            return $.compareQuery(this.query, {})
         }
     },
     methods: {
@@ -278,23 +332,19 @@ export default {
                 this.loading[type] = false
             })
         },
-        clickGame ({ game, platform }) {
+        clickGame ({ game, platform } = { game: this.query.game_code }) {
             platform && (this.platform = platform)
-            if (game === this.activeGame && !this.activeCategory) {
-                game = ''
-                this.categoryData = this.playData = {}
-                this.categoryList = this.playList = []
-            }
+            game && (this.query.game_code = game)
             this.$router.push({
                 path: '/report/game/',
                 query: {
-                    ...(game && { game_code: game }),
+                    ...(this.query.game_code && { game_code: this.query.game_code }),
                     ...(this.query.start_date && { start_date: this.query.start_date }),
                     ...(this.query.end_date && { end_date: this.query.end_date })
                 }
             })
         },
-        clickCategory (category) {
+        clickCategory (category = this.query.category || '') {
             if (category === this.activeCategory) {
                 category = ''
                 this.playData = {}
@@ -319,7 +369,7 @@ export default {
                     game: query.game_code
                 })
             }
-            this.activeGame = query.game_code || ''
+            this.activeGame = query.game_code = query.game_code || ''
 
             if (this.activeCategory !== query.category && this.activeGame && query.category) {
                 this.getReport({
@@ -328,7 +378,7 @@ export default {
                     category: query.category
                 })
             }
-            this.activeCategory = query.category || ''
+            this.activeCategory = query.category = query.category || ''
 
             if (query.start_date || query.end_date) {
                 this.date = [query.start_date, query.end_date]
@@ -353,6 +403,10 @@ export default {
                 }
                 this.gameList = newList
             }
+        },
+        clearAll () {
+            this.query = {}
+            this.$router.push('/report/game/')
         }
     },
     components: {
@@ -360,48 +414,3 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-.game-name {
-  transition: all .3s ease-in-out;
-  &.active-game, &.active-game:hover {
-    background-color: #d9ead3;
-  }
-
-  &:hover {
-    background-color: #d9ead381;
-  }
-
-  &:active, &.active-game:active {
-    background-color: #c9e0c1;
-  }
-}
-.category-name {
-  transition: all .3s ease-in-out;
-  &.active-category, &.active-category:hover {
-    background-color: #d9ead3;
-  }
-
-  &.not-select {
-    background-color: #d9ead3;
-  }
-
-  &:hover {
-    background-color: #d9ead381;
-  }
-
-  &:active, &.active-category:active {
-    background-color: #c9e0c1;
-  }
-}
-
-.platform-filter {
-  transition: all .3s ease-in-out;
-  &:hover {
-    background-color: #d9ead381;
-  }
-
-  &:active {
-    background-color: #c9e0c1;
-  }
-}
-</style>
