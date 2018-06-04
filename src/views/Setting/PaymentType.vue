@@ -1,27 +1,49 @@
 <template>
 <div>
-    <div class="row" v-if="$root.permissions.includes('update_onlinepayment')">
-        <div class="pull-right m-r">
+    <div class="row m-r-sm m-l-sm" v-if="$root.permissions.includes('update_onlinepayment')">
+        <div class="pull-left">
+            <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': status}"
+            >{{ $t('common.status') }}
+            </label>
+            <label class="sm-check m-r m-b-0">
+                <input class="c-radio" type="radio" value="" v-model="status">
+                <i class="blue m-r-xs"></i>
+                {{ $t('common.show_all') }}
+            </label>
+            <label class="sm-check m-r m-b-0">
+                <input class="c-radio" type="radio" value="1" v-model="status">
+                <i class="blue m-r-xs"></i>
+                <span class="label" :class="{'success': status === '1'}">{{ $t('status.active') }}</span>
+            </label>
+            <label class="sm-check m-r m-b-0">
+                <input class="c-radio" type="radio" value="0" v-model="status">
+                <i class="blue m-r-xs"></i>
+                <span class="label" :class="{'danger': status === '0'}">{{ $t('status.disabled') }}</span>
+            </label>
+        </div>
+        <div class="pull-right">
             <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
             <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
         </div>
     </div>
     <div class="box p-a">
-        <div class="b-b nav-active-blue" v-if="mode" >
+        <div class="b-b nav-active-blue" v-if="mode">
             <ul class="nav nav-tabs m-l" >
-                <li class="nav-item" if="type === 0">
+                <li class="nav-item">
                     <router-link
                         :to="'/paymenttype/?type=0'"
                         class="nav-link _600"
-                        :class="{'active': type === 0 }"
+                        :class="{'active': type === '0' }"
                     >{{ $t('manage.pc') }}
                     </router-link>
                 </li>
-                <li class="nav-item" if="type === 1">
+                <li class="nav-item">
                     <router-link
                         :to="'/paymenttype/?type=1'"
                         class="nav-link _600"
-                        :class="{'active': type === 1 }"
+                        :class="{'active': type === '1' }"
                     >{{ $t('manage.mobile') }}
                     </router-link>
                 </li>
@@ -105,9 +127,9 @@ export default {
     data () {
         return {
             mode: 1,
+            status: this.$route.query.status || '',
             paymentTypes: [],
-            filteredPaymentTypes: [],
-            type: parseInt(this.$route.query.type) || 0,
+            type: this.$route.query.type || '0',
             loading: true,
             toggleLoading: {}
         }
@@ -116,8 +138,31 @@ export default {
         this.getPaymentType()
     },
     watch: {
-        '$route.query.type': function (newType) {
-            this.changeType(parseInt(newType) || 0)
+        '$route.query.type' (newType) {
+            this.type = newType || '0'
+        },
+        '$route.query.status' (newStatus) {
+            this.status = newStatus || ''
+        },
+        status (newStatus) {
+            this.$router.push({
+                path: '/paymenttype',
+                query: {
+                    ...(newStatus && { status: newStatus }),
+                    ...(this.type && { type: this.type })
+                }
+            })
+        }
+    },
+    computed: {
+        filteredPaymentTypes () {
+            return this.paymentTypes
+                .filter(element => element.platform === 2 || parseInt(element.platform) === parseInt(this.type))
+                .filter(element => !this.mode || !this.status || parseInt(element.status) === parseInt(this.status))
+                .sort((a, b) => {
+                    let attribute = this.type ? 'mobile_rank' : 'pc_rank'
+                    return a[attribute] - b[attribute]
+                })
         }
     },
     methods: {
@@ -146,7 +191,7 @@ export default {
                 this.paymentTypes.forEach(paymentType => {
                     paymentType.detail = paymentType.detail.filter(payee => payee.activate)
                 })
-                this.changeType(this.type)
+                this.loading = false
             })
         },
         changeMode () {
@@ -164,26 +209,12 @@ export default {
                         message: error,
                         type: 'danger'
                     })
-                    this.changeType(this.type)
                 })
             }
             this.mode = !this.mode
         },
         cancelAdjustRank () {
             this.mode = !this.mode
-            this.changeType(this.type)
-        },
-        changeType (type) {
-            if (this.mode) {
-                this.type = type
-                this.filteredPaymentTypes = this.paymentTypes
-                .filter(element => element.platform === 2 || element.platform === this.type)
-                .sort((a, b) => {
-                    let attribute = this.type ? 'mobile_rank' : 'pc_rank'
-                    return a[attribute] - b[attribute]
-                })
-                this.loading = false
-            }
         }
     },
     components: {
