@@ -635,10 +635,12 @@
                 if (this.$route.name === 'report_betrecord') {
                     if (query.created_at_0 || query.created_at_1) {
                         this.created_at = [query.created_at_0, query.created_at_1]
+                        this.extra = 'account_type=1,2'
                     } else {
+                        // default date is today
                         this.created_at = [undefined, undefined]
+                        this.extra = `created_at_0=${this.today}&created_at_1=${this.today}&account_type=1,2`
                     }
-                    this.extra = 'account_type=1,2'
                     this.game = query.game_q || ''
                     this.game_category = query.category || ''
                     this.status = query.status || ''
