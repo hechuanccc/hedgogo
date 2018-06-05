@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="row m-r-sm m-l-sm" v-if="$root.permissions.includes('update_onlinepayment')">
-        <div class="pull-left">
+        <div class="pull-left" v-show="mode">
             <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': status}"
@@ -128,8 +128,9 @@ export default {
         return {
             mode: 1,
             status: this.$route.query.status || '',
-            paymentTypes: [],
             type: this.$route.query.type || '0',
+            paymentTypes: [],
+            filteredPaymentTypes: [],
             loading: true,
             toggleLoading: {}
         }
@@ -140,9 +141,11 @@ export default {
     watch: {
         '$route.query.type' (newType) {
             this.type = newType || '0'
+            this.changeType(newType)
         },
         '$route.query.status' (newStatus) {
             this.status = newStatus || ''
+            this.changeType()
         },
         status (newStatus) {
             this.$router.push({
@@ -152,17 +155,6 @@ export default {
                     ...(this.type && { type: this.type })
                 }
             })
-        }
-    },
-    computed: {
-        filteredPaymentTypes () {
-            return this.paymentTypes
-                .filter(element => element.platform === 2 || parseInt(element.platform) === parseInt(this.type))
-                .filter(element => !this.mode || !this.status || parseInt(element.status) === parseInt(this.status))
-                .sort((a, b) => {
-                    let attribute = this.type ? 'mobile_rank' : 'pc_rank'
-                    return a[attribute] - b[attribute]
-                })
         }
     },
     methods: {
@@ -191,6 +183,7 @@ export default {
                 this.paymentTypes.forEach(paymentType => {
                     paymentType.detail = paymentType.detail.filter(payee => payee.activate)
                 })
+                this.changeType()
                 this.loading = false
             })
         },
@@ -210,11 +203,24 @@ export default {
                         type: 'danger'
                     })
                 })
+            } else {
+                this.status = ''
+                this.changeType()
             }
             this.mode = !this.mode
         },
         cancelAdjustRank () {
             this.mode = !this.mode
+        },
+        changeType (type = this.type) {
+            type && (this.type = type)
+            this.filteredPaymentTypes = this.paymentTypes
+                .filter(element => element.platform === 2 || parseInt(element.platform) === parseInt(this.type))
+                .filter(element => !this.mode || !this.status || parseInt(element.status) === parseInt(this.status))
+                .sort((a, b) => {
+                    let attribute = this.type ? 'mobile_rank' : 'pc_rank'
+                    return a[attribute] - b[attribute]
+                })
         }
     },
     components: {
