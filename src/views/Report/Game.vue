@@ -160,7 +160,6 @@
               <td :class="{
                 'text-success': filteredData[index-1].profit > 0,
                 'text-danger': filteredData[index-1].profit < 0,
-                'text-muted': filteredData[index-1].profit === 0
               }" class="text-xs">{{ filteredData[index-1].profit | currency('￥') }}</td>
             </template>
           </tr>
