@@ -43,13 +43,14 @@
                                 </li>
                             </ul>
                         </li>
-                        <li :class="$route.meta.group == 'reporting' ? 'active' : ''">
+                        <li :class="$route.meta.group == 'report' ? 'active' : ''">
                             <a>
                               <span class="nav-icon"><i class="material-icons m-r-xs">&#xe24b;</i>报表管理</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/report/finance_report"><span class="nav-text">{{$t('nav.finance_report')}}</span></router-link></li>
                                 <li><router-link to="/report/member_report"><span class="nav-text">{{$t('nav.member_report')}}</span></router-link></li>
+                                <li><router-link to="/report/game"><span class="nav-text">{{$t('nav.game_report')}}</span></router-link></li>
                             </ul>
                         </li>
 

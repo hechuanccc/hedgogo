@@ -173,6 +173,8 @@
                                             type="checkbox"
                                             v-model="element.enabled"
                                             @change="updateRobot({ mode: 'update', field: 'status' }, 2, Object.assign({}, element, {
+                                                hasAvatar: !!element.user_robot.avatar_url,
+                                                hasAvatarFile: false,
                                                 nickname: element.user_robot.nickname,
                                                 level_name: element.user_robot.level_name,
                                                 day_of_week: `${element.day_of_week}`,
