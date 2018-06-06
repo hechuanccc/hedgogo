@@ -117,8 +117,8 @@
                                     v-model="promotion.end_date"
                                     type="date"
                                     format="yyyy-MM-dd"
+                                    ref="end_date"
                                     :placeholder="`${$t('promotion.end_date')}, ${$t('common.not_required')}`"
-                                    :not-before="promotion.start_date"
                                 />
                             </div>
                             <div class="form-group">
@@ -210,7 +210,16 @@ export default {
             }
 
             if (this.$moment(this.promotion.end_date).isValid()) {
-                this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
+                if (this.$moment(this.promotion.end_date).diff(this.promotion.start_date, 'days') < 0) {
+                    $.notify({
+                        message: this.$t('promotion.end_date_not_before_start_date'),
+                        type: 'danger'
+                    })
+                    this.$refs.end_date.togglePopup()
+                    return
+                } else {
+                    this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
+                }
             } else {
                 this.promotion.end_date = ''
             }

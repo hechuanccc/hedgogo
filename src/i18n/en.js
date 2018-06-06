@@ -902,6 +902,7 @@ export default {
         detail: 'Promotion Detail',
         start_date: 'Start Date',
         end_date: 'End Date',
+        end_date_not_before_start_date: 'End date cannot be earlier than start date.',
         copy_promotion: 'Copy Promotion'
     },
     header: {
