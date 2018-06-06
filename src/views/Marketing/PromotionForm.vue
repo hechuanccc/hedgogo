@@ -110,7 +110,7 @@
                                     format="yyyy-MM-dd"
                                     ref="start_date"
                                     :placeholder="$t('promotion.start_date')"
-                                    :not-before="today"
+                                    :not-before="yesterday"
                                 />
                                 &nbsp;~&nbsp;
                                 <date-picker
@@ -180,7 +180,7 @@ export default {
             hasImage: false,
             hasImageMobile: false,
             selectedPromotion: '',
-            today: Vue.moment().format(format),
+            yesterday: Vue.moment().subtract(1, 'days').format(format),
             loading: false
         }
     },
