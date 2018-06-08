@@ -71,11 +71,11 @@
                         >
                             {{ $t('game_history.draw_date') }}
                         </th>
-                        <th class="text-center" v-if="mode">{{ $t('game_history.period_bet_record') }}</th>
+                        <th class="text-center" :class="{'p-b-md': twoRow}">{{ $t('game_history.period_bet_record') }}</th>
                         <th
                             :width="(game.code === 'bjkl8' || game.code === 'auluck8') ? '360' : ''"
                             :class="{'p-b-md': twoRow}"
-                            v-else
+                            v-if="!mode"
                         >
                             <template
                                 v-for="col in resultCol"
@@ -193,6 +193,7 @@
                     >
                         <td>{{ sched.issue_number }}</td>
                         <td>{{ sched.schedule_result | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td></td>
                         <td v-if="sched.status !== 'cancelled'">
                             <span
                                 class="label btn blue"
@@ -226,11 +227,12 @@
                             <span>{{ result.issue_number }}</span>
                             <br/>
                             <span class="text-muted" v-if="result.is_manual">({{ $t('game_history.manual_draw') }})</span>
+                            <span class="text-muted" v-else-if="result.status && result.status === 'cancelled'">({{ $t(`game_history.${result.status}`) }})</span>
                             <span class="text-muted" v-else-if="result.remarks !== 'manual_draw' && result.remarks !== null">({{ $t(`game_history.${result.remarks}`) }})</span>
                         </td>
                         <td>{{ mode ? result.schedule_result : result.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                        <td v-if="mode">{{ result.bets_count }}</td>
-                        <td v-else-if="result.result_status === 'valid'" class="result-balls">
+                        <td>{{ result.bets_count }}</td>
+                        <td v-if="!mode && result.result_status === 'valid'" class="result-balls">
                             <div v-if="!resultColMode || resultColMode==='ball_num'">
                                 <span
                                     v-show="result.result_str !== undefined"
@@ -303,6 +305,13 @@
                             <span v-show="mode && !$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
                                 -
                             </span>
+                            <span
+                                class="label btn blue"
+                                @click="showModal(result, 'retreat_sched')"
+                                v-if="$root.permissions.includes('retrieve_ongoing_bets') && result.bets_count && result.status !== 'cancelled' && !mode"
+                            >
+                                <b>{{ $t('game_history.retreat_sched') }}</b>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
@@ -317,8 +326,23 @@
                     <span><b>{{ game.display_name }} - {{ $t(`game_history.${modal.mode}`) }}</b></span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
-                <div class="modal-body">
-                    <table st-table="rowCollectionBasic" class="table b-t m-t v-m">
+                <div class="modal-body p-a-md">
+                    <template v-if="modal.mode === 'retreat_sched' && modal.status === 'close'">
+                        <p>
+                            {{ $t('game_history.retreat_sched_sure', {
+                                game: game.display_name,
+                                period: modal.scheduleResult.issue_number
+                            }) }}
+                        </p>
+                        <p v-if="modal.memberAmount">
+                            {{ $t('game_history.current_period') }}
+                            {{ $t('game_history.member_win') }}:
+                            <span class="text-success m-r-sm">{{ modal.memberAmount[0] | currency('￥', 2) }}</span>
+                            {{ $t('game_history.member_lose') }}:
+                            <span class="text-danger">{{ modal.memberAmount[1] | currency('￥', 2) }}</span>
+                        </p>
+                    </template>
+                    <table st-table="rowCollectionBasic" class="table b-t m-t v-m" v-else>
                         <thead>
                             <tr>
                                 <th class="text-center">{{ $t('game_history.periods') }}</th>
@@ -349,6 +373,26 @@
                             </tr>
                         </tbody>
                     </table>
+                    <template v-if="modal.mode === 'retreat_sched' && modal.status === 'close'">
+                        <table class="table b-t m-t v-m">
+                            <thead>
+                                <tr>
+                                    <th>{{ $t('common.member') }}</th>
+                                    <th class="text-right">{{ $t('common.settlementamount') }}</th>
+                                    <th class="text-right">{{ $t('common.settlementbalance') }}</th>
+                                    <th class="text-right">{{ $t('common.settlementretreat') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(betInfo, index) in modal.betsInfo" :key="index">
+                                    <td>{{ betInfo.member }}</td>
+                                    <td :class="betInfo.bets.settled_amount < 0 ? 'text-danger' : 'text-success'" class="text-right">{{ betInfo.bets.settled_amount | currency('￥', 2) }}</td>
+                                    <td class="text-right">{{ betInfo.balance_before | currency('￥', 2) }}</td>
+                                    <td class="text-right">{{ betInfo.balance_after | currency('￥', 2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </template>
                     <div class="m-l m-r">
                         <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
                     </div>
@@ -368,6 +412,11 @@
                             <input type="checkbox" v-model="modal.inform"/>
                             <i class="blue"></i>
                             {{$t('game_history.inform_no_draw')}}
+                        </label>
+                        <label class="check m-l-sm" v-if="modal.betrecords">
+                            <input type="checkbox" v-model="modal.retreat"/>
+                            <i class="blue"></i>
+                            {{$t('game_history.retreat_sched_all')}}
                         </label>
                     </div>
                     <button type="button" class="inline pull-right btn w-xs" @click="hideModal">{{ $t('action.cancel') }}</button>
@@ -452,6 +501,7 @@ export default {
             timeRangeGames: ['hkl', 'fc3d'],
             inputPeriod: '',
             modal: {
+                id: '',
                 isShow: false,
                 mode: '',
                 time: '',
@@ -459,6 +509,7 @@ export default {
                 scheduleResult: {},
                 sureDraw: false,
                 inform: false,
+                retreat: false,
                 msg: '',
                 loading: false
             },
@@ -606,17 +657,28 @@ export default {
                     msg: this.$t(`game_history.${modalMode}_initial_msg`),
                     sureDraw: false,
                     isShow: true,
-                    inform: false
+                    inform: false,
+                    retreat: false
                 })
                 this.$nextTick(() => {
                     this.$refs.alertMsg.trigger('warning')
                 })
             } else if (modalMode === 'retreat_sched') {
-                Object.assign(this.modal, {
-                    mode: modalMode,
-                    time: sched.schedule_result,
-                    scheduleResult: sched,
-                    isShow: true
+                let id = sched.status === 'open' ? sched.id : sched.schedule_id
+                id && this.$http.get(`${api.game.scheduleRetreat}${id}/`).then(data => {
+                    let memberAmount = data.bets_info && data.bets_info
+                        .map(b => [b.win_bets.settled_amount, b.lose_bets.settled_amount])
+                        .reduce((acc, cur) => [cur[0] + acc[0], cur[1] + acc[1]])
+                    Object.assign(this.modal, {
+                        id,
+                        mode: modalMode,
+                        time: sched.schedule_result,
+                        scheduleResult: sched,
+                        isShow: true,
+                        status: data.status,
+                        ...(data.bets_info && { betsInfo: data.bets_info }),
+                        ...(memberAmount && { memberAmount: memberAmount })
+                    })
                 })
             }
         },
@@ -630,12 +692,12 @@ export default {
         },
         retreatSchedule () {
             this.modal.loading = true
-            this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.id}/`, {
-                'status': 'cancelled'
+            this.$http.put(`${api.game.scheduleRetreat}${this.modal.id}/`, {
+                status: this.modal.status === 'close' ? 'force_cancelled' : 'cancelled'
             }).then(data => {
                 this.modal.msg = this.$t('game_history.schedule_cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
-                this.getRetreatedSchedules()
+                this.modal.status === 'open' ? this.getRetreatedSchedules() : this.$refs.pulling.rebase()
                 this.modal.loading = false
             }, error => {
                 this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${error}）`
@@ -646,8 +708,9 @@ export default {
         noDrawHandler () {
             this.modal.loading = true
             this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.game_schedule}/`, {
-                'status': 'no_draw',
-                'inform': this.modal.inform ? 1 : 0
+                status: 'no_draw',
+                inform: this.modal.inform ? 1 : 0,
+                retreat: this.modal.retreat ? 1 : 0
             }).then(data => {
                 this.modal.msg = this.$t('common.setting') + this.$t('status.success')
                 this.$refs.alertMsg.trigger('success', 1, true)
