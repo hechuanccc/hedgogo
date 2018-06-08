@@ -163,6 +163,11 @@
                             <i class="blue"></i>
                             {{ $t('game_history.inform_no_draw') }}
                         </label>
+                        <label class="check m-l-sm" v-if="modal.bets_count">
+                            <input type="checkbox" v-model="modal.retreat"/>
+                            <i class="blue"></i>
+                            {{$t('game_history.retreat_sched_all')}}
+                        </label>
                     </div>
                     <button
                         type="button"
@@ -222,6 +227,8 @@ export default{
                     issue_number: '',
                     result_str: ''
                 },
+                inform: false,
+                retreat: false,
                 msg: '',
                 loading: false
             },
@@ -272,7 +279,8 @@ export default{
                         result_str: ''
                     },
                     sureDraw: 0,
-                    inform: 0,
+                    inform: false,
+                    retreat: false,
                     isShow: true,
                     msg: this.$t(`game_history.${mode}_initial_msg`)
                 }
@@ -313,8 +321,9 @@ export default{
         noDrawHandler () {
             this.modal.loading = true
             this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.game_schedule}/`, {
-                'status': 'no_draw',
-                'inform': this.modal.inform ? 1 : 0
+                status: 'no_draw',
+                inform: this.modal.inform ? 1 : 0,
+                retreat: this.modal.retreat ? 1 : 0
             }).then(data => {
                 this.modal.msg = this.$t('common.setting') + this.$t('status.success')
                 this.$refs.alertMsg.trigger('success', 1, true)
