@@ -296,7 +296,7 @@
         <pulling
             :queryset="queryset"
             :extra="'transaction_type=remit&report_flag=true'"
-            :api="api"
+            :api="url.transaction.bill"
             :query="query"
             :amount="total_amount"
             :export_query="export_query"
@@ -310,7 +310,8 @@
 </div>
 </template>
 <script>
-    import api from '../../api'
+    import url from '../../service/url'
+    import { updateTransaction } from '../../service'
     import DatePicker from 'vue2-datepicker'
     import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
@@ -323,7 +324,6 @@
         data () {
             return {
                 queryset: [],
-                api: api.transaction.bill,
                 query: {},
                 remit_type: '',
                 status: '',
@@ -340,7 +340,8 @@
                     end: date[element][1]
                 })),
                 autoTogglePopup: false,
-                loading: true
+                loading: true,
+                url
             }
         },
         watch: {
@@ -403,7 +404,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report.deposit}?token=${VueCookie.get('access_token')}&report=remit&${this.export_query}`
+                this.href = `${url.report.deposit}?token=${VueCookie.get('access_token')}&report=remit&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {
@@ -470,8 +471,12 @@
                     }
                 }
                 if (transaction.id) {
-                    this.$http.put(api.transaction.bill + transaction.id + '/?opt_expand=bank,updated_by', {
-                        status: status
+                    updateTransaction('bill', {
+                        id: transaction.id,
+                        data: { status },
+                        params: {
+                            opt_expand: 'bank,updated_by'
+                        }
                     }).then(data => {
                         transaction.status = data.status
                         transaction.balance_after = data.balance_after

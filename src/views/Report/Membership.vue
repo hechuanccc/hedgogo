@@ -153,7 +153,7 @@
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
-        :api="api"
+        :api="url"
         ref="pulling"
       />
     </div>
@@ -165,7 +165,7 @@ import DatePicker from 'vue2-datepicker'
 import _ from 'lodash'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import SelectorTransactionType from '../../components/SelectorTransactionType'
 import SelectorGame from '../../components/SelectorGame'
@@ -179,7 +179,7 @@ export default {
     data () {
         return {
             date: ['', ''],
-            api: api.report.membership,
+            url: url.report.membership,
             queryset: [],
             query: {},
             agent: '',
@@ -229,7 +229,7 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}&opt_expand=download_report&${this.export_query}`
+            this.href = `${this.url}?token=${VueCookie.get('access_token')}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
         },
         isQueryEmpty () {

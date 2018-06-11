@@ -121,7 +121,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import api from '../../api'
+import { getMerchant, updateMerchant, adjustPaymentTypeOrder } from '../../service'
 import $ from '../../utils/util'
 export default {
     data () {
@@ -160,8 +160,11 @@ export default {
     methods: {
         toggleStatus (paymentType) {
             this.$set(this.toggleLoading, paymentType.id, true)
-            this.$http.put(api.transaction.paymentType + paymentType.id + '/', {
-                'status': paymentType.status ^ 1
+            updateMerchant('paymentType', {
+                id: paymentType.id,
+                data: {
+                    status: paymentType.status ^ 1
+                }
             }).then(data => {
                 paymentType.status = data.status
                 $.notify({
@@ -178,7 +181,11 @@ export default {
             })
         },
         getPaymentType () {
-            this.$http.get(`${api.transaction.paymentType}?opt_expand=1`).then(data => {
+            getMerchant('paymentType', {
+                params: {
+                    opt_expand: 1
+                }
+            }).then(data => {
                 this.paymentTypes = data
                 this.paymentTypes.forEach(paymentType => {
                     paymentType.detail = paymentType.detail.filter(payee => payee.activate)
@@ -189,10 +196,15 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(`${api.transaction.paymentType}rank/?opt_expand=1`, this.filteredPaymentTypes.map((p, index) => Object({
-                    id: p.id,
-                    [`${this.type ? 'mobile' : 'pc'}_rank`]: index + 1
-                }))).then(data => {
+                adjustPaymentTypeOrder({
+                    data: this.filteredPaymentTypes.map((p, index) => Object({
+                        id: p.id,
+                        [`${this.type ? 'mobile' : 'pc'}_rank`]: index + 1
+                    })),
+                    params: {
+                        opt_expand: 1
+                    }
+                }).then(data => {
                     $.notify({
                         message: this.$t('game_manage.modify_success')
                     })

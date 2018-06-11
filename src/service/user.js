@@ -6,7 +6,7 @@ import url from './url.js'
  * Get user (member, agent, agent application, and staff) information
  * @param {String} type - 'member', 'agent', 'agentApplication', and 'staff'
  */
-export const getUser = (type = '', { id, params }) =>
+export const getUser = (type = '', { id, params } = {}) =>
     axios.get(`${url.user[type]}${id ? (id + '/') : ''}`, { params })
 
 /**
@@ -14,26 +14,25 @@ export const getUser = (type = '', { id, params }) =>
  * Get user (member, agent, agent application, and staff) information
  * @param {String} type - 'member', 'agent', 'agentApplication', and 'staff'
  */
-export const updateUser = (type = '', { id, data, params }) => {
-    return axios({
+export const updateUser = (type = '', { id, data, params } = {}) =>
+    axios({
         method: id ? 'put' : 'post',
         url: `${url.user[type]}${id ? (id + '/') : ''}`,
         data,
         params
     })
-}
 
 /**
  * 快速搜索会员 by username_q
  * Quick search member by username_q
  */
-export const searchMember = (params) => axios.get(url.user.memberSearch, { params })
+export const searchMember = (params = {}) => axios.get(url.user.memberSearch, { params })
 
 /**
  * 确认会员是否存在 by username
  * Check if member exists by username
  */
-export const checkMember = (params) => axios.get(url.user.memberCheck, { params })
+export const checkMember = (params = {}) => axios.get(url.user.memberCheck, { params })
 
 /**
  * 重设会员密码 / 重设会员取款密码

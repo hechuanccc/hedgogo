@@ -236,7 +236,7 @@
                 <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && $root.permissions.includes('manual_confirm_onlinepayment')">
                     <div v-if="transaction.status === 3">
                         <div  v-if="loading"><i class='fa fa-spinner'></i>   <b class="">正在加载中...</b></div>
-                        <button class="btn w-sm md-btn blue" v-else @click="update('onlinepay', 1, true, $event)">{{$t('bill.manual_confirm')}}</button>
+                        <button class="btn w-sm md-btn blue" v-else @click="update('onlinePay', 1, true, $event)">{{$t('bill.manual_confirm')}}</button>
                         <div  v-if="!loading && !errorMsg" class="text-muted m-t-sm">请求状态需要时间，请耐心等待</div>
 
                     </div>
@@ -314,7 +314,7 @@
 </div>
 </template>
 <script>
-import api from '../../api'
+import { getTransaction, updateTransaction, withdrawCheckOrder } from '../../service'
 import $ from '../../utils/util'
 import TransactionStatus from '../../components/TransactionStatus'
 import ModalWithdrawPayee from '../../components/ModalWithdrawPayee'
@@ -357,9 +357,7 @@ export default {
     beforeRouteEnter (to, from, next) {
         next(vm => {
             let id = to.params.id
-            if (id) {
-                vm.getTransaction(id)
-            }
+            id && vm.getTransaction(id)
         })
     },
     methods: {
@@ -380,27 +378,27 @@ export default {
                 }
             }
 
-            let url
-            let routerLink
+            let routerLink = ''
             if (type === 'remit') {
-                url = api.transaction.bill
+                type = 'bill'
                 routerLink = '/bill/remit'
-            } else if (type === 'onlinepay') {
+            } else if (type === 'onlinePay') {
                 this.loading = true
-                url = api.transaction.onlinePay
-            } else {
-                url = api.transaction.withdraw
+            } else if (type === 'withdraw') {
                 routerLink = '/bill/withdraw?status=3'
                 this.member = this.transaction.member.id
                 this.transactiontype = parseInt(this.transaction.transaction_type.id)
             }
 
             if (this.transaction.id) {
-                this.$http.put(url + this.transaction.id + '/', {
-                    status,
-                    memo: this.transaction.memo,
-                    member: this.member,
-                    transaction_type: this.transactiontype
+                updateTransaction(type, {
+                    id: this.transaction.id,
+                    data: {
+                        status,
+                        memo: this.transaction.memo,
+                        member: this.member,
+                        transaction_type: this.transactiontype
+                    }
                 }).then(data => {
                     this.transaction.status = data.status
                     this.loading = false
@@ -416,7 +414,7 @@ export default {
         withdrawCheckOrder (id) {
             if (id) {
                 this.loading = true
-                this.$http.put(api.transaction.withdraw + id + '/refresh/').then(data => {
+                withdrawCheckOrder(id).then(data => {
                     this.loading = false
                     this.transaction = data
                     $.notify({
@@ -429,7 +427,12 @@ export default {
             }
         },
         getTransaction (id) {
-            this.$http.get(api.transaction.bill + id + '/?opt_expand=bank,updated_by').then(data => {
+            getTransaction({
+                id,
+                params: {
+                    opt_expand: 'bank,updated_by'
+                }
+            }).then(data => {
                 this.transaction = data
             })
         },

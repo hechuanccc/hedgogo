@@ -73,8 +73,7 @@
     </div>
 </template>
 <script>
-    import { logout } from '../service'
-    import api from '../api'
+    import { logout, getSystemCount } from '../service'
     import VueCookie from 'vue-cookie'
     import INotify from 'title-notify'
     import axios from 'axios'
@@ -238,7 +237,7 @@
 
                     let userCookie = VueCookie.get('access_token')
                     if (authenticationCookie === userCookie) {
-                        this.$http.get(api.count).then(data => {
+                        getSystemCount().then(data => {
                             if (data) {
                                 this.remit_count = data.remit_count
                                 this.withdraw_count = data.withdraw_count
