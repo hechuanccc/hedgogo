@@ -117,8 +117,9 @@ export default {
         },
         toggleStatus (index, commission) {
             this.$set(this.toggleLoading, index, true)
-            this.$http.put(`${api.report.commission}${commission.id}/`, {
-                status: `${commission.status ^ 1}`
+            this.$http.put(`${api.setting.commission}${commission.id}/`, {
+                name: commission.name,
+                status: commission.status ^ 1
             }).then(data => {
                 commission.status = data.status
                 $.notify({
