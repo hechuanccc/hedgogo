@@ -233,7 +233,7 @@
 </template>
 
 <script>
-import api from '../../api'
+import { getSetting, deleteSetting } from '../../service'
 import $ from '../../utils/util'
 
 export default {
@@ -297,7 +297,7 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(api.setting.memberLevel + id).then(() => {
+            deleteSetting('memberLevel', id).then(() => {
                 this.$router.push('/level')
             }, error => {
                 $.notify({
@@ -307,7 +307,7 @@ export default {
             })
         },
         getLevel (id) {
-            this.$http.get(`${api.setting.memberLevel}${id}/`).then(data => {
+            getSetting('memberLevel', { id }).then(data => {
                 for (let key in data) {
                     this[key] = data[key]
                 }

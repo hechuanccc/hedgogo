@@ -255,8 +255,7 @@
 import VueTypeahead from 'vue-typeahead'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
-import url from '../../service/url'
-import { getUser, updateUser } from '../../service'
+import { getUser, updateUser, getSetting } from '../../service'
 import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
@@ -447,7 +446,7 @@ export default {
             })
         },
         getAgentLevels () {
-            this.$http.get(url.setting.agentLevel).then(data => {
+            getSetting('agentLevel').then(data => {
                 this.agentLevels = data
                 this.agentLevelLoading = false
             }, error => {

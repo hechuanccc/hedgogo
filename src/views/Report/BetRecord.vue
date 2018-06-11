@@ -461,7 +461,7 @@
         </div>
         <div class="row m-b-lg">
             <pulling
-                :api="betApi"
+                :api="url.bet.record"
                 :queryset="queryset"
                 :query="query"
                 :total_bet_amount="total_bet_amount"
@@ -477,6 +477,8 @@
 </template>
 <script>
     import api from '../../api'
+    import { cancelBet } from '../../service'
+    import url from '../../service/url'
     import Pulling from '../../components/Pulling'
     import SelectorGame from '../../components/SelectorGame'
     import DatePicker from 'vue2-datepicker'
@@ -490,7 +492,6 @@
             return {
                 pageSelected: '',
                 queryset: [],
-                betApi: api.bet.record,
                 extra: '',
                 query: {},
                 account_type: true,
@@ -514,7 +515,8 @@
                     start: date[element][0],
                     end: date[element][1]
                 })),
-                loading: true
+                loading: true,
+                url
             }
         },
         created () {
@@ -706,8 +708,9 @@
                     }
                 }
                 if (betrecord.id) {
-                    this.$http.put(api.bet.retreat + betrecord.id + '/', {
-                        status: status
+                    cancelBet({
+                        id: betrecord.id,
+                        data: { status }
                     }).then(data => {
                         betrecord.status = data.status
                     }, error => {

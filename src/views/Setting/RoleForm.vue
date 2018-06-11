@@ -58,7 +58,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getSetting, updateSetting } from '../../service'
 export default {
     data () {
         return {
@@ -87,7 +87,12 @@ export default {
     },
     methods: {
         getRole (id) {
-            this.$http.get(api.setting.role + id + '/?opt_expand=group,permissions').then(data => {
+            getSetting('role', {
+                id,
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
                 this.role = data
                 this.permissions = data.manage_permissiongroup
             })
@@ -99,22 +104,24 @@ export default {
                 manage_permissiongroup: this.selectId[0],
                 permissions: this.selectId[1]
             }
-            if (this.role.id) {
-                this.$http.put(api.setting.role + this.role.id + '/?opt_expand=group,permissions', roleResult).then(data => {
-                    this.$router.push('/roles/' + data.id)
-                }, error => {
-                    this.errorMsg = error
-                })
-            } else {
-                this.$http.post(api.setting.role + '?opt_expand=group,permissions', roleResult).then(data => {
-                    this.$router.push('/roles/' + data.id)
-                }, error => {
-                    this.errorMsg = error
-                })
-            }
+            updateSetting('role', {
+                id: this.role.id,
+                data: roleResult,
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
+                this.$router.push('/roles/' + data.id)
+            }, error => {
+                this.errorMsg = error
+            })
         },
         getPermissionsAll () {
-            this.$http.get(api.setting.permission + '?opt_expand=permissions').then(data => {
+            getSetting('permission', {
+                params: {
+                    opt_expand: 'permissions'
+                }
+            }).then(data => {
                 this.permissions = data
             }, error => {
                 this.errorMsg = error

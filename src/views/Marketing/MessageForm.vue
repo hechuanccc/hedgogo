@@ -52,8 +52,7 @@
     </div>
 </template>
 <script>
-    import api from '../../api'
-    import { checkMember } from '../../service'
+    import { checkMember, updateSetting } from '../../service'
     import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 
     export default {
@@ -78,7 +77,9 @@
                         this.checkMemberHandler()
                         return
                     }
-                    this.$http.post(api.setting.message, this.message).then(() => {
+                    updateSetting('message', {
+                        data: this.message
+                    }).then(() => {
                         this.$router.push('/messages/')
                     }, error => {
                         this.errorMsg = error

@@ -209,6 +209,7 @@
 
 <script>
 import api from '../../api'
+import { getSetting, updateSystemParameter, updateSetting } from '../../service'
 import $ from '../../utils/util'
 const defaultChatroomID = 100000
 
@@ -237,7 +238,11 @@ export default {
     },
     methods: {
         getPreferences () {
-            this.$http.get(`${api.setting.parameter}?settings=chatroom`).then(data => {
+            getSetting('parameter', {
+                params: {
+                    settings: 'chatroom'
+                }
+            }).then(data => {
                 this.preferences = data
                 this.preferences.forEach(e => {
                     this.typeTransform(e)
@@ -261,7 +266,7 @@ export default {
             }
         },
         getChatrooms () {
-            this.$http.get(`${api.setting.chatroom}`).then(data => {
+            getSetting('chatroom').then(data => {
                 // Find default chatroom and put it to the 1st place.
                 let defaultChatroom = data.findIndex(c => c.id === defaultChatroomID)
                 if (defaultChatroom >= 0) {
@@ -281,9 +286,12 @@ export default {
         },
         toggleStatus (index, chatroom) {
             this.$set(this.toggleLoading, index, true)
-            this.$http.put(`${api.setting.chatroom}${chatroom.id}/`, {
-                title: chatroom.title,
-                status: chatroom.status ^ 1
+            updateSetting('chatroom', {
+                id: chatroom.id,
+                data: {
+                    title: chatroom.title,
+                    status: chatroom.status ^ 1
+                }
             }).then(data => {
                 chatroom.status = data.status
                 $.notify({
@@ -346,7 +354,10 @@ export default {
             } else {
                 result.value = value
             }
-            this.$http.patch(`${api.setting.parameter}${key}/`, result).then(data => {
+            updateSystemParameter({
+                key,
+                data: result
+            }).then(data => {
                 $.notify({
                     message: this.$t('action.update') + this.$t('status.success')
                 })

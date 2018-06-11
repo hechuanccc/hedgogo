@@ -32,24 +32,22 @@
         <div class="row m-b-lg">
             <pulling
                 :queryset="messages"
-                :api="messageApi"
-                :query="query"
-                ref="pulling"
+                :api="url.setting.message"
+                :query="{}"
                 @query-data="queryData"
-                @query-param="queryParam"
+                ref="pulling"
             />
         </div>
     </div>
 </template>
 <script>
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 export default {
     data () {
         return {
-            messageApi: api.setting.message,
-            messages: [{}],
-            query: {}
+            messages: [],
+            url
         }
     },
     created () {
@@ -63,9 +61,6 @@ export default {
         },
         queryData (queryset) {
             this.messages = queryset
-        },
-        queryParam (query) {
-            this.query = query
         }
     },
     components: {

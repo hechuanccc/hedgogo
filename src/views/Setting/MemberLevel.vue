@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import api from '../../api'
+import { getSetting } from '../../service'
 
 export default {
     data () {
@@ -103,16 +103,14 @@ export default {
         }
     },
     created () {
-        this.getLevels()
-    },
-    methods: {
-        getLevels () {
-            // account type === 1 is for filtering trial account ( 试玩会员 )
-            this.$http.get(`${api.setting.memberLevel}?account_type=1`).then(data => {
-                this.levels = data
-                this.loading = false
-            })
-        }
+        getSetting('memberLevel', {
+            params: {
+                account_type: 1
+            }
+        }).then(data => {
+            this.levels = data
+            this.loading = false
+        })
     }
 }
 </script>

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getSetting } from '../service'
 export default {
     props: ['bank', 'req'],
     data () {
@@ -26,13 +26,10 @@ export default {
     },
     created () {
         this.$nextTick(() => {
-            let _this = this
-            _this.$http.get(api.setting.bank).then(data => {
-                _this.banks = data
+            getSetting('bank').then(data => {
+                this.banks = data
+                this.myBank = this.bank
             })
-            setTimeout(function () {
-                _this.myBank = _this.bank
-            }, 1500)
         })
     }
 }

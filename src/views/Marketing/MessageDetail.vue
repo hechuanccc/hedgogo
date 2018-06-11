@@ -41,7 +41,7 @@
     </div>
 </template>
 <script>
-    import api from '../../api'
+    import { getSetting } from '../../service'
 
     export default {
         data () {
@@ -60,15 +60,13 @@
         beforeRouteEnter (to, from, next) {
             next(vm => {
                 let id = to.params.messagesId
-                if (id) {
-                    vm.getMessage(id)
-                }
+                id && vm.getMessage(id)
             })
         },
         methods: {
             getMessage (id) {
-                this.$http.get(api.setting.message + id + '/').then(data => {
-                    this.message = data
+                getSetting('message', { id }).then(data => {
+                    Object.assign(this.message, data)
                 })
             }
         }
