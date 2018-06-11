@@ -558,6 +558,7 @@ export default {
         max_per_bet: 'highest Amount Per Bet',
         max_per_draw: 'highest Amount Currently',
         return_rate: 'Return Rate',
+        standard_odds: 'Standerd Odds',
         odds: 'Odds',
         issue_number: 'Issue Number',
         setting_holiday: 'Set Holiday',
