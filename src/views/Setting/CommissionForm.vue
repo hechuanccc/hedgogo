@@ -73,6 +73,7 @@
                         <div class="col-xs-3 col-xs-offset-1 p-t-sm">{{ $t('commission.commission_rate') }}</div>
                         <div class="col-xs-3 col-xs-offset-1 text-center" v-if="updateCommissionSettingPermission">
                             <button
+                                type="button"
                                 class="btn btn-sm w-xs grey-600"
                                 @click="addConfig"
                             >
