@@ -127,7 +127,6 @@
                                 <li><router-link to="/online_payer"><span class="nav-text">{{$t("nav.setting_online_payer")}}</span></router-link></li>
                                 <li><router-link to="/remit_payee"><span class="nav-text">{{$t("nav.setting_remit_payee")}}</span></router-link></li>
                                 <li><router-link to="/commission"><span class="nav-text">{{$t("nav.setting_commission")}}</span></router-link></li>
-                                <!-- <li><router-link to="/envelope_settings"><span class="nav-text">{{$t("nav.envelope_setting")}}</span></router-link></li> -->
                             </ul>
                         </li>
 
@@ -154,7 +153,6 @@
                                 <span class="nav-icon"><i class="material-icons m-r-xs">&#xE051;</i>运营管理</span>
                             </a>
                             <ul class="nav-sub">
-                                <!-- <li><router-link to="/envelope"><span class="nav-text">{{$t("nav.envelope")}}</span></router-link></li> -->
                                 <li><router-link to="/messages"><span class="nav-text">{{$t("nav.message")}}</span></router-link></li>
                                 <li><router-link to="/promotion"><span class="nav-text">{{$t("nav.promotion")}}</span></router-link></li>
                                 <li><router-link to="/banner"><span class="nav-text">{{$t("nav.title_banner")}}</span></router-link></li>

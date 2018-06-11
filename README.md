@@ -64,10 +64,6 @@ npm run build --report
     │   ├──Marketing
     │   │   ├──Announcement.vue
     │   │   ├──Banner.vue
-    │   │   ├──Envelope.vue
-    │   │   ├──EnvelopeConfig.vue
-    │   │   ├──EnvelopeConfigForm.vue
-    │   │   ├──EnvelopeForm.vue
     │   │   ├──Message.vue
     │   │   ├──MessageDetail.vue
     │   │   ├──MessageForm.vue
