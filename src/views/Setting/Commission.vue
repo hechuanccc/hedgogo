@@ -120,7 +120,8 @@ export default {
             updateSetting('commission', {
                 id: commission.id,
                 data: {
-                    status: `${commission.status ^ 1}`
+                    name: commission.name,
+                    status: commission.status ^ 1
                 }
             }).then(data => {
                 commission.status = data.status
