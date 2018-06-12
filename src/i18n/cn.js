@@ -558,6 +558,7 @@ export default {
         max_per_bet: '单注最高金额',
         max_per_draw: '当期最高金额',
         return_rate: '反水',
+        standard_odds: '标准赔率',
         odds: '赔率',
         issue_number: '发行数量',
         setting_holiday: '设置公休开始结束时间',

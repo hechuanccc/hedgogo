@@ -97,8 +97,7 @@
     </div>
 </template>
 <script>
-import { getUser, updateUser } from '../../service'
-import url from '../../service/url'
+import { getUser, updateUser, getSetting } from '../../service'
 
 export default {
     data () {
@@ -174,7 +173,11 @@ export default {
             })
         },
         getRoles () {
-            this.$http.get(url.setting.role + '?opt_expand=group,permissions').then(data => {
+            getSetting('role', {
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
                 this.roles = data
             }, error => {
                 this.errorMsg = error

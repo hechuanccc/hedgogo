@@ -13,22 +13,24 @@
                         <thead class="text-center">
                             <tr>
                                 <th width="20%"></th>
-                                <th width="16%">{{ $t('game_manage.odds') }}</th>
-                                <th width="16%">{{ $t('game_manage.return_rate') }}</th>
-                                <th width="16%">{{ $t('game_manage.min_per_bet') }}</th>
-                                <th width="16%">{{ $t('game_manage.max_per_bet') }}</th>
-                                <th width="16%">{{ $t('game_manage.max_per_draw') }}</th>
+                                <th width="10%">{{ $t('game_manage.standard_odds') }}</th>
+                                <th width="10%">{{ $t('game_manage.odds') }}</th>
+                                <th width="15%">{{ $t('game_manage.return_rate') }}</th>
+                                <th width="15%">{{ $t('game_manage.min_per_bet') }}</th>
+                                <th width="15%">{{ $t('game_manage.max_per_bet') }}</th>
+                                <th width="15%">{{ $t('game_manage.max_per_draw') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="playset in playsetOrderByName" :key="playset.id">
-                                <td>
+                                <td class="text-left">
                                     <strong>{{ playset.display_name }}</strong>
                                 </td>
+                                <td class="text-center">{{ playset.standard_odds || '-' }}</td>
                                 <td>
                                     <div class="form-group m-b-0">
                                         <input
-                                            class="form-control"
+                                            class="form-control text-right"
                                             type="number"
                                             step="0.0001"
                                             min="0"
@@ -42,7 +44,7 @@
                                 <td>
                                     <div class="input-group m-b-0">
                                         <input
-                                            class="form-control"
+                                            class="form-control text-right"
                                             type="number"
                                             step="0.01"
                                             min="0"
@@ -50,14 +52,14 @@
                                             @change="changeField(playset)"
                                             required :disabled="!updatePlaysetDetailsPermission"
                                         />
-                                        <span class="input-group-addon"><b>%</b></span>
+                                        <span class="input-group-addon">%</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
-                                        <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+                                        <span class="input-group-addon">￥</span>
                                         <input
-                                            class="form-control"
+                                            class="form-control text-right"
                                             type="number"
                                             min="0"
                                             v-model="playset.min_per_bet"
@@ -68,9 +70,9 @@
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
-                                        <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+                                        <span class="input-group-addon">￥</span>
                                         <input
-                                            class="form-control"
+                                            class="form-control text-right"
                                             type="number"
                                             min="0"
                                             v-model="playset.max_per_bet"
@@ -82,9 +84,9 @@
                                 </td>
                                 <td>
                                     <div class="input-group m-b-0">
-                                        <span class="input-group-addon"><i class="fa fa-rmb"></i></span>
+                                        <span class="input-group-addon">￥</span>
                                         <input
-                                            class="form-control"
+                                            class="form-control text-right"
                                             type="number"
                                             min="0"
                                             v-model="playset.max_per_draw"
@@ -113,7 +115,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getGame, updateGame } from '../../service'
 export default {
     data () {
         return {
@@ -150,11 +152,9 @@ export default {
         })
     },
     methods: {
-        getPlaySet (id) {
-            this.$http.get(api.game.playset, {
-                params: {
-                    game: id
-                }
+        getPlaySet (game) {
+            getGame('playset', {
+                params: { game }
             }).then(data => {
                 this.playsets = data
             })
@@ -164,7 +164,12 @@ export default {
         },
         updatePlayset () {
             if (this.updatedPlaysets.length > 0) {
-                this.$http.post(`${api.game.playset}?game=${this.game.id}`, this.updatedPlaysets).then(data => {
+                updateGame('playset', {
+                    data: this.updatedPlaysets,
+                    params: {
+                        game: this.game.id
+                    }
+                }).then(data => {
                     this.successMsg = `${this.$t('game_manage.modify_success')}`
                     setTimeout(() => {
                         this.successMsg = ''

@@ -405,8 +405,7 @@
 import VueTypeahead from 'vue-typeahead'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
-import url from '../../service/url'
-import { getUser, updateUser } from '../../service'
+import { getUser, updateUser, getSetting } from '../../service'
 import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
@@ -513,11 +512,6 @@ export default {
         bank (val) {
             this.agent.bank.bank = val
         },
-        getLevels () {
-            this.$http.get(url.setting.memberLevel).then(data => {
-                this.levels = data
-            })
-        },
         onSubmit (e) {
             let agent = Object.assign({}, this.agent)
             if (agent.birthday) {
@@ -583,7 +577,7 @@ export default {
             })
         },
         getAgentLevels () {
-            this.$http.get(url.setting.agentLevel).then(data => {
+            getSetting('agentLevel').then(data => {
                 this.agentLevels = data
                 this.agentLevelLoading = false
             }, error => {

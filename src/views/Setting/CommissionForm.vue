@@ -73,6 +73,7 @@
                         <div class="col-xs-3 col-xs-offset-1 p-t-sm">{{ $t('commission.commission_rate') }}</div>
                         <div class="col-xs-3 col-xs-offset-1 text-center" v-if="updateCommissionSettingPermission">
                             <button
+                                type="button"
                                 class="btn btn-sm w-xs grey-600"
                                 @click="addConfig"
                             >
@@ -130,13 +131,12 @@
 </div>
 </template>
 <script>
-import api from '../../api'
+import { getSetting, updateSetting, deleteSetting } from '../../service'
 import $ from '../../utils/util'
 
 export default {
     data () {
         return {
-            api: api.setting.commission,
             id: '',
             commissionsetting: {
                 name: '',
@@ -173,7 +173,7 @@ export default {
     },
     methods: {
         getCommissionSetting (id) {
-            this.$http.get(this.api + id).then(data => {
+            getSetting('commission', { id }).then(data => {
                 data.groups && data.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
                 Object.assign(this.commissionsetting, data)
                 this.addConfig()
@@ -215,9 +215,8 @@ export default {
             this.$delete(data, 'rates')
             this.$delete(data, 'member_num')
             this.loading = true
-            this.$http({
-                method: this.commissionsetting.id ? 'put' : 'post',
-                url: `${this.api}${this.id && this.id + '/'}`,
+            updateSetting('commission', {
+                id: this.id,
                 data
             }).then(data => {
                 $.notify({
@@ -235,7 +234,7 @@ export default {
         },
         deleteCommission () {
             this.deleteLoading = true
-            this.$http.delete(this.api + this.commissionsetting.id + '/').then(() => {
+            deleteSetting('commission', this.commissionsetting.id).then(() => {
                 this.deleteMode = false
                 $.notify({
                     message: this.$t('action.delete') + this.$t('status.success')

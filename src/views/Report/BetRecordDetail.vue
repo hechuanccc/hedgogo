@@ -118,7 +118,7 @@
 </template>
 
 <script>
-    import api from '../../api'
+    import { getBetRecord } from '../../service'
     import Vue from 'vue'
 
     const format = 'YYYY-MM-DD'
@@ -138,7 +138,12 @@
         },
         methods: {
             getBetRecord (id) {
-                this.$http.get(api.bet.record + id + '/?opt_expand=details').then(data => {
+                getBetRecord({
+                    id,
+                    params: {
+                        opt_expand: 'details'
+                    }
+                }).then(data => {
                     this.betrecords = data
                 })
             },

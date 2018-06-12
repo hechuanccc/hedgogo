@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getGame } from '../service'
 export default {
     props: {
         req: {
@@ -55,7 +55,11 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.game.list}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
+        getGame('list', {
+            params: {
+                opt_fields: `${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`
+            }
+        }).then(data => {
             this.games = data
         })
         this.myGame = this.game

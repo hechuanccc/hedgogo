@@ -157,7 +157,7 @@
                 :query="query"
                 @query-data="queryData"
                 @query-param="queryParam"
-                :api="actionrecordApi"
+                :api="url.log.action"
                 ref="pulling"
             />
         </div>
@@ -166,7 +166,7 @@
 
 <script>
 import DatePicker from 'vue2-datepicker'
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import date from '../../utils/date'
 import _ from 'lodash'
@@ -175,7 +175,6 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            actionrecordApi: api.log.action,
             action_time: ['', ''],
             query: {},
             queryset: [],
@@ -188,7 +187,8 @@ export default {
                 start: date[element][0],
                 end: date[element][1]
             })),
-            loading: true
+            loading: true,
+            url
         }
     },
     created () {

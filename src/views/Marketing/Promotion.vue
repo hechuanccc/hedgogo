@@ -21,7 +21,7 @@
                         <th>{{$t('common.status')}}</th>
                     </tr>
                 </thead>
-                    <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
+                <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
                     <tr v-for="promotion in queryset" :key="promotion.id">
                         <td v-show="!mode" class="v-m text-center"><i class="fa fa-reorder text-blue"></i></td>
                         <td><router-link :to="'/promotion/' + promotion.id">{{promotion.name}}</router-link></td>
@@ -35,13 +35,13 @@
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
                         </td>
                     </tr>
-                    </draggable>
+                </draggable>
             </table>
         </div>
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getSetting, updateSetting } from '../../service'
 import draggable from 'vuedraggable'
 import $ from '../../utils/util'
 
@@ -49,7 +49,6 @@ export default {
     data () {
         return {
             mode: true,
-            api: api.setting.promotion,
             queryset: []
         }
     },
@@ -58,16 +57,25 @@ export default {
     },
     methods: {
         getPromotions () {
-            this.$http.get(this.api + '?opt_expand=level').then(data => {
+            getSetting('promotion', {
+                params: {
+                    opt_expand: 'level'
+                }
+            }).then(data => {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
             })
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(`${this.api}rank/?opt_expand=level`, this.queryset.map((element, index) => Object({
-                    id: element.id,
-                    rank: index + 1
-                }))).then(data => {
+                updateSetting('promotionRank', {
+                    data: this.queryset.map((element, index) => Object({
+                        id: element.id,
+                        rank: index + 1
+                    })),
+                    params: {
+                        opt_expand: 'level'
+                    }
+                }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })

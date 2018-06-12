@@ -81,7 +81,7 @@
 </div>
 </template>
 <script>
-import api from '../../api'
+import { getSetting, updateSetting } from '../../service'
 import $ from '../../utils/util'
 export default {
     data () {
@@ -94,11 +94,11 @@ export default {
         }
     },
     created () {
-        this.getCommissionsetting()
+        this.getCommissionSetting()
     },
     methods: {
-        getCommissionsetting () {
-            this.$http.get(api.setting.commission).then(data => {
+        getCommissionSetting () {
+            getSetting('commission').then(data => {
                 data.forEach(c => {
                     c.groups && c.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
                     Object.assign(c, c.groups[0], {
@@ -117,8 +117,12 @@ export default {
         },
         toggleStatus (index, commission) {
             this.$set(this.toggleLoading, index, true)
-            this.$http.put(`${api.setting.commission}${commission.id}/`, {
-                status: `${commission.status ^ 1}`
+            updateSetting('commission', {
+                id: commission.id,
+                data: {
+                    name: commission.name,
+                    status: commission.status ^ 1
+                }
             }).then(data => {
                 commission.status = data.status
                 $.notify({
