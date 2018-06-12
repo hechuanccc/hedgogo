@@ -287,7 +287,7 @@
                                 <div class="pull-left m-r-xs">
                                     <label
                                         class="form-control-label p-b-0"
-                                        :class="{'text-blue': query.issue_number}"
+                                        :class="{'text-blue': period}"
                                     >{{ $t('common.refresh_period') }}
                                     </label>
                                     <select
@@ -295,10 +295,10 @@
                                         v-model="period"
                                         style="display: block;"
                                     >
-                                        <option value="5000">{{ $t('betrecord.five_seconds') }}</option>
-                                        <option value="10000">{{ $t('betrecord.ten_seconds') }}</option>
-                                        <option value="30000">{{ $t('betrecord.thirty_seconds') }}</option>
-                                        <option value="60000">{{ $t('betrecord.sixty_seconds') }}</option>
+                                        <option value="5000">{{ $t('common.seconds', { number: 5 }) }}</option>
+                                        <option value="10000">{{ $t('common.seconds', { number: 10 }) }}</option>
+                                        <option value="30000">{{ $t('common.seconds', { number: 30 }) }}</option>
+                                        <option value="60000">{{ $t('common.seconds', { number: 60 }) }}</option>
                                     </select>
                                 </div>
                                 <div class="pull-left m-r-xs">
