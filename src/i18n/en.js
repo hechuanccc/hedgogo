@@ -406,7 +406,8 @@ export default {
         click_submit_and_clear: 'Please click submit button and save.',
         server_error: 'An error occured. Please try again later.',
         accurate_search: 'Accurate',
-        manager: 'Manager'
+        manager: 'Manager',
+        seconds: '{number} seconds'
     },
     bank: {
         bank_title: 'Bank Information',
@@ -442,10 +443,6 @@ export default {
         total_profit: 'Total Profit',
         total_bet_amount: 'Total Bet Amount',
         game_selection: 'Game Selection',
-        five_seconds: '5 seconds',
-        ten_seconds: '10 seconds',
-        thirty_seconds: '30 seconds',
-        sixty_seconds: '60 seconds',
         cancel_bet: 'Cancel Bet',
         cancelled_bet: 'Cancelled Bet',
         total_valid_bet_record: 'Total Valid Bet Records',
