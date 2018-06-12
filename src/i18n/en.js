@@ -317,6 +317,8 @@ export default {
         valid_bet_amount: 'Valid Bet Amount',
         betdate: 'Bet Date',
         settlementamount: 'Settlement Amount',
+        settlementbalance: 'Settlement Balance',
+        settlementretreat: 'After Retreat',
         transferred_at: 'Transferred at',
         provider: 'Provider',
         deposit: 'Deposit',
@@ -375,12 +377,13 @@ export default {
             label: {
                 amount: 'Bet Amount',
                 betrecord_count: 'Bet Record Count',
+                bet_amount: 'Bet Amount',
                 profit: 'Profit',
                 register_count: 'Register Count'
             },
             title: {
                 amount: 'Bet Amount of past 7 days',
-                betrecord_count: 'Bet Record Count of past 7 days',
+                game: 'Game Activity of past 7 days',
                 profit: 'Profit of Agent over the past 7 days',
                 register_count: 'Register Count of past 7 days'
             }
@@ -594,12 +597,18 @@ export default {
         memo: 'Memo',
         no_draw: 'No draw',
         ongoing: 'Ongoing',
-        retreat_sched_sure: 'Are you sure to retreat schedule?',
+        retreat_sched_sure: 'Are you sure to retreat all {game} {period} settled bets?',
         retreat_sched: 'Retreat Schedule',
+        retreat_sched_all: 'Retreat all bets this period.',
         retreat_sched_fail: 'Fail to retreat schedule!',
+        affect_member_list: 'Influencing Member List',
+        current_period: 'Current period',
+        member_win: 'member win',
+        member_lose: 'member lose',
         created: 'Created',
         open: 'Open',
         schedule_cancelled: 'Cancelled',
+        cancelled: 'Canceled',
         operating: 'Operating',
         try_later: 'Please try later',
         abnormal_period: 'Abnormal Period',
@@ -805,6 +814,16 @@ export default {
         sum_fund: 'Sum Fund.'
     },
     report: {
+        game: {
+            title: 'Game Report',
+            amount: 'Bet Amount',
+            member_count: 'Player Count',
+            avg_amount: 'Average Bet Amount',
+            profit: 'Profit',
+            category: 'Category',
+            play: 'Play',
+            dimension_displaying: 'Dimension Displaying'
+        },
         number_login: 'No.',
         no_record_found: 'No Record Found, Specify a New Query',
         bet_record_number: 'Bet Record ID',
@@ -891,6 +910,7 @@ export default {
         detail: 'Promotion Detail',
         start_date: 'Start Date',
         end_date: 'End Date',
+        end_date_not_before_start_date: 'End date cannot be earlier than start date.',
         copy_promotion: 'Copy Promotion'
     },
     header: {

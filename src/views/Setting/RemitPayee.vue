@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import api from '../../api'
+import { getMerchant, updateMerchant } from '../../service'
 export default {
     data () {
         return {
@@ -96,7 +96,13 @@ export default {
         }
     },
     created () {
-        this.getPayees()
+        getMerchant('remitPayee', {
+            params: {
+                opt_expand: 1
+            }
+        }).then(data => {
+            this.payees = data
+        })
     },
     computed: {
         updateRemitAccountStatus () {
@@ -105,15 +111,13 @@ export default {
     },
     methods: {
         toggleStatus (payee) {
-            this.$http.put(api.transaction.remitPayee + payee.id + '/', {
-                'status': payee.status === 0 ? 1 : 0
+            updateMerchant('remitPayee', {
+                id: payee.id,
+                data: {
+                    status: payee.status ^ 1
+                }
             }).then(data => {
                 payee.status = data.status
-            })
-        },
-        getPayees () {
-            this.$http.get(api.transaction.remitPayee + '?opt_expand=1').then(data => {
-                this.payees = data
             })
         }
     }

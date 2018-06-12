@@ -508,6 +508,7 @@
                 total_bet_amount: '',
                 today: date.today[0],
                 yesterday: date.yesterday[0],
+                defaultDate: [],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                     text: this.$t(`common.${element}`),
                     start: date[element][0],
@@ -517,6 +518,7 @@
             }
         },
         created () {
+            this.defaultDate = [this.today, this.today]
             this.getGameList()
             this.getPageAccessed()
             this.rebase()
@@ -567,7 +569,11 @@
                 deep: true
             },
             created_at (newObj) {
-                [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                if (`${newObj}` === `${this.defaultDate}`) {
+                    [this.query.created_at_0, this.query.created_at_1] = [undefined, undefined]
+                } else {
+                    [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                }
                 this.submit()
             },
             period (newObj, old) {
@@ -635,10 +641,12 @@
                 if (this.$route.name === 'report_betrecord') {
                     if (query.created_at_0 || query.created_at_1) {
                         this.created_at = [query.created_at_0, query.created_at_1]
+                        this.extra = 'account_type=1,2'
                     } else {
-                        this.created_at = [undefined, undefined]
+                        // default date is today
+                        this.created_at = [this.today, this.today]
+                        this.extra = `created_at_0=${this.today}&created_at_1=${this.today}&account_type=1,2`
                     }
-                    this.extra = 'account_type=1,2'
                     this.game = query.game_q || ''
                     this.game_category = query.category || ''
                     this.status = query.status || ''

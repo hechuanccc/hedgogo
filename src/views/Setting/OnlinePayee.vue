@@ -1,7 +1,29 @@
 <template>
     <div>
-        <div class="p-b" v-if="$root.permissions.includes('add_online_payee')" >
+        <div class="p-b inline m-r-sm" v-if="$root.permissions.includes('add_online_payee')" >
             <router-link tag="button" class="md-btn blue" to="/online_payee/add">{{$t('setting.create_online_payee')}}</router-link>
+        </div>
+        <div class="inline">
+            <label
+                class="form-control-label p-b-0 p-t-0"
+                :class="{'text-blue': status}"
+            >{{ $t('common.status') }}
+            </label>
+            <label class="sm-check m-r m-b-0">
+                <input class="c-radio" type="radio" value="" v-model="status">
+                <i class="blue m-r-xs"></i>
+                {{ $t('common.show_all') }}
+            </label>
+            <label class="sm-check m-r m-b-0">
+                <input class="c-radio" type="radio" value="1" v-model="status">
+                <i class="blue m-r-xs"></i>
+                <span class="label" :class="{'success': status === '1'}">{{ $t('status.active') }}</span>
+            </label>
+            <label class="sm-check m-r m-b-0">
+                <input class="c-radio" type="radio" value="0" v-model="status">
+                <i class="blue m-r-xs"></i>
+                <span class="label" :class="{'danger': status === '0'}">{{ $t('status.disabled') }}</span>
+            </label>
         </div>
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped">
@@ -16,7 +38,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="payee in online_payees" :key="payee.id">
+                    <tr v-for="payee in filteredOnlinePayee" :key="payee.id">
                         <td><router-link :to="'/online_payee/' + payee.id">{{payee.name}}</router-link></td>
                         <td>￥{{payee.sum_fund || 0}}</td>
                         <td>{{payee.expired_in}}</td>
@@ -45,27 +67,50 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getMerchant, updateMerchant } from '../../service'
 export default {
     data () {
         return {
-            'online_payees': []
+            status: this.$route.query.status || '',
+            onlinePayee: []
         }
     },
     created () {
-        this.getPayees()
+        getMerchant('onlinePayee', {
+            params: {
+                opt_expand: 1
+            }
+        }).then(data => {
+            this.onlinePayee = data.sort((a, b) => a.id - b.id)
+        })
+    },
+    watch: {
+        '$route.query.status' (newStatus) {
+            this.status = newStatus || ''
+        },
+        status (newStatus) {
+            this.$router.push({
+                path: '/online_payee',
+                query: {
+                    ...(newStatus && { status: newStatus })
+                }
+            })
+        }
+    },
+    computed: {
+        filteredOnlinePayee () {
+            return this.onlinePayee.filter(p => !this.status || parseInt(p.status) === parseInt(this.status))
+        }
     },
     methods: {
         toggleStatus (payee) {
-            this.$http.put(api.transaction.onlinePayee + payee.id + '/', {
-                'status': payee.status === 0 ? 1 : 0
+            updateMerchant('onlinePayee', {
+                id: payee.id,
+                data: {
+                    status: payee.status ^ 1
+                }
             }).then(data => {
                 payee.status = data.status
-            })
-        },
-        getPayees () {
-            this.$http.get(api.transaction.onlinePayee + '?opt_expand=1').then(data => {
-                this.online_payees = data.sort((a, b) => a.id - b.id)
             })
         }
     }

@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getMerchant, updateMerchant } from '../../service'
 import $ from '../../utils/util'
 export default {
     data () {
@@ -49,14 +49,20 @@ export default {
         }
     },
     created () {
-        this.getPayers()
+        getMerchant('onlinePayer').then(data => {
+            this.onlinePayers = data
+            this.loading = false
+        })
     },
     methods: {
         toggleStatus (payer) {
-            this.$http.put(`${api.transaction.onlinePayer}${payer.id}/`, Object.assign({}, payer, {
-                status: payer.status ^ 1,
-                withdraw_gateway: payer.withdraw_gateway.id
-            })).then(data => {
+            updateMerchant('onlinePayer', {
+                id: payer.id,
+                data: Object.assign({}, payer, {
+                    status: payer.status ^ 1,
+                    withdraw_gateway: payer.withdraw_gateway.id
+                })
+            }).then(data => {
                 $.notify({
                     message: this.$t('action.update') + this.$t('status.success')
                 })
@@ -66,12 +72,6 @@ export default {
                     message: error,
                     type: 'danger'
                 })
-            })
-        },
-        getPayers () {
-            this.$http.get(api.transaction.onlinePayer).then(data => {
-                this.onlinePayers = data
-                this.loading = false
             })
         }
     }

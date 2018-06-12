@@ -40,6 +40,8 @@ export default {
         commission: managePrefix + 'report/agent/profit/',
         deposit: managePrefix + 'report/deposit/',
         finance: managePrefix + 'report/assets/finance/',
+        game: managePrefix + 'report/game/',
+        general: managePrefix + 'report/general/',
         member: managePrefix + 'report/member/',
         membership: managePrefix + 'report/count/membership/',
         onlinepay: managePrefix + 'report/online_pay/',

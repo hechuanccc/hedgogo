@@ -51,7 +51,7 @@ export default {
             default: ''
         },
         extra: {
-            default: '',
+            default: () => {},
             type: Object
         }
     },

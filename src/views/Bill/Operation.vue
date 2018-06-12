@@ -204,7 +204,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { manuallyAdjust } from '../../service'
 import $ from '../../utils/util'
 
 export default {
@@ -236,7 +236,7 @@ export default {
             this.loading = true
             this.transaction.is_compensation = this.compensation === 1
 
-            this.$http.post(api.transaction.manulAdjust, this.transaction).then(data => {
+            manuallyAdjust(this.transaction).then(data => {
                 this.loading = false
                 this.$router.push('/transaction/' + data.id)
                 $.notify({

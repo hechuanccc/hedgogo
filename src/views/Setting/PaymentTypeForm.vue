@@ -102,7 +102,7 @@
 </div>
 </template>
 <script>
-import api from '../../api'
+import { getMerchant, updateMerchant } from '../../service'
 import $ from '../../utils/util'
 
 export default {
@@ -132,9 +132,7 @@ export default {
     beforeRouteEnter (to, from, next) {
         next(vm => {
             let id = to.params.id
-            if (id) {
-                vm.getPaymentType(id)
-            }
+            id && vm.getPaymentType(id)
         })
     },
     watch: {
@@ -158,7 +156,10 @@ export default {
                     formData.append('icon', '')
                 }
                 this.loading = true
-                this.$http.put(api.transaction.paymentType + this.payment.id + '/', formData).then(() => {
+                updateMerchant('paymentType', {
+                    id: this.payment.id,
+                    data: formData
+                }).then(() => {
                     this.loading = false
                     this.$router.push('/paymenttype/?type=' + this.payment.platform)
                     $.notify({
@@ -174,7 +175,12 @@ export default {
             }
         },
         getPaymentType (id) {
-            this.$http.get(api.transaction.paymentType + id + '/?opt_expand=1').then(data => {
+            getMerchant('paymentType', {
+                id,
+                params: {
+                    opt_expand: 1
+                }
+            }).then(data => {
                 if (data.detail && data.detail.length) {
                     data.detail.forEach(payee => {
                         this.$set(this.checkboxPayees, payee.payee_id, payee.activate)

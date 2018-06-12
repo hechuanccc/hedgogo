@@ -34,7 +34,7 @@ export default {
         transcations_query: '交易记录查询',
         return_report: '反水计算',
         commission_report: '佣金计算',
-        game_report: '统计报表',
+        game_report: '游戏报表',
         returnrate: '反水',
         commission: '佣金',
         login: '登录',
@@ -317,6 +317,8 @@ export default {
         valid_bet_amount: '有效投注',
         betdate: '投注时间',
         settlementamount: '结算金额',
+        settlementbalance: '结算余额',
+        settlementretreat: '撤单后余额',
         transferred_at: '日期',
         provider: '娱乐城',
         deposit: '存入',
@@ -375,12 +377,13 @@ export default {
             label: {
                 amount: '下注金额',
                 betrecord_count: '注单数量',
-                profit: '损益情况',
+                bet_amount: '下注总和',
+                profit: '盈利',
                 register_count: '注册人数'
             },
             title: {
                 amount: '7日下注金额',
-                betrecord_count: '7日注单数量',
+                game: '7日游戏活跃度',
                 profit: '7日盈利',
                 register_count: '7日注册'
             }
@@ -592,12 +595,18 @@ export default {
         memo: '备注',
         no_draw: '官方未开',
         ongoing: '进行中',
-        retreat_sched_sure: '确定撤单吗？',
+        retreat_sched_sure: '確定撤銷 {game} {period} 所有已結算的注單嗎？',
         retreat_sched: '撤单',
+        retreat_sched_all: '将该期注单全部撤销',
         retreat_sched_fail: '撤单失败！',
+        affect_member_list: '影响会员列表',
+        current_period: '当期',
+        member_win: '会员赢',
+        member_lose: '会员输',
         created: '已创建',
         open: '已开放',
         schedule_cancelled: '已撤单',
+        cancelled: '已撤单',
         operating: '操作',
         try_later: '请稍后再试',
         abnormal_period: '未开期数',
@@ -805,6 +814,16 @@ export default {
         sum_fund: '目前累计'
     },
     report: {
+        game: {
+            title: '游戏报表',
+            amount: '注单总额',
+            member_count: '玩家数量',
+            avg_amount: '下注均价',
+            profit: '盈利',
+            category: '玩法分类',
+            play: '玩法',
+            dimension_displaying: '展示项目'
+        },
         number_login: '序号',
         no_record_found: '查无记录，请更换条件再查询',
         bet_record_number: '注单号',
@@ -891,6 +910,7 @@ export default {
         detail: '优惠活动详情',
         start_date: '起始日期',
         end_date: '结束日期',
+        end_date_not_before_start_date: '结束日期不得早于起始日期',
         copy_promotion: '复制优惠活动'
     },
     header: {
