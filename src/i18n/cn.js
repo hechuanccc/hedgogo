@@ -406,7 +406,8 @@ export default {
         click_submit_and_clear: '请按下提交按钮后才能成功清除',
         server_error: '服务异常，请稍后再试',
         accurate_search: '精准搜索',
-        manager: '管理员'
+        manager: '管理员',
+        seconds: '{number} 秒'
     },
     bank: {
         bank_title: '银行资讯',
@@ -442,10 +443,6 @@ export default {
         total_profit: '总计 损益',
         total_bet_amount: '总投注金额',
         game_selection: '游戏选择',
-        five_seconds: '5 秒',
-        ten_seconds: '10 秒',
-        thirty_seconds: '30 秒',
-        sixty_seconds: '60 秒',
         cancel_bet: '取消押注',
         cancelled_bets: '赌注被取消了',
         total_valid_bet_record: '有效投注',

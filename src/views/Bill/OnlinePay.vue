@@ -175,6 +175,24 @@
                             @input="search"
                         />
                     </div>
+                    <div class="pull-left m-r-xs">
+                        <label
+                            class="form-control-label p-b-0"
+                            :class="{'text-blue': period}"
+                        >{{ $t('common.refresh_period') }}
+                        </label>
+                        <select
+                            class="form-control w-sm c-select inline"
+                            v-model="period"
+                            style="display: block;"
+                        >
+                            <option value="">{{ $t('common.please_select') }}</option>
+                            <option :value="10000">{{ $t('common.seconds', { number: 10 }) }}</option>
+                            <option :value="30000">{{ $t('common.seconds', { number: 30 }) }}</option>
+                            <option :value="60000">{{ $t('common.seconds', { number: 60 }) }}</option>
+                            <option :value="120000">{{ $t('common.seconds', { number: 120 }) }}</option>
+                        </select>
+                    </div>
                     <button
                         class="md-btn w-xs pull-right btn m-t-md"
                         type="button"
@@ -232,7 +250,7 @@
                         {{ t.amount | currency('￥') }}
                     </td>
                     <td class="text-center">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
-                    <td>
+                    <td class="text-center">
                         <transaction-status :transaction="t"></transaction-status>
                     </td>
                     <td class="text-center">
@@ -288,6 +306,8 @@
                     end: date[element][1]
                 })),
                 autoTogglePopup: false,
+                period: 30 * 1000,
+                timer: undefined,
                 loading: true,
                 url
             }
@@ -334,12 +354,23 @@
                         }
                     })
                 }
+            },
+            period (newPeriod, old) {
+                clearInterval(this.timer)
+                if (newPeriod) {
+                    this.timer = setInterval(() => {
+                        this.rebase()
+                    }, newPeriod)
+                }
             }
         },
         created () {
             this.setQueryAll()
             this.$nextTick(() => {
-                this.$refs.pulling.rebase()
+                this.rebase()
+                this.timer = setInterval(() => {
+                    this.rebase()
+                }, this.period)
             })
         },
         computed: {
@@ -390,6 +421,10 @@
                     this.$refs.pulling.submit()
                 }
             },
+            rebase () {
+                this.loading = true
+                this.$refs.pulling.rebase()
+            },
             search:
                 debounce(function () {
                     this.submit()
@@ -401,6 +436,9 @@
                     this.submit()
                 })
             }
+        },
+        beforeDestroy () {
+            clearInterval(this.timer)
         },
         components: {
             DatePicker,
