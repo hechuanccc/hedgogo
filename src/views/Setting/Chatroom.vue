@@ -208,8 +208,12 @@
 </template>
 
 <script>
-import api from '../../api'
-import { getSetting, updateSystemParameter, updateSetting } from '../../service'
+import {
+    getSetting,
+    getGame,
+    updateSystemParameter,
+    updateSetting
+} from '../../service'
 import $ from '../../utils/util'
 const defaultChatroomID = 100000
 
@@ -278,7 +282,11 @@ export default {
             })
         },
         getGamesName () {
-            this.$http.get(`${api.game.list}?opt_fields=id,display_name`).then(data => {
+            getGame('list', {
+                params: {
+                    opt_fields: 'id,display_name'
+                }
+            }).then(data => {
                 data.forEach(game => {
                     this.$set(this.gamesMapping, game.id, game.display_name)
                 })

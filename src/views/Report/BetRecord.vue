@@ -476,8 +476,7 @@
     </div>
 </template>
 <script>
-    import api from '../../api'
-    import { cancelBet } from '../../service'
+    import { cancelBet, getGame } from '../../service'
     import url from '../../service/url'
     import Pulling from '../../components/Pulling'
     import SelectorGame from '../../components/SelectorGame'
@@ -601,12 +600,17 @@
         },
         methods: {
             getGameList () {
-                this.$http.get(api.game.list).then(data => {
+                getGame('list').then(data => {
                     this.gamelist = data
                 })
             },
             getGameCategory (game) {
-                this.$http.get(`${api.game.category}?game=${this.query.game_q}&opt_fields=id,display_name`).then(data => {
+                getGame('category', {
+                    params: {
+                        game: this.query.game_q,
+                        opt_fields: 'id,display_name'
+                    }
+                }).then(data => {
                     this.categories = data
                 })
             },

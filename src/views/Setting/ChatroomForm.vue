@@ -400,8 +400,7 @@
 <script>
 import Draggable from 'vuedraggable'
 import TimePicker from 'vue2-timepicker'
-import api from '../../api'
-import { getSetting, updateSetting } from '../../service'
+import { getSetting, getGame, updateSetting } from '../../service'
 import $ from '../../utils/util'
 import * as defaultAvatar from '../../../static/images/avatar.png'
 import { debounce } from 'lodash'
@@ -487,7 +486,11 @@ export default {
             })
         },
         getGamesName () {
-            this.$http.get(`${api.game.list}?opt_fields=code,display_name`).then(data => {
+            getGame('list', {
+                params: {
+                    opt_fields: 'code,display_name'
+                }
+            }).then(data => {
                 data.forEach(game => {
                     this.$set(this.gamesMapping, game.code, game.display_name)
                 })

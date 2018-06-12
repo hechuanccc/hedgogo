@@ -20,6 +20,27 @@ export const getReport = (type, { params } = {}) =>
 export const getSystemCount = () => axios.get(url.count)
 
 /**
+ * 获取游戏信息 (游戏列表、玩法分类、玩法、开奖结果、期数和撤单期数)
+ * Get game information (game list, category, playset, draw, schedule, and retreating schedule)
+ * @param {String} type - 'list', 'category', 'playset', 'draw', 'schedule', and 'scheduleRetreat'
+ */
+export const getGame = (type, { id, params } = {}) =>
+    axios.get(`${url.game[type]}${id ? (id + '/') : ''}`, { params })
+
+/**
+ * 更新游戏信息 (游戏列表、开奖结果和撤单期数)
+ * Update game information (game list, result and retreating schedule)
+ * @param {String} type - 'list', 'result', and 'scheduleRetreat'
+ */
+export const updateGame = (type = '', { id, data, params } = {}) =>
+    axios({
+        method: id ? 'put' : 'post',
+        url: `${url.game[type]}${id ? (id + '/') : ''}`,
+        data,
+        params
+    })
+
+/**
  * 获取下注纪录
  * Get bet record
  */
