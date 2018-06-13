@@ -24,6 +24,7 @@ export default {
         setting_commission: '佣金设定',
         setting_online_payee: '支付商户管理',
         setting_online_payer: '代付商户管理',
+        setting_bank: '银行管理',
         member_detail: '会员详情',
         edit_member: '编辑会员资料',
         agent_detail: '代理商详情',
