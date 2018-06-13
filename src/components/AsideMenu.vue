@@ -125,6 +125,7 @@
                                 <li><router-link to="/paymenttype"><span class="nav-text">{{$t("nav.payment_type_setting")}}</span></router-link></li>
                                 <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>
                                 <li><router-link to="/online_payer"><span class="nav-text">{{$t("nav.setting_online_payer")}}</span></router-link></li>
+                                <li><router-link to="/bank"><span class="nav-text">{{$t("nav.setting_bank")}}</span></router-link></li>
                                 <li><router-link to="/remit_payee"><span class="nav-text">{{$t("nav.setting_remit_payee")}}</span></router-link></li>
                                 <li><router-link to="/commission"><span class="nav-text">{{$t("nav.setting_commission")}}</span></router-link></li>
                                 <!-- <li><router-link to="/envelope_settings"><span class="nav-text">{{$t("nav.envelope_setting")}}</span></router-link></li> -->

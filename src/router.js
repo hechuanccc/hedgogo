@@ -583,6 +583,17 @@ export default new Router({
         }
     },
     {
+        path: '/bank',
+        component: function (resolve) {
+            require(['./views/Setting/Bank.vue'], resolve)
+        },
+        meta: {
+            group: 'setting',
+            title: Vue.t('nav.setting_bank'),
+            auth: true
+        }
+    },
+    {
         path: '/paymenttype',
         component: function (resolve) {
             require(['./views/Setting/PaymentType.vue'], resolve)
