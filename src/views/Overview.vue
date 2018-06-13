@@ -106,7 +106,7 @@ export default {
                             yAxisID: 'bet_amount',
                             backgroundColor: this.hslTransform(this.color[category][0]),
                             borderWidth: 0,
-                            data: data[category].bet_amount
+                            data: data[category].bet_amount.map(d => Math.round(d))
                         }, {
                             label: this.$t('common.overview.label.profit'),
                             yAxisID: 'profit',
@@ -114,7 +114,7 @@ export default {
                                 ? this.hslTransform(this.color[category][1])
                                 : this.hslTransform(this.color[category][2])),
                             borderWidth: 0,
-                            data: data[category].profit
+                            data: data[category].profit.map(d => Math.round(d))
                         }]
                     })
                     this.$set(this.options, category, {
@@ -190,7 +190,7 @@ export default {
                             backgroundColor: this.hslTransform(this.color[category]),
                             borderColor: `hsl(${this.color[category][0]}, 88%, ${this.lineChart.includes(category) ? 60 : 80}%)`,
                             borderWidth: 2,
-                            data: data[category].data
+                            data: data[category].data.map(d => Math.round(d))
                         }]
                     })
                     this.$set(this.options, category, {
