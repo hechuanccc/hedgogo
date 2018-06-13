@@ -15,9 +15,9 @@
                         <td class="text-center b-r-2x">
                             <span v-if="bank.status === 1" class="label success">{{ $t('status.active') }}</span>
                             <span v-else class="label danger">{{ $t('status.inactive') }}</span>
-                            <a class="m-l-xs" @click="toggleStatus(bank)" v-if="!toggleLoading[bank.id] && bank.status === 1">{{ $t('status.disabled') }}</a>
-                            <a class="m-l-xs" @click="toggleStatus(bank)" v-else-if="!toggleLoading[bank.id]">{{ $t('status.active') }}</a>
-                            <span class="text-blue m-l-xs" v-else>
+                            <a class="m-l-sm" @click="toggleStatus(bank)" v-if="!toggleLoading[bank.id] && bank.status === 1">{{ $t('status.disabled') }}</a>
+                            <a class="m-l-sm" @click="toggleStatus(bank)" v-else-if="!toggleLoading[bank.id]">{{ $t('status.active') }}</a>
+                            <span class="text-blue m-l-sm" v-else>
                                 &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
                             </span>
                         </td>
