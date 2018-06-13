@@ -161,6 +161,7 @@
                       :req="bankFilled"
                       @bank-select="bankSelect"
                       :disabled="!updateMemberPermission('bank')"
+                      :filter="(bank) => bank.status === 1"
                     />
                   </div>
                   <div class="form-group">
