@@ -100,6 +100,19 @@ export default new Router({
         }
     },
     {
+        path: '/transaction/:id',
+        name: 'transaction',
+        component: function (resolve) {
+            require(['./views/Bill/Detail.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            disable_tabs: true,
+            group: 'financing',
+            title: Vue.t('nav.transaction')
+        }
+    },
+    {
         path: '/bill/operation',
         name: 'bill-operation',
         component: function (resolve) {
