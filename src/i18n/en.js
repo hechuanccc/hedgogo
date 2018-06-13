@@ -24,6 +24,7 @@ export default {
         setting_commission: 'Commission Setting',
         setting_online_payee: 'Online Payee',
         setting_online_payer: 'Online Payer',
+        setting_bank: 'Bank',
         member_detail: 'Member Detail',
         edit_member: 'Edit Member',
         agent_detail: 'Agent Detail',
