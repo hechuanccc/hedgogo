@@ -7,6 +7,7 @@
             v-for="b in banks"
             :key="b.id">
             {{b.name}}
+            <span v-if="showStatus">{{ ` - ${b.status ? $t('status.active') : $t('status.disabled')}` }}</span>
         </option>
     </select>
     <span
@@ -26,7 +27,7 @@
 <script>
 import { getSetting } from '../service'
 export default {
-    props: ['bank', 'req', 'filter'],
+    props: ['bank', 'req', 'showStatus'],
     data () {
         return {
             banks: [],
@@ -46,7 +47,7 @@ export default {
     created () {
         this.$nextTick(() => {
             getSetting('bank').then(data => {
-                this.filter && (data = data.filter(this.filter))
+                this.showStatus && data.sort((a, b) => b.status - a.status)
                 this.banks = data
                 this.myBank = this.bank
                 this.loading = false

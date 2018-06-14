@@ -208,7 +208,7 @@
         </form>
         <div class="row m-l-xs">
             <b class="pull-right m-r text-danger">
-                {{ $t('common.total') }}&nbsp;{{ $t('nav.remit') }}:&nbsp;{{ (total_amount || 0) | currency('￥') }}
+                {{ $t('common.total') }}&nbsp;{{ $t('bill.onlinepay') }}&nbsp;：&nbsp;{{ (total_amount || 0) | currency('￥') }}
             </b>
         </div>
         <table class="box table table-striped">
