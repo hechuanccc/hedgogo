@@ -1,5 +1,11 @@
 <template>
-    <select v-model="myBank" class="form-control w-sm c-select" :required="req" v-if="!loading && banks.length">
+    <select
+        v-model="myBank"
+        class="form-control c-select"
+        :class="width"
+        :required="req"
+        v-if="!loading && banks.length"
+    >
         <option class="form-control" value="">{{$t('common.please_select')}}</option>
         <option
             class="form-control"
@@ -11,13 +17,15 @@
         </option>
     </select>
     <span
-        class="p-b-xs p-t-sm form-control w-sm inline"
+        class="p-b-xs p-t-sm form-control inline"
+        :class="width"
         v-else-if="loading"
     >
         <i class="fa fa-spin fa-spinner"></i>
     </span>
     <span
-        class="p-b-xs p-t-sm form-control w-sm inline"
+        class="p-b-xs p-t-sm form-control inline"
+        :class="width"
         v-else-if="!banks.length"
     >
         {{ $t('common.no_data') }}
@@ -35,7 +43,15 @@ export default {
             loading: true
         }
     },
+    computed: {
+        width () {
+            return this.showStatus ? 'w-md' : 'w-sm'
+        }
+    },
     watch: {
+        bank (newObj) {
+            this.myBank = newObj
+        },
         myBank (newObj, old) {
             if (newObj === undefined) {
                 this.myBank = ''
