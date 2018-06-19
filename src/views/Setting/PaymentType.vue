@@ -163,7 +163,8 @@ export default {
             updateMerchant('paymentType', {
                 id: paymentType.id,
                 data: {
-                    status: paymentType.status ^ 1
+                    status: paymentType.status ^ 1,
+                    code: paymentType.code
                 }
             }).then(data => {
                 paymentType.status = data.status
