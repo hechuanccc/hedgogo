@@ -8,18 +8,26 @@
         </div>
         <div class="box">
             <div class="box-body">
-                <form class="form m-a" v-on:submit.prevent="onSubmit">
+                <form class="form m-a" @submit.prevent="onSubmit">
                     <div class="row b-b p-b m-b">
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label for="username" class="label-width">{{ $t('staff.staff_name') }}</label>
                                 <div class="inline-form-control">
-                                    <input type="text" class="form-control" name="username" :placeholder="$t('common.username')" v-model="staff.username" required>
+                                    <input
+                                        class="form-control"
+                                        name="username"
+                                        :placeholder="$t('common.username')"
+                                        v-model.trim="staff.username"
+                                        required
+                                    />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="label-width">{{ (staff.id ? $t('action.update') : '') + $t('staff.password')}}</label>
                                 <div class="inline-form-control">
+                                    <input style="opacity: 0;position: absolute; z-index: -1;">
+                                    <input type="password" style="opacity: 0;position: absolute; z-index: -1;">
                                     <input
                                         type="password"
                                         class="form-control"
