@@ -241,6 +241,8 @@
                         <span>{{ t.ip_info.ip || '-' }}</span>
                         <br/>
                         <span class="text-muted">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>
+                        <br/>
+                        <span class="label danger" v-if="t.ip_info && t.ip_info.ip_repeated">{{ $t('common.repeat') }}</span>
                     </td>
                     <td v-else>-</td>
                     <td class="text-right p-r-xs">
