@@ -678,6 +678,8 @@ export default {
         prime: '质',
         composite: '合',
         ball_max_min_diff: '跨度',
+        niouniou_col_head: '庄闲 (背景有颜色代表闲家赢)',
+        niouniou_col_sub_head: ['庄', '闲一', '闲二', '闲三', '闲四', '闲五'],
         official_invalid: '官方开奖无效'
     },
     agent: {

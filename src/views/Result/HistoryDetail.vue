@@ -56,17 +56,17 @@
     </div>
     <div class="card col">
         <div class="card-body">
-            <table class="table table-striped table-bordered" v-show="queryset.length > 0 || retreatedScheds.length > 0">
+            <table class="table table-striped" v-show="queryset.length > 0 || retreatedScheds.length > 0">
                 <thead class="text-center">
                     <tr>
                         <th
-                            width="10%"
+                            width="8%"
                             :class="{'p-b-md': twoRow}"
                         >
                             {{ $t('game_history.periods') }}
                         </th>
                         <th
-                            width="15%"
+                            width="10%"
                             :class="{'p-b-md': twoRow}"
                         >
                             {{ $t('game_history.draw_date') }}
@@ -153,6 +153,31 @@
                                 </div>
                             </template>
                         </th>
+
+                        <th
+                            :class="['p-l-0 p-r-0', niouniouCol.length > 1 ? '' : 'p-b-md']"
+                            :width="niouniouCol.length * 80"
+                            v-if="niouniouCol.length > 0"
+                        >
+                            <div :class="niouniouCol.length > 1 ? 'b-b p-b-sm' : ''">
+                                {{ $t('game_history.niouniou_col_head') }}
+                            </div>
+                            <template
+                                v-for="(col, index) in niouniouCol"
+                                v-if="niouniouCol.length > 1"
+                            >
+                                <div
+                                    class="m-t-sm"
+                                    :key="col"
+                                    :style="{
+                                        'display': 'inline-block',
+                                        'width' : `${100 / niouniouCol.length}%`
+                                    }"
+                                >
+                                    {{ $t(`game_history.niouniou_col_sub_head[${index}]`) }}
+                                </div>
+                            </template>
+                        </th>
                         <th
                             class="p-l-0 p-r-0"
                             :width="comparisonCol.length * 50"
@@ -208,6 +233,7 @@
                         <td v-if="sumCol.length > 0"></td>
                         <td v-if="threeBallsSumCol.length > 0"></td>
                         <td v-if="dragonTigerCol.length > 0"></td>
+                        <td v-if="niouniouCol.length > 0"></td>
                         <td v-if="comparisonCol.length > 0"></td>
                         <td
                             v-for="col in otherCol"
@@ -274,6 +300,25 @@
                             </template>
                         </td>
                         <td v-else-if="result.result_status === 'official_invalid'"></td>
+                        <td
+                            class="p-a-0"
+                            v-if="niouniouCol.length > 0 && result.result_status === 'valid'"
+                        >
+                            <div
+                                class="p-t p-b"
+                                :style="{
+                                    'display': 'inline-block',
+                                    'width' : `${100 / niouniouCol.length}%`
+                                }"
+                                :class="{'niouniou-win': result.result_category[col + '_result'] === 'win'}"
+                                :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
+                                v-for="col in niouniouCol"
+                                v-if="niouniouCol.length === 6"
+                            >
+                                <p class="m-b-0">{{ result.result_category[col].split(',')[0] }}</p>
+                                <p class="m-b-0">{{ result.result_category[col].split(',').splice(1, 5).join(' ') }}</p>
+                            </div>
+                        </td>
                         <td
                             class="p-l-0 p-r-0"
                             v-for="col in otherCol"
@@ -553,6 +598,7 @@ export default {
             sumCol1st2nd: true,
             dragonTigerCol: [],
             comparisonCol: [],
+            niouniouCol: [],
             otherCol: [],
             displayOtherCol: [
                 'ball_max_min_diff',
@@ -790,6 +836,7 @@ export default {
                 let threeBallsSumCol = new Set()
                 let dragonTigerCol = new Set()
                 let comparisonCol = new Set()
+                let niouniouCol = new Set()
                 let otherCol = new Set()
                 if (this.queryset.length > 0) {
                     if (this.game.code === 'bjkl8') {
@@ -826,6 +873,10 @@ export default {
                                 dragonTigerCol.add(i)
                             } else if (i[i.length - 1] === 'cp') {
                                 comparisonCol.add(i.join('_'))
+                            } else if (i[0] === 'banker' || i[0] === 'player') {
+                                if (!(i[2] && i[2] === 'result')) {
+                                    niouniouCol.add(i.join('_'))
+                                }
                             } else {
                                 otherCol.add(i.join('_'))
                             }
@@ -837,9 +888,11 @@ export default {
                 this.threeBallsSumCol = [...threeBallsSumCol].filter(e => this.displayThreeBallsSumCol.includes(e))
                 this.dragonTigerCol = [...dragonTigerCol].sort((a, b) => a[2] - b[2]).map(e => e.join('_'))
                 this.comparisonCol = [...comparisonCol]
+                this.niouniouCol = [...niouniouCol]
                 this.otherCol = [...otherCol].filter(e => this.displayOtherCol.includes(e))
+
                 this.allCol = [this.sumCol, this.threeBallsSumCol, this.dragonTigerCol, this.comparisonCol].filter(e => e.length > 0)
-                this.twoRow = (this.sumCol.length || this.threeBallsSumCol.length || this.dragonTigerCol.length > 1 || this.comparisonCol.length)
+                this.twoRow = (this.sumCol.length || this.threeBallsSumCol.length || this.dragonTigerCol.length > 1 || this.comparisonCol.length || this.niouniouCol.length)
             } else {
                 this.resultCol = this.sumCol = this.dragonTigerCol = this.comparisonCol = this.otherCol = this.allCol = []
                 this.twoRow = false
@@ -882,6 +935,9 @@ export default {
 }
 .text-green {
   color: lightgreen;
+}
+.niouniou-win {
+    background-color: #d9ecff;;
 }
 .result-balls span{
   display: inline-block;
