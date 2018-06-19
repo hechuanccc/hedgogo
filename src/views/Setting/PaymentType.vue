@@ -161,7 +161,8 @@ export default {
         toggleStatus (paymentType) {
             this.$set(this.toggleLoading, paymentType.id, true)
             this.$http.put(api.transaction.paymentType + paymentType.id + '/', {
-                'status': paymentType.status ^ 1
+                status: paymentType.status ^ 1,
+                code: paymentType.code
             }).then(data => {
                 paymentType.status = data.status
                 $.notify({
