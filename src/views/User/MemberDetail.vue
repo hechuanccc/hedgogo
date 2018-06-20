@@ -28,12 +28,12 @@
               <div>
                 <router-link
                   class="md-btn md-flat m-r-sm"
-                  :to="`/report/betrecord?member=${member.username}`"
+                  :to="`/report/betrecord?member=${member.username}&created_at_1=${today}`"
                 >{{$t('action.view_history_bet_record')}}
                 </router-link>
                 <router-link
                   class="md-btn md-flat m-r-sm"
-                  :to="`/report/betrecord?member=${member.username}&created_at_0=${today}&created_at_1=${today}`"
+                  :to="`/report/betrecord?member=${member.username}`"
                 >{{$t('action.view_todays_bet_record')}}
                 </router-link>
                 <template>
@@ -49,26 +49,26 @@
         <div class="box-body">
           <div class="row b-b p-b m-b" v-if="member.balance">
             <div class="col-xs-2">
-              <span class="text-muted">{{$t('member.balance')}}</span>
+              {{$t('member.balance')}}
               <div>
                 <strong class="text-lg text-success">{{member.balance.balance | currency('￥')}}</strong>
               </div>
             </div>
             <div class="col-xs-2">
-              <span class="text-muted">{{$t('member.sug_balance')}}</span>
+              {{$t('member.sug_balance')}}
               <div>
                 <strong class="text-lg text-danger">{{member.suggested_balance | currency('￥')}}</strong>
               </div>
             </div>
             <div class="col-xs-2">
               <div class="m-b">
-                <span class="text-muted">{{$t('member.current_audit')}}</span>
+                {{$t('member.current_audit')}}
                 <span class="t-red" v-if="member.balance.bet_amount < member.balance.audit_amount">{{$t('member.failed')}}</span>
                 <span class="t-green" v-else>{{$t('member.pass')}}</span>
               </div>
             </div>
             <div class="col-xs-2">
-              <p class="m-b-0 text-muted">{{ $t('setting.bet_amount') }} / {{ $t('bill.audit_amount') }}</p>
+              <p class="m-b-0">{{ $t('setting.bet_amount') }} / {{ $t('bill.audit_amount') }}</p>
               <strong class="t-red">{{member.balance.bet_amount}} / {{member.balance.audit_amount}}</strong>
             </div>
             <div class="col-xs-4">
@@ -77,7 +77,7 @@
           </div>
           <div class="row m-b b-b p-b">
             <div class="col-xs-4">
-              <strong class="text-muted">{{$t('member.fund_summary')}}</strong>
+              {{$t('member.fund_summary')}}
               <div class="label-width-eq m-t-sm">
                 <div v-for="t in member.transaction_info.confirmed">
                   <span class="text-muted">{{t.transaction_type__display_name}}</span>
@@ -96,23 +96,42 @@
                       }" >{{t.id__count}} 次 </router-link>
                   </span>
                 </div>
-                <div v-if="!member.transaction_info.confirmed || member.transaction_info.confirmed.length === 0" class="text-muted">{{$t('member.no_confirmed_transactions')}}</div>
-                <div v-if="sumAmount" class="b-t p-t-sm m-t-sm">
-                  <span>{{$t('member.fund_sum')}}</span>
+                <div>
+                  <span class="text-muted">游戏盈利</span>
                   <span class="pull-right">
-                      <strong class="t-green">{{sumAmount | currency('￥')}}</strong>
-                      <span class="link-width"></span>
+                    <span :class="{
+                      't-red': gameProfit < 0,
+                      't-green': gameProfit > 0,
+                      'text-muted': gameProfit === 0
+                    }">
+                      <span class="t-green" v-if="gameProfit > 0">+</span>{{gameProfit | currency('￥')}}
+                    </span>
+                    <span class="link-width"></span>
+                  </span>
+                </div>
+                <div>
+                  <span class="text-muted">游戏反水</span>
+                  <span class="pull-right">
+                    <span :class="{
+                      't-red': member.total_return_amount < 0,
+                      't-green': member.total_return_amount > 0,
+                      'text-muted': member.total_return_amount === 0
+                    }">
+                      <span class="t-green" v-if="member.total_return_amount > 0">+</span>{{member.total_return_amount | currency('￥')}}
+                    </span>
+                    <span class="link-width"></span>
                   </span>
                 </div>
               </div>
             </div>
             <div class="col-xs-5 col-md-offset-2">
-              <strong class="text-muted title">{{$t('member.audit_list')}}</strong>
-              <div class="label-width-eq m-t-sm">
+              {{$t('member.audit_list')}}
+              <div class="label-width-eq m-t-sm m-b-sm">
                 <div v-for="t in member.transaction_info.ongoing">
                   <span class="text-muted">{{t.transaction_type__display_name}}</span>
                   <span class="pull-right">
-                      <span class="t-grey">{{t.amount__sum | currency('￥')}}</span>
+                      <span class="t-red" v-if="t.transaction_type__code === 'withdraw'">{{t.amount__sum * (-1) | currency('￥')}}</span>
+                      <span class="t-grey" v-else>{{t.amount__sum | currency('￥')}}</span>
                       <router-link class="link-width" :to="{
                         path: '/bill/search/',
                         query: {
@@ -125,67 +144,54 @@
                       }" >{{t.id__count}} 次 </router-link>
                   </span>
                 </div>
-                <div v-if="!member.transaction_info.ongoing || member.transaction_info.ongoing.length === 0" class="text-muted">{{$t('member.no_ongoing_transactions')}}</div>
+                <div>
+                  <span class="text-muted">游戏未结</span>
+                  <span class="pull-right">
+                    <span :class="{
+                      't-red': member.total_ongoing_amount > 0,
+                      'text-muted': member.total_ongoing_amount === 0
+                    }">
+                      <span class="t-red" v-if="member.total_ongoing_amount > 0">-</span>{{member.total_ongoing_amount | currency('￥')}}
+                    </span>
+                    <router-link
+                      class="link-width"
+                      :to="{
+                        path: '/report/betrecord',
+                        query: {
+                          member: member.username,
+                          status: 'ongoing'
+                        }
+                      }"
+                      v-if="member.total_ongoing_amount !== 0"
+                    >{{$t('action.view')}}
+                    </router-link>
+                    <span class="link-width" v-else></span>
+                  </span>
+                </div>
               </div>
             </div>
 
+            <div v-if="sumAmount" class="col-xs-11 b-t b-t-2x p-a-sm m-t m-l text-right text-lg">
+              <span>{{$t('member.fund_sum')}}</span>
+              <strong class="t-red">{{sumAmount | currency('￥')}}</strong>
+            </div>
           </div>
-          <div class="row p-b b-b">
+          <div class="row m-b p-b b-b">
             <div class="col-xs-5">
-              <span class="text-muted title">{{$t('member.status')}}</span>
-              <div>
-                <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
-                <span class="label" v-else >{{$t('status.inactive')}}</span>
-                <template v-if="$root.permissions.includes('update_member_status')">
-                  <a class="text-sm m-l" @click="toggleStatus" v-if="member.status === 1">禁用</a>
-                  <a class="text-sm m-l" @click="toggleStatus" v-else>启用</a>
-                  <span class="text-success text-sm m-l" v-show="statusUpdated" @click="toggleStatus">状态已更新</span>
-                </template>
-              </div>
-            </div>
-            <div class="col-xs-5 col-xs-offset-1">
-              <div class="row">
-                <div class="col-md-3">
-                  <span class="text-muted">{{$t('common.member') + $t('betrecord.win')}}</span>
-                  <div><router-link :to="'/report/betrecord/?member=' + member.username + '&status=win'">{{member.total_gain | currency('￥')}}</router-link></div>
-                </div>
-                <div class="col-md-3">
-                  <span class="text-muted">{{$t('common.member') + $t('betrecord.lose')}}</span>
-                  <div><router-link :to="'/report/betrecord/?member=' + member.username + '&status=lose'">{{member.total_loss | currency('￥')}}</router-link></div>
-                </div>
-                <div class="col-md-3">
-                  <span class="text-muted">{{$t('returnrate.return_amount')}}</span>
-                  <div>
-                    <span :class="{'text-muted': !member.total_return_amount}">{{member.total_return_amount | currency('￥')}}</span>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <span class="text-muted">{{$t('member.total_ongoing_amount')}}</span>
-                  <div>
-                    <span :class="{'text-muted': !member.total_ongoing_amount}">{{member.total_ongoing_amount | currency('￥')}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row p-b b-b p-t">
-            <div class="col-md-5">
-              <span class="text-muted">{{$t('member.agent')}}</span>
+              {{$t('member.agent')}}
               <div><router-link :to="'/agent/' + member.agent.id">{{member.agent.name}}</router-link></div>
             </div>
-          </div>
-
-          <div class="row m-b p-t p-b b-b">
-            <div class="col-xs-5">
-              <span class="text-muted">{{$t('common.basic_info')}}</span>
-              <div  v-if="!showDetail">
-                {{$t('common.real_name')}} :
-                <span v-if="member.real_name">{{member.real_name}}</span>
-                <span class="label" v-else>{{$t('common.unfilled')}}</span>，{{$t('member.phone_is')}}：
-                <span v-if="member.phone">{{member.phone}}</span>
-                <span class="label" v-else>{{$t('common.unfilled')}}</span>
+            <div class="col-xs-5 col-xs-offset-1" v-if="member.level">
+              {{$t('member.level')}}
+              <div>
+                <router-link :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
               </div>
-              <div class="p-a grey-50 lh-md m-t-sm label-width-eq m-b-sm" v-else>
+            </div>
+          </div>
+          <div class="row m-b b-b p-b">
+            <div class="col-xs-5">
+              {{$t('common.basic_info')}}
+              <div class="p-a grey-50 lh-md m-t-sm label-width-eq m-b-sm">
                 <div>
                   <span class="text-muted title">{{$t('common.real_name')}}</span>
                   <span v-if="member.real_name">{{member.real_name}}</span>
@@ -222,37 +228,37 @@
                   <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
                 </div>
               </div>
-              <a @click="showDetail = !showDetail">
-                <span v-if="showDetail">{{$t('action.close_detailed_infos')}} <i class="fa fa-angle-up"></i></span>
-                <span v-else>{{$t('action.view_detailed_infos')}} <i class="fa fa-angle-down"></i></span>
-              </a>
             </div>
-            <div class="col-xs-5 col-xs-offset-1" v-if="member.level">
-              <span class="text-muted">{{$t('member.level')}}</span>
-              <div>
-                <router-link :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
-              </div>
-            </div>
-          </div>
-          <div class="row m-b b-b p-b">
-            <div class="col-xs-5">
-              <span class="text-muted">{{$t('bank.bank_title')}}</span>
+            <div class="col-xs-5 col-xs-offset-1">
+              {{$t('bank.bank_title')}}
               <div v-if="!member.bank || (typeof member.bank === 'array' && !member.bank.length)">
                 <span class="label">{{$t('common.unfilled')}}</span>
               </div>
-              <div class="grey-50 p-a m-t" v-else>
-                <div>{{$t('bank.name')}}：<span>{{(member.bank.bank && member.bank.bank.name) || '-'}}</span></div>
-                <div>{{$t('bank.province')}}：<span>{{member.bank.province || '-'}}</span></div>
-                <div>{{$t('bank.city')}}：<span>{{member.bank.city || '-'}}</span></div>
-                <div>{{$t('bank.account')}}：<span>{{member.bank.account || '-'}}</span></div>
+              <div class="grey-50 p-a m-t-sm label-width-eq" v-else>
+                <div>
+                  <span class="text-muted title">{{$t('bank.name')}}</span>
+                  <span>{{(member.bank.bank && member.bank.bank.name) || '-'}}</span>
+                </div>
+                <div>
+                  <span class="text-muted title">{{$t('bank.province')}}</span>
+                  <span>{{member.bank.province || '-'}}</span>
+                </div>
+                <div>
+                  <span class="text-muted title">{{$t('bank.city')}}</span>
+                  <span>{{member.bank.city || '-'}}</span>
+                </div>
+                <div>
+                  <span class="text-muted title">{{$t('bank.account')}}</span>
+                  <span>{{member.bank.account || '-'}}</span>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="row m-b b-b p-b">
             <div class="col-xs-5">
-              <span class="text-muted">{{$t('member.last_login')}}</span>
-              <div v-if="member.last_login">
+              {{$t('member.last_login')}}
+              <div v-if="member.last_login" class="text-muted">
                 <div>{{$t('member.ip')}} : {{member.last_login.ipaddr}}</div>
                 <div>{{$t('member.login_platform')}}: {{member.last_login.platform}}</div>
                 <div>{{member.last_login.country}} {{member.last_login.city}} {{member.last_login.isp}} </div>
@@ -268,7 +274,19 @@
 
           <div class="row">
             <div class="col-xs-5">
-              <span class="text-muted">{{$t('common.remarks')}}</span>
+              <span class="title">{{$t('member.status')}}</span>
+              <div>
+                <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
+                <span class="label" v-else >{{$t('status.inactive')}}</span>
+                <template v-if="$root.permissions.includes('update_member_status')">
+                  <a class="text-sm m-l" @click="toggleStatus" v-if="member.status === 1">禁用</a>
+                  <a class="text-sm m-l" @click="toggleStatus" v-else>启用</a>
+                  <span class="text-success text-sm m-l" v-show="statusUpdated" @click="toggleStatus">状态已更新</span>
+                </template>
+              </div>
+            </div>
+            <div class="col-xs-5 col-xs-offset-1">
+              {{$t('common.remarks')}}
               <div v-if="member.memo">{{member.memo}}</div>
               <div class="text-muted" v-else>{{$t('common.no_remarks')}}</div>
             </div>
@@ -286,7 +304,6 @@
     export default {
         data () {
             return {
-                showDetail: false,
                 showAccounts: false,
                 statusUpdated: false,
                 passwordChanged: false,
@@ -307,6 +324,7 @@
                     },
                     last_login: {}
                 },
+                gameProfit: 0,
                 accounts: [],
                 loading: true,
                 balanceLoading: true,
@@ -315,15 +333,25 @@
         },
         computed: {
             sumAmount () {
-                let items = this.member.transaction_info.confirmed
+                let member = this.member
+                let items = member.transaction_info
                 let amount = 0
-                for (let x in items) {
-                    if (items[x].gain) {
-                        amount += parseFloat(items[x].amount__sum)
+                for (let x in items.confirmed) {
+                    if (items.confirmed[x].gain) {
+                        amount += parseFloat(items.confirmed[x].amount__sum)
                     } else {
-                        amount -= parseFloat(items[x].amount__sum)
+                        amount -= parseFloat(items.confirmed[x].amount__sum)
                     }
                 }
+
+                for (let x in items.ongoing) {
+                    if (items.ongoing[x].transaction_type__code === 'withdraw') {
+                        amount -= parseFloat(items.ongoing[x].amount__sum)
+                    }
+                }
+
+                this.gameProfit = parseFloat(member.total_gain - member.total_loss)
+                amount += parseFloat(this.gameProfit + member.total_return_amount - member.total_ongoing_amount)
                 return Math.round(amount * 100) / 100
             }
         },
