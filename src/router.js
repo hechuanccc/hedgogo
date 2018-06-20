@@ -497,7 +497,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayee.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             title: Vue.t('nav.setting_online_payee')
         }
@@ -508,7 +508,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayeeForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('setting.create_online_payee'),
             auth: true,
             permission: 'add_online_payee'
@@ -520,7 +520,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayeeDetail.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('nav.online_payee_detail'),
             auth: true
         }
@@ -531,7 +531,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayeeForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('nav.online_payee_detail_edit'),
             auth: true,
             permission: 'update_online_payee'
@@ -544,7 +544,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayer.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             title: Vue.t('nav.setting_online_payer')
         }
@@ -555,7 +555,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayerForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('setting.create_online_payer'),
             auth: true
         }
@@ -566,7 +566,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayerDetail.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('nav.online_payer_detail'),
             auth: true
         }
@@ -577,7 +577,7 @@ export default new Router({
             require(['./views/Setting/OnlinePayerForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('nav.online_payer_detail_edit'),
             auth: true
         }
@@ -588,7 +588,7 @@ export default new Router({
             require(['./views/Setting/Bank.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('nav.setting_bank'),
             auth: true
         }
@@ -599,7 +599,7 @@ export default new Router({
             require(['./views/Setting/PaymentType.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             title: Vue.t('nav.payment_type_setting')
         }
@@ -610,7 +610,7 @@ export default new Router({
             require(['./views/Setting/PaymentTypeForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             permission: 'update_onlinepayment',
             title: Vue.t('nav.payment_type_setting_detail')
@@ -622,7 +622,7 @@ export default new Router({
             require(['./views/Setting/RemitPayee.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             title: Vue.t('nav.setting_remit_payee')
         }
@@ -633,7 +633,7 @@ export default new Router({
             require(['./views/Setting/RemitPayeeForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             title: Vue.t('nav.remit_payee_add'),
             permission: 'add_remit_account'
@@ -645,7 +645,7 @@ export default new Router({
             require(['./views/Setting/RemitPayeeDetail.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             auth: true,
             title: Vue.t('nav.remit_payee_detail')
         }
@@ -656,7 +656,7 @@ export default new Router({
             require(['./views/Setting/RemitPayeeForm.vue'], resolve)
         },
         meta: {
-            group: 'setting',
+            group: 'transaction',
             title: Vue.t('nav.remit_payee_update'),
             auth: true,
             permission: 'update_remit_account'

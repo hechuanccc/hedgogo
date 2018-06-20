@@ -112,6 +112,19 @@
                         </li>
 
                         <li><div class="b-b b m-t-sm m-b-sm"></div></li>
+                        <li :class="$route.meta.group == 'transaction' ? 'active' : ''">
+                            <a>
+                              <span class="nav-icon"><i class="fa fa-suitcase m-r-xs"></i>交易配置</span>
+                            </a>
+                            <ul class="nav-sub">
+                                <li><router-link to="/paymenttype"><span class="nav-text">{{$t("nav.payment_type_setting")}}</span></router-link></li>
+                                <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>
+                                <li><router-link to="/online_payer"><span class="nav-text">{{$t("nav.setting_online_payer")}}</span></router-link></li>
+                                <li><router-link to="/bank"><span class="nav-text">{{$t("nav.setting_bank")}}</span></router-link></li>
+                                <li><router-link to="/remit_payee"><span class="nav-text">{{$t("nav.setting_remit_payee")}}</span></router-link></li>
+                                </ul>
+                        </li>
+
                         <li :class="$route.meta.group == 'setting' ? 'active' : ''">
                             <a>
                               <span class="nav-icon"><i class="material-icons m-r-xs">&#xE8B8;</i>系统配置</span>
@@ -122,11 +135,6 @@
                                 <li v-if="$root.permissions.includes('view_global_parameters_setting')"><router-link to="/global_parameters"><span class="nav-text">{{$t("nav.global_parameters")}}</span></router-link></li>
                                 <li><router-link to="/chatroom"><span class="nav-text">{{$t("nav.chatroom_management")}}</span></router-link></li>
                                 <li><router-link to="/level"><span class="nav-text">{{$t("nav.setting_level")}}</span></router-link></li>
-                                <li><router-link to="/paymenttype"><span class="nav-text">{{$t("nav.payment_type_setting")}}</span></router-link></li>
-                                <li><router-link to="/online_payee"><span class="nav-text">{{$t("nav.setting_online_payee")}}</span></router-link></li>
-                                <li><router-link to="/online_payer"><span class="nav-text">{{$t("nav.setting_online_payer")}}</span></router-link></li>
-                                <li><router-link to="/bank"><span class="nav-text">{{$t("nav.setting_bank")}}</span></router-link></li>
-                                <li><router-link to="/remit_payee"><span class="nav-text">{{$t("nav.setting_remit_payee")}}</span></router-link></li>
                                 <li><router-link to="/commission"><span class="nav-text">{{$t("nav.setting_commission")}}</span></router-link></li>
                                 <!-- <li><router-link to="/envelope_settings"><span class="nav-text">{{$t("nav.envelope_setting")}}</span></router-link></li> -->
                             </ul>
