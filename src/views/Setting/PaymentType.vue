@@ -5,12 +5,12 @@
             <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': status}"
-            >{{ $t('common.status') }}
+            >{{ $t('dic.status') }}
             </label>
             <label class="sm-check m-r m-b-0">
                 <input class="c-radio" type="radio" value="" v-model="status">
                 <i class="blue m-r-xs"></i>
-                {{ $t('common.show_all') }}
+                {{ $t('system.show_all') }}
             </label>
             <label class="sm-check m-r m-b-0">
                 <input class="c-radio" type="radio" value="1" v-model="status">
@@ -24,8 +24,8 @@
             </label>
         </div>
         <div class="pull-right">
-            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</button>
+            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('dic.cancel') }}</button>
         </div>
     </div>
     <div class="box p-a">
@@ -36,7 +36,7 @@
                         :to="'/paymenttype/?type=0'"
                         class="nav-link _600"
                         :class="{'active': type === '0' }"
-                    >{{ $t('manage.pc') }}
+                    >{{ $t('dic.pc') }}
                     </router-link>
                 </li>
                 <li class="nav-item">
@@ -44,7 +44,7 @@
                         :to="'/paymenttype/?type=1'"
                         class="nav-link _600"
                         :class="{'active': type === '1' }"
-                    >{{ $t('manage.mobile') }}
+                    >{{ $t('dic.mobile') }}
                     </router-link>
                 </li>
             </ul>
@@ -53,11 +53,11 @@
             <thead>
                 <tr>
                     <th v-show="!mode" width="3%"></th>
-                    <th width="20%">{{ $t('common.name') }}</th>
-                    <th width="20%">{{ $t('setting.display_name') }}</th>
-                    <th width="20%">{{ $t('setting.payee') }}</th>
-                    <th width="20%">{{ $t('common.dashboard_memo') }}</th>
-                    <th width="20%" class="text-center">{{ $t('common.status') }}</th>
+                    <th width="20%">{{ $t('dic.name') }}</th>
+                    <th width="20%">{{ $t('misc.display_name') }}</th>
+                    <th width="20%">{{ $t('title.online_payee') }}</th>
+                    <th width="20%">{{ $t('finance.dashboard_memo') }}</th>
+                    <th width="20%" class="text-center">{{ $t('dic.status') }}</th>
                 </tr>
             </thead>
             <draggable
@@ -111,10 +111,10 @@
         
         <div class="row text-center p-a" v-if="loading">
             <i class="fa fa-spin fa-spinner"></i>
-            <b>{{ $t('common.loading') }}&nbsp;...</b>
+            <b>{{ $t('system.loading') }}</b>
         </div>
         <div class="row text-center p-a" v-if="!loading && !filteredPaymentTypes.length">
-            {{ $t('common.no_record') }}
+            {{ $t('system.no_record') }}
         </div>
     </div>
 </div>
@@ -169,7 +169,10 @@ export default {
             }).then(data => {
                 paymentType.status = data.status
                 $.notify({
-                    message: this.$t('game_manage.modify_success')
+                    message: this.$t('system_msg.action_object_status', {
+                        action: this.$t('dic.update'),
+                        status: this.$t('status.success')
+                    })
                 })
                 this.$delete(this.toggleLoading, paymentType.id)
             }, error => {
@@ -207,7 +210,10 @@ export default {
                     }
                 }).then(data => {
                     $.notify({
-                        message: this.$t('game_manage.modify_success')
+                        message: this.$t('system_msg.action_object_status', {
+                            action: this.$t('dic.update'),
+                            status: this.$t('status.success')
+                        })
                     })
                     this.getPaymentType()
                 }, error => {

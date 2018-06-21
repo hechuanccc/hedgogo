@@ -2,7 +2,7 @@
 <div>
     <div class="m-b">
         <ol class="breadcrumb">
-            <li class="active"><router-link to="/chatroom">{{ $t('nav.chatroom_management') }}</router-link></li>
+            <li class="active"><router-link to="/chatroom">{{ $t('title.setting_chatroom') }}</router-link></li>
             <li class="active">{{ $route.meta.title }}</li>
         </ol>
     </div>
@@ -16,11 +16,11 @@
                 <div class="col-md-4 p-r-md">
                     <h6>{{ $t('chatroom.setting') }}</h6>
                     <div class="form-group m-t-md">
-                        <label  class="label-width">{{ $t('setting.display_name') }}</label>
+                        <label  class="label-width">{{ $t('misc.display_name') }}</label>
                         <div class="inline-form-control">
                             <input
                                 class="form-control"
-                                :placeholder="$t('setting.display_name')"
+                                :placeholder="$t('misc.display_name')"
                                 v-model="chatroom.title"
                                 required
                             />
@@ -51,7 +51,7 @@
                         type="button"
                         class="md-btn w-sm blue"
                     >
-                        <span v-if="!settingSubmitLoading">{{ $t('common.save') }}</span>
+                        <span v-if="!settingSubmitLoading">{{ $t('dic.submit') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </div>
@@ -69,8 +69,8 @@
                             <tr>
                                 <th width="3%"></th>
                                 <th>{{ $t('chatroom.bulletin_content') }}</th>
-                                <th width="15%" class="text-center">{{ $t('common.status') }}</th>
-                                <th width="20%" class="text-center">{{ $t('common.operate') }}</th>
+                                <th width="15%" class="text-center">{{ $t('dic.status') }}</th>
+                                <th width="20%" class="text-center">{{ $t('dic.operate') }}</th>
                             </tr>
                         </thead>
                         <draggable
@@ -124,11 +124,11 @@
                     </table>
                     <div class="row text-center p-a" v-if="loading">
                         <i class="fa fa-spin fa-spinner"></i>
-                        <b>{{ $t('common.loading') }}&nbsp;...</b>
+                        <b>{{ $t('system.loading') }}</b>
                     </div>
                     <div class="row" v-else-if="!chatroom.bulletin || !chatroom.bulletin.length">
                         <div class="col-md-12 text-center">
-                            {{ $t('common.no_record') }}
+                            {{ $t('system.no_record') }}
                         </div>
                     </div>
 
@@ -137,13 +137,13 @@
                         <thead>
                             <tr>
                                 <th class="text-center" width="7%;"></th>
-                                <th width="20%;">{{ $t('common.nickname') }}</th>
-                                <th class="text-center">{{ $t('staff.role') }}</th>
-                                <th class="text-center">{{ $t('common.game') }}</th>
-                                <th>{{ $t('common.online_time') }}</th>
-                                <th class="text-center">{{ $t('common.speak_interval') }}</th>
-                                <th class="text-center">{{ $t('common.status') }}</th>
-                                <th class="text-center p-r-sm p-l-xs">{{ $t('common.operate') }}</th>
+                                <th width="20%;">{{ $t('user.nickname') }}</th>
+                                <th class="text-center">{{ $t('dic.role') }}</th>
+                                <th class="text-center">{{ $t('dic.game') }}</th>
+                                <th>{{ $t('robot.online_time') }}</th>
+                                <th class="text-center">{{ $t('robot.speak_interval') }}</th>
+                                <th class="text-center">{{ $t('dic.status') }}</th>
+                                <th class="text-center p-r-sm p-l-xs">{{ $t('dic.operate') }}</th>
                             </tr>
                         </thead>
                         <tbody v-if="!loading && chatroom.robots && chatroom.robots.length">
@@ -162,11 +162,11 @@
                                 <td class="text-center">{{ element.user_robot.level_name }}</td>
                                 <td class="text-center">{{ gamesMapping[element.game_code] || '-' }}</td>
                                 <td>
-                                    <span>{{ element.day_of_week && `${$t('week.week')}: ${tranformWeek(element.day_of_week)}` }}</span>
+                                    <span>{{ element.day_of_week && `${$t('time.week')}: ${tranformWeek(element.day_of_week)}` }}</span>
                                     <br/>
-                                    <span>{{ `${$t('common.time')}: ${element.on_time} ~ ${element.off_time}` }}</span>
+                                    <span>{{ `${$t('dic.time')}: ${element.on_time} ~ ${element.off_time}` }}</span>
                                 </td>
-                                <td class="text-right">{{ (element.speak_interval && `${element.speak_interval} ${$t('common.minute')}`) || '-' }}</td>
+                                <td class="text-right">{{ (element.speak_interval && `${element.speak_interval} ${$t('time.minute')}`) || '-' }}</td>
                                 <td class="text-center p-r-xs">
                                     <label class="md-switch">
                                         <input
@@ -213,11 +213,11 @@
                     </table>
                     <div class="row text-center p-a" v-if="loading">
                         <i class="fa fa-spin fa-spinner"></i>
-                        <b>{{ $t('common.loading') }}&nbsp;...</b>
+                        <b>{{ $t('system.loading') }}</b>
                     </div>
                     <div class="row" v-else-if="!chatroom.robots || !chatroom.robots.length">
                         <div class="col-md-12 text-center">
-                            {{ $t('common.no_record') }}
+                            {{ $t('system.no_record') }}
                         </div>
                     </div>
                 </div>
@@ -232,8 +232,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              {{ modal.mode && $t(`action.${modal.mode}_object`, {
-                object: $t('common.plan_robot')
+              {{ modal.mode && $t('title.action_object', {
+                action: $t('dic.' + modal.mode),
+                object: $t('robot.plan_robot')
               }) }}
             </h5>
           </div>
@@ -264,8 +265,10 @@
                   <div class="upload-overlay">
                     <i class="fa fa-cloud-upload"></i>
                   </div>
-                  <h6 class="m-t-sm">{{ $t('action.update_object', {
-                    object: $t('common.avatar')}) }}
+                  <h6 class="m-t-sm">{{ $t('title.action_object', {
+                    action: $t('dic.update'),
+                    object: $t('misc.avatar')
+                  }) }}
                   </h6>
                   <input
                     type="file"
@@ -278,7 +281,7 @@
             </div>
             <div class="row">
               <div class="col-sm-3 col-sm-offset-1 text-right">
-                <label class="form-control-label">{{ $t('common.nickname') }}</label>
+                <label class="form-control-label">{{ $t('user.nickname') }}</label>
               </div>
               <div class="col-sm-4">
                 <input
@@ -289,7 +292,7 @@
             </div>
             <div class="row m-t-xs">
                 <div class="col-sm-3 col-sm-offset-1 text-right">
-                  <label class="form-control-label">{{ $t('staff.role') }}</label>
+                  <label class="form-control-label">{{ $t('dic.role') }}</label>
                 </div>
                 <div class="col-sm-6 p-t-sm">
                   <label class="sm-check m-r">
@@ -306,7 +309,7 @@
               </div>
             <div class="row m-t-xs b-b p-b-xs">
               <div class="col-sm-3 col-sm-offset-1 text-right">
-                <label class="form-control-label">{{ $t('common.game') }}</label>
+                <label class="form-control-label">{{ $t('dic.game') }}</label>
               </div>
               <div class="col-sm-6">
                 <label class="form-control-label p-l-0">{{ gamesMapping[modal.robot.game_code] || '-' }}</label>
@@ -314,10 +317,10 @@
             </div>
             <div class="row m-t-xs">
               <div class="col-sm-3 col-sm-offset-1 text-right">
-                <label class="form-control-label">{{ $t('common.online_time') }}</label>
+                <label class="form-control-label">{{ $t('robot.online_time') }}</label>
               </div>
               <div class="col-sm-6 p-t-sm">
-                {{ $t('week.week') }}
+                {{ $t('time.week') }}
                 <label class="m-l">
                   <input
                     type="checkbox"
@@ -325,7 +328,7 @@
                     @change="toggleSelectAllDays($event)"
                   />
                   <i class="dark-white"></i>
-                  {{ $t('common.select_all') }}
+                  {{ $t('system.select_all') }}
                 </label>
                 <div class="checkbox">
                   <label class="m-r" v-for="i in 7" :key="i">
@@ -335,14 +338,14 @@
                       v-model="modal.checkboxDay[i%7]"
                     />
                     <i class="dark-white"></i>
-                    {{ $t('week.' + (i % 7)) }}
+                    {{ $t(`time.weeks[${(i % 7)}]`) }}
                   </label>
                 </div>
               </div>
             </div>
             <div class="row m-t-xs">
               <div class="col-sm-3 col-sm-offset-1 text-right">
-                <label class="form-control-label">{{ $t('common.on_time') }}</label>
+                <label class="form-control-label">{{ $t('robot.on_time') }}</label>
               </div>
               <div class="col-sm-6">
                 <time-picker v-model="modal.robot.on_time"/>
@@ -350,7 +353,7 @@
             </div>
             <div class="row m-t-xs">
               <div class="col-sm-3 col-sm-offset-1 text-right">
-                <label class="form-control-label">{{ $t('common.off_time') }}</label>
+                <label class="form-control-label">{{ $t('robot.off_time') }}</label>
               </div>
               <div class="col-sm-6">
                 <time-picker v-model="modal.robot.off_time"/>
@@ -358,7 +361,7 @@
             </div>
             <div class="row m-t-xs m-b-sm">
               <div class="col-sm-3 col-sm-offset-1 text-right">
-                <label class="form-control-label">{{ $t('common.speak_interval') }}</label>
+                <label class="form-control-label">{{ $t('robot.speak_interval') }}</label>
               </div>
               <div class="col-sm-3 p-r-0">
                 <input
@@ -369,13 +372,13 @@
                 />
               </div>
               <div class="col-sm-3 text-left p-l-0">
-                <label class="form-control-label">{{ $t('common.minute')}}</label>
+                <label class="form-control-label">{{ $t('time.minute')}}</label>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn dark-white p-x-md w-xs" @click="modal.showModal = false">
-              {{ $t('action.cancel') }}
+              {{ $t('dic.cancel') }}
             </button>
             <button
               type="button"
@@ -388,7 +391,7 @@
               }))"
             >
               <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
-              <span v-else>{{ $t('action.confirm') }}</span>
+              <span v-else>{{ $t('dic.confirm') }}</span>
             </button>
           </div>
         </div>
@@ -536,7 +539,7 @@ export default {
                     this.title = data.title
                 }
                 $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('status.success')
                 })
                 this[`${category}SubmitLoading`] = false
             }, error => {
@@ -587,8 +590,8 @@ export default {
             let unfinished = this.robotUpdateFields.filter(key => resultRobot[key] === '' || resultRobot[key] === undefined)
             if (unfinished.length > 0 && mode !== 'delete') {
                 $.notify({
-                    message: this.$t('action.please_fill_object', {
-                        object: unfinished.map(key => this.$t('common.' + key)).join(',')
+                    message: this.$t('system.fill_object', {
+                        object: unfinished.map(key => this.$t('robot.' + key)).join(',')
                     }),
                     type: 'danger'
                 })
@@ -667,7 +670,7 @@ export default {
             this.modal.robot.hasAvatarFile = false
         },
         tranformWeek (days = []) {
-            return days.map(element => this.$t('week.' + element)).join(',')
+            return days.map(element => this.$t(`time.weeks[${element}]`)).join(',')
         },
         toggleSelectAllDays (e) {
             for (let i = 0; i < 7; ++i) {
@@ -680,7 +683,7 @@ export default {
         notify (operate = 'update', type = 'success', status = 'success', closeModal = false, addMsg = '') {
             this.modal.loading = false
             $.notify({
-                message: this.$t('action.' + operate) + this.$t('status.' + status) + (addMsg && ` (${addMsg})`),
+                message: this.$t('dic.' + operate) + this.$t('status.' + status) + (addMsg && ` (${addMsg})`),
                 type
             })
             closeModal && this.closeModal()

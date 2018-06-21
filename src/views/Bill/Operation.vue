@@ -4,7 +4,7 @@
             <form @submit.prevent="onSubmit">
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label">
-                        {{ $t('common.username') }}
+                        {{ $t('user.username') }}
                     </label>
                     <div class="col-sm-3">
                         <input
@@ -17,7 +17,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label">
-                        {{ $t('bill.deposit_amount') }}
+                        {{ $t('finance.deposit_amount') }}
                     </label>
                     <div class="col-sm-3">
                         <input
@@ -26,13 +26,13 @@
                             v-model="transaction.amount"
                             required
                         />
-                        <span class="text-sm text-danger">{{ $t('bill.deposit_amount_alert') }}</span>
+                        <span class="text-sm text-danger">{{ $t('misc.manual_adjust_deposit_amount_alert_msg') }}</span>
                     </div>
                 </div>
     
                 <div class="form-group row">
                     <label class="col-sm-2 form-control-label">
-                        {{ $t('bill.suggested_balance') }}
+                        {{ $t('misc.manual_adjust_suggested_balance') }}
                     </label>
                     <div class="col-xs-5 form-control-label">
                         <label class="m-r">
@@ -43,7 +43,7 @@
                                 v-model.number="compensation"
                             />
                             <i class="blue"></i>
-                            {{ $t('common.yes') }}
+                            {{ $t('status.yes') }}
                         </label>
 
                         <label class="m-r">
@@ -54,14 +54,14 @@
                                 v-model.number="compensation"
                             />
                             <i class="blue"></i>
-                            {{ $t('common.no') }}
+                            {{ $t('status.no') }}
                         </label>
-                        <span class="text-sm text-danger">{{ $t('bill.sug_balance_alert') }}</span>
+                        <span class="text-sm text-danger">{{ $t('misc.manual_adjust_suggested_balance_alert_msg') }}</span>
                     </div>
                 </div>
     
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">{{ $t('bill.audit_type') }}</label>
+                    <label class="col-sm-2 form-control-label">{{ $t('finance.audit_type') }}</label>
                     <div class="col-xs-5 form-control-label">
                         <label class="m-r">
                             <input
@@ -71,7 +71,7 @@
                                 v-model.number="transaction.audit.type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.free_audit') }}
+                            {{ $t('finance.audit_free') }}
                         </label>
 
                         <label class="m-r">
@@ -82,7 +82,7 @@
                                 v-model.number="transaction.audit.type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.deposit_audit') }}
+                            {{ $t('finance.audit_deposit') }}
                         </label>
 
                         <label>
@@ -93,7 +93,7 @@
                                 v-model.number="transaction.audit.type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.preferential_audit') }}
+                            {{ $t('finance.audit_discount') }}
                         </label>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                         <input
                             type="number"
                             class="form-control"
-                            :placeholder="$t('bill.audit_amount')"
+                            :placeholder="$t('finance.audit_amount')"
                             v-model="transaction.audit.amount"
                             :required="transaction.audit.type !== 3"
                             :disabled="transaction.audit.type === 0"
@@ -113,7 +113,7 @@
                 </div>
     
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">{{ $t('bill.transaction_type') }}</label>
+                    <label class="col-sm-2 form-control-label">{{ $t('finance.transaction_type') }}</label>
                     <div class="col-xs-8 form-control-label">
                         <label class="m-r">
                             <input
@@ -123,7 +123,7 @@
                                 v-model="transaction.transaction_type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.manual_operation') }}
+                            {{ $t('finance.manual_operation') }}
                         </label>
                         <label class="m-r">
                             <input
@@ -133,7 +133,7 @@
                                 v-model="transaction.transaction_type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.discount') }}
+                            {{ $t('finance.discount') }}
                         </label>
                         <label class="m-r">
                             <input
@@ -143,7 +143,7 @@
                                 v-model="transaction.transaction_type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.return') }}
+                            {{ $t('finance.return') }}
                         </label>
                         <label class="m-r">
                             <input
@@ -153,7 +153,7 @@
                                 v-model="transaction.transaction_type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.game_settlement') }}
+                            {{ $t('finance.game_settlement') }}
                         </label>
                         <label>
                             <input
@@ -163,13 +163,13 @@
                                 v-model="transaction.transaction_type"
                             />
                             <i class="blue"></i>
-                            {{ $t('bill.others') }}
+                            {{ $t('misc.others') }}
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">{{ $t('common.memo') }}</label>
+                    <label class="col-sm-2 form-control-label">{{ $t('dic.memo') }}</label>
                     <div class="col-sm-3">
                         <textarea class="form-control" v-model="transaction.memo"></textarea>
                     </div>
@@ -177,7 +177,7 @@
 
 
                 <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">{{ $t('staff.password') }}</label>
+                    <label class="col-sm-2 form-control-label">{{ $t('user.password') }}</label>
                     <div class="col-sm-3">
                         <input
                             type="password"
@@ -194,9 +194,9 @@
                     <div class="col-sm-5">
                         <button class="md-btn blue w-sm" type="submit">
                             <i class="fa fa-spin fa-spinner" v-show="loading"></i>
-                            <span v-show="!loading">{{ $t('common.submit') }}</span>
+                            <span v-show="!loading">{{ $t('dic.submit') }}</span>
                         </button>
-                        <p class="text-sm text-danger">{{ $t('bill.submit_alert') }}</p>
+                        <p class="text-sm text-danger">{{ $t('misc.manual_adjust_submit_alert_msg') }}</p>
                     </div>
                 </div>
             </form>
@@ -240,7 +240,7 @@ export default {
                 this.loading = false
                 this.$router.push('/transaction/' + data.id)
                 $.notify({
-                    message: `${this.$t('member.manual_adjust')}${this.$t('status.success')}`,
+                    message: `${this.$t('finance.manual_adjust')}${this.$t('status.success')}`,
                     type: 'success'
                 })
             }, error => {

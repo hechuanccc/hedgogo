@@ -12,7 +12,7 @@
             <div class="row b-b p-b m-b">
               <div class="col-md-5">
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.username')}}</label>
+                  <label class="label-width">{{$t('user.username')}}</label>
                   <div class="inline-form-control">
                     <input
                       class="form-control"
@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="form-group m-t-md">
-                  <label class="label-width">{{$t('agent.level')}}</label>
+                  <label class="label-width">{{$t('user.agent_level')}}</label>
                   <div class="inline-form-control">
                     <select
                       class="form-control c-select w-sm"
@@ -52,20 +52,20 @@
                       class="p-b-xs p-t-sm form-control w-sm"
                       v-else-if="!filteredAgentLevels.length"
                     >
-                      {{ $t('common.no_record') }}
+                      {{ $t('system.no_record') }}
                     </span>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('agent.parent_agent')}}</label>
+                  <label class="label-width">{{$t('user.parent_agent')}}</label>
                   <select
                     class="form-control c-select w-sm"
                     v-model.number="agent.parent_agent"
                     v-if="filteredParentAgents.length && !agentLevelLoading"
                     required
                   >
-                    <option value="">{{ $t('common.please_select') }}</option>
+                    <option value="">{{ $t('system.please_select') }}</option>
                     <option
                       class="form-control"
                       :value="pa.id"
@@ -83,12 +83,12 @@
                   <input
                     class="p-b-xs p-t-sm form-control w-sm inline"
                     v-else-if="!filteredParentAgents.length"
-                    :placeholder="$t('common.no_record')"
+                    :placeholder="$t('system.no_record')"
                     disabled
                   />
                 </div>
                 <div class="form-group" v-if="agent.id">
-                  <label class="label-width">{{$t('common.status')}}</label>
+                  <label class="label-width">{{$t('dic.status')}}</label>
                   <div class="inline-form-control">
                     <select class="form-control w-sm c-select" v-model="agent.status" :disabled="!$root.permissions.includes('review_agent_application')">
                       <option value="0">{{$t('status.rejected')}}</option>
@@ -99,7 +99,7 @@
                   </div>
                 </div>
                 <div class="form-group m-t-md">
-                  <label class="label-width">{{$t('agent.commission_setting')}}</label>
+                  <label class="label-width">{{$t('title.commission')}}</label>
                   <div class="inline-form-control">
                     <selector-commission :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true"/>
                   </div>
@@ -107,28 +107,28 @@
 
 
                 <div class="form-group m-t-md">
-                  <label class="label-width">{{$t('agent.dft_member_lv')}}</label>
+                  <label class="label-width">{{$t('user.default_member_level')}}</label>
                   <div class="inline-form-control">
                     <selector-member-level :level="agent.default_member_lv" @level-select="levelSelect" :req="false"/>
                   </div>
                 </div>
 
                 <div class="form-group" v-if="!agent.id">
-                  <label class="label-width">{{$t('agent.promo_code')}}</label>
+                  <label class="label-width">{{$t('user.promo_code')}}</label>
                   <div class="inline-form-control">
                     <input class="form-control" type="number" name="realname" disabled v-model="agent.promo_code">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label  class="label-width">{{$t('agent.domain')}}</label>
+                  <label  class="label-width">{{$t('user.domain')}}</label>
                   <div class="inline-form-control">
                     <input class="form-control input-lg" placeholder="1234567.com" v-model="agent.domain">
                   </div>
                 </div>
 
-                <h6 class="b-b p-b m-b m-t-md">{{$t('bank.bank_title')}}</h6>
+                <h6 class="b-b p-b m-b m-t-md">{{$t('bank.bank_info')}}</h6>
                 <div class="form-group">
-                  <label class="label-width">{{$t('bank.name')}}</label>
+                  <label class="label-width">{{$t('dic.bank')}}</label>
                   <selector-bank :bank="agent.bank.bank" :req="bankFilled" @bank-select="bank"/>
                 </div>
                 <div class="form-group">
@@ -153,57 +153,57 @@
               <div class="col-md-5 col-md-offset-1">
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.real_name')}}</label>
+                  <label class="label-width">{{$t('user.real_name')}}</label>
                   <div class="inline-form-control">
                     <input class="form-control" name="realname" placeholder="比如：张三丰" v-model="agent.real_name">
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.gender')}}</label>
+                  <label class="label-width">{{$t('user.gender')}}</label>
                   <div class="from-control inline-form-control">
                     <label class="md-check md-check-md">
                       <input type="radio" name="gender" value="M" v-model="agent.gender">
                       <i class="blue"></i>
-                      {{$t('common.male')}}
+                      {{$t('user.male')}}
                     </label>
 
                     <label class="md-check md-check-md m-l-lg" >
                       <input type="radio" name="gender" value="F" v-model="agent.gender">
                       <i class="blue"></i>
-                      {{$t('common.female')}}
+                      {{$t('user.female')}}
                     </label>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.email')}}</label>
+                  <label class="label-width">{{$t('user.email')}}</label>
                   <div class="inline-form-control">
                     <input type="email" class="form-control" name="email" placeholder="比如：abc@example.com" v-model="agent.email">
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.birthday')}}</label>
+                  <label class="label-width">{{$t('user.birthday')}}</label>
                   <div class="inline-form-control">
                     <date-picker width='153' v-model="agent.birthday"></date-picker>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.wechat')}}</label>
+                  <label class="label-width">{{$t('user.wechat')}}</label>
                   <div class="inline-form-control">
                     <input type="text" class="form-control" name="wechat" placeholder="比如：ABC234" v-model="agent.wechat">
                   </div>
                 </div>
                 <div class="form-group b-b p-b">
-                  <label class="label-width">{{$t('common.qq')}}</label>
+                  <label class="label-width">{{$t('user.qq')}}</label>
                   <div class="inline-form-control">
                     <input type="number" class="form-control" name="qq" placeholder="比如：453087589" v-model="agent.qq">
                   </div>
                 </div>
                 <div class="form-group" >
-                  <label>{{$t('common.memo')}}</label>
+                  <label>{{$t('dic.memo')}}</label>
                   <textarea
                     class="form-control"
                     rows="4"
@@ -217,7 +217,7 @@
               <div class="alert alert-danger" v-if="formError">
                 <span>{{formError}}<br/> </span>
               </div>
-              <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+              <button type="submit" class="md-btn w-sm blue">{{$t('dic.submit')}}</button>
             </div>
           </form>
         </div>
@@ -239,41 +239,44 @@
             </div>
             <div class="col-xs-8 col-md-offset-1 text-right" v-if="agent.level.id > 3">
               <input v-show="false" v-model="today">
-              <router-link class="md-btn md-flat m-r-sm" :to="'/report/game?agent=' + agent.username +'&category=&date_0='+ today +'&date_1='+ today">{{$t('action.view_today_report')}}</router-link>
-              <router-link class="md-btn md-flat m-r-sm" :to="'/bill/search?agent=' + agent.id">{{$t('action.view_member_record')}}</router-link>
-              <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)">{{$t('action.reset_password')}}</a>
-              <router-link class="md-btn md-flat m-r-sm" :to="'/agent/' + agent.id + '/edit'">{{$t('action.update_agent')}}</router-link>
+              <router-link class="md-btn md-flat m-r-sm" :to="'/report/game?agent=' + agent.username +'&category=&date_0='+ today +'&date_1='+ today">{{$t('misc.view_today_report')}}</router-link>
+              <router-link class="md-btn md-flat m-r-sm" :to="'/bill/search?agent=' + agent.id">{{$t('misc.view_all_member_transactions')}}</router-link>
+              <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)">{{$t('user.reset_password')}}</a>
+              <router-link class="md-btn md-flat m-r-sm" :to="'/agent/' + agent.id + '/edit'">{{$t('title.agent_edit')}}</router-link>
             </div>
           </div>
         </div>
         <div class="box-body">
           <div class="row m-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.level')}}</span>
+              <span class="text-muted">{{$t('user.agent_level')}}</span>
               <div >{{agent.level.name}}</div>
             </div>
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.parent_agent')}}</span>
+              <span class="text-muted">{{$t('user.parent_agent')}}</span>
               <div>
                 <router-link v-if="agent.parent_agent" :to="'/agent/' + agent.parent_agent.id">{{agent.parent_agent.name}}</router-link>
-                <span class="text-muted" v-else>{{$t('agent.no_parent')}}</span>
+                <span class="text-muted" v-else>{{$t('user.no_parent_agent')}}</span>
               </div>
             </div>
           </div>
           <div class="row m-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('common.status')}} </span>
+              <span class="text-muted">{{$t('dic.status')}} </span>
               <div>
                 <span class="label success" v-if="agent.status==1" @click="toggleStatus">{{$t('status.active')}}</span>
                 <span class="label" v-else  @click="toggleStatus">{{$t('status.inactive')}}</span>
                 <a class="text-sm m-l" @click="toggleStatus" v-if="agent.status==1" >禁用</a>
                 <a class="text-sm m-l" @click="toggleStatus" v-else >启用</a>
-                <span class="text-success" v-show="statusUpdated">{{$t('common.status_updated')}}</span>
+                <span class="text-success" v-show="statusUpdated">{{$t('system_msg.action_object_status', {
+                  object: $t('dic.status'),
+                  status: $t('status.updated')
+                })}}</span>
               </div>
             </div>
 
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.member_count')}}</span>
+              <span class="text-muted">{{$t('user.member_count')}}</span>
               <div >
                 <router-link :to="'/member?agent=' + agent.username">{{agent.member_count}}</router-link>
               </div>
@@ -282,14 +285,14 @@
           </div>
           <div class="row p-b b-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.commission_setting')}}</span>
+              <span class="text-muted">{{$t('title.commission')}}</span>
               <div>
                 <router-link v-if="agent.commission_settings" :to="'/commission/' + agent.commission_settings.id + '/edit'">{{agent.commission_settings.name}}</router-link>
                 <span class="label" v-else>未设定</span>
               </div>
             </div>
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.dft_member_lv')}}</span>
+              <span class="text-muted">{{$t('user.default_member_level')}}</span>
               <div>
                 <router-link v-if="agent.default_member_lv" :to="'/level/' + agent.default_member_lv.id ">{{agent.default_member_lv.name}}</router-link>
                 <span class="label" v-else>未设定</span>
@@ -298,49 +301,49 @@
           </div>
           <div class="row p-b b-b m-t">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('agent.promo_code')}}</span>
+              <span class="text-muted">{{$t('user.promo_code')}}</span>
               <div >{{agent.promo_code}}</div>
             </div>
           </div>
           <div class="row m-b p-t p-b b-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('common.basic_info')}}</span>
+              <span class="text-muted">{{$t('title.basic_info')}}</span>
               <div  v-show="!showDetail">
-                {{$t('common.real_name')}}：
+                {{$t('user.real_name')}}：
                 <span v-if="agent.real_name">{{agent.real_name}}</span>
-                <span class="label" v-else>未填写</span>，{{$t('common.phone')}}：
+                <span class="label" v-else>未填写</span>，{{$t('user.phone')}}：
                 <span v-if="agent.phone">{{agent.phone}}</span>
                 <span class="label" v-else>未填写</span>
               </div>
 
               <div class="p-a grey-50 lh-md m-t-sm label-width-eq">
                 <div>
-                  <span class="text-muted title">{{$t('common.real_name')}}</span>
+                  <span class="text-muted title">{{$t('user.real_name')}}</span>
                   <span v-if="agent.real_name">{{agent.real_name}}</span>
                   <span v-else class="text-muted">未填写</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.phone')}}</span>
+                  <span class="text-muted title">{{$t('user.phone')}}</span>
                   <span v-if="agent.phone">{{agent.phone}}</span>
                   <span v-else class="text-muted">未填写</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.gender')}}</span>
+                  <span class="text-muted title">{{$t('user.gender')}}</span>
                   <span v-if="agent.gender">{{agent.gender}}</span>
                   <span v-else class="text-muted">未填写</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.email')}}</span>
+                  <span class="text-muted title">{{$t('user.email')}}</span>
                   <span v-if="agent.email">{{agent.email}}</span>
                   <span v-else class="text-muted">未填写</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.birthday')}}</span>
+                  <span class="text-muted title">{{$t('user.birthday')}}</span>
                   <span v-if="agent.birthday">{{agent.birthday}}</span>
                   <span v-else class="text-muted">未填写</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.wechat')}}</span>
+                  <span class="text-muted title">{{$t('user.wechat')}}</span>
                   <span v-if="agent.wechat">{{agent.wechat}}</span>
                   <span v-else class="text-muted">未填写</span>
                 </div>
@@ -353,21 +356,21 @@
             </div>
             <div class="col-xs-4">
               <a @click="showDetail = !showDetail">
-                <span v-if="showDetail">{{$t('action.close_detailed_infos')}}</span>
-                <span v-else>{{$t('action.view_detailed_infos')}}</span>
+                <span v-if="showDetail">{{$t('misc.close_detail_info')}}</span>
+                <span v-else>{{$t('misc.view_detail_info')}}</span>
               </a>
             </div>
           </div>
 
           <div class="row m-b b-b p-b">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('bank.bank_title')}}</span>
+              <span class="text-muted">{{$t('bank.bank_info')}}</span>
               <div v-if="!agent.bank">
                 <span class="label" >尚未建立</span>
               </div>
               <div class="p-a grey-50 lh-md m-t-sm label-width-eq" v-else>
                 <div>
-                  <span class="text-muted title">{{$t('bank.name')}}</span>
+                  <span class="text-muted title">{{$t('dic.bank')}}</span>
                   <span>{{agent.bank.bank.name}}</span>
                 </div>
                 <div>
@@ -392,9 +395,9 @@
 
           <div class="row">
             <div class="col-xs-4">
-              <span class="text-muted">{{$t('common.memo')}}</span>
+              <span class="text-muted">{{$t('dic.memo')}}</span>
               <div  v-if="agent.memo">{{agent.memo}}</div>
-              <div class="text-muted" v-else>{{$t('common.no_memo')}}</div>
+              <div class="text-muted" v-else>{{$t('dic.no_memo')}}</div>
             </div>
           </div>
         </div>

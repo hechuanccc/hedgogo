@@ -2,28 +2,28 @@
 <div>
     <div class="m-b">
         <ol class="breadcrumb">
-            <li class="active"><router-link to="/commission">{{ $t('nav.setting_commission') }}</router-link></li>
+            <li class="active"><router-link to="/commission">{{ $t('title.commission') }}</router-link></li>
             <li class="active">{{ $route.meta.title }}</li>
         </ol>
     </div>
     <form @submit.prevent="onSubmit">
         <div class="row m-b-sm">
             <div class="col-xs-12" v-if="commissionsetting.id">
-                <span class="v-m pull-left p-t-sm m-l-xs">{{ $t('common.agent_count') }}：{{ commissionsetting.agent_count || 0 }}</span>
+                <span class="v-m pull-left p-t-sm m-l-xs">{{ $t('user.agent_count') }}：{{ commissionsetting.agent_count || 0 }}</span>
                 <button
                     type="button"
                     class="md-btn md-flat pull-right t-red"
                     @click="deleteMode = true"
                     :disabled="commissionsetting.agent_count > 0"
                     v-if="$root.permissions.includes('delete_commission_setting') && !deleteMode"
-                >{{ $t('setting.delete_commission_setting') }}
+                >{{ $t('dic.delete') }}
                 </button>
                 <button
                     type="button"
                     class="md-btn md-flat pull-right w-xs"
                     @click="deleteMode = false"
                     v-if="deleteMode"
-                >{{ $t('action.cancel') }}
+                >{{ $t('dic.cancel') }}
                 </button>
                 <button
                     type="button"
@@ -31,7 +31,9 @@
                     @click="deleteCommission"
                     v-if="deleteMode"
                 >
-                    <span v-if="!deleteLoading">{{ $t('commission.confirm_delete') }}</span>
+                    <span v-if="!deleteLoading">{{ $t('system_msg.confirm_action_object', {
+                        action: $t('dic.delete')
+                    }) }}</span>
                     <i class="fa fa-spin fa-spinner" v-else></i>
                 </button>
             </div>
@@ -39,9 +41,9 @@
         <div class="box">
             <div class="box-body row">
                 <div class="col-xs-4">
-                    <h5 class="p-a-sm">{{ $t('common.basic_setting') }}</h5>
+                    <h5 class="p-a-sm">{{ $t('title.basic_setting') }}</h5>
                     <div class="clearfix">
-                        <label class="col-xs-4 text-right form-control-label">{{ $t('common.name') }} </label>
+                        <label class="col-xs-4 text-right form-control-label">{{ $t('dic.name') }} </label>
                         <div class="col-xs-6">
                             <input
                                 class="form-control"
@@ -53,7 +55,7 @@
                         </div>
                     </div>
                     <div class="clearfix m-t-sm">
-                        <label class="col-xs-4 text-right form-control-label">{{ $t('setting.valid_member') }} </label>
+                        <label class="col-xs-4 text-right form-control-label">{{ $t('user.valid_member') }} </label>
                         <div class="col-xs-4">
                             <input
                                 type="number"
@@ -67,17 +69,17 @@
                     </div>
                 </div>
                 <div class="col-xs-5 col-xs-offset-1">
-                    <h5 class="p-a-sm m-b-0">{{ $t('commission.name') }}</h5>
+                    <h5 class="p-a-sm m-b-0">{{ $t('title.commission') }}</h5>
                     <div class="row text-center p-l">
-                        <div class="col-xs-4 p-t-sm">{{ $t('commission.income_threshold') }}</div>
-                        <div class="col-xs-3 col-xs-offset-1 p-t-sm">{{ $t('commission.commission_rate') }}</div>
+                        <div class="col-xs-4 p-t-sm">{{ $t('finance.income_threshold') }}</div>
+                        <div class="col-xs-3 col-xs-offset-1 p-t-sm">{{ $t('finance.commission_rate') }}</div>
                         <div class="col-xs-3 col-xs-offset-1 text-center" v-if="updateCommissionSettingPermission">
                             <button
                                 type="button"
                                 class="btn btn-sm w-xs grey-600"
                                 @click="addConfig"
                             >
-                                {{ $t('action.add_group') }}
+                                {{ $t('system.add_group') }}
                             </button>
                         </div>
                     </div>
@@ -112,7 +114,7 @@
                             <a
                                 v-if="index"
                                 @click="deleteConfig(index)"
-                            >{{ $t('action.delete') }}</a>
+                            >{{ $t('dic.delete') }}</a>
                         </div>
                     </div>
                 </div>
@@ -123,7 +125,7 @@
                 :disabled="!updateCommissionSettingPermission"
                 class="md-btn w-sm blue"
             >
-                <span v-if="!loading">{{ $t('common.save') }}</span>
+                <span v-if="!loading">{{ $t('dic.submit') }}</span>
                 <i class="fa fa-spin fa-spinner" v-else></i>
             </button>
         </div>
@@ -204,7 +206,7 @@ export default {
             if (typeof validation === 'number') {
                 this.$refs.income_threshold[validation].select()
                 $.notify({
-                    message: this.$t('commission.income_threshold') + this.$t('common.repeat') + this.$t('action.key_in'),
+                    message: this.$t('finance.income_threshold') + this.$t('misc.repeated'),
                     type: 'warning'
                 })
                 return
@@ -220,7 +222,7 @@ export default {
                 data
             }).then(data => {
                 $.notify({
-                    message: `${this.id ? this.$t('action.update') : this.$t('action.create')}${this.$t('commission.name')}${this.$t('status.success')}`
+                    message: `${this.id ? this.$t('dic.update') : this.$t('dic.create')}${this.$t('title.commission')}${this.$t('status.success')}`
                 })
                 this.$router.push('/commission/')
                 this.loading = false
@@ -237,7 +239,7 @@ export default {
             deleteSetting('commission', this.commissionsetting.id).then(() => {
                 this.deleteMode = false
                 $.notify({
-                    message: this.$t('action.delete') + this.$t('status.success')
+                    message: this.$t('dic.delete') + this.$t('status.success')
                 })
                 this.$router.push('/commission')
             }, error => {

@@ -1,18 +1,18 @@
 <template>
     <div>
         <div class="p-b inline m-r-sm" v-if="$root.permissions.includes('add_online_payee')" >
-            <router-link tag="button" class="md-btn blue" to="/online_payee/add">{{$t('setting.create_online_payee')}}</router-link>
+            <router-link tag="button" class="md-btn blue" to="/online_payee/add">{{$t('title.online_payee_add')}}</router-link>
         </div>
         <div class="inline">
             <label
                 class="form-control-label p-b-0 p-t-0"
                 :class="{'text-blue': status}"
-            >{{ $t('common.status') }}
+            >{{ $t('dic.status') }}
             </label>
             <label class="sm-check m-r m-b-0">
                 <input class="c-radio" type="radio" value="" v-model="status">
                 <i class="blue m-r-xs"></i>
-                {{ $t('common.show_all') }}
+                {{ $t('system.show_all') }}
             </label>
             <label class="sm-check m-r m-b-0">
                 <input class="c-radio" type="radio" value="1" v-model="status">
@@ -29,12 +29,12 @@
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>
-                    <th>{{$t('common.name')}}</th>
-                    <th>{{$t('setting.sum_fund')}}</th>
-                    <th>{{$t('setting.expired_in')}}</th>
-                    <th>{{$t('setting.display_name')}}</th>
-                    <th class="text-center" width="13%">{{$t('common.status')}}</th>
-                    <th>{{$t('member.level')}}</th>
+                    <th>{{$t('dic.name')}}</th>
+                    <th>{{$t('finance.sum_fund')}}</th>
+                    <th>{{$t('finance.expired_in')}}</th>
+                    <th>{{$t('misc.display_name')}}</th>
+                    <th class="text-center" width="13%">{{$t('dic.status')}}</th>
+                    <th>{{$t('dic.member_level')}}</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -2,14 +2,14 @@
 <div>
     <div class="m-b">
         <ol class="breadcrumb">
-            <li class="active"><router-link to="/paymenttype">{{ $t('nav.payment_type_setting') }}</router-link></li>
+            <li class="active"><router-link to="/paymenttype">{{ $t('title.payment_type_management') }}</router-link></li>
             <li class="active">{{ $route.meta.title }}</li>
         </ol>
     </div>
     <form class="box p-a" @submit.prevent="onSubmit">
         <div class="row m-a">
             <div class="form-group">
-                <label class="label-width">{{ $t('common.name') }}</label>
+                <label class="label-width">{{ $t('dic.name') }}</label>
                 <div class="inline-form-control">
                     <input 
                         class="form-control"
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="label-width">{{ $t('setting.display_name') }}</label>
+                <label class="label-width">{{ $t('misc.display_name') }}</label>
                 <div class="inline-form-control">
                     <input
                         class="form-control"
@@ -42,7 +42,7 @@
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
-                <span class="m-r-sm" v-else>{{ $t('action.no_setting') }}</span>
+                <span class="m-r-sm" v-else>{{ $t('system.no_setting') }}</span>
                 <div class="inline-form-control">
                     <input
                         type="file"
@@ -56,7 +56,7 @@
         </div>
         <div class="row m-a">
             <div class="form-group">
-                <label class="label-width">{{ $t('setting.payee') }}</label>
+                <label class="label-width">{{ $t('title.online_payee') }}</label>
                 <div v-if="payment.detail.length > 0" class="m-t-sm">
                     <label
                         class="m-l-lg checkbox inline"
@@ -73,7 +73,7 @@
                         {{ detail.name }}
                     </label>
                 </div>
-                <div v-else class="inline-form-control">{{ $t('setting.no_payment_gateway') }}</div>    
+                <div v-else class="inline-form-control">{{ $t('finance.no_payment_gateway') }}</div>    
             </div>
             <p
                 class="text-muted"
@@ -83,19 +83,19 @@
             </p>
             <div class="row">
                 <div class="form-group col-xs-6">
-                    <label for="memo">{{ $t('common.dashboard_memo') }}</label>
+                    <label for="memo">{{ $t('finance.dashboard_memo') }}</label>
                     <textarea class="form-control" name="description" rows="4" v-model="payment.description"></textarea>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-xs-6">
-                    <label for="memo">{{ $t('common.client_memo') }}</label>
+                    <label for="memo">{{ $t('finance.client_memo') }}</label>
                     <textarea class="form-control" name="client_description" rows="4" v-model="payment.client_description"></textarea>
                 </div>
             </div>
         </div>
         <button type="submit" class="md-btn w-sm blue">
-            <span v-if="!loading">{{ $t('common.save') }}</span>
+            <span v-if="!loading">{{ $t('dic.submit') }}</span>
             <i class="fa fa-spin fa-spinner" v-else></i>
         </button>
     </form>
@@ -163,7 +163,11 @@ export default {
                     this.loading = false
                     this.$router.push('/paymenttype/?type=' + this.payment.platform)
                     $.notify({
-                        message: this.$t('common.saved_successfully')
+                        message: this.$t('system_msg.action_object_status', {
+                            action: this.$t('dic.update'),
+                            object: this.$t('dic.payment_type'),
+                            status: this.$t('status.success')
+                        })
                     })
                 }, error => {
                     $.notify({
@@ -209,7 +213,7 @@ export default {
             this[`has${attr}File`] = false
             this.$refs.iconInput.value = ''
             $.notify({
-                message: this.$t('common.click_submit_and_clear'),
+                message: this.$t('system_msg.click_submit_and_clear'),
                 type: 'warning'
             })
         }

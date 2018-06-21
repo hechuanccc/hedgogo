@@ -2,11 +2,11 @@
     <div>
         <div class="row m-l-xs m-r-xs m-b-xs">
             <div class="pull-left" v-if="$root.permissions.includes('add_promotion_activity')">
-                <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('promotion.add')}}</router-link>
+                <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('title.promotion_add')}}</router-link>
             </div>
             <div class="pull-right">
-                <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+                <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</button>
+                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('dic.cancel') }}</button>
             </div>
         </div>
         <div class="box">
@@ -14,11 +14,11 @@
                 <thead>
                     <tr>
                         <th v-show="!mode"></th>
-                        <th>{{$t('common.name')}}</th>
-                        <th>{{$t('member.level')}}</th>
+                        <th>{{$t('dic.name')}}</th>
+                        <th>{{$t('dic.member_level')}}</th>
                         <th>{{$t('promotion.start_date')}}</th>
                         <th>{{$t('promotion.end_date')}}</th>
-                        <th>{{$t('common.status')}}</th>
+                        <th>{{$t('dic.status')}}</th>
                     </tr>
                 </thead>
                 <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
@@ -81,7 +81,7 @@ export default {
                     })
                     this.mode = true
                     $.notify({
-                        message: this.$t('game_manage.adjust_rank') + this.$t('status.success')
+                        message: this.$t('system.adjust_rank') + this.$t('status.success')
                     })
                 }, error => {
                     $.notify({

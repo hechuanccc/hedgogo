@@ -2,15 +2,15 @@
     <div>
       <div class="m-b">
         <ol class="breadcrumb">
-          <li class="active"><router-link to="/member">{{$t('nav.member')}}</router-link></li>
+          <li class="active"><router-link to="/member">{{$t('dic.member')}}</router-link></li>
           <li class="active">{{$route.meta.title}}</li>
         </ol>
       </div>
       <div class="box">
         <div class="box-header b-b">
           <div class="alert alert-success" v-if="passwordChanged >= 1">
-            <span v-if="passwordChanged === 1">{{$t('action.login_password_changed')}}</span>
-            <span v-if="passwordChanged === 2">{{$t('action.withdraw_password_changed')}}</span>
+            <span v-if="passwordChanged === 1">{{$t('system_msg.password_changed')}}</span>
+            <span v-if="passwordChanged === 2">{{$t('system_msg.withdraw_password_changed')}}</span>
             <strong>{{newPassword}}</strong>
           </div>
 
@@ -20,27 +20,27 @@
           <div class="row">
             <div class="col-xs-4">
               <h2><strong>{{member.username}}</strong>
-                <span class="label success text-sm" v-if="member.account_type !== 0" >{{$t('member.real_account')}}</span>
+                <span class="label success text-sm" v-if="member.account_type !== 0" >{{$t('user.real_account')}}</span>
               </h2>
-              <span class="text-muted text-sm" v-if="member.created_at">于 {{ member.created_at | moment("YYYY-MM-DD HH:mm")}} {{$t('common.register')}}</span>
+              <span class="text-muted text-sm" v-if="member.created_at">于 {{ member.created_at | moment('YYYY-MM-DD HH:mm')}} {{$t('dic.register')}}</span>
             </div>
             <div class="col-xs-8 text-right">
               <div>
                 <router-link
                   class="md-btn md-flat m-r-sm"
                   :to="`/report/betrecord?member=${member.username}&created_at_1=${today}`"
-                >{{$t('action.view_history_bet_record')}}
+                >{{$t('misc.view_history_betting_record')}}
                 </router-link>
                 <router-link
                   class="md-btn md-flat m-r-sm"
                   :to="`/report/betrecord?member=${member.username}`"
-                >{{$t('action.view_todays_bet_record')}}
+                >{{$t('misc.view_betting_record')}}
                 </router-link>
                 <template>
-                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('action.reset_password')}}</a>
-                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword(2, $event)">{{$t('action.reset_withdraw_password')}}</a>
-                  <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'">{{$t('action.update_member')}}</router-link>
-                  <a class="md-btn md-flat" @click="changeAudit" v-if="$root.permissions.includes('update_member_audit')">{{$t('action.change_audit_status')}}</a>
+                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('user.reset_password')}}</a>
+                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword(2, $event)">{{$t('user.reset_withdraw_password')}}</a>
+                  <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'">{{$t('title.member_edit')}}</router-link>
+                  <a class="md-btn md-flat" @click="changeAudit" v-if="$root.permissions.includes('update_member_audit')">{{$t('user.update_member_audit')}}</a>
                 </template>
               </div>
             </div>
@@ -49,35 +49,35 @@
         <div class="box-body">
           <div class="row b-b p-b m-b" v-if="member.balance">
             <div class="col-xs-2">
-              {{$t('member.balance')}}
+              {{$t('dic.balance')}}
               <div>
                 <strong class="text-lg text-success">{{member.balance.balance | currency('￥')}}</strong>
               </div>
             </div>
             <div class="col-xs-2">
-              {{$t('member.sug_balance')}}
+              {{$t('user.suggested_balance')}}
               <div>
                 <strong class="text-lg text-danger">{{member.suggested_balance | currency('￥')}}</strong>
               </div>
             </div>
             <div class="col-xs-2">
               <div class="m-b">
-                {{$t('member.current_audit')}}
-                <span class="t-red" v-if="member.balance.bet_amount < member.balance.audit_amount">{{$t('member.failed')}}</span>
-                <span class="t-green" v-else>{{$t('member.pass')}}</span>
+                {{$t('user.current_audit')}}
+                <span class="t-red" v-if="member.balance.bet_amount < member.balance.audit_amount">{{$t('status.no_pass')}}</span>
+                <span class="t-green" v-else>{{$t('status.pass')}}</span>
               </div>
             </div>
             <div class="col-xs-2">
-              <p class="m-b-0">{{ $t('setting.bet_amount') }} / {{ $t('bill.audit_amount') }}</p>
+              <p class="m-b-0">{{ $t('user.bet_amount') }} / {{ $t('finance.audit_amount') }}</p>
               <strong class="t-red">{{member.balance.bet_amount}} / {{member.balance.audit_amount}}</strong>
             </div>
             <div class="col-xs-4">
-              <router-link :to="'/bill/operation?member=' + member.username"  v-if="$root.permissions.includes('manual_deposit_withdraw')" class="m-r">{{$t('member.manual_adjust')}}</router-link>
+              <router-link :to="'/bill/operation?member=' + member.username"  v-if="$root.permissions.includes('manual_deposit_withdraw')" class="m-r">{{$t('finance.manual_adjust')}}</router-link>
             </div>
           </div>
           <div class="row m-b b-b p-b">
             <div class="col-xs-4">
-              {{$t('member.fund_summary')}}
+              {{$t('user.funds_summary')}}
               <div class="label-width-eq m-t-sm">
                 <div v-for="t in member.transaction_info.confirmed">
                   <span class="text-muted">{{t.transaction_type__display_name}}</span>
@@ -125,8 +125,8 @@
               </div>
             </div>
             <div class="col-xs-5 col-md-offset-2">
-              {{$t('member.audit_list')}}
-              <div class="label-width-eq m-t-sm m-b-sm">
+              {{$t('user.ongoing_transactions')}}
+              <div class="label-width-eq m-t-sm">
                 <div v-for="t in member.transaction_info.ongoing">
                   <span class="text-muted">{{t.transaction_type__display_name}}</span>
                   <span class="pull-right">
@@ -163,7 +163,7 @@
                         }
                       }"
                       v-if="member.total_ongoing_amount !== 0"
-                    >{{$t('action.view')}}
+                    >{{$t('dic.view')}}
                     </router-link>
                     <span class="link-width" v-else></span>
                   </span>
@@ -172,17 +172,17 @@
             </div>
 
             <div v-if="sumAmount" class="col-xs-11 b-t b-t-2x p-a-sm m-t m-l text-right text-lg">
-              <span>{{$t('member.fund_sum')}}</span>
+              <span>{{$t('dic.total')}}</span>
               <strong class="t-red">{{sumAmount | currency('￥')}}</strong>
             </div>
           </div>
           <div class="row m-b p-b b-b">
             <div class="col-xs-5">
-              {{$t('member.agent')}}
+              {{$t('dic.agent')}}
               <div><router-link :to="'/agent/' + member.agent.id">{{member.agent.name}}</router-link></div>
             </div>
             <div class="col-xs-5 col-xs-offset-1" v-if="member.level">
-              {{$t('member.level')}}
+              {{$t('dic.member_level')}}
               <div>
                 <router-link :to="'/level/' + member.level.id">{{member.level.name}}</router-link>
               </div>
@@ -190,53 +190,53 @@
           </div>
           <div class="row m-b b-b p-b">
             <div class="col-xs-5">
-              {{$t('common.basic_info')}}
+              {{$t('title.basic_info')}}
               <div class="p-a grey-50 lh-md m-t-sm label-width-eq m-b-sm">
                 <div>
-                  <span class="text-muted title">{{$t('common.real_name')}}</span>
+                  <span class="text-muted title">{{$t('user.real_name')}}</span>
                   <span v-if="member.real_name">{{member.real_name}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.phone')}}</span>
+                  <span class="text-muted title">{{$t('user.phone')}}</span>
                   <span v-if="member.phone">{{member.phone}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.gender')}}</span>
+                  <span class="text-muted title">{{$t('user.gender')}}</span>
                   <span v-if="member.gender">{{member.gender}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.email')}}</span>
+                  <span class="text-muted title">{{$t('user.email')}}</span>
                   <span v-if="member.email">{{member.email}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.birthday')}}</span>
+                  <span class="text-muted title">{{$t('user.birthday')}}</span>
                   <span v-if="member.birthday">{{member.birthday}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
                 <div>
-                  <span class="text-muted title">{{$t('common.wechat')}}</span>
+                  <span class="text-muted title">{{$t('user.wechat')}}</span>
                   <span v-if="member.wechat">{{member.wechat}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
                 <div>
                   <span class="text-muted title">QQ</span>
                   <span v-if="member.qq">{{member.qq}}</span>
-                  <span v-else class="text-muted">{{$t('common.unfilled')}}</span>
+                  <span v-else class="text-muted">{{$t('system.unfilled')}}</span>
                 </div>
               </div>
             </div>
             <div class="col-xs-5 col-xs-offset-1">
-              {{$t('bank.bank_title')}}
+              {{$t('bank.bank_info')}}
               <div v-if="!member.bank || (typeof member.bank === 'array' && !member.bank.length)">
-                <span class="label">{{$t('common.unfilled')}}</span>
+                <span class="label">{{$t('system.unfilled')}}</span>
               </div>
               <div class="grey-50 p-a m-t-sm label-width-eq" v-else>
                 <div>
-                  <span class="text-muted title">{{$t('bank.name')}}</span>
+                  <span class="text-muted title">{{$t('dic.bank')}}</span>
                   <span>{{(member.bank.bank && member.bank.bank.name) || '-'}}</span>
                 </div>
                 <div>
@@ -257,24 +257,24 @@
 
           <div class="row m-b b-b p-b">
             <div class="col-xs-5">
-              {{$t('member.last_login')}}
+              {{$t('user.last_login')}}
               <div v-if="member.last_login" class="text-muted">
-                <div>{{$t('member.ip')}} : {{member.last_login.ipaddr}}</div>
-                <div>{{$t('member.login_platform')}}: {{member.last_login.platform}}</div>
+                <div>{{$t('misc.ip')}} : {{member.last_login.ipaddr}}</div>
+                <div>{{$t('dic.platform')}}: {{member.last_login.platform}}</div>
                 <div>{{member.last_login.country}} {{member.last_login.city}} {{member.last_login.isp}} </div>
-                <div>{{member.last_login.login_at | moment("YYYY-MM-DD HH:mm:ss")}}</div>
+                <div>{{member.last_login.login_at | moment('YYYY-MM-DD HH:mm:ss')}}</div>
               </div>
-              <div v-else class="text-muted"><small>{{$t('common.no_record')}}</small></div>
+              <div v-else class="text-muted"><small>{{$t('system.no_record')}}</small></div>
             </div>
             <div class="col-xs-5 col-xs-offset-1">
-              <router-link v-if="member.last_login" class="m-r" :to="'/login_record?member=' + member.username">{{$t('member.view_all_login')}}</router-link>
-              <router-link v-if="member.last_login" :to="'/login_record?ipaddr=' + member.last_login.ipaddr">{{$t('member.view_login_by_ip')}}</router-link>
+              <router-link v-if="member.last_login" class="m-r" :to="'/login_record?member=' + member.username">{{$t('misc.view_all_logins')}}</router-link>
+              <router-link v-if="member.last_login" :to="'/login_record?ipaddr=' + member.last_login.ipaddr">{{$t('misc.view_login_by_ip')}}</router-link>
             </div>
           </div>
 
           <div class="row">
             <div class="col-xs-5">
-              <span class="title">{{$t('member.status')}}</span>
+              <span class="title">{{$t('dic.status')}}</span>
               <div>
                 <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
                 <span class="label" v-else >{{$t('status.inactive')}}</span>
@@ -286,9 +286,9 @@
               </div>
             </div>
             <div class="col-xs-5 col-xs-offset-1">
-              {{$t('common.remarks')}}
+              {{$t('dic.memo')}}
               <div v-if="member.memo">{{member.memo}}</div>
-              <div class="text-muted" v-else>{{$t('common.no_remarks')}}</div>
+              <div class="text-muted" v-else>{{$t('dic.no_memo')}}</div>
             </div>
           </div>
         </div>
@@ -397,7 +397,7 @@
             resetPassword (type, event) {
                 // type = 1 for reset login password
                 // type = 2 for reset withdraw password
-                if (!window.confirm(this.$t('member.reset_confirm', {
+                if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                     action: event.target.innerText
                 }))) {
                     return

@@ -5,18 +5,18 @@
             tag="button"
             class="md-btn blue w-sm"
             to="/commission/add"
-        >{{ $t('setting.setting_commission_add_btn') }}
+        >{{ $t('title.commission_add') }}
         </router-link>
     </div>
     <div class="box p-b-xs">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{{ $t('common.name') }}</th>
-                    <th class="text-center">{{ $t('common.status') }}</th>
-                    <th class="text-center">{{ $t('commission.member_threshold') }}</th>
-                    <th class="text-center">{{ $t('commission.name') }}</th>
-                    <th class="text-center">{{ $t('common.agent_count') }}</th>
+                    <th>{{ $t('dic.name') }}</th>
+                    <th class="text-center">{{ $t('dic.status') }}</th>
+                    <th class="text-center">{{ $t('user.valid_member') }}</th>
+                    <th class="text-center">{{ $t('title.commission') }}</th>
+                    <th class="text-center">{{ $t('user.agent_count') }}</th>
                 </tr>
             </thead>
             <tbody v-if="!loading">
@@ -42,8 +42,8 @@
                         <table class="table table-condensed m-b-0">
                             <thead>
                                 <tr>
-                                    <th class="text-center _600" width="60%">{{ $t('commission.income_threshold') }}</th>
-                                    <th class="text-center _600" width="40%">{{ $t('commission.commission_rate') }}</th>
+                                    <th class="text-center _600" width="60%">{{ $t('finance.income_threshold') }}</th>
+                                    <th class="text-center _600" width="40%">{{ $t('finance.commission_rate') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,7 +62,7 @@
                             </tbody>
                         </table>
                     </td>
-                    <td class="text-center" v-else>{{ $t('action.no_setting') }}</td>
+                    <td class="text-center" v-else>{{ $t('system.no_setting') }}</td>
                     <td class="text-center">
                         <router-link v-if="commission.agent_count !== 0" :to="'/agent/?commission_settings=' + commission.id ">{{ commission.agent_count }}</router-link>
                         <span v-else>{{ commission.agent_count || 0 }}</span>
@@ -72,10 +72,10 @@
         </table>
         <div class="row text-center p-a" v-if="loading">
             <i class="fa fa-spin fa-spinner"></i>
-            <b>{{ $t('common.loading') }}&nbsp;...</b>
+            <b>{{ $t('system.loading') }}</b>
         </div>
         <div class="row text-center p-a" v-if="!loading && !commissionsettings.length">
-            {{ $t('common.no_record') }}
+            {{ $t('system.no_record') }}
         </div>
     </div>
 </div>
@@ -126,7 +126,7 @@ export default {
             }).then(data => {
                 commission.status = data.status
                 $.notify({
-                    message: this.$t('action.update') + this.$t('common.status') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('dic.status') + this.$t('status.success')
                 })
                 this.$delete(this.toggleLoading, index)
             }, error => {

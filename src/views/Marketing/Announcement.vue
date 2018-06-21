@@ -8,7 +8,7 @@
                     @click="createAnnouncement"
                     v-if="!showAll"
                     :disabled="!$root.permissions.includes('add_new_announcement')"
-                >{{ $t('manage.add_announcement') }}
+                >{{ $t('title.announcement_add') }}
                 </button>
                 <button
                     class="md-btn w-sm blue"
@@ -16,7 +16,7 @@
                     @click="showAll = false"
                     v-else
                 >
-                    <span>{{ $t('action.hide') }}</span>
+                    <span>{{ $t('system.hide') }}</span>
                 </button>              
             </div>
             <div class="pull-center m-t-sm">
@@ -24,8 +24,8 @@
                 <span class="alert alert-danger text-danger m-r p-a-sm" v-if="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
             </div>
             <div class="pull-right">
-                <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+                <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</button>
+                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('dic.cancel') }}</button>
             </div>
         </div>
         <div class="box" v-show="showAll">
@@ -38,36 +38,36 @@
                         <div class="col-xs-10">
 
                             <div class="clearfix m-t">
-                                <label class="col-xs-1 text-right form-control-label">{{$t('cms.announcement')}}</label>
+                                <label class="col-xs-1 text-right form-control-label">{{$t('dic.announcement')}}</label>
                                 <div class="col-xs-6">
                                     <textarea class="form-control" rows="3" required v-model="announcement.announcement"></textarea>
                                 </div>
                             </div>
 
                             <div class="clearfix m-t">
-                                <label class="col-xs-1">{{$t('manage.platform_select')}}</label>
+                                <label class="col-xs-1">{{$t('system.select_platform')}}</label>
                                 <div class="col-xs-8  m-b form-group">
                                     <label class="md-check md-check-md m-r">
                                         <input type="radio" value="2" checked v-model="announcement.platform">
                                         <i class="blue"></i>
-                                        {{$t('manage.all')}}
+                                        {{$t('system.select_all')}}
                                     </label>
                                     <label class="md-check m-r">
                                         <input type="radio" value="1" v-model="announcement.platform">
                                         <i class="blue"></i>
-                                        {{$t('manage.pc')}}
+                                        {{$t('dic.pc')}}
                                     </label>
                                     <label class="md-check m-r">
                                         <input type="radio" value="0" v-model="announcement.platform">
                                         <i class="blue"></i>
-                                        {{$t('manage.mobile')}}
+                                        {{$t('dic.mobile')}}
                                     </label>
                                 </div>
                             </div>
                             <div class="clearfix">
                                 <label class="col-xs-1 text-right form-control-label"> </label>
                                 <div class="col-xs-3">
-                                    <button class="md-btn w-sm blue " type="submit">{{$t('common.save')}}</button>
+                                    <button class="md-btn w-sm blue " type="submit">{{$t('dic.submit')}}</button>
                                 </div>
                             </div>
 
@@ -82,11 +82,11 @@
                 <thead>
                 <tr>
                     <th v-show="!mode"></th>
-                    <th>{{ $t('cms.announcement') }}</th>
-                    <th>{{ $t('manage.platform') }}</th>
-                    <th>{{ $t('member.status') }}</th>
+                    <th>{{ $t('dic.announcement') }}</th>
+                    <th>{{ $t('dic.platform') }}</th>
+                    <th>{{ $t('dic.status') }}</th>
                     <th v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
-                        {{ $t('manage.operate') }}
+                        {{ $t('dic.operate') }}
                     </th>
                 </tr>
                 </thead>
@@ -97,9 +97,9 @@
                        {{ announcement.announcement }}
                     </td>
                     <td>
-                        <span v-if="announcement.platform === 0">{{ $t('manage.mobile') }}</span>
-                        <span v-if="announcement.platform === 1">{{ $t('manage.pc') }}</span>
-                        <span v-if="announcement.platform === 2">{{ $t('manage.pc') }}/{{ $t('manage.mobile') }}</span>
+                        <span v-if="announcement.platform === 0">{{ $t('dic.mobile') }}</span>
+                        <span v-if="announcement.platform === 1">{{ $t('dic.pc') }}</span>
+                        <span v-if="announcement.platform === 2">{{ $t('dic.pc') }}/{{ $t('dic.mobile') }}</span>
                     </td>
                     <td>
                         <span class="label success" v-if="announcement.status === 1" >{{ $t('status.active') }}</span>
@@ -114,13 +114,13 @@
                             class="m-r-sm"
                             @click="updateAnnouncement(announcement)"
                             v-if="$root.permissions.includes('update_announcement')"
-                        >{{ $t('action.update') }}
+                        >{{ $t('dic.update') }}
                         </a>
                         <a
                             class="m-r-sm"
                             @click="deleteAnnouncement(announcement.id, $event)"
                             v-if="$root.permissions.includes('delete_announcement')"
-                        >{{ $t('action.delete') }}
+                        >{{ $t('dic.delete') }}
                         </a>
                     </td>
                 </tr>
@@ -172,7 +172,7 @@ export default {
             })
         },
         deleteAnnouncement (id, event) {
-            if (!window.confirm(this.$t('common.confirm', {
+            if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                 action: event.target.innerText
             }))) {
                 return

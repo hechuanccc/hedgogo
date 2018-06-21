@@ -15,8 +15,9 @@ if (navLang === 'zh-CN' || navLang === 'zh-cn') {
     Vue.config.lang = 'cn'
 }
 
-Object.keys(locales).forEach(lang => {
-    Vue.locale(lang, locales[lang])
+const i18n = new VueI18n({
+    locale: 'cn', // Vue.config.lang,
+    messages: locales
 })
 
 export default new Router({
@@ -28,7 +29,7 @@ export default new Router({
             require(['./views/Login.vue'], resolve)
         },
         meta: {
-            title: Vue.t('nav.login'),
+            title: i18n.t('title.login'),
             auth: false
         }
     },
@@ -41,7 +42,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.overview'),
+            title: i18n.t('title.overview'),
             group: 'overview'
         }
     },
@@ -55,7 +56,7 @@ export default new Router({
             group: 'financing',
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.remit'),
+            title: i18n.t('title.finance_remit'),
             permission: 'view_remit_transaction_page'
         }
     },
@@ -68,7 +69,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.online_pay_orders'),
+            title: i18n.t('title.finance_online_pay'),
             group: 'financing'
         }
     },
@@ -81,7 +82,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.withdraw_request'),
+            title: i18n.t('title.finance_withdraw'),
             group: 'financing',
             permission: 'view_withdraw_application_page'
         }
@@ -96,7 +97,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             group: 'financing',
-            title: Vue.t('nav.transaction')
+            title: i18n.t('title.finance_search')
         }
     },
     {
@@ -109,7 +110,7 @@ export default new Router({
             auth: true,
             disable_tabs: true,
             group: 'financing',
-            title: Vue.t('nav.transaction')
+            title: i18n.t('title.finance_search')
         }
     },
     {
@@ -121,7 +122,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('member.manual_adjust'),
+            title: i18n.t('title.finance_operation'),
             permission: 'manual_deposit_withdraw',
             group: 'financing'
         }
@@ -135,7 +136,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.commission_report'),
+            title: i18n.t('title.report_commission'),
             permission: 'export_agent_commission_report',
             group: 'agent'
         }
@@ -149,7 +150,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.member'),
+            title: i18n.t('dic.member'),
             group: 'users'
         }
     },
@@ -162,7 +163,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.online_member_list'),
+            title: i18n.t('title.online_member'),
             group: 'users'
         }
     },
@@ -175,7 +176,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.member_add'),
+            title: i18n.t('title.member_add'),
             group: 'users',
             permission: 'add_new_member'
         }
@@ -189,7 +190,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.member_detail'),
+            title: i18n.t('title.member_detail'),
             group: 'users'
         }
     },
@@ -202,7 +203,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.edit_member'),
+            title: i18n.t('title.member_edit'),
             group: 'users'
         }
     },
@@ -214,7 +215,7 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.game_list'),
+            title: i18n.t('title.game_list'),
             group: 'game_manage'
         }
     },
@@ -226,7 +227,7 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.game_manage'),
+            title: i18n.t('title.game_management'),
             group: 'game_manage'
         }
     },
@@ -238,7 +239,7 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.game_history'),
+            title: i18n.t('title.drawing_history'),
             group: 'game_history'
         }
     },
@@ -250,7 +251,7 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.game_history'),
+            title: i18n.t('title.drawing_history'),
             group: 'game_history'
         }
     },
@@ -263,7 +264,7 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.staff'),
+            title: i18n.t('title.staff_list'),
             permission: 'view_staff_management_page'
         }
     },
@@ -276,7 +277,7 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.add_staff'),
+            title: i18n.t('title.staff_add'),
             permission: 'add_new_staff'
         }
     },
@@ -289,7 +290,7 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('nav.staff_detail')
+            title: i18n.t('title.staff_detail')
         }
     },
     {
@@ -301,7 +302,7 @@ export default new Router({
         meta: {
             group: 'users',
             auth: true,
-            title: Vue.t('staff.update_staff')
+            title: i18n.t('title.staff_edit')
         }
     },
     {
@@ -313,7 +314,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.agent'),
+            title: i18n.t('dic.agent'),
             group: 'users'
         }
     },
@@ -326,7 +327,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.agent_add'),
+            title: i18n.t('title.agent_add'),
             group: 'users',
             permission: 'add_new_agent'
         }
@@ -340,7 +341,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.agent_application'),
+            title: i18n.t('title.agent_application'),
             group: 'users'
         }
     },
@@ -353,7 +354,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.agent_detail'),
+            title: i18n.t('title.agent_detail'),
             group: 'users'
         }
     },
@@ -366,7 +367,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.edit_agent'),
+            title: i18n.t('title.agent_edit'),
             group: 'users'
         }
     },
@@ -379,7 +380,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.agent_application'),
+            title: i18n.t('title.agent_application'),
             group: 'users'
         }
     },
@@ -391,7 +392,7 @@ export default new Router({
         meta: {
             auth: true,
             group: 'setting',
-            title: Vue.t('nav.setting_level')
+            title: i18n.t('title.member_level')
         }
     },
     {
@@ -401,7 +402,7 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.member_level_add'),
+            title: i18n.t('title.member_level_add'),
             group: 'setting',
             permission: 'add_member_level'
         }
@@ -413,7 +414,7 @@ export default new Router({
         },
         meta: {
             auth: true,
-            title: Vue.t('nav.level_detail'),
+            title: i18n.t('title.member_level_detail'),
             group: 'setting'
         }
     },
@@ -424,7 +425,7 @@ export default new Router({
         },
         meta: {
             group: 'setting',
-            title: Vue.t('nav.member_level_edit'),
+            title: i18n.t('title.member_level_edit'),
             auth: true,
             permission: 'update_memberlevel'
         }
@@ -437,7 +438,7 @@ export default new Router({
         meta: {
             group: 'transaction',
             auth: true,
-            title: Vue.t('nav.setting_online_payee')
+            title: i18n.t('title.online_payee_management')
         }
     },
     {
@@ -447,7 +448,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('setting.create_online_payee'),
+            title: i18n.t('title.online_payee_add'),
             auth: true,
             permission: 'add_online_payee'
         }
@@ -459,7 +460,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('nav.online_payee_detail'),
+            title: i18n.t('title.online_payee_detail'),
             auth: true
         }
     },
@@ -470,7 +471,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('nav.online_payee_detail_edit'),
+            title: i18n.t('title.online_payee_edit'),
             auth: true,
             permission: 'update_online_payee'
         }
@@ -484,7 +485,7 @@ export default new Router({
         meta: {
             group: 'transaction',
             auth: true,
-            title: Vue.t('nav.setting_online_payer')
+            title: i18n.t('title.online_payer_management')
         }
     },
     {
@@ -494,7 +495,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('setting.create_online_payer'),
+            title: i18n.t('title.online_payer_add'),
             auth: true
         }
     },
@@ -505,7 +506,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('nav.online_payer_detail'),
+            title: i18n.t('title.online_payer_detail'),
             auth: true
         }
     },
@@ -516,7 +517,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('nav.online_payer_detail_edit'),
+            title: i18n.t('title.online_payer_edit'),
             auth: true
         }
     },
@@ -527,7 +528,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('nav.setting_bank'),
+            title: i18n.t('title.setting_bank'),
             auth: true
         }
     },
@@ -539,7 +540,7 @@ export default new Router({
         meta: {
             group: 'transaction',
             auth: true,
-            title: Vue.t('nav.payment_type_setting')
+            title: i18n.t('title.payment_type_management')
         }
     },
     {
@@ -551,7 +552,7 @@ export default new Router({
             group: 'transaction',
             auth: true,
             permission: 'update_onlinepayment',
-            title: Vue.t('nav.payment_type_setting_detail')
+            title: i18n.t('title.payment_type_detail')
         }
     },
     {
@@ -562,7 +563,7 @@ export default new Router({
         meta: {
             group: 'transaction',
             auth: true,
-            title: Vue.t('nav.setting_remit_payee')
+            title: i18n.t('title.remit_payee')
         }
     },
     {
@@ -573,7 +574,7 @@ export default new Router({
         meta: {
             group: 'transaction',
             auth: true,
-            title: Vue.t('nav.remit_payee_add'),
+            title: i18n.t('title.remit_payee_add'),
             permission: 'add_remit_account'
         }
     },
@@ -585,7 +586,7 @@ export default new Router({
         meta: {
             group: 'transaction',
             auth: true,
-            title: Vue.t('nav.remit_payee_detail')
+            title: i18n.t('title.remit_payee_detail')
         }
     },
     {
@@ -595,7 +596,7 @@ export default new Router({
         },
         meta: {
             group: 'transaction',
-            title: Vue.t('nav.remit_payee_update'),
+            title: i18n.t('title.remit_payee_edit'),
             auth: true,
             permission: 'update_remit_account'
         }
@@ -608,7 +609,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.setting_commission')
+            title: i18n.t('title.commission')
         }
     },
     {
@@ -619,7 +620,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.setting_commission_add'),
+            title: i18n.t('title.commission_add'),
             permission: 'add_commission_setting'
         }
     },
@@ -631,7 +632,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.setting_commission_edit')
+            title: i18n.t('title.commission_edit')
         }
     },
     {
@@ -643,7 +644,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.login_logs'),
+            title: i18n.t('title.log_login'),
             group: 'logging'
         }
     },
@@ -656,7 +657,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.action_logs'),
+            title: i18n.t('title.log_action'),
             group: 'logging'
         }
     },
@@ -669,7 +670,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.bet_record'),
+            title: i18n.t('title.betting_record'),
             group: 'betrecord'
         }
     },
@@ -682,7 +683,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: `${Vue.t('nav.bet_record')} - ${Vue.t('nav.instant_view')}`,
+            title: `${i18n.t('title.betting_record')} - ${i18n.t('title.betting_record_instant')}`,
             group: 'betrecord'
         }
     },
@@ -695,7 +696,7 @@ export default new Router({
         meta: {
             auth: true,
             disable_tabs: true,
-            title: Vue.t('nav.bet_record_detail'),
+            title: i18n.t('title.betting_record_detail'),
             group: 'betrecord '
         }
     },
@@ -707,7 +708,7 @@ export default new Router({
         meta: {
             group: 'manage',
             auth: true,
-            title: Vue.t('manage.title_banner')
+            title: i18n.t('title.marketing_banner')
         }
     },
     {
@@ -718,7 +719,7 @@ export default new Router({
         meta: {
             group: 'manage',
             auth: true,
-            title: Vue.t('manage.title_announcement')
+            title: i18n.t('title.announcement_management')
         }
     },
     {
@@ -729,7 +730,7 @@ export default new Router({
         meta: {
             group: 'manage',
             auth: true,
-            title: Vue.t('manage.title_website')
+            title: i18n.t('title.marketing_website')
         }
     },
     {
@@ -740,7 +741,7 @@ export default new Router({
         },
         meta: {
             group: 'manage',
-            title: Vue.t('nav.message'),
+            title: i18n.t('title.message'),
             auth: true
         }
     },
@@ -752,7 +753,7 @@ export default new Router({
         },
         meta: {
             group: 'marketing',
-            title: Vue.t('nav.add_message'),
+            title: i18n.t('title.message_add'),
             auth: true,
             permission: 'add_new_message'
         }
@@ -765,7 +766,7 @@ export default new Router({
         },
         meta: {
             group: 'marketing',
-            title: Vue.t('nav.message_details'),
+            title: i18n.t('title.message_detail'),
             auth: true
         }
     },
@@ -778,7 +779,7 @@ export default new Router({
         meta: {
             group: 'manage',
             auth: true,
-            title: Vue.t('promotion.title')
+            title: i18n.t('title.promotion_management')
         }
     },
     {
@@ -790,7 +791,7 @@ export default new Router({
         meta: {
             group: 'marketing',
             auth: true,
-            title: Vue.t('promotion.add'),
+            title: i18n.t('title.promotion_add'),
             permission: 'add_promotion_activity'
         }
     },
@@ -803,7 +804,7 @@ export default new Router({
         meta: {
             group: 'marketing',
             auth: true,
-            title: Vue.t('promotion.detail')
+            title: i18n.t('title.promotion_detail')
         }
     },
     {
@@ -815,7 +816,7 @@ export default new Router({
         meta: {
             group: 'marketing',
             auth: true,
-            title: Vue.t('promotion.update'),
+            title: i18n.t('title.promotion_edit'),
             permission: 'update_promotion_activity'
         }
     },
@@ -828,7 +829,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.change_password')
+            title: i18n.t('title.change_password')
         }
     },
     {
@@ -840,7 +841,7 @@ export default new Router({
         meta: {
             group: 'report',
             auth: true,
-            title: Vue.t('nav.agent_report')
+            title: i18n.t('title.report_agent')
         }
     },
     {
@@ -852,7 +853,7 @@ export default new Router({
         meta: {
             group: 'report',
             auth: true,
-            title: Vue.t('nav.finance_report')
+            title: i18n.t('title.report_finance')
         }
     },
     {
@@ -864,7 +865,7 @@ export default new Router({
         meta: {
             group: 'report',
             auth: true,
-            title: Vue.t('nav.member_report')
+            title: i18n.t('title.report_member')
         }
     },
     {
@@ -876,7 +877,7 @@ export default new Router({
         meta: {
             group: 'report',
             auth: true,
-            title: Vue.t('nav.game_report')
+            title: i18n.t('title.report_game')
         }
     },
     {
@@ -888,43 +889,7 @@ export default new Router({
         meta: {
             group: 'betrecord',
             auth: true,
-            title: Vue.t('nav.instant_view')
-        }
-    },
-    {
-        path: '/lottery_draw',
-        name: 'lottery_draw',
-        component: function (resolve) {
-            require(['./views/Game/Game.vue'], resolve)
-        },
-        meta: {
-            group: 'game_manage',
-            auth: true,
-            title: Vue.t('nav.game_settings')
-        }
-    },
-    {
-        path: '/game_play',
-        name: 'game_plays',
-        component: function (resolve) {
-            require(['./views/Game/Game.vue'], resolve)
-        },
-        meta: {
-            group: 'game_manage',
-            auth: true,
-            title: Vue.t('nav.game_play_configurations')
-        }
-    },
-    {
-        path: '/odds',
-        name: 'odds',
-        component: function (resolve) {
-            require(['./views/Game/Game.vue'], resolve)
-        },
-        meta: {
-            group: 'game_manage',
-            auth: true,
-            title: Vue.t('nav.odds_management')
+            title: i18n.t('title.betting_record_instant')
         }
     },
     {
@@ -936,7 +901,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.roles')
+            title: i18n.t('title.role_management')
         }
     },
     {
@@ -948,7 +913,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.role_add'),
+            title: i18n.t('title.role_add'),
             permission: 'add_new_role'
         }
     },
@@ -961,7 +926,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.role_detail')
+            title: i18n.t('title.role_detail')
         }
     },
     {
@@ -973,7 +938,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.role_edit'),
+            title: i18n.t('title.role_edit'),
             permission: 'update_role_name_advpermission'
         }
     },
@@ -986,7 +951,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.global_parameters'),
+            title: i18n.t('title.setting_global_parameter'),
             permission: 'view_global_parameters_setting'
         }
     },
@@ -999,7 +964,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.chatroom_management')
+            title: i18n.t('title.setting_chatroom')
         }
     },
     {
@@ -1011,7 +976,7 @@ export default new Router({
         meta: {
             group: 'setting',
             auth: true,
-            title: Vue.t('nav.update_chatroom_management')
+            title: i18n.t('title.setting_chatroom_edit')
         }
     },
     {

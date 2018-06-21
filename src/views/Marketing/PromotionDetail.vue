@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/promotion">{{$t('nav.promotion')}}</router-link></li>
+                <li class="active"><router-link to="/promotion">{{$t('title.promotion')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
@@ -13,19 +13,19 @@
                         <h2 class="v-m m-t-sm">{{promotion.name}} </h2>
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right">
-                        <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('update_promotion_activity')" :to="'/promotion/' + promotion.id + '/edit'">{{$t('action.update_promotion')}}</router-link>
-                        <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('delete_promotion_activity')" @click="deletePromotion(promotion.id, true, $event)">{{$t('action.delete')}}</a>
+                        <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('update_promotion_activity')" :to="'/promotion/' + promotion.id + '/edit'">{{$t('title.promotion_edit')}}</router-link>
+                        <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('delete_promotion_activity')" @click="deletePromotion(promotion.id, true, $event)">{{$t('dic.delete')}}</a>
                     </div>
                 </div>
             </div>
             <div class="box-body">
                 <div class="row m-b p-b b-b">
                     <div class="col-xs-12">
-                        <span class="text-muted">{{$t('common.basic_info')}}</span>
+                        <span class="text-muted">{{$t('title.basic_info')}}</span>
                         <table class="table b-a m-t-sm">
                             <tbody>
                                 <tr>
-                                    <th class="grey-50" width="200">{{$t('common.name')}}</th>
+                                    <th class="grey-50" width="200">{{$t('dic.name')}}</th>
                                     <td>{{promotion.name}}</td>
                                 </tr>
                                 <tr>
@@ -35,11 +35,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50" width="200">{{$t('promotion.mobileBanner')}}</th>
+                                    <th class="grey-50" width="200">{{$t('promotion.banner_mobile')}}</th>
                                     <td v-if="promotion.image_mobile">
                                         <img :src="promotion.image_mobile" class="promo-image">
                                     </td>
-                                    <td v-else>{{$t('action.no_setting')}}</td>
+                                    <td v-else>{{$t('system.no_setting')}}</td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50">{{$t('promotion.rank')}}</th>
@@ -70,7 +70,7 @@
 
                 <div class="row p-t">
                     <div class="col-xs-5">
-                        <span class="text-muted">{{$t('common.status')}}</span>
+                        <span class="text-muted">{{$t('dic.status')}}</span>
                         <div>
                             <span class="label success" v-if="promotion.status==1">{{$t('status.active')}}</span>
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
@@ -123,7 +123,7 @@
             },
             deletePromotion (id, confirm, event) {
                 if (confirm) {
-                    if (!window.confirm(this.$t('common.confirm', {
+                    if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                         action: event.target.innerText
                     }))) {
                         return

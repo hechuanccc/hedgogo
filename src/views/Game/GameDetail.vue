@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/game_list">{{ $t('nav.game_list') }}</router-link></li>
+                <li class="active"><router-link to="/game_list">{{ $t('title.game_list') }}</router-link></li>
                 <li class="active">{{ game.display_name }}</li>
             </ol>
         </div>
@@ -13,12 +13,12 @@
                         <thead class="text-center">
                             <tr>
                                 <th width="20%"></th>
-                                <th width="10%">{{ $t('game_manage.standard_odds') }}</th>
-                                <th width="10%">{{ $t('game_manage.odds') }}</th>
-                                <th width="15%">{{ $t('game_manage.return_rate') }}</th>
-                                <th width="15%">{{ $t('game_manage.min_per_bet') }}</th>
-                                <th width="15%">{{ $t('game_manage.max_per_bet') }}</th>
-                                <th width="15%">{{ $t('game_manage.max_per_draw') }}</th>
+                                <th width="10%">{{ $t('game.standard_odds') }}</th>
+                                <th width="10%">{{ $t('game.odds') }}</th>
+                                <th width="15%">{{ $t('finance.return') }}</th>
+                                <th width="15%">{{ $t('game.min_per_bet') }}</th>
+                                <th width="15%">{{ $t('game.max_per_bet') }}</th>
+                                <th width="15%">{{ $t('game.max_per_draw') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,8 +101,8 @@
                     </table>
                 </div>
                 <div class="box-footer text-center" v-if="updatePlaysetDetailsPermission">
-                    <button class="btn md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>
-                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
+                    <button class="btn md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('dic.confirm') }}</button>
+                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('dic.cancel') }}</button>
                     <transition name="fade">
                         <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
                     </transition>
@@ -170,7 +170,10 @@ export default {
                         game: this.game.id
                     }
                 }).then(data => {
-                    this.successMsg = `${this.$t('game_manage.modify_success')}`
+                    this.successMsg = this.$t('system_msg.action_object_status', {
+                        action: this.$t('dic.update'),
+                        status: this.$t('status.success')
+                    })
                     setTimeout(() => {
                         this.successMsg = ''
                     }, 2000)
@@ -181,7 +184,7 @@ export default {
                     this.errorMsg = error
                 })
             } else {
-                this.errorMsg = this.$t('game_manage.no_change')
+                this.errorMsg = this.$t('system_msg.no_change')
                 setTimeout(() => {
                     this.errorMsg = ''
                 }, 2000)

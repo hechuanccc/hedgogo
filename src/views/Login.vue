@@ -61,7 +61,7 @@
             loginHandler () {
                 login(this.user).then(data => {
                     if (data.type === 'agent') {
-                        this.errorMsg = this.$t('common.agent_login_error')
+                        this.errorMsg = this.$t('system_msg.agent_login_error')
                         return
                     }
                     $.storage.save({type: data.type})
@@ -82,7 +82,7 @@
                     url = url ? decodeURIComponent(url.split('?')[0]) : '/'
                     this.$router.push(url)
                 }, error => {
-                    this.errorMsg = (typeof error === 'string') ? error : this.$t('common.error_occurred_msg')
+                    this.errorMsg = (typeof error === 'string') ? error : this.$t('system_msg.error_occurred')
                 })
             }
         },

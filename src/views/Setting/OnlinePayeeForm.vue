@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/online_payee">{{$t('nav.setting_online_payee')}}</router-link></li>
+                <li class="active"><router-link to="/online_payee">{{$t('title.online_payee_management')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
@@ -11,20 +11,20 @@
                 <form class="form m-a" v-on:submit.prevent="onSubmit">
                     <div class="row">
                         <div class="form-group">
-                            <label  class="label-width">{{$t('common.name')}}</label>
+                            <label  class="label-width">{{$t('dic.name')}}</label>
                             <div class="inline-form-control">
                                 <input type="text" class="form-control" placeholder="名称" v-model="payee.name" required >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label  class="label-width">{{$t('setting.display_name')}}</label>
+                            <label  class="label-width">{{$t('misc.display_name')}}</label>
                             <div class="inline-form-control">
                                 <input type="text" class="form-control" placeholder="显示名称" v-model="payee.display_name" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width">{{$t('setting.type')}}</label>
+                            <label class="label-width">{{$t('dic.type')}}</label>
                             <div class="inline-form-control">
                                 <select class="form-control c-select" v-model="payee.payment_gateway" required>
                                     <option :value="p.id" v-for="p in paymentGateways">{{p.name}}</option>
@@ -33,14 +33,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width">{{$t('setting.merchant_num')}}</label>
+                            <label class="label-width">{{$t('finance.merchant_id')}}</label>
                             <div class="inline-form-control">
                                 <input class="form-control" type="text" v-model="payee.merchant_num" required />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width">{{$t('setting.certificate')}}</label>
+                            <label class="label-width">{{$t('finance.certificate')}}</label>
                             <div class="inline-form-control">
                                 <input type="text" class="form-control w-lg" v-model="payee.certificate"  />
                             </div>
@@ -48,7 +48,7 @@
 
 
                         <div class="form-group">
-                            <label class="label-width v-t">{{$t('online_payer.public_key')}}</label>
+                            <label class="label-width v-t">{{$t('finance.public_key')}}</label>
                             <div class="inline-form-control">
                                 <textarea
                                     class="form-control"
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width v-t">{{$t('online_payer.private_key')}}</label>
+                            <label class="label-width v-t">{{$t('finance.public_key')}}</label>
                             <div class="inline-form-control">
                                 <textarea
                                     class="form-control"
@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width v-t">{{$t('online_payer.merchant_public_key')}}</label>
+                            <label class="label-width v-t">{{$t('finance.merchant_public_key')}}</label>
                             <div class="inline-form-control">
                                 <textarea
                                     class="form-control"
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width v-t">{{$t('online_payer.merchant_private_key')}}</label>
+                            <label class="label-width v-t">{{$t('finance.merchant_public_key')}}</label>
                             <div class="inline-form-control">
                                 <textarea
                                     class="form-control"
@@ -96,22 +96,22 @@
                         </div>
 
                         <div class="form-group">
-                            <label  class="label-width">{{$t('setting.board_url')}}</label>
+                            <label  class="label-width">{{$t('finance.board_url')}}</label>
                             <div class="inline-form-control">
                                 <input  class="form-control" placeholder="Board URL" v-model="payee.board_url"  required/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label  class="label-width">{{$t('setting.payment_domain')}}</label>
+                            <label  class="label-width">{{$t('finance.payment_domain')}}</label>
                             <div class="inline-form-control">
                                 <input  class="form-control" v-model="payee.domain_url" :disabled="disabledDomainURL"/>
                             </div>
-                            <p class="text-danger note">{{$t('setting.domain_label')}}</p>
+                            <p class="text-danger note">{{$t('finance.domain_label')}}</p>
                         </div>
 
                         <div class="form-group">
-                            <label  class="label-width">{{$t('setting.expired_in')}}</label>
+                            <label  class="label-width">{{$t('finance.expired_in')}}</label>
                             <div class="inline-form-control">
                                 <input  class="form-control" placeholder="Expiration" v-model="payee.expired_in" required>
                             </div>
@@ -120,7 +120,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <label  class="label-width">{{$t('member.level')}}</label>
+                                <label  class="label-width">{{$t('dic.member_level')}}</label>
                                 <selector-member-level :level="payee.level" :mode="'checkbox'" @level-select="levelSelect"/>
                             </div>
 
@@ -128,7 +128,7 @@
                             <input type="hidden" v-model="payee.updated_by">
 
                             <div class="form-group" >
-                                <label for="memo">{{$t('common.memo')}}</label>
+                                <label for="memo">{{$t('dic.memo')}}</label>
                                 <textarea class="form-control" name="memo" rows="2" cols="4" v-model="payee.memo"></textarea>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                         <div class="alert alert-danger" v-if="errorMsg">
                             <span>{{ errorMsg }}</span>
                         </div>
-                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{$t('dic.submit')}}</button>
                      </div>
                 </form>
             </div>

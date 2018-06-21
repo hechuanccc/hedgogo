@@ -5,8 +5,8 @@
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>
-                        <th width="60%">{{ $t('common.name') }}</th>
-                        <th width="40%" class="text-center">{{ $t('common.status') }}</th>
+                        <th width="60%">{{ $t('dic.name') }}</th>
+                        <th width="40%" class="text-center">{{ $t('dic.status') }}</th>
                     </tr>
                 </thead>
                 <tbody v-if="!loading">
@@ -27,11 +27,11 @@
         </div>
     </div>
     <div class="row text-center" v-if="!loading && !bankList[0].length && !bankList[1].length">
-        <b>{{ $t('common.no_data') }}</b>
+        <b>{{ $t('system.no_data') }}</b>
     </div>
     <div class="row text-center" v-else-if="loading">
         <i class="fa fa-spin fa-spinner"></i>
-        <b>{{ $t('common.loading') }}...</b>
+        <b>{{ $t('system.loading') }}...</b>
     </div>
 </div>
 </template>
@@ -70,7 +70,7 @@ export default {
             }).then(data => {
                 bank.status = data.status
                 $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('status.success')
                 })
                 this.$delete(this.toggleLoading, bank.id)
             }, error => {

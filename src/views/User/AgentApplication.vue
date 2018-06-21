@@ -4,14 +4,14 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>{{ $t("common.username") }}</th>
-            <th>{{ $t("common.real_name") }}</th>
-            <th>{{ $t("common.phone") }}</th>
-            <th class="text-center">{{ $t("common.status") }}</th>
-            <th>{{ $t("agent.domain") }}</th>
-            <th class="text-center">{{ $t("agent.joined_at") }}</th>
-            <th class="text-center">{{ $t("agent.ip") }}</th>
-            <th>{{ $t("agent.log") }}</th>
+            <th>{{ $t('user.username') }}</th>
+            <th>{{ $t('user.real_name') }}</th>
+            <th>{{ $t('user.phone') }}</th>
+            <th class="text-center">{{ $t('dic.status') }}</th>
+            <th>{{ $t('user.domain') }}</th>
+            <th class="text-center">{{ $t('time.joined_at') }}</th>
+            <th class="text-center">{{ $t('misc.ip') }}</th>
+            <th>{{ $t('title.log_action') }}</th>
           </tr>
           </thead>
           <tbody v-if="queryset.length > 0">
@@ -25,10 +25,10 @@
               <span class="label warn" v-if="agent.status==3">{{ $t('status.ongoing') }}</span>
             </td>
             <td>{{ agent.domain || '-' }}</td>
-            <td class="text-center">{{ agent.created_at | moment("YYYY-MM-DD HH:mm") }}</td>
+            <td class="text-center">{{ agent.created_at | moment('YYYY-MM-DD HH:mm') }}</td>
             <td class="text-center">{{ agent.ip || '-' }}</td>
             <td>
-              <span v-if="agent.updated_by">{{ agent.updated_by.name }} / {{ agent.updated_at | moment("YYYY-MM-DD HH:mm") }}</span>
+              <span v-if="agent.updated_by">{{ agent.updated_by.name }} / {{ agent.updated_at | moment('YYYY-MM-DD HH:mm') }}</span>
               <span v-else>-</span>
             </td>
           </tr>

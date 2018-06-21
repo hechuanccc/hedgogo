@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/roles">{{ $t('nav.roles') }}</router-link></li>
+                <li class="active"><router-link to="/roles">{{ $t('title.role_management') }}</router-link></li>
                 <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
@@ -12,13 +12,13 @@
                     <div class="row b-b p-b m-b">
                         <div class="col-md-10">
                             <div class="form-group">
-                                <label for="name" class="label-width">{{ $t('role_manage.name') }}</label>
+                                <label for="name" class="label-width">{{ $t('title.role_name') }}</label>
                                 <div class="inline-form-control">
                                     <input type="text" class="form-control" name="name" v-model="role.name" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="" class="label-width">{{ $t('role_manage.role_permission') }}</label>
+                                <label for="" class="label-width">{{ $t('dic.permission') }}</label>
                                 <div class="form-control">
                                     <template v-for="(list, index) in permissions">
                                         <div class="row">
@@ -50,7 +50,7 @@
                     </div>
                     <div>
                         <div class="alert alert-danger" v-if="errorMsg">{{ errorMsg }}</div>
-                        <button type="submit" class="md-btn w-sm blue">{{ $t('common.save') }}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{ $t('dic.submit') }}</button>
                     </div>
                 </form>
             </div>

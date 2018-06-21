@@ -9,8 +9,8 @@
                     <span class="caret"></span>
                 </button>
                 <div class="dropdown-menu text-left text-sm" v-show="$root.dropdown">
-                    <router-link  class="dropdown-item" to="/change_password/">{{$t('nav.change_password')}}</router-link>
-                    <a class="dropdown-item" @click="logoutHandler">{{$t('action.logout')}}</a>
+                    <router-link  class="dropdown-item" to="/change_password/">{{$t('title.change_password')}}</router-link>
+                    <a class="dropdown-item" @click="logoutHandler">{{$t('title.logout')}}</a>
                 </div>
             </div>
             <div class="collapse navbar-toggleable-sm" id="collapse">
@@ -23,7 +23,7 @@
                 <ul class="nav navbar-nav pull-left prompt">
                     <router-link tag="li" class="nav-item dropdown pos-stc-xs pointer"  :to="'/game_history'" >
                         <a class="nav-link" >
-                            <label class="pointer label">{{$t('game_history.abnormal_period')}}</label>
+                            <label class="pointer label">{{$t('game.period_abnormal')}}</label>
                             <span v-if="abnormal_count" class="label label-sm up warn">{{abnormal_count}}</span>
                             <span v-else class="label label-sm up ">{{abnormal_count}}</span>
                         </a>
@@ -34,12 +34,12 @@
                             :to="'/bill/remit?status=' + status"
                             v-if="$root.permissions.includes('view_remit_transaction_page')"
                         >
-                            <label class="label pointer">{{$t('header.deposit')}}</label>
+                            <label class="label pointer">{{$t('finance.deposit')}}</label>
                             <span v-if="remit_count" class="label label-sm up warn">{{remit_count}}</span>
                             <span v-else class="label label-sm up">{{remit_count}} </span>
                         </router-link>
                         <div class="nav-link disabled" v-else>
-                            <label class="label">{{$t('header.deposit')}}</label>
+                            <label class="label">{{$t('finance.deposit')}}</label>
                             <span v-if="remit_count" class="label label-sm up warn">{{remit_count}}</span>
                             <span v-else class="label label-sm up">{{remit_count}} </span>
                         </div>
@@ -50,19 +50,19 @@
                             :to="'/bill/withdraw?status=' + status"
                             v-if="$root.permissions.includes('view_withdraw_application_page')"
                         >
-                            <label class="label pointer">{{$t('header.withdraw')}}</label>
+                            <label class="label pointer">{{$t('finance.withdraw')}}</label>
                             <span v-if="withdraw_count" class="label label-sm up warn">{{withdraw_count}}</span>
                             <span v-else class="label label-sm up">{{withdraw_count}} </span>
                         </router-link>
                         <div class="nav-link disabled" v-else>
-                            <label class="label">{{$t('header.withdraw')}}</label>
+                            <label class="label">{{$t('finance.withdraw')}}</label>
                             <span v-if="withdraw_count" class="label label-sm up warn">{{withdraw_count}}</span>
                             <span v-else class="label label-sm up">{{withdraw_count}} </span>
                         </div>
                     </li>
                     <li class="nav-item dropdown pos-stc-xs pointer" >
                         <router-link class="nav-link" to="/online_member">
-                            <label class=" label pointer" >{{$t('common.onlinemembers')}}</label>
+                            <label class=" label pointer" >{{$t('dic.member')}}</label>
                             <span v-if="online_member" class="label label-sm up warn">{{online_member}} </span>
                             <span v-else class="label label-sm up">{{online_member}} </span>
                         </router-link>
@@ -213,7 +213,7 @@
                     title = '取款通知'
                 } else if (messageType === 'abnormal') {
                     url = '/game_history' + vm.status
-                    title = this.$t('game_history.abnormal_period') + this.$t('action.inform')
+                    title = this.$t('game.period_abnormal') + this.$t('system.inform')
                 }
                 let titleD = vm.iNotify.setTitle()
                 this.oldTitle = titleD.title

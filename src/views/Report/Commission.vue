@@ -9,12 +9,12 @@
           class="md-btn w-sm blue pull-right text-white"
         >
           <span class="font-weight-normal">
-            {{ $t('action.download_report') }}
+            {{ $t('system.download_report') }}
             <i class="fa fa-download"></i>
           </span>
         </a>
         <span disabled v-else>
-          {{ $t('action.download_report') }}
+          {{ $t('system.download_report') }}
           <i class="fa fa-download"></i>
         </span>
       </div>
@@ -30,7 +30,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.start_date && query.end_date}"
-              >{{ $t('common.date') }}
+              >{{ $t('dic.date') }}
               </label>
               <date-picker
                 width='244'
@@ -39,7 +39,7 @@
                 :shortcuts="shortcuts"
                 v-model="date"
                 type="date"
-                format="yyyy-MM-dd"
+                format='yyyy-MM-dd'
                 range
               />
             </div>
@@ -48,13 +48,13 @@
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.agent}"
               >
-                {{ $t('common.agent') }}
-                <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                {{ $t('dic.agent') }}
+                <span class="text-muted">({{ $t('system.accurate_search') }})</span>
               </label>
               <input
                 v-model.trim="query.agent"
                 class="form-control w-sm"
-                :placeholder="$t('common.agent')"
+                :placeholder="$t('dic.agent')"
                 @input="search"
               />
             </div>
@@ -62,13 +62,13 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.agent_level && !query.agent}"
-              >{{ $t('agent.level') }}
+              >{{ $t('user.agent_level') }}
               </label>
               <selector-agent-level
                 style="display: block;"
                 :level="query.agent_level"
                 @level-select="agentLevelSelect"
-                :placeholder="$t('agent.level')"
+                :placeholder="$t('user.agent_level')"
               />
             </div>
             <button
@@ -79,7 +79,7 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('action.reset_condition') }}</span>
+              <span>{{ $t('system.reset_condition') }}</span>
             </button>
           </div>
         </div>
@@ -89,15 +89,15 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
-            <th>{{ $t('common.agent') }}</th>
-            <th class="text-center">{{ $t('agent.level') }}</th>
-            <th class="text-right">{{ $t('common.member_count') }}</th>
-            <th class="text-right">{{ $t('common.valid_bet_amount') }}</th>
-            <th class="text-right">{{ $t('bill.discount') }}</th>
-            <th class="text-right">{{ $t('bill.return') }}</th>
-            <th class="text-right">{{ $t('commission.profit') }}</th>
-            <th class="text-right">{{ $t('commission.commission_rate') }}</th>
-            <th class="text-right">{{ $t('nav.commission') }}</th>
+            <th>{{ $t('dic.agent') }}</th>
+            <th class="text-center">{{ $t('user.agent_level') }}</th>
+            <th class="text-right">{{ $t('user.member_count') }}</th>
+            <th class="text-right">{{ $t('bet.valid_bet') }}</th>
+            <th class="text-right">{{ $t('finance.discount') }}</th>
+            <th class="text-right">{{ $t('finance.return') }}</th>
+            <th class="text-right">{{ $t('dic.profit') }}</th>
+            <th class="text-right">{{ $t('finance.commission_rate') }}</th>
+            <th class="text-right">{{ $t('finance.commission') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0" class="text-right">
@@ -117,7 +117,7 @@
             <td>{{ data.commission_amount | currency('￥') }}</td>
           </tr>
           <tr class="_600">
-            <td colspan="8" class="text-right">{{ $t('commission.total') }}</td>
+            <td colspan="8" class="text-right">{{ $t('finance.commission_total') }}</td>
             <td>{{ totalCommissionAmount | currency('￥', 2) }}</td>
           </tr>
         </tbody>
@@ -163,7 +163,7 @@ export default {
             export_query: [],
             yesterday: date.yesterday[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 start: date[element][0],
                 end: date[element][1]
             })),

@@ -5,7 +5,7 @@
         :required="req"
         :disabled="!disabled"
     >
-        <option value="">{{ $t('common.please_select') }}</option>
+        <option value="">{{ $t('system.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"

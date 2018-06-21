@@ -4,7 +4,7 @@
     v-model="selectedPayer"
     v-if="!loading && mode === 'selector' && payerList.length"
   >
-    <option value="" v-if="clearable">{{ $t('common.please_select') }}</option>
+    <option value="" v-if="clearable">{{ $t('system.please_select') }}</option>
     <option
       class="form-control"
       :value="p.id"
@@ -32,7 +32,7 @@
     class="p-b-xs p-t-sm form-control w-sm"
     v-else-if="!payerList.length && mode === 'selector'"
   >
-    {{ $t('common.no_record') }}
+    {{ $t('system.no_record') }}
   </span>
 </template>
 

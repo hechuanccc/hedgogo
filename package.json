@@ -24,7 +24,7 @@
     "vue-cookie": "^1.1.4",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",
-    "vue-i18n": "^5.0.3",
+    "vue-i18n": "^7.8.0",
     "vue-loader": "^10.3.0",
     "vue-moment": "^2.0.2",
     "vue-router": "^2.3.0",

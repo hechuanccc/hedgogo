@@ -5,16 +5,16 @@
                 tag="button"
                 class="md-btn blue"
                 to="/online_payer/add"
-            >{{$t('setting.create_online_payer')}}
+            >{{$t('title.online_payer_add')}}
             </router-link>
         </div>
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped" v-if="!loading">
                 <thead>
                     <tr>
-                        <th>{{ $t('common.name') }}</th>
-                        <th>{{ $t('online_payer.sum_fund') }}</th>
-                        <th>{{ $t('common.status') }}</th>
+                        <th>{{ $t('dic.name') }}</th>
+                        <th>{{ $t('finance.sum_fund') }}</th>
+                        <th>{{ $t('dic.status') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +32,7 @@
             </table>
             <div class="row" v-else>
                 <div class="text-center p-a">
-                    <i class="fa fa-spin fa-spinner"></i> <b>{{ $t('common.loading') }}...</b>
+                    <i class="fa fa-spin fa-spinner"></i> <b>{{ $t('system.loading') }}</b>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@ export default {
                 })
             }).then(data => {
                 $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('status.success')
                 })
                 payer.status = data.status
             }, error => {

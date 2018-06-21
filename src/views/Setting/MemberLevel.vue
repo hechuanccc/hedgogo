@@ -5,21 +5,21 @@
             class="md-btn blue w-sm"
             tag="button"
             to="/level/add"
-        >{{ $t('action.add_level') }}
+        >{{ $t('dic.create') }}
         </router-link>
     </div>
     <div class="box">
         <table st-table="rowCollectionBasic" class="table table-striped">
             <thead>
                 <tr>
-                    <th>{{ $t('common.name') }}</th>
-                    <th class="text-center">{{ $t('common.status') }}</th>
-                    <th class="text-center">{{ $t('level.remit_limit') }}</th>
-                    <th class="text-center">{{ $t('level.online_pay_limit') }}</th>
-                    <th class="text-center">{{ $t('level.withdraw_limit') }}</th>
-                    <th class="text-center">{{ $t('level.max_withdraw_count_per_day') }}</th>
-                    <th>{{ $t('level.discount') }}</th>
-                    <th>{{ $t('common.member_count') }}</th>
+                    <th>{{ $t('dic.name') }}</th>
+                    <th class="text-center">{{ $t('dic.status') }}</th>
+                    <th class="text-center">{{ $t('finance.remit_limit') }}</th>
+                    <th class="text-center">{{ $t('finance.online_pay_limit') }}</th>
+                    <th class="text-center">{{ $t('finance.withdraw_limit') }}</th>
+                    <th class="text-center">{{ $t('finance.withdraw_limit_count_per_day') }}</th>
+                    <th>{{ $t('finance.deposit_discount') }}</th>
+                    <th>{{ $t('user.member_count') }}</th>
                 </tr>
             </thead>
             <tbody v-if="!loading">
@@ -36,7 +36,7 @@
                             <span v-else-if="!l.remit_limit.upper">{{ l.remit_limit.lower }} 以上</span>
                         </div>
                         <span v-else>
-                            {{ $t('common.not_set') }}
+                            {{ $t('system.no_setting') }}
                         </span>
                     </td>
                     <td class="text-center">
@@ -46,7 +46,7 @@
                             <span v-else-if="!l.online_limit.upper">{{ l.online_limit.lower }} 以上</span>
                         </div>
                         <span v-else>
-                            {{ $t('common.not_set') }}
+                            {{ $t('system.no_setting') }}
                         </span>
                     </td>
                     <td class="text-center">
@@ -56,7 +56,7 @@
                             <span v-else-if="!l.withdraw_limit.upper">{{ l.withdraw_limit.lower }} 以上</span>
                         </div>
                         <span v-else>
-                            {{ $t('common.not_set') }}
+                            {{ $t('system.no_setting') }}
                         </span>
                     </td>
 
@@ -64,17 +64,17 @@
                         <span v-if="l.max_withdraw_count_per_day !== null">
                             {{ l.max_withdraw_count_per_day }}
                         </span>
-                        <span v-else>{{ $t('common.not_set') }}</span>
+                        <span v-else>{{ $t('system.no_setting') }}</span>
                     </td>
                     
                     <td class="text-sm">
-                        <router-link tag="div" v-show="l.online_discounts" :to="'/level/' + l.id">{{ $t('bill.remit') }}：
-                            <a v-if="l.remit_discounts">{{ l.remit_discounts.length }} {{ $t('level.level_settings') }}</a>
-                            <span class="text-muted" v-else>{{ $t('common.not_set') }}</span>
+                        <router-link tag="div" v-show="l.online_discounts" :to="'/level/' + l.id">{{ $t('finance.remit') }}：
+                            <a v-if="l.remit_discounts">{{ l.remit_discounts.length }} {{ $t('misc.group_setting') }}</a>
+                            <span class="text-muted" v-else>{{ $t('system.no_setting') }}</span>
                         </router-link>
-                        <router-link tag="div" v-show="l.online_discounts" :to="'/level/' + l.id">{{ $t('bill.onlinepay') }}：
-                            <a v-if="l.online_discounts">{{ l.online_discounts.length }} {{ $t('level.level_settings') }}</a>
-                            <span class="text-muted" v-else>{{ $t('common.not_set') }}</span>
+                        <router-link tag="div" v-show="l.online_discounts" :to="'/level/' + l.id">{{ $t('finance.online_pay') }}：
+                            <a v-if="l.online_discounts">{{ l.online_discounts.length }} {{ $t('misc.group_setting') }}</a>
+                            <span class="text-muted" v-else>{{ $t('system.no_setting') }}</span>
                         </router-link>
                     </td>
                     <td>
@@ -87,7 +87,7 @@
     </div>
     <div class="row text-center" v-if="loading">
         <i class="fa fa-spin fa-spinner"></i>
-        <b>{{ $t('common.loading') }}...</b>
+        <b>{{ $t('system.loading') }}</b>
     </div>
 </div>
 </template>
