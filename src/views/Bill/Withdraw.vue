@@ -179,6 +179,22 @@
                         @input="search"
                     />
                 </div>
+                <div class="pull-left m-r-xs">
+                <label
+                    class="form-control-label p-b-0"
+                    :class="{'text-blue': query.ip}"
+                >
+                    IP
+                    <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                </label>
+                <input
+                    v-model.trim="query.ip"
+                    class="form-control"
+                    style="width: 244px;"
+                    placeholder="IP"
+                    @input="search"
+                />
+                </div>
                 <button
                     class="md-btn w-xs pull-right btn m-t-md"
                     type="button"
