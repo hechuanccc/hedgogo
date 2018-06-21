@@ -185,7 +185,6 @@
                     :class="{'text-blue': query.ip}"
                 >
                     IP
-                    <span class="text-muted">({{ $t('common.accurate_search') }})</span>
                 </label>
                 <input
                     v-model.trim="query.ip"
