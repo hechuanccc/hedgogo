@@ -4,7 +4,7 @@
             <div class="row b-b p-b m-b">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="label-width col-xs-1">{{$t('manage.name')}} </label>
+                        <label class="label-width col-xs-1">{{$t('website.name')}} </label>
                         <div class="inline-form-control">
                             <input
                                 class="form-control"
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="label-width col-xs-1">{{$t('manage.second_name')}} </label>
+                        <label class="label-width col-xs-1">{{$t('website.second_name')}} </label>
                         <div class="inline-form-control">
                             <input
                                 class="form-control"
@@ -30,11 +30,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="label-width col-xs-1 text-uppercase m-t-xs">{{$t('manage.logo')}}</label>
+                        <label class="label-width col-xs-1 text-uppercase m-t-xs">{{$t('misc.logo')}}</label>
                         <div class="inline-form-control" v-if="hasIcon">
                             <img :src="website.icon" height="30">
                         </div>
-                        <span class="m-r-xs" v-else>{{ $t('action.no_setting') }}</span>
+                        <span class="m-r-xs" v-else>{{ $t('system.no_setting') }}</span>
                         <div class="inline-form-control" v-if="updateWebsiteManagementPermission">
                             <input type="file" class="form-control w-md" accept="image/*" @change="syncImg($event, 'Icon')">
                         </div>
@@ -44,14 +44,14 @@
                             class="md-btn w-sm blue"
                             @click="updateWebsiteSetting"
                         >
-                            <span v-if="!websiteSettingLoading">{{$t('common.save')}}</span>
+                            <span v-if="!websiteSettingLoading">{{$t('dic.submit')}}</span>
                             <i class="fa fa-spin fa-spinner" v-else></i>
                         </button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-inline right-float-img">
-                        <label class="form-control-label text-uppercase">{{ $t('manage.right_float_img') }}</label>
+                        <label class="form-control-label text-uppercase">{{ $t('website.right_float_img') }}</label>
                         <div class="inline-form-control" v-if="hasRightFloatImg">
                             <img :src="website.right_float_img" height="180">
                             <button
@@ -63,7 +63,7 @@
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
-                        <span class="m-r-xs" v-else>{{ $t('action.no_setting') }}</span>
+                        <span class="m-r-xs" v-else>{{ $t('system.no_setting') }}</span>
                         <div class="inline-form-control" v-if="updateWebsiteManagementPermission">
                             <input
                                 type="file"
@@ -77,15 +77,15 @@
                 </div>
             </div>
             <div class="row">
-                <label class="m-l-sm label-width col-xs-1">{{$t('manage.advertisement')}} </label>
+                <label class="m-l-sm label-width col-xs-1">{{$t('website.advertisement')}} </label>
             </div>
             <div :class="['row text-center m-b-sm', `col-xs-${boxes.length<4?'11':'12'}`]" v-if="!mode && updateWebsiteManagementPermission">
-                <button class="md-btn w-sm blue" @click="mode=1"><i class="fa fa-arrows-h"></i> {{ $t('manage.adjust_rank') }}</button>
+                <button class="md-btn w-sm blue" @click="mode=1"><i class="fa fa-arrows-h"></i> {{ $t('system.adjust_rank') }}</button>
                 <span class="text-success text-sm m-l" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>                                                                                      
             </div>
             <div :class="['row text-center m-b-sm', `col-xs-${boxes.length<4?'11':'12'}`]" v-else-if="updateWebsiteManagementPermission">
-                <button class="btn btn-sm blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>                                
-                <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
+                <button class="btn btn-sm blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('dic.confirm') }}</button>                                
+                <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('dic.cancel') }}</button>
             </div>
             <div class="row b-b p-b">
                 <div :class="`col-xs-${boxes.length<4?'11':'12'}`">
@@ -106,7 +106,7 @@
                                         <div v-if="box.header_image">
                                             <img :src="box.header_image" width="250" height="50">
                                         </div>
-                                        <div v-else style="height:50px; background:lightgrey; line-height:50px;">{{ $t('action.no_setting') }}</div>
+                                        <div v-else style="height:50px; background:lightgrey; line-height:50px;">{{ $t('system.no_setting') }}</div>
                                         <div class="inline-form-control m-t-xs" v-if="box.mode">
                                             <input
                                                 type="file"
@@ -118,12 +118,12 @@
                                             >
                                         </div>
                                         <div class="form-group m-b-xs m-t-sm" v-if="box.mode">
-                                            <label class="form-control-label">{{ $t('manage.main') }}</label>
+                                            <label class="form-control-label">{{ $t('website.main_content') }}</label>
                                             <label class="radio-inline">
-                                                <input type="radio" :value="0" v-model="box.status">{{ $t('manage.img') }}
+                                                <input type="radio" :value="0" v-model="box.status">{{ $t('misc.img') }}
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" :value="1" v-model="box.status">{{ $t('manage.text') }}
+                                                <input type="radio" :value="1" v-model="box.status">{{ $t('misc.text') }}
                                             </label>
                                         </div>
                                         <div class="row m-l-xs m-r-xs" v-if="box.status===0">
@@ -131,7 +131,7 @@
                                                 <img :src="box.main_image" height="300">
                                             </div>
                                             <div v-else style="height:300px; background:lightgrey; line-height:300px;">
-                                                {{ $t('action.no_setting') }}
+                                                {{ $t('system.no_setting') }}
                                             </div>
                                             <div class="inline-form-control m-t-xs" v-if="box.mode">
                                                 <input
@@ -149,9 +149,9 @@
                                         </div>
                                         <div class="m-a alert alert-danger" v-if="box.errorMsg">{{ box.errorMsg }}</div>
                                         <div class="row m-t-sm" v-if="updateWebsiteManagementPermission">
-                                            <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('action.update')}}</button>
-                                            <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('action.confirm')}}</button>
-                                            <button class="btn btn-sm" @click="cancelUpdateBox(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('action.cancel')}}</button>  
+                                            <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('dic.update')}}</button>
+                                            <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('dic.confirm')}}</button>
+                                            <button class="btn btn-sm" @click="cancelUpdateBox(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('dic.cancel')}}</button>  
                                             <span class="text-success text-sm m-l" v-if="box.successMsg"><i class="fa fa-check"></i> {{ box.successMsg }}</span>                                                      
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="row m-t">
-                <label class="m-l-sm col-xs-2">{{$t('manage.agent_joining_agreement')}} </label>
+                <label class="m-l-sm col-xs-2">{{$t('website.agent_joining_agreement')}} </label>
             </div>
             <div class="row m-t-xs">
                 <div class="col-md-12">
@@ -187,7 +187,7 @@
                         @click="updateWebsiteAgreement"
                         :disabled="!updateWebsiteManagementPermission"
                     >
-                        <span v-if="!websiteAgreementLoading">{{$t('common.save')}}</span>
+                        <span v-if="!websiteAgreementLoading">{{$t('dic.submit')}}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </div>
@@ -316,9 +316,9 @@ export default {
             let formData = new window.FormData()
             let box = this.boxes[index]
             let boxResult = this.boxResults[id]
-            const errorMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.main')}`
+            const errorMsg = `${this.$t('system.no_setting')}: ${this.$t('website.main_content')}`
             if (!box.header_image) {
-                box.errorMsg = `${this.$t('action.no_setting')}: ${this.$t('manage.header_img')}`
+                box.errorMsg = `${this.$t('system.no_setting')}: ${this.$t('manage.header_img')}`
                 return
             } else if (boxResult && boxResult.header_image) {
                 formData.append('header_image', boxResult.header_image)
@@ -402,7 +402,7 @@ export default {
             }).then(data => {
                 this.websiteAgreement = data.description
                 $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('status.success')
                 })
                 this.websiteAgreementLoading = false
             }, error => {
@@ -433,14 +433,14 @@ export default {
             this[`has${attr}File`] = false
             this.$refs.rightFloatImg.value = ''
             $.notify({
-                message: this.$t('common.click_submit_and_clear'),
+                message: this.$t('system_msg.click_submit_and_clear'),
                 type: 'warning'
             })
         },
         syncBoxImg (e, box, index, attr) {
             if (!this.checkFileSize(e.target.files[0])) {
                 e.target.value = ''
-                this.boxes[index].errorMsg = this.$t('common.file_size_too_large')
+                this.boxes[index].errorMsg = this.$t('system_msg.file_size_too_large')
                 return
             } else {
                 this.boxes[index].errorMsg = ''
@@ -477,7 +477,7 @@ export default {
             updateWebsite('website', formData).then(data => {
                 this.setWebsiteData(data)
                 $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('status.success')
                 })
                 this.websiteSettingLoading = false
             }, error => {

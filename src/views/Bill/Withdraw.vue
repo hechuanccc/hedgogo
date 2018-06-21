@@ -8,12 +8,12 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('action.download_report') }}
+                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
             </span>
         </a>
         <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('action.download_report') }}
+            {{ $t('system.download_report') }}
             <i class="fa fa-download"></i>
         </span>
     </div>
@@ -24,14 +24,14 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': status}"
-                    >{{ $t('common.status') }}
+                    >{{ $t('dic.status') }}
                     </label>
                     <select
                         class="form-control w-sm c-select"
                         style="display: block;"
                         v-model="status"
                     >
-                        <option value="">{{ $t('common.please_select') }}</option>
+                        <option value="">{{ $t('system.please_select') }}</option>
                         <option value="1">{{ $t('status.success') }}</option>
                         <option value="2">{{ $t('status.failed') }}</option>
                         <option value="3">{{ $t('status.ongoing') }}</option>
@@ -44,7 +44,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.member_level}"
-                    >{{ $t('member.level') }}
+                    >{{ $t('dic.member_level') }}
                     </label>
                     <selector-member-level
                         style="display: block;"
@@ -56,12 +56,12 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.member_q}"
-                    >{{ $t('common.member') }}
+                    >{{ $t('dic.member') }}
                     </label>
                     <input
                         v-model.trim="query.member_q"
                         class="form-control w-sm"
-                        :placeholder="$t('common.member')"
+                        :placeholder="$t('dic.member')"
                         @input="search"
                     />
                 </div>
@@ -69,12 +69,12 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.updated_by}"
-                    >{{ $t('bill.operator') }}
+                    >{{ $t('dic.operator') }}
                     </label>
                     <input
                         v-model.trim="query.updated_by"
                         class="form-control w-sm"
-                        :placeholder="$t('bill.operator')"
+                        :placeholder="$t('dic.operator')"
                         @input="search"
                     />
                 </div>
@@ -82,7 +82,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.amount_lte || query.amount_gte}"
-                    >{{ $t('common.amount') }}
+                    >{{ $t('dic.amount') }}
                     </label>
                     <div style="display: block;">
                         <input
@@ -90,7 +90,7 @@
                             v-model="query.amount_gte"
                             class="form-control inline w-sm"
                             :max="query.amount_lte"
-                            :placeholder="$t('common.min_amount')"
+                            :placeholder="$t('misc.min_amount')"
                             @input="search"
                         />
                         ~
@@ -99,7 +99,7 @@
                             v-model="query.amount_lte"
                             class="form-control inline w-sm"
                             :min="query.amount_gte"
-                            :placeholder="$t('common.max_amount')"
+                            :placeholder="$t('misc.max_amount')"
                             @input="search"
                         />
                     </div>
@@ -108,7 +108,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': payerType}"
-                    >{{ $t('bill.payer_type') }}
+                    >{{ $t('finance.payer_type') }}
                     </label>
                     <selector-online-payer
                         style="display: block;"
@@ -116,7 +116,7 @@
                         :payer="payerType"
                         :addOptions="[{
                             id: 'null',
-                            name: $t('bill.manual_withdraw')
+                            name: $t('finance.manual_withdraw')
                         }]"
                         @payer-select="payerTypeSelect"
                         @no-payer="v => noPayerType = v"
@@ -130,7 +130,7 @@
                         :class="{'text-blue': selected === '0'
                             ? created_at && (created_at[0] || created_at[1])
                             : updated_at && (updated_at[0] || updated_at[1])}"
-                    >{{ $t('common.applied_at') }} / {{ $t('common.status_updated_at') }} 
+                    >{{ $t('time.applied_at') }} / {{ $t('time.updated_at') }} 
                     </label>
                     <div style="display: block;">
                         <select
@@ -138,8 +138,8 @@
                             v-model="selected"
                             @change="autoTogglePopup = true"
                         >
-                            <option value="0">{{ $t('common.applied_at') }}</option>
-                            <option value="1">{{ $t('common.status_updated_at') }}</option>
+                            <option value="0">{{ $t('time.applied_at') }}</option>
+                            <option value="1">{{ $t('time.updated_at') }}</option>
                         </select>
                         <date-picker
                             width="248"
@@ -169,13 +169,13 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.transaction_id}"
-                    >{{ $t('bill.order_id') }}
+                    >{{ $t('finance.order_id') }}
                     </label>
                     <input
                         style="width: 244px;"
                         v-model.trim="query.transaction_id"
                         class="form-control w-sm"
-                        :placeholder="$t('bill.order_id')"
+                        :placeholder="$t('finance.order_id')"
                         @input="search"
                     />
                 </div>
@@ -187,14 +187,14 @@
                 >
                     <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                     <i v-else class="fa fa-trash-o"></i> 
-                    {{ $t('action.reset_condition') }}
+                    {{ $t('system.reset_condition') }}
                 </button>
             </div>
         </div>
     </form>
     <div class="row m-l-xs m-r-xs">
         <div class="pull-right total-amount">
-            <span>{{ `${$t('common.total')} ${ $t('nav.withdraw_request')} :` }}</span>
+            <span>{{ `${$t('dic.total')} ${ $t('finance.withdraw')} :` }}</span>
             <span v-if="queryset.length">{{ total_amount | currency('￥') }}</span>
             <span v-else>{{ 0 | currency('￥') }}</span>
         </div>
@@ -203,26 +203,26 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{{ $t('common.member') }}</th>
+                    <th>{{ $t('dic.member') }}</th>
                     <th width="11%" class="text-center p-l-xs p-r-xs text-sm">
-                        {{ $t('common.applied_at') }}&nbsp;/
+                        {{ $t('time.applied_at') }}&nbsp;/
                         <br/>
-                        {{ $t('common.status_updated_at') }}
+                        {{ $t('time.updated_at') }}
                     </th>
-                    <th>{{ $t('common.ip_info') }}</th>
+                    <th>{{ $t('misc.ip') }}</th>
                     <th class="text-right text-sm p-r-xs">
-                        {{ $t('common.balance_before') }} /
+                        {{ $t('user.balance_before') }} /
                         <br/>
-                        {{ $t('common.balance_after') }}
+                        {{ $t('user.balance_after') }}
                     </th>
-                    <th class="text-center p-r-xs">{{ $t('common.amount') }}</th>
-                    <th>{{ $t('bank.bank_title') }}</th>
-                    <th>{{ $t('bill.operator') }}</th>
-                    <th class="text-center">{{ $t('bill.payer_type') }}</th>
-                    <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
-                    <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
-                    <th width="5%" class="text-center">{{ $t('common.operate') }}</th>
-                    <th width="5%" class="text-center">{{ $t('bill.order_detail') }}</th>
+                    <th class="text-center p-r-xs">{{ $t('dic.amount') }}</th>
+                    <th>{{ $t('bank.bank_info') }}</th>
+                    <th>{{ $t('dic.operator') }}</th>
+                    <th class="text-center">{{ $t('finance.payer_type') }}</th>
+                    <th width="7%" class="text-center">{{ $t('finance.audit') }}<br/>{{ $t('dic.status') }}</th>
+                    <th width="5%" class="text-center">{{ $t('finance.withdraw') }}<br/>{{ $t('dic.status') }}</th>
+                    <th width="5%" class="text-center">{{ $t('dic.operate') }}</th>
+                    <th width="5%" class="text-center">{{ $t('finance.order_detail') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -242,7 +242,7 @@
                         <br/>
                         <span class="text-muted">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>
                         <br/>
-                        <span class="label danger" v-if="t.ip_info && t.ip_info.ip_repeated">{{ $t('common.repeat') }}</span>
+                        <span class="label danger" v-if="t.ip_info && t.ip_info.ip_repeated">{{ $t('misc.repeated') }}</span>
                     </td>
                     <td v-else>-</td>
                     <td class="text-right p-r-xs">
@@ -253,19 +253,19 @@
                     </td>
                     <td class="text-right p-r-xs">{{ t.amount | currency('￥') }}</td>
                     <td>
-                        <p class="m-b-xs">{{ `${$t('bank.name')}: ${t.member.bank.name}` }}</p>
+                        <p class="m-b-xs">{{ `${$t('dic.bank')}: ${t.member.bank.name}` }}</p>
                         <p class="m-b-xs">{{ `${$t('bank.account')}: ${t.member.bank.account}` }}</p>
                         <p class="m-b-0">{{ `${$t('bank.address')}: ${t.member.bank.city}, ${t.member.bank.province}` }}</p>
                     </td>
                     <td class="p-r-xs">{{ ( t.updated_by && t.updated_by.username ) || '-' }}</td>
                     <td class="p-l-xs p-r-xs text-sm text-center">
                         <span v-if="t.online_payer && t.online_payer.name">{{ ( t.online_payer && t.online_payer.name ) }}</span>
-                        <span v-else-if="t.status === 1">{{ $t('bill.manual_withdraw') }}</span>
+                        <span v-else-if="t.status === 1">{{ $t('finance.manual_withdraw') }}</span>
                         <span v-else>-</span>
                     </td>
                     <td class="text-center p-r-xs p-l-xs">
-                        <span v-if="t.audit_status" class="t-green">{{ $t('member.pass') }}</span>
-                        <span v-else class="t-red">{{ $t('member.failed') }}</span>
+                        <span v-if="t.audit_status" class="t-green">{{ $t('status.pass') }}</span>
+                        <span v-else class="t-red">{{ $t('status.no_pass') }}</span>
                     </td>
                     <td class="text-center p-l-xs p-r-xs">
                         <transaction-status :transaction="t"/>
@@ -282,7 +282,7 @@
                                     transactionId: t.id
                                 }, t.member)"
                                 v-if="$root.permissions.includes('allow_withdraw_transaction')"
-                            >{{ $t('bill.audit') }}
+                            >{{ $t('finance.check_passed') }}
                             </button>
                             <br v-if="$root.permissions.includes('allow_withdraw_transaction')"/>
                             <button
@@ -294,7 +294,7 @@
                                     transactionId: t.id,
                                 }, t.member)"
                                 v-if="$root.permissions.includes('refuse_withdraw_transaction')"
-                            >{{ $t('bill.cancel') }}
+                            >{{ $t('finance.withdraw_cancel') }}
                             </button>
                             <br v-if="$root.permissions.includes('allow_withdraw_transaction')"/>
                             <button
@@ -306,7 +306,7 @@
                                     transactionId: t.id,
                                 }, t.member)"
                                 v-if="$root.permissions.includes('refuse_withdraw_transaction')"
-                            >{{ $t('bill.declined') }}
+                            >{{ $t('finance.withdraw_deny') }}
                             </button>
                             <div v-if="!withdrawLoading[t.id]">
                                 <a
@@ -323,7 +323,7 @@
                         </template>
                     </td>
                     <td class="text-center p-l-xs p-r-xs">
-                        <router-link :to="'/transaction/' + t.id">{{$t('action.view')}}</router-link>
+                        <router-link :to="'/transaction/' + t.id">{{$t('dic.view')}}</router-link>
                     </td>
                 </tr>
             </tbody>
@@ -335,11 +335,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     
-                    <span class="text-md" v-if="modal.status === 1">{{ $t('bill.withdraw_audit_alert_msg') }}</span>
-                    <span class="text-md" v-if="modal.status === 4 || modal.status === 5">{{ $t('bill.confirm_declined', {
-                        action: modal.status === 4 ? $t('bill.cancel') : $t('bill.declined')
+                    <span class="text-md" v-if="modal.status === 1">{{ $t('misc.withdraw_audit_alert_msg') }}</span>
+                    <span class="text-md" v-if="modal.status === 4 || modal.status === 5">{{ $t('system_msg.confirm_action_object', {
+                        action: modal.status === 4 ? $t('finance.withdraw_cancel') : $t('finance.withdraw_deny')
                     }) }}</span>
-                    <span class="text-md">({{ `${$t('common.username')}: ${modal.username}` }})</span>
+                    <span class="text-md">({{ `${$t('user.username')}: ${modal.username}` }})</span>
                     <button type="button" class="close" aria-hidden="true" @click="modal.showModal = false">×
                     </button>
                 </div>
@@ -362,13 +362,13 @@
                         @click="updateWithdraw(modal)"
                     >
                         <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
-                        <span v-else>{{ $t('action.confirm') }}</span>
+                        <span v-else>{{ $t('dic.confirm') }}</span>
                     </button>
                     <button
                         type="button"
                         class="btn dark-white p-x-md w-xs"
                         @click="modal.showModal = false"
-                    >{{ $t('action.cancel') }}
+                    >{{ $t('dic.cancel') }}
                     </button>
                 </div>
             </div>
@@ -426,7 +426,7 @@
                 total_amount: '',
                 today: date.today[0],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                    text: this.$t(`common.${element}`),
+                    text: this.$t(`time.${element}`),
                     start: date[element][0],
                     end: date[element][1]
                 })),
@@ -605,7 +605,7 @@
                         }
                     }).then(data => {
                         $.notify({
-                            message: this.$t('bill.withdraw_payee') + this.$t('status.success')
+                            message: this.$t('finance.withdraw_payee') + this.$t('status.success')
                         })
                         this.$refs.pulling.rebase()
                         this.$delete(this.withdrawLoading, transaction.id)

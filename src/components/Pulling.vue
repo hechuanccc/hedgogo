@@ -243,7 +243,7 @@ export default {
                 this.loading = false
             }, () => {
                 $.notify({
-                    message: this.$t('common.server_error'),
+                    message: this.$t('system_msg.server_error'),
                     type: 'danger'
                 })
                 this.$emit('query-data', [])

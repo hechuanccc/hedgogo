@@ -8,12 +8,12 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('action.download_report') }}
+                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
             </span>
         </a>
         <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('action.download_report') }}
+            {{ $t('system.download_report') }}
             <i class="fa fa-download"></i>
         </span>
     </div>
@@ -28,7 +28,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.start_date && query.end_date}"
-              >{{ $t('common.date') }}
+              >{{ $t('dic.date') }}
               </label>
               <date-picker
                 width='244'
@@ -37,7 +37,7 @@
                 :shortcuts="shortcuts"
                 v-model="date"
                 type="date"
-                format="yyyy-MM-dd"
+                format='yyyy-MM-dd'
                 range
               />
             </div>
@@ -45,13 +45,13 @@
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': agent && !agentReport}"
-              >{{ $t('member.agent') }}
+              >{{ $t('dic.agent') }}
               </label>
               <selector-agent
                 style="display: block;"
                 :agent="agent"
                 @agent-select="agentSelect"
-                :placeholder="$t('member.agent')"
+                :placeholder="$t('dic.agent')"
                 :disabled="!agentReport"
               />
             </div>
@@ -59,14 +59,14 @@
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': query.member_level && !agentReport}"
-              >{{ $t('member.level') }}
+              >{{ $t('dic.member_level') }}
               </label>
               <selector-member-level
                 style="display: block;"
                 :level="query.member_level"
                 :reportFlag="true"
                 :accountType="''"
-                :placeholder="$t('member.level')"
+                :placeholder="$t('dic.member_level')"
                 :disabled="agentReport"
                 @level-select="levelSelect"
               />
@@ -75,43 +75,43 @@
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': transaction_type}"
-              >{{ $t('bill.deposit_type') }}
+              >{{ $t('finance.deposit_type') }}
               </label>
               <selector-transaction-type
                 style="display: block;"
                 :transactionType="transaction_type"
                 :displayList="['remit', 'online_pay']"
                 @transaction-type-select="transactionTypeSelect"
-                :placeholder="$t('bill.transaction_type')"
+                :placeholder="$t('finance.transaction_type')"
               />
             </div>
             <div class="pull-left m-r-xs">
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': platform}"
-              >{{ $t('manage.platform') }}
+              >{{ $t('dic.platform') }}
               </label>
               <select
                 style="display: block;"
                 class="form-control w-sm c-select"
                 v-model="platform"
               >
-                <option value="">{{ $t('common.please_select') }}</option>
-                <option value="pc">{{ $t('manage.pc') }}</option>
-                <option value="mobile">{{ $t('manage.mobile') }}</option>
+                <option value="">{{ $t('system.please_select') }}</option>
+                <option value="pc">{{ $t('dic.pc') }}</option>
+                <option value="mobile">{{ $t('dic.mobile') }}</option>
               </select>
             </div>
             <div class="pull-left m-r-xs">
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': game}"
-              >{{ $t('common.game') }}
+              >{{ $t('dic.game') }}
               </label>
               <selector-game
                 style="display: block;"
                 :game="game"
                 @game-select="gameSelect"
-                :placeholder="$t('common.game')"
+                :placeholder="$t('dic.game')"
               />
             </div>
             <button
@@ -122,7 +122,7 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('action.reset_condition') }}</span>
+              <span>{{ $t('system.reset_condition') }}</span>
             </button>
           </div>
         </div>
@@ -132,13 +132,13 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
-            <th class="text-center">{{ $t('common.date') }}</th>
-            <th class="text-right">{{ $t('common.overview.label.amount') }}</th>
-            <th class="text-right">{{ $t('common.overview.label.betrecord_count') }}</th>
-            <th class="text-right">{{ $t('bill.deposit_amount') }}</th>
-            <th class="text-right">{{ $t('member.manual_adjust') + $t('common.amount') }}</th>
-            <th class="text-right">{{ $t('bill.withdraw') + $t('common.amount') }}</th>
-            <th class="text-right">{{ $t('common.overview.label.profit') }}</th>
+            <th class="text-center">{{ $t('dic.date') }}</th>
+            <th class="text-right">{{ $t('overview.label.amount') }}</th>
+            <th class="text-right">{{ $t('overview.label.betrecord_count') }}</th>
+            <th class="text-right">{{ $t('finance.deposit_amount') }}</th>
+            <th class="text-right">{{ $t('finance.manual_adjust') + $t('dic.amount') }}</th>
+            <th class="text-right">{{ $t('finance.withdraw') + $t('dic.amount') }}</th>
+            <th class="text-right">{{ $t('overview.label.profit') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0" class="text-right">
@@ -152,7 +152,7 @@
             <td :class="data.profit < 0 ? 'text-danger' : 'text-success'">{{ data.profit | currency('￥') }}</td>
           </tr>
           <tr class="_600">
-              <td class="text-center">{{ $t('common.total') }}</td>
+              <td class="text-center">{{ $t('dic.total') }}</td>
               <td>{{ totalAmount | currency('￥') }}</td>
               <td>{{ totalBetCount.toLocaleString() }}</td>
               <td>{{ totalDeposit | currency('￥') }}</td>
@@ -216,7 +216,7 @@ export default {
             export_query: [],
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 start: date[element][0],
                 end: date[element][1]
             })),

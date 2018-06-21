@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/promotion">{{$t('nav.promotion')}}</router-link></li>
+                <li class="active"><router-link to="/promotion">{{$t('title.promotion')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
@@ -19,7 +19,7 @@
                             name="promotions"
                             @change="selectPromotionHandler"
                         >
-                            <option class="form-control" value="">{{ $t('common.please_select') }}</option>
+                            <option class="form-control" value="">{{ $t('system.please_select') }}</option>
                             <option 
                                 class="form-control"
                                 :value="promotion.id"
@@ -36,12 +36,12 @@
                     <div class="row b-b p-b m-b">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label-width">{{ $t('common.name') }}</label>
+                                <label class="label-width">{{ $t('dic.name') }}</label>
                                 <div class="inline-form-control">
                                     <input 
                                         class="form-control"
                                         v-model="promotion.name"
-                                        :placeholder="$t('common.name')"
+                                        :placeholder="$t('dic.name')"
                                         required
                                     >
                                 </div>
@@ -57,7 +57,7 @@
                                 <p class="m-t text-danger">图片尺寸：电脑端推荐宽高比例为 8 : 1，推荐宽高为 1000 * 144</p>
                             </div>
                             <div class="form-group">
-                                <label class="label-width">{{ $t('promotion.mobileBanner') }}</label>
+                                <label class="label-width">{{ $t('promotion.banner_mobile') }}</label>
                                 <div class="inline-form-control promo-image-container" v-if="promotion.image_mobile_url">
                                     <img :src="promotion.image_mobile_url" class="promo-image">
                                 </div>
@@ -91,7 +91,7 @@
                                 </tinymce>
                             </div>
                             <div class="form-group">
-                                <label for="status" class="label-width">{{ $t('common.status') }}</label>
+                                <label for="status" class="label-width">{{ $t('dic.status') }}</label>
                                 <select
                                     class="form-control w-sm c-select"
                                     name="status"
@@ -107,7 +107,7 @@
                                 <date-picker
                                     v-model="promotion.start_date"
                                     type="date"
-                                    format="yyyy-MM-dd"
+                                    format='yyyy-MM-dd'
                                     ref="start_date"
                                     :placeholder="$t('promotion.start_date')"
                                     :not-before="yesterday"
@@ -116,13 +116,13 @@
                                 <date-picker
                                     v-model="promotion.end_date"
                                     type="date"
-                                    format="yyyy-MM-dd"
+                                    format='yyyy-MM-dd'
                                     ref="end_date"
-                                    :placeholder="`${$t('promotion.end_date')}, ${$t('common.not_required')}`"
+                                    :placeholder="`${$t('promotion.end_date')}, ${$t('system.not_required')}`"
                                 />
                             </div>
                             <div class="form-group">
-                                <label class="text-sm">{{ $t('member.level') }}</label>
+                                <label class="text-sm">{{ $t('dic.member_level') }}</label>
                                 <selector-member-level
                                     :level="promotion.level"
                                     :mode="'checkbox'"
@@ -134,7 +134,7 @@
                     </div>
                     <div>
                         <button type="submit" class="md-btn w-sm blue">
-                            <span v-if="!loading">{{ $t('common.save') }}</span>
+                            <span v-if="!loading">{{ $t('dic.submit') }}</span>
                             <i v-else class="fa fa-spin fa-spinner"></i>
                         </button>
                     </div>
@@ -199,7 +199,7 @@ export default {
         onSubmit (e) {
             if (!this.$moment(this.promotion.start_date).isValid()) {
                 $.notify({
-                    message: `${this.$t('common.unfilled')}(${this.$t('promotion.availability')})`,
+                    message: `${this.$t('system.unfilled')}(${this.$t('promotion.availability')})`,
                     type: 'danger'
                 })
                 this.$refs.start_date.togglePopup()
@@ -248,7 +248,7 @@ export default {
                 data: formData
             }).then(data => {
                 $.notify({
-                    message: `${this.id ? this.$t('promotion.update') : this.$t('promotion.add')}${this.$t('status.success')}`
+                    message: `${this.id ? this.$t('title.promotion_edit') : this.$t('title.promotion_add')}${this.$t('status.success')}`
                 })
                 this.$router.push('/promotion/' + data.id)
                 this.loading = false

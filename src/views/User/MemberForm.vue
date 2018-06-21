@@ -2,30 +2,30 @@
     <div>
       <div class="m-b">
         <ol class="breadcrumb">
-          <li class="active"><router-link to="/member">{{$t('nav.member')}}</router-link></li>
+          <li class="active"><router-link to="/member">{{$t('dic.member')}}</router-link></li>
           <li class="active">{{$route.meta.title}}</li>
         </ol>
       </div>
       <div class="box">
         <div class="box-header b-b" v-if="!$route.params.memberId">
-          <h3>{{$t('common.attention')}}：</h3>
-          <small>{{$t('common.default_password')}} ：123456, {{$t('common.default_withdraw_password')}} ：123456。</small>
+          <h3>{{$t('system.attention')}}：</h3>
+          <small>{{$t('user.default_password')}} ：123456, {{$t('user.default_withdraw_password')}} ：123456。</small>
         </div>
         <div class="box-body">
           <form class="form m-a" @submit.prevent="onSubmit">
             <div class="row b-b p-b m-b">
               <div class="col-md-4">
-                <h5 class="m-b">{{$t('member.account_info')}} </h5>
+                <h5 class="m-b">{{$t('user.account_info')}} </h5>
                 <div class="form-group">
-                  <label for="account" class="label-width">{{$t('member.account')}}</label>
+                  <label for="account" class="label-width">{{$t('user.account')}}</label>
                   <div class="inline-form-control">
                     <input
                       class="form-control"
                       name="account"
-                      :placeholder="`${$t('common.username')}, ${$t('common.required')}`"
+                      :placeholder="`${$t('user.username')}, ${$t('system.required')}`"
                       v-model="member.username"
                       pattern="[A-Za-z\d]{6,15}"
-                      :title="$t('member.username_form_validation_msg', {
+                      :title="$t('misc.username_validation_msg', {
                         digit: '6~15'
                       })"
                       :disabled="$route.params.memberId"
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group" v-if="updateMemberPermission('agent')">
-                  <label for="agent" class="label-width">{{$t('member.agent')}}</label>
+                  <label for="agent" class="label-width">{{$t('dic.agent')}}</label>
                   <selector-agent
                     :agent="member.agent.id || member.agent"
                     :req="true"
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="form-group b-b p-b">
-                  <label for="agent" class="label-width">{{$t('member.level')}} </label>
+                  <label for="agent" class="label-width">{{$t('dic.member_level')}} </label>
                   <div class="inline-form-control">
                     <selector-member-level
                       :level="member.level"
@@ -59,11 +59,11 @@
 
 
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.real_name')}}</label>
+                  <label class="label-width">{{$t('user.real_name')}}</label>
                   <div class="inline-form-control">
                     <input
                       class="form-control"
-                      :placeholder="`${$t('common.real_name')}, ${$t('common.required')}`"
+                      :placeholder="`${$t('user.real_name')}, ${$t('system.required')}`"
                       v-model="member.real_name"
                       :disabled="!updateMemberPermission('name')"
                       required
@@ -71,11 +71,11 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.phone')}}</label>
+                  <label class="label-width">{{$t('user.phone')}}</label>
                   <div class="inline-form-control">
                     <input
                       class="form-control"
-                      :placeholder="`${$t('common.phone')}, ${$t('common.required')}`"
+                      :placeholder="`${$t('user.phone')}, ${$t('system.required')}`"
                       v-model="member.phone"
                       :disabled="!updateMemberPermission('details')"
                       pattern="[1][3-9][\d]{9}"
@@ -85,23 +85,23 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="agent" class="label-width">{{$t('common.gender')}} </label>
+                  <label for="agent" class="label-width">{{$t('user.gender')}} </label>
                   <div class="from-control inline-form-control">
                     <label class="md-check">
                       <input type="radio" value="M" name="gender" v-model="member.gender" :disabled="!updateMemberPermission('details')">
                       <i class="blue"></i>
-                      {{$t('common.male')}}
+                      {{$t('user.male')}}
                     </label>
 
                     <label class="md-check m-l-md" >
                       <input type="radio" value="F" name="gender" v-model="member.gender" :disabled="!updateMemberPermission('details')">
                       <i class="blue"></i>
-                      {{$t('common.female')}}
+                      {{$t('user.female')}}
                     </label>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="email" class="label-width">{{$t('common.email')}}</label>
+                  <label for="email" class="label-width">{{$t('user.email')}}</label>
                   <div class="inline-form-control">
                     <input
                       type="email"
@@ -114,7 +114,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="birthday" class="label-width">{{$t('common.birthday')}} </label>
+                  <label for="birthday" class="label-width">{{$t('user.birthday')}} </label>
                   <div class="inline-form-control" v-if="updateMemberPermission('details')">
                     <date-picker width='153' v-model="member.birthday"></date-picker>
                   </div>
@@ -128,7 +128,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="label-width">{{$t('common.wechat')}} </label>
+                  <label class="label-width">{{$t('user.wechat')}} </label>
                   <div class="inline-form-control">
                     <input
                       class="form-control"
@@ -153,9 +153,9 @@
               </div>
               <div class="col-md-4 col-md-offset-1">
                 <div v-if="updateMemberPermission('bank')">
-                  <h5 class="m-b">{{$t('bank.bank_title')}} </h5>
+                  <h5 class="m-b">{{$t('bank.bank_info')}} </h5>
                   <div class="form-group">
-                    <label class="label-width">{{$t('bank.name')}}</label>
+                    <label class="label-width">{{$t('dic.bank')}}</label>
                     <selector-bank
                       :bank="member.bank.bank"
                       :req="bankFilled"
@@ -201,14 +201,14 @@
                   </div>
 
                   <div class="form-group m-t">
-                    <label for="memo">{{$t('common.memo')}} </label>
+                    <label for="memo">{{$t('dic.memo')}} </label>
                     <textarea class="form-control" rows="4" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="member.memo" :disabled="!updateMemberPermission('details')"></textarea>
                   </div>
                 </div>
               </div>
             </div>
             <button type="submit" class="md-btn blue w-sm">
-              <span v-if="!loading">{{$t('common.save')}}</span>
+              <span v-if="!loading">{{$t('dic.submit')}}</span>
               <i class="fa fa-spin fa-spinner" v-else></i>
             </button>
           </form>
@@ -295,7 +295,7 @@ export default {
                 data: memberResult
             }).then(data => {
                 $.notify({
-                    message: `${this.id ? this.$t('action.update') : this.$t('action.create')}${this.$t('status.success')}`
+                    message: `${this.id ? this.$t('dic.update') : this.$t('dic.create')}${this.$t('status.success')}`
                 })
                 this.$router.push('/member/' + data.id)
             }, error => {

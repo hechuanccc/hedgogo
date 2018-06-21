@@ -6,7 +6,7 @@
           tag="button"
           class="md-btn w-sm blue"
           to="/member/add"
-        >{{ $t('action.add_member') }}
+        >{{ $t('title.member_add') }}
         </router-link>
       </div>
       <div class="col-md-6" v-if="$root.permissions.includes('export_member_report')">
@@ -17,12 +17,12 @@
           class="md-btn w-sm text-white-dk blue pull-right"
         >
           <span>
-            {{ $t('action.download_report') }}
+            {{ $t('system.download_report') }}
             <i class="fa fa-download"></i>
           </span>
         </a>
         <span class="pull-right m-t-sm m-r" disabled v-else>
-          {{ $t('action.download_report') }}
+          {{ $t('system.download_report') }}
           <i class="fa fa-download"></i>
         </span>
       </div>
@@ -31,7 +31,7 @@
       <label class="md-switch m-t-sm">
         <input type="checkbox" v-model="visitorFilter" class="has-value pull-right">
         <i class="blue"></i>
-        <span class="pull-right p-t-xs">{{ $t('member.visitor_filter') }}</span>
+        <span class="pull-right p-t-xs">{{ $t('misc.filter_visitor') }}</span>
       </label>
       <button
         class="md-btn blue pull-right btn w-sm"
@@ -40,7 +40,7 @@
       >
         <span>
           <i class="fa fa-spin fa-spinner" v-if="loading"></i>
-          {{ $t('common.refresh') }}
+          {{ $t('system.refresh') }}
         </span>
       </button>
     </div>
@@ -56,12 +56,12 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.username_q}"
-              >{{ $t('common.username') }}
+              >{{ $t('user.username') }}
               </label>
               <input 
                 v-model.trim="query.username_q"
                 class="form-control w-sm"
-                :placeholder="$t('common.username')"
+                :placeholder="$t('user.username')"
                 @input="search"
                 :disabled="mode !== 'normal'"
               />
@@ -70,12 +70,12 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.real_name_q}"
-              >{{ $t('common.real_name') }}
+              >{{ $t('user.real_name') }}
               </label>
               <input 
                 v-model.trim="query.real_name_q"
                 class="form-control w-sm"
-                :placeholder="$t('common.real_name')"
+                :placeholder="$t('user.real_name')"
                 @input="search"
                 :disabled="mode !== 'normal'"
               />
@@ -84,12 +84,12 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.agent_q}"
-              >{{ $t('common.agent') }}
+              >{{ $t('dic.agent') }}
               </label>
               <input 
                 v-model.trim="query.agent_q"
                 class="form-control w-sm"
-                :placeholder="$t('common.agent')"
+                :placeholder="$t('dic.agent')"
                 @input="search"
                 :disabled="mode !== 'normal'"
               />
@@ -98,7 +98,7 @@
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': query.level}"
-              >{{ $t('member.level') }}
+              >{{ $t('dic.member_level') }}
               </label>
               <selector-member-level
                 :level="query.level"
@@ -111,7 +111,7 @@
               <label
                   class="form-control-label p-b-0"
                   :class="{'text-blue': status}"
-              >{{ $t('common.status') }}
+              >{{ $t('dic.status') }}
               </label>
               <select
                 class="form-control c-select w-sm"
@@ -119,7 +119,7 @@
                 v-model="status"
                 :disabled="mode !== 'normal'"
               >
-                <option value="">{{ $t('common.please_select') }}</option>
+                <option value="">{{ $t('system.please_select') }}</option>
                 <option value="1">{{ $t('status.active') }}</option>
                 <option value="0">{{ $t('status.inactive') }}</option>
               </select>
@@ -128,7 +128,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.balance_lte || query.balance_gte}"
-              >{{ $t('common.amount') }}
+              >{{ $t('dic.amount') }}
               </label>
               <div style="display: block;">
                 <input
@@ -136,7 +136,7 @@
                   v-model="query.balance_gte"
                   class="form-control inline w-sm"
                   :max="query.balance_lte"
-                  :placeholder="$t('common.min_amount')"
+                  :placeholder="$t('misc.min_amount')"
                   @input="search"
                   :disabled="mode !== 'normal'"
                 />
@@ -146,7 +146,7 @@
                   v-model="query.balance_lte"
                   class="form-control inline w-sm"
                   :min="query.balance_gte"
-                  :placeholder="$t('common.max_amount')"
+                  :placeholder="$t('misc.max_amount')"
                   @input="search"
                   :disabled="mode !== 'normal'"
                 />
@@ -156,7 +156,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': userInfo_q}"
-              >{{ $t('member.contact_info') }}
+              >{{ $t('user.contact_info') }}
               </label>
               <div style="display: block;">
                 <select
@@ -164,11 +164,11 @@
                   v-model="userInfoSelect"
                   :disabled="mode !== 'normal'"
                 >
-                  <option value="">{{ $t('common.please_select') }}</option>
-                  <option value="0">{{ $t('common.phone') }}</option>
-                  <option value="1">{{ $t('common.email') }}</option>
-                  <option value="2">{{ $t('common.qq') }}</option>
-                  <option value="3">{{ $t('common.wechat') }}</option>
+                  <option value="">{{ $t('system.please_select') }}</option>
+                  <option value="0">{{ $t('user.phone') }}</option>
+                  <option value="1">{{ $t('user.email') }}</option>
+                  <option value="2">{{ $t('user.qq') }}</option>
+                  <option value="3">{{ $t('user.wechat') }}</option>
                 </select>
                 <input
                   v-model.trim="userInfo_q"
@@ -184,7 +184,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
-              >{{ $t('member.created_at') }}
+              >{{ $t('time.registered_at') }}
               </label>
               <date-picker
                 width='244'
@@ -195,7 +195,7 @@
                 :disabled="mode !== 'normal'"
                 type="date"
                 v-model="created_at"
-                format="yyyy-MM-dd"
+                format='yyyy-MM-dd'
                 range
               />
             </div>
@@ -204,14 +204,14 @@
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.register_ip}"
               >
-                {{ $t('member.created_ip') }}
-                <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                {{ $t('user.registered_ip') }}
+                <span class="text-muted">({{ $t('system.accurate_search') }})</span>
               </label>
               <input
                 v-model.trim="query.register_ip"
                 class="form-control w-sm"
                 style="width: 244px;"
-                :placeholder="$t('member.created_ip')"
+                :placeholder="$t('user.registered_ip')"
                 @input="search"
                 :disabled="mode !== 'normal'"
               />
@@ -221,14 +221,14 @@
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.last_login_ip}"
               >
-                {{ $t('member.history_loggedin_ip') }}
-                <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                {{ $t('user.loggedin_ip_history') }}
+                <span class="text-muted">({{ $t('system.accurate_search') }})</span>
               </label>
               <input
                 v-model.trim="query.last_login_ip"
                 class="form-control w-sm"
                 style="width: 244px;"
-                :placeholder="$t('member.history_loggedin_ip')"
+                :placeholder="$t('user.loggedin_ip_history')"
                 @input="search"
               />
             </div>
@@ -245,7 +245,7 @@
                 @click="mode = 'confirm-ban'"
               >
                 <i class="fa fa-ban"></i> 
-                <span>{{ $t('action.batch_ban') }}</span>
+                <span>{{ $t('system.batch_ban') }}</span>
               </button>
             </div>
             <div
@@ -259,7 +259,9 @@
                 type="button"
                 @click="batchBanHandler"
               >
-                <span v-if="!batchBanLoading">{{ $t('member.confirm_ban') }}</span>
+                <span v-if="!batchBanLoading">{{ $t('system_msg.confirm_action_object', {
+                  action: $t('dic.ban')
+                }) }}</span>
                 <i class="fa fa-spin fa-spinner" v-else></i>
               </button>
             </div>
@@ -274,7 +276,7 @@
                 type="button"
                 @click="mode = 'ban'"
               >
-                {{ $t('action.cancel') }}
+                {{ $t('dic.cancel') }}
               </button>
             </div>
             <button
@@ -285,7 +287,7 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('action.reset_condition') }}</span>
+              <span>{{ $t('system.reset_condition') }}</span>
             </button>
           </div>
         </div>
@@ -296,15 +298,15 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-if="pageSelected == 'onlineMember'">
         <thead>
           <tr class="text-center">
-            <th>{{ $t('member.account') }}</th>
-            <th>{{ $t('common.real_name') }}</th>
-            <th>{{ $t('member.last_login') }}</th>
-            <th>{{ $t('member.loggedin_infos') }}</th>
-            <th>{{ $t('member.login_platform') }}</th>
-            <th>{{ $t('member.area') }}</th>
-            <th>{{ $t('member.agent') }}</th>
-            <th class="text-center">{{ $t('member.level') }}</th>
-            <th>{{ $t('member.balance') }}</th>
+            <th>{{ $t('user.account') }}</th>
+            <th>{{ $t('user.real_name') }}</th>
+            <th>{{ $t('user.last_login') }}</th>
+            <th>{{ $t('user.loggedin_info') }}</th>
+            <th>{{ $t('dic.platform') }}</th>
+            <th>{{ $t('misc.area') }}</th>
+            <th>{{ $t('dic.agent') }}</th>
+            <th class="text-center">{{ $t('dic.member_level') }}</th>
+            <th>{{ $t('dic.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -313,7 +315,7 @@
               <span class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</span>
               <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
               <router-link :to="'/member/' + member.id" v-if="member.account_type !== 0">{{ member.username }}</router-link>
-              <span v-else>{{ $t('member.visitor') }}</span>
+              <span v-else>{{ $t('user.visitor') }}</span>
               <br/>
               <span class="label red m-l" v-if="member.status!==1">{{ $t('status.inactive') }}</span>
             </td>
@@ -321,13 +323,13 @@
               <div v-if="member.account_type !== 0">
                 {{ member.real_name || '-' }}
                 <div v-if="member.realname_repeated">
-                  <span class="label danger">{{ $t('common.repeat') }}</span>
+                  <span class="label danger">{{ $t('misc.repeated') }}</span>
                 </div>
               </div>
               <span v-else>-</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{ member.last_login.login_at | moment("YYYY-MM-DD HH:mm") }}</span>
+              <span v-if="member.last_login">{{ member.last_login.login_at | moment('YYYY-MM-DD HH:mm') }}</span>
               <span v-else>-</span>
             </td>
             <td>
@@ -336,7 +338,7 @@
               <span class="text-muted">{{ member.loggedin_ip || '-' }}</span>
             </td>
             <td>
-              <span v-if="member.last_login">{{ $t('manage.' + member.last_login.platform.toLowerCase()) }}</span>
+              <span v-if="member.last_login">{{ $t('dic.' + member.last_login.platform.toLowerCase()) }}</span>
               <span v-else>-</span>
             </td>
             <td>
@@ -358,16 +360,16 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
         <thead>
           <tr>
-            <th>{{ $t('member.account') }}</th>
-            <th>{{ $t('common.real_name') }}</th>
-            <th>{{ $t('member.created_ip') }}&nbsp;/&nbsp;{{ $t('common.time') }}</th>
-            <th>{{ $t('member.last_login') }}</th>
-            <th>{{ $t('member.agent') }}</th>
-            <th class="text-right">{{ $t('member.total_deposit') }}</th>
-            <th class="text-right">{{ $t('member.total_withdraw') }}</th>
-            <th class="text-right" width="7%">{{ $t('betrecord.total_valid_bet_record') }}</th>
-            <th class="text-right">{{ `${$t('common.member')}${$t('betrecord.win')}${$t('betrecord.lose')}` }}</th>
-            <th class="text-right">{{ $t('member.balance') }}</th>
+            <th>{{ $t('user.account') }}</th>
+            <th>{{ $t('user.real_name') }}</th>
+            <th>{{ $t('user.registered_ip') }}&nbsp;/&nbsp;{{ $t('dic.time') }}</th>
+            <th>{{ $t('user.last_login') }}</th>
+            <th>{{ $t('dic.agent') }}</th>
+            <th class="text-right">{{ $t('finance.deposit_total') }}</th>
+            <th class="text-right">{{ $t('finance.withdraw_total') }}</th>
+            <th class="text-right" width="7%">{{ $t('bet.valid_bet') }}</th>
+            <th class="text-right">{{ `${$t('dic.member')}${$t('bet.win')}${$t('bet.lose')}` }}</th>
+            <th class="text-right">{{ $t('dic.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -383,22 +385,22 @@
             <td>
               {{ member.real_name || '-' }}
               <div v-if="member.realname_repeated">
-                <span class="label danger">{{ $t('common.repeat') }}</span>
+                <span class="label danger">{{ $t('misc.repeated') }}</span>
               </div>
             </td>
             <td>
             <div>
               <span>{{ member.register_ip || '-' }}</span>
-              <span class="label danger" v-if="member.ip_repeated">{{ $t('common.repeat') }}</span>
+              <span class="label danger" v-if="member.ip_repeated">{{ $t('misc.repeated') }}</span>
               <br/>
-              <span class="text-muted text-xs">{{ member.created_at | moment("YYYY-MM-DD HH:mm") }}</span>
+              <span class="text-muted text-xs">{{ member.created_at | moment('YYYY-MM-DD HH:mm') }}</span>
             </div>
             </td>
             <td>
               <p class="m-b-0" v-if="member.last_login">
                 <span>{{ member.last_login.ipaddr || '-' }}</span>
                 <br/>
-                <span class="text-sm text-muted">{{ member.last_login.login_at | moment("YYYY-MM-DD HH:mm") }}</span>
+                <span class="text-sm text-muted">{{ member.last_login.login_at | moment('YYYY-MM-DD HH:mm') }}</span>
               </p>
               <span v-else>-</span>
             </td>
@@ -416,9 +418,9 @@
               <p class="m-b-xs">{{ member.total_amount | currency('￥') }}</p>
             </td>
             <td class="text-right">
-              <span class="text-success">{{ $t('betrecord.win') }}: </span>
+              <span class="text-success">{{ $t('bet.win') }}: </span>
               <router-link :to="`/report/betrecord/?member=${member.username}&status=win`">{{ member.total_gain | currency('￥') }}</router-link><br/>
-              <span class="text-danger">{{ $t('betrecord.lose') }}: </span>
+              <span class="text-danger">{{ $t('bet.lose') }}: </span>
               <router-link :to="`/report/betrecord/?member=${member.username}&status=lose`">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
             <td class="text-right">
@@ -470,7 +472,7 @@ export default {
             mode: 'normal',
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 start: date[element][0],
                 end: date[element][1]
             })),
@@ -624,7 +626,7 @@ export default {
                 this.batchBanLoading = true
                 batchBanMember(this.query.last_login_ip).then(data => {
                     $.notify({
-                        message: this.$t('action.batch_ban') + this.$t('status.success')
+                        message: this.$t('system.batch_ban') + this.$t('status.success')
                     })
                     this.refresh()
                     this.batchBanLoading = false

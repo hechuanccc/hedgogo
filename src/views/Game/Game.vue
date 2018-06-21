@@ -2,8 +2,8 @@
   <div>
     <div class="row">
         <div class="pull-right m-r">
-            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</button>
+            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('dic.cancel') }}</button>
         </div>
     </div>
     <div class="box" v-if="!loading">
@@ -11,13 +11,13 @@
           <thead>
           <tr>
             <th v-show="!mode"></th>
-            <th width="15%">{{$t('game_manage.name')}}</th>
+            <th width="15%">{{$t('dic.game')}}</th>
             <th width="7%"></th>
-            <th class="text-center">{{$t('game_manage.holiday_start_time')}}</th>
-            <th class="text-center">{{$t('game_manage.holiday_end_time')}}</th>
-            <th class="text-center">{{$t('game_manage.enabled_status')}}</th>
-            <th class="text-center">{{$t('game_manage.closed_status')}}</th>
-            <th class="text-center">{{$t('game_manage.operating')}}</th>
+            <th class="text-center">{{$t('game.holiday_start_at')}}</th>
+            <th class="text-center">{{$t('game.holiday_end_at')}}</th>
+            <th class="text-center">{{$t('system.enabled_status')}}</th>
+            <th class="text-center">{{$t('game.closed_status')}}</th>
+            <th class="text-center">{{$t('dic.operate')}}</th>
           </tr>
           </thead>
           <draggable
@@ -66,38 +66,44 @@
                 <i class="fa fa-times"></i>
               </a>
             </td>
-            <td>{{game.holidates.schedule_open | datetimeFilter}}</td>
-            <td>{{game.holidates.schedule_close | datetimeFilter}}</td>
+            <td>
+                <span v-if="game.holidates.schedule_open">{{game.holidates.schedule_open | moment('YYYY-MM-DD HH:mm:ss') }}</span>
+                <span v-else>{{ $t('system.no_setting') }}</span>
+            </td>
+            <td>
+                <span v-if="game.holidates.schedule_close">{{game.holidates.schedule_close | moment('YYYY-MM-DD HH:mm:ss') }}</span>
+                <span v-else>{{ $t('system.no_setting') }}</span>
+            </td>
             <td>
               <div :class="game.to_display ? 'text-success': 'text-danger'">
-                {{game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
+                {{game.to_display ? $t('status.active') : $t('status.disabled')}}
               </div>
             </td>
             <td>
-                <span class="text-success" v-if="game.status === 1">{{ $t('game_manage.openning') }}</span>
-                <span class="text-danger" v-else>{{ game.status === 0 ? $t('game_manage.closed') : $t('game_manage.holiday') }}</span>
+                <span class="text-success" v-if="game.status === 1">{{ $t('game.open') }}</span>
+                <span class="text-danger" v-else>{{ game.status === 0 ? $t('game.closed') : $t('game.holiday') }}</span>
             </td>
             <td class="text-center">
               <span class="text-muted p-l-xs" v-if="game.status === 2">
-                  {{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
+                  {{!game.to_display ? $t('status.active') : $t('status.disabled')}}
               </span>
               <a
                 class="p-l-xs"
                 @click="toggleEnable(index)"
                 v-show="updateGameStatusPermission"
                 v-else
-              >{{!game.to_display ? $t('game_manage.enabled') : $t('game_manage.disabled')}}
+              >{{!game.to_display ? $t('status.active') : $t('status.disabled')}}
               </a>
               <span class="text-muted p-l-xs" v-if="game.status === 2">
-                  {{ $t('game_manage.holiday') }}
+                  {{ $t('game.holiday') }}
               </span>
               <a
                 class="p-l-xs"
                 @click="toggleClose(index)"
                 v-else-if="updateGameStatusPermission"
-              >{{!game.status ? $t('game_manage.openning') : $t('game_manage.closed')}}
+              >{{!game.status ? $t('game.open') : $t('game.closed')}}
               </a>
-              <a class="p-l-xs" @click="showModal(index)">{{$t('game_manage.setting')}}</a>
+              <a class="p-l-xs" @click="showModal(index)">{{$t('dic.set')}}</a>
             </td>
           </tr>
           </draggable>
@@ -105,20 +111,20 @@
     </div>
     <p v-else class="text-center">
         <i class="fa fa-spin fa-spinner"></i>
-        <b>{{ $t('common.loading') }}...</b>
+        <b>{{ $t('system.loading') }}</b>
     </p>
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span>{{ modal.display_name }}- {{ $t('game_manage.setting') }}</span>
+                    <span>{{ modal.display_name }}- {{ $t('dic.set') }}</span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal">×
                     </button>
                 </div>
                 <div class="modal-body m-r m-l">
                     <div class="row m-b" v-if="updateGameStatusPermission">
-                        <span>{{ $t('game_manage.setting_holiday') }}</span>
+                        <span>{{ $t('game.set_holiday') }}</span>
                     </div>
                     <div class="row m-b m-l" v-if="updateGameStatusPermission">
                         <div class="col-xs-8">
@@ -133,12 +139,12 @@
                             </date-picker>
                         </div>
                         <div class="col-xs-2 col-xs-offset-2 text-right">
-                            <button type="button" class="btn btn-sm blue" @click="updateTime">{{$t('action.update')}}</button>
+                            <button type="button" class="btn btn-sm blue" @click="updateTime">{{$t('dic.update')}}</button>
                         </div>
                     </div>
                     <div class="row"></div>
                     <div class="row m-t m-b">
-                        <span>{{ $t('game_manage.setting_icon') }}</span>
+                        <span>{{ $t('game.set_icon') }}</span>
                     </div>
                     <div class="row m-b m-l">
                         <div class="col-xs-5 text-center" v-if="modal.icon">
@@ -146,14 +152,14 @@
                         </div>
                         <div class="col-xs-5 text-center" v-else>
                             <div id="circle">
-                                <span>{{ $t('game_manage.no_setting_icon') }}</span>
+                                <span>{{ $t('game.no_set_icon') }}</span>
                             </div>
                         </div>
                         <div class="col-xs-5 inline-form-control m-t-lg" v-if="$root.permissions.includes('update_game_icon')">
                             <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'icon')" required>
                         </div>
                         <div class="col-xs-2 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
-                            <button type="button" class="btn btn-sm blue" @click="updateImage('icon')">{{$t('action.update')}}</button>
+                            <button type="button" class="btn btn-sm blue" @click="updateImage('icon')">{{$t('dic.update')}}</button>
                         </div>
                     </div>
                     <div class="row m-l m-r">
@@ -161,7 +167,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="hideModal">{{$t('staff.close')}}</button>
+                    <button type="button" class="btn btn-default" @click="hideModal">{{$t('dic.close')}}</button>
                 </div>
             </div>
         </div>
@@ -304,10 +310,16 @@ export default {
                 }
             }).then(data => {
                 this.$set(this.queryset, this.modal.index, data)
-                this.modal.msg = this.$t('game_manage.modify_success')
+                this.modal.msg = this.$t('system_msg.action_object_status', {
+                    action: this.$t('dic.update'),
+                    status: this.$t('status.success')
+                })
                 this.$refs.alertMsg.trigger('success', 3)
             }, error => {
-                this.modal.msg = this.$t('game_manage.modify_fail') + error
+                this.modal.msg = this.$t('system_msg.action_object_status', {
+                    action: this.$t('dic.update'),
+                    status: this.$t('status.failed')
+                }) + error
                 this.$refs.alertMsg.trigger('danger')
             })
         },
@@ -332,14 +344,20 @@ export default {
                     data: formData
                 }).then(() => {
                     this.getGameList()
-                    this.modal.msg = this.$t('game_manage.modify_success')
+                    this.modal.msg = this.$t('system_msg.action_object_status', {
+                        action: this.$t('dic.update'),
+                        status: this.$t('status.success')
+                    })
                     this.$refs.alertMsg.trigger('success', 3)
                 }, error => {
-                    this.modal.msg = this.$t('game_manage.modify_fail') + error
+                    this.modal.msg = this.$t('system_msg.action_object_status', {
+                        action: this.$t('dic.update'),
+                        status: this.$t('status.failed')
+                    }) + error
                     this.$refs.alertMsg.trigger('danger')
                 })
             } else {
-                this.modal.msg = attr === 'icon' ? this.$t('game_manage.no_setting_icon') : this.$t('game_manage.no_setting_icon_background')
+                this.modal.msg = this.$t('game.no_set_icon')
                 this.$refs.alertMsg.trigger('warning', 3)
             }
         },
@@ -353,7 +371,10 @@ export default {
                     }))
                 }).then(data => {
                     $.notify({
-                        message: this.$t('game_manage.modify_success')
+                        message: this.$t('system_msg.action_object_status', {
+                            action: this.$t('dic.update'),
+                            status: this.$t('status.success')
+                        })
                     })
                 }, error => {
                     $.notify({
@@ -389,7 +410,7 @@ export default {
                     display_name: data.display_name
                 })
                 $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
+                    message: this.$t('dic.update') + this.$t('status.success')
                 })
                 this.$delete(this.editNameLoading, id)
                 this.cancelEditName(id)
@@ -402,15 +423,6 @@ export default {
         },
         cancelEditName (id) {
             this.$delete(this.editNameList, id)
-        }
-    },
-    filters: {
-        datetimeFilter (value) {
-            if (!value) {
-                return Vue.t('game_manage.no_setting')
-            } else {
-                return Vue.moment(value).format('YYYY-MM-DD HH:mm')
-            }
         }
     },
     components: {

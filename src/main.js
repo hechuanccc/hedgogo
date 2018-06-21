@@ -41,6 +41,11 @@ Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(Notifications)
 
+const i18n = new VueI18n({
+    locale: 'cn', // Vue.config.lang,
+    messages: locales
+})
+
 // if we set xhr.withCredentials = true, all xhr request will send with credential cookies
 // for example (session_id, access_token, csrf_token), but not all the browser supports
 // especially mobile browser
@@ -66,10 +71,6 @@ axios.interceptors.response.use(response => {
     }
 }, () => {
     return Promise.reject(Vue.config.lang === 'cn' ? '服务异常，请稍后再试' : 'An error occured. Please try again later.')
-})
-
-Object.keys(locales).forEach(lang => {
-    Vue.locale(lang, locales[lang])
 })
 
 router.beforeEach((to, from, next) => {
@@ -102,6 +103,7 @@ sync(store, router)
 const app = new Vue({
     router,
     store,
+    i18n,
     ...App
 }).$mount('#app')
 

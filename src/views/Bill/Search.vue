@@ -8,12 +8,12 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('action.download_report') }}
+                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
             </span>
         </a>
         <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('action.download_report') }}
+            {{ $t('system.download_report') }}
             <i class="fa fa-download"></i>
         </span>
     </div>
@@ -24,7 +24,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
-                    >{{ $t('common.date') }}
+                    >{{ $t('dic.date') }}
                     </label>
                     <date-picker
                         width='244'
@@ -33,7 +33,7 @@
                         :shortcuts="shortcuts"
                         type="date"
                         v-model="created_at"
-                        format="yyyy-MM-dd"
+                        format='yyyy-MM-dd'
                         range
                     />
                 </div>
@@ -41,7 +41,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': transaction_type}"
-                    >{{ $t('bill.transaction_type') }}
+                    >{{ $t('finance.transaction_type') }}
                     </label>
                     <selector-transaction-type
                         style="display: block;"
@@ -54,14 +54,14 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': status}"
-                    >{{ $t('common.status') }}
+                    >{{ $t('dic.status') }}
                     </label>
                     <select
                         class="form-control w-sm c-select"
                         style="display: block;"
                         v-model="status"
                     >
-                        <option value="">{{ $t('common.please_select') }}</option>
+                        <option value="">{{ $t('system.please_select') }}</option>
                         <option value="1">{{ $t('status.success') }}</option>
                         <option value="2">{{ $t('status.failed') }}</option>
                         <option value="3">{{ $t('status.ongoing') }}</option>
@@ -74,7 +74,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': !$route.query.member && query.member_level}"
-                    >{{ $t('member.level') }}
+                    >{{ $t('dic.member_level') }}
                     </label>
                     <selector-member-level
                         style="display: block;"
@@ -88,7 +88,7 @@
                         class="form-control-label p-b-0"
                         :class="{'text-blue': !$route.query.member && query.member_q
                         }"
-                    >{{ $t('common.member') }}
+                    >{{ $t('dic.member') }}
                     </label>
                     <input
                         v-model="query.member"
@@ -99,7 +99,7 @@
                     <input
                         v-model="query.member_q"
                         class="form-control w-sm"
-                        :placeholder="$t('common.member')"
+                        :placeholder="$t('dic.member')"
                         @input="search"
                         v-else
                     />
@@ -109,7 +109,7 @@
                         class="form-control-label p-b-0"
                         :class="{'text-blue': !$route.query.member && query.agent_q
                         }"
-                    >{{ $t('common.agent') }}
+                    >{{ $t('dic.agent') }}
                     </label>
                     <input
                         v-model="query.agent"
@@ -120,7 +120,7 @@
                     <input
                         v-model="query.agent_q"
                         class="form-control w-sm"
-                        :placeholder="$t('common.agent')"
+                        :placeholder="$t('dic.agent')"
                         @input="search"
                         v-else
                     />
@@ -129,7 +129,7 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.amount_lte || query.amount_gte}"
-                    >{{ $t('common.amount') }}
+                    >{{ $t('dic.amount') }}
                     </label>
                     <div style="display: block;">
                         <input
@@ -137,7 +137,7 @@
                             v-model="query.amount_gte"
                             class="form-control inline w-sm"
                             :max="query.amount_lte"
-                            :placeholder="$t('common.min_amount')"
+                            :placeholder="$t('misc.min_amount')"
                             @input="search"
                         />
                         <span>
@@ -148,7 +148,7 @@
                             v-model="query.amount_lte"
                             class="form-control inline w-sm"
                             :min="query.amount_gte"
-                            :placeholder="$t('common.max_amount')"
+                            :placeholder="$t('misc.max_amount')"
                             @input="search"
                         />
                     </div>
@@ -157,13 +157,13 @@
                     <label
                         class="form-control-label p-b-0"
                         :class="{'text-blue': query.transaction_id}"
-                    >{{ $t('bill.order_id') }}
+                    >{{ $t('finance.order_id') }}
                     </label>
                     <input
                         style="width: 244px;"
                         v-model.trim="query.transaction_id"
                         class="form-control w-sm"
-                        :placeholder="$t('bill.order_id')"
+                        :placeholder="$t('finance.order_id')"
                         @input="search"
                     />
                 </div>
@@ -175,7 +175,7 @@
                 >
                     <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                     <i v-else class="fa fa-trash-o"></i> 
-                    {{ $t('action.reset_condition') }}
+                    {{ $t('system.reset_condition') }}
                 </button>
             </div>
         </div>
@@ -183,15 +183,15 @@
     <table class="box table table-striped">
         <thead>
             <tr>
-                <th>{{ $t('common.member') }}</th>
-                <th>{{ $t('common.agent') }}</th>
-                <th class="text-center">{{ $t('bill.created_at') }}</th>
-                <th class="text-center">{{ $t('bill.transaction_type') }}</th>
-                <th class="text-center">{{ $t('common.balance_before') }}</th>
-                <th class="text-center">{{ $t('common.balance_after') }}</th>
-                <th class="text-center">{{ $t('common.amount') }}</th>
-                <th class="text-center">{{ $t('common.status') }}</th>
-                <th class="text-center">{{ $t('bill.order_detail') }}</th>
+                <th>{{ $t('dic.member') }}</th>
+                <th>{{ $t('dic.agent') }}</th>
+                <th class="text-center">{{ $t('time.transaction_at') }}</th>
+                <th class="text-center">{{ $t('finance.transaction_type') }}</th>
+                <th class="text-center">{{ $t('user.balance_before') }}</th>
+                <th class="text-center">{{ $t('user.balance_after') }}</th>
+                <th class="text-center">{{ $t('dic.amount') }}</th>
+                <th class="text-center">{{ $t('dic.status') }}</th>
+                <th class="text-center">{{ $t('finance.order_detail') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -200,7 +200,7 @@
                     <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
                 </td>
                 <td><router-link :to="'/agent/' + t.member.agent.id ">{{ t.member.agent.username }}</router-link></td>
-                <td class="text-center">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                <td class="text-center">{{ t.created_at | moment('YYYY-MM-DD HH:mm:ss') }}</td>
                 <td class="text-center">{{ t.transaction_type.display_name }}</td>
                 <td class="text-right">
                     <span v-if="t.balance_before || t.balance_before === 0">{{ t.balance_before | currency('￥') }}</span>
@@ -215,7 +215,7 @@
                     <transaction-status :transaction="t"></transaction-status>
                 </td>
                 <td class="text-center">
-                    <router-link :to="'/transaction/' + t.id">{{ $t('action.view') }}</router-link>
+                    <router-link :to="'/transaction/' + t.id">{{ $t('dic.view') }}</router-link>
                 </td>
             </tr>
         </tbody>
@@ -270,7 +270,7 @@
                 export_query: '',
                 today: date.today[0],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                    text: this.$t(`common.${element}`),
+                    text: this.$t(`time.${element}`),
                     start: date[element][0],
                     end: date[element][1]
                 })),

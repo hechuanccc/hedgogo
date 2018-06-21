@@ -9,15 +9,15 @@
                 type="text"
                 class="form-control p-x b-a rounded"
                 v-model.trim="username_q"
-                :placeholder="$t('common.search_member')"
+                :placeholder="$t('user.search_member')"
                 @focus="focusSearchMemberInput()"
                 @blur="blurSearchMemberInput()"
                 @change="search"
             >
             <div class="search-results" v-if="isShowResults">
                 <div class="search-items">
-                    <div class="search-item" v-show="searchLoading" disabled><span class="m-l"><i class="fa fa-spin fa-spinner"></i> {{$t('common.loading')}}</span></div>
-                    <div class="search-item" v-show="searchNoRecord" disabled><span class="m-l">{{$t('common.no_record')}}</span></div>
+                    <div class="search-item" v-show="searchLoading" disabled><span class="m-l"><i class="fa fa-spin fa-spinner"></i> {{$t('system.loading')}}</span></div>
+                    <div class="search-item" v-show="searchNoRecord" disabled><span class="m-l">{{$t('system.no_record')}}</span></div>
                     <div class="search-item" v-for="r in results" :key="r.id" @click="routerLinkTo(r.id)">
                         <span>{{r.username}}</span>
                     </div>

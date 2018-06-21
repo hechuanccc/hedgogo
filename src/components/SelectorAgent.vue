@@ -6,7 +6,7 @@
         :disabled="!disabled"
         v-if="!loading && agents.length"
     >
-        <option value="">{{ $t('common.please_select') }}</option>
+        <option value="">{{ $t('system.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"
@@ -26,7 +26,7 @@
         class="p-b-xs p-t-sm form-control w-sm inline"
         v-else-if="!agents.length"
     >
-        {{ $t('common.no_record') }}
+        {{ $t('system.no_record') }}
     </span>
 </template>
 

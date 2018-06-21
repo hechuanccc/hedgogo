@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/online_payer">{{$t('nav.setting_online_payer')}}</router-link></li>
+                <li class="active"><router-link to="/online_payer">{{$t('title.online_payer_management')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.name')}}</label>
+                                <label class="label-width">{{$t('title.online_payer')}}</label>
                                 <div class="inline-form-control">
                                     <input
                                         class="form-control w-lg"
@@ -22,7 +22,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width">{{$t('online_payer.withdraw_gateway')}}</label>
+                                <label  class="label-width">{{$t('finance.withdraw_gateway')}}</label>
                                 <div class="inline-form-control">
                                     <select
                                         class="form-control w-lg c-select"
@@ -47,13 +47,13 @@
                                         class="p-b-xs p-t-sm form-control w-lg"
                                         v-else-if="!withdrawGateway.length"
                                     >
-                                        {{ $t('common.no_record') }}
+                                        {{ $t('system.no_record') }}
                                     </span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.merchant_num')}}</label>
+                                <label class="label-width">{{$t('finance.merchant_id')}}</label>
                                 <div class="inline-form-control">
                                     <input
                                         class="form-control w-lg"
@@ -64,7 +64,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.certificate')}}</label>
+                                <label class="label-width">{{$t('finance.certificate')}}</label>
                                 <div class="inline-form-control">
                                     <input
                                         class="form-control w-lg"
@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="label-width v-t">{{$t('online_payer.public_key')}}</label>
+                                <label class="label-width v-t">{{$t('finance.public_key')}}</label>
                                 <div class="inline-form-control">
                                     <textarea
                                         class="form-control"
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="label-width v-t">{{$t('online_payer.private_key')}}</label>
+                                <label class="label-width v-t">{{$t('finance.public_key')}}</label>
                                 <div class="inline-form-control">
                                     <textarea
                                         class="form-control"
@@ -99,7 +99,7 @@
                             </div>
 
                              <div class="form-group">
-                                <label class="label-width">{{$t('online_payer.board_url')}}</label>
+                                <label class="label-width">{{$t('finance.board_url')}}</label>
                                 <div class="inline-form-control">
                                     <input
                                         class="form-control w-lg"
@@ -114,7 +114,7 @@
                         type="submit"
                         class="md-btn w-sm blue"
                     >
-                        <span v-if="!submitLoading">{{$t('common.save')}}</span>
+                        <span v-if="!submitLoading">{{$t('dic.submit')}}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </form>
@@ -179,7 +179,7 @@ export default {
             }).then(data => {
                 if (data) {
                     $.notify({
-                        message: `${this.payer.id ? this.$t('action.update') : this.$t('action.create')}${this.$t('status.success')}`
+                        message: `${this.payer.id ? this.$t('dic.update') : this.$t('dic.create')}${this.$t('status.success')}`
                     })
                     this.$router.push(`/online_payer/${data.id}`)
                 }
