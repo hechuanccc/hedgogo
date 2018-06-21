@@ -91,7 +91,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getUser, updateUser, deleteStaff } from '../../service'
 export default {
     data () {
         return {
@@ -106,16 +106,24 @@ export default {
     },
     methods: {
         getStaff (id) {
-            this.$http.get(api.user.staff + id + '/?opt_expand=group,permissions').then(data => {
+            getUser('staff', {
+                id,
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
                 this.staff = data
             })
         },
         toggleStatus () {
             this.statusUpdated = false
-            this.$http.put(api.user.staff + this.staff.id + '/', {
-                username: this.staff.username,
-                group: this.staff.user_group.id,
-                status: this.staff.status ^ 1
+            updateUser('staff', {
+                id: this.staff.id,
+                data: {
+                    username: this.staff.username,
+                    group: this.staff.user_group.id,
+                    status: this.staff.status ^ 1
+                }
             }).then(data => {
                 this.staff.status = data.status
                 this.statusUpdated = true
@@ -132,7 +140,7 @@ export default {
                     return
                 }
             }
-            this.$http.delete(api.user.staff + id + '/').then(() => {
+            deleteStaff(id).then(() => {
                 this.$router.push('/staff')
             })
         }

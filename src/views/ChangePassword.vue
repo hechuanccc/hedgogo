@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import api from '../api'
+    import { changePassword } from '../service'
     export default {
         data () {
             return {
@@ -59,7 +59,7 @@
         },
         methods: {
             onSubmit (e) {
-                this.$http.post(api.identity.changePassword, this.user).then(data => {
+                changePassword(this.user).then(data => {
                     this.errorMsg = ''
                     this.success = true
                 }, error => {

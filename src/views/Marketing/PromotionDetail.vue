@@ -91,7 +91,7 @@
 </template>
 
 <script>
-    import api from '../../api'
+    import { getSetting, deleteSetting } from '../../service'
     export default {
         data () {
             return {
@@ -107,14 +107,17 @@
         beforeRouteEnter (to, from, next) {
             next(vm => {
                 let id = to.params.promotionId
-                if (id) {
-                    vm.getPromotion(id)
-                }
+                id && vm.getPromotion(id)
             })
         },
         methods: {
             getPromotion (id) {
-                this.$http.get(api.setting.promotion + id + '/?opt_expand=level').then(data => {
+                getSetting('promotion', {
+                    id,
+                    params: {
+                        opt_expand: 'level'
+                    }
+                }).then(data => {
                     this.promotion = data
                 })
             },
@@ -126,7 +129,7 @@
                         return
                     }
                 }
-                this.$http.delete(api.setting.promotion + id + '/').then(() => {
+                deleteSetting('promotion', id).then(() => {
                     this.$router.push('/promotion')
                 })
             }

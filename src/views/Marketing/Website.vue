@@ -198,7 +198,12 @@
 
 <script>
 import draggable from 'vuedraggable'
-import api from '../../api'
+import {
+    getSetting,
+    updateSetting,
+    deleteSetting,
+    updateWebsite
+} from '../../service'
 import $ from '../../utils/util'
 
 export default {
@@ -239,7 +244,7 @@ export default {
     },
     methods: {
         getWebsite () {
-            this.$http.get(api.setting.website).then(data => {
+            getSetting('website').then(data => {
                 this.setWebsiteData(data)
             })
         },
@@ -252,7 +257,7 @@ export default {
             })
         },
         getWebsiteDescription () {
-            this.$http.get(api.setting.websiteDescription).then(data => {
+            getSetting('websiteDescription').then(data => {
                 this.boxes = data.map(box => Object({
                     ...box,
                     mode: 0,
@@ -263,13 +268,13 @@ export default {
             })
         },
         getWebsiteAgreement () {
-            this.$http.get(api.setting.websiteAgreement).then(data => {
+            getSetting('websiteAgreement').then(data => {
                 this.websiteAgreement = data.description
             })
         },
         createBox () {
             this.boxes = [...this.boxes, {}]
-            this.$http.post(api.setting.websiteDescription).then(data => {
+            updateSetting('websiteDescription').then(data => {
                 let box = Object({
                     ...data,
                     mode: 1,
@@ -289,7 +294,7 @@ export default {
             })
         },
         deleteBox (id, index) {
-            this.$http.delete(api.setting.websiteDescription + id + '/').then(() => {
+            deleteSetting('websiteDescription', id).then(() => {
                 if (this.boxes[index].mode) {
                     delete this.boxResults[id]
                     delete this.initialBoxes[id]
@@ -336,7 +341,10 @@ export default {
                 }
             }
             box.loading = true
-            this.$http.put(api.setting.websiteDescription + id + '/', formData).then(data => {
+            updateSetting('websiteDescription', {
+                id,
+                data: formData
+            }).then(data => {
                 this.updateBoxSuccess(box.id, index)
                 this.$set(this.boxes, index, {
                     ...this.boxes[index],
@@ -367,10 +375,12 @@ export default {
             }, 2000)
         },
         updateRank () {
-            this.$http.post(api.setting.websiteDescriptionRank, this.boxes.map((box, index) => Object({
-                id: box.id,
-                rank: index + 1
-            }))).then(() => {
+            updateSetting('websiteDescriptionRank', {
+                data: this.boxes.map((box, index) => Object({
+                    id: box.id,
+                    rank: index + 1
+                }))
+            }).then(() => {
                 this.boxes.forEach((box, index) => {
                     this.boxes[index].rank = index + 1
                 })
@@ -386,7 +396,8 @@ export default {
         },
         updateWebsiteAgreement () {
             this.websiteAgreementLoading = true
-            this.$http.put(api.setting.websiteAgreement, {
+
+            updateWebsite('websiteAgreement', {
                 description: this.websiteAgreement
             }).then(data => {
                 this.websiteAgreement = data.description
@@ -463,7 +474,7 @@ export default {
                     formData.append(snakeCase, '')
                 }
             })
-            this.$http.put(api.setting.website, formData).then(data => {
+            updateWebsite('website', formData).then(data => {
                 this.setWebsiteData(data)
                 $.notify({
                     message: this.$t('action.update') + this.$t('status.success')

@@ -57,7 +57,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getSetting, deleteSetting } from '../../service'
 export default {
     data () {
         return {
@@ -73,13 +73,18 @@ export default {
     },
     methods: {
         getRole (id) {
-            this.$http.get(api.setting.role + id + '/?opt_expand=group,permissions').then(data => {
+            getSetting('role', {
+                id,
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
                 this.role = data
             })
         },
         deleteRole (id) {
             if (window.confirm(this.$t('role_manage.sure_delete_role'))) {
-                this.$http.delete(api.setting.role + id + '/').then(() => {
+                deleteSetting('role', id).then(() => {
                     this.$router.push('/roles')
                 })
             }

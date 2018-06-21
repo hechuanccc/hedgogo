@@ -4,6 +4,7 @@
         v-model="myTransactionType"
         :required="req"
         :disabled="disabled"
+        v-if="!loading"
     >
         <option value="">{{ $t('common.please_select') }}</option>
         <option
@@ -15,10 +16,16 @@
             {{ e.display_name }}
         </option>
     </select>
+    <span
+        class="p-b-xs p-t-sm w-sm form-control"
+        v-else
+    >
+        <i class="fa fa-spin fa-spinner"></i>
+    </span>
 </template>
 
 <script>
-import api from '../api'
+import { getTransactionType } from '../service'
 export default {
     props: {
         req: {
@@ -42,7 +49,8 @@ export default {
         return {
             transactionTypes: [],
             myTransactionType: this.transactionType,
-            default_opt_fields: 'id,display_name'
+            default_opt_fields: 'id,display_name',
+            loading: true
         }
     },
     watch: {
@@ -54,12 +62,15 @@ export default {
         }
     },
     created () {
-        this.$http.get(`${api.transaction.type}?opt_fields=${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`).then(data => {
+        getTransactionType({
+            opt_fields: `${this.opt_fields && this.opt_fields + ','}${this.attribute && this.attribute + ','}${this.default_opt_fields}`
+        }).then(data => {
             if (this.displayList.length > 0) {
                 this.transactionTypes = data.filter(e => this.displayList.includes(e.code))
             } else {
                 this.transactionTypes = data
             }
+            this.loading = false
         })
         this.myTransactionType = this.transactionType
     }

@@ -31,21 +31,29 @@
         </table>
     </div>
     <div class="row m-b-lg">
-        <pulling :queryset="queryset" :api="roleApi" :query="query" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
+        <pulling
+            :queryset="queryset"
+            :api="url.setting.role"
+            :query="query"
+            ref="pulling"
+            @query-data="queryData"
+            @query-param="queryParam"
+        />
     </div>
   </div>
 </template>
 <script>
 import Vue from 'vue'
-import api from '../../api'
+import url from '../../service/url'
+import { deleteSetting } from '../../service'
 import Pulling from '../../components/Pulling'
 
 export default {
     data () {
         return {
-            roleApi: api.setting.role,
             queryset: [],
-            query: {}
+            query: {},
+            url
         }
     },
     created () {
@@ -56,7 +64,7 @@ export default {
     methods: {
         deleteRole (id) {
             if (window.confirm(this.$t('role_manage.sure_delete_role'))) {
-                this.$http.delete(api.setting.role + id + '/').then(() => {
+                deleteSetting('role', id).then(() => {
                     this.$refs.pulling.rebase()
                 })
             }

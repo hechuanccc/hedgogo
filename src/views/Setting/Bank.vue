@@ -36,7 +36,7 @@
 </div>
 </template>
 <script>
-import api from '../../api'
+import { getSetting, updateSetting } from '../../service'
 import $ from '../../utils/util'
 
 export default {
@@ -52,7 +52,7 @@ export default {
     },
     methods: {
         getBanks () {
-            this.$http.get(api.setting.bank).then(data => {
+            getSetting('bank').then(data => {
                 for (let index = 0; index < data.length; index += 2) {
                     data[index] && this.bankList[0].push(data[index])
                     data[index + 1] && this.bankList[1].push(data[index + 1])
@@ -62,8 +62,11 @@ export default {
         },
         toggleStatus (bank = {}) {
             this.$set(this.toggleLoading, bank.id, true)
-            bank.id && this.$http.put(`${api.setting.bank}${bank.id}/`, {
-                status: bank.status ^ 1
+            bank.id && updateSetting('bank', {
+                id: bank.id,
+                data: {
+                    status: bank.status ^ 1
+                }
             }).then(data => {
                 bank.status = data.status
                 $.notify({

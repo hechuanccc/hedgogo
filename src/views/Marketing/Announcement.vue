@@ -132,14 +132,17 @@
 
 <script>
 import draggable from 'vuedraggable'
-import api from '../../api'
+import {
+    getSetting,
+    updateSetting,
+    deleteSetting
+} from '../../service'
 
 export default {
     data () {
         return {
             mode: true,
             showAll: false,
-            api: api.setting.announcement,
             queryset: [],
             announcement: {
                 platform: '2',
@@ -164,7 +167,7 @@ export default {
             return this.queryset.findIndex(element => element.id === id)
         },
         getAnnouncements () {
-            this.$http.get(this.api).then(data => {
+            getSetting('announcement').then(data => {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
             })
         },
@@ -174,7 +177,8 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(`${this.api}${id}/`).then(() => {
+
+            deleteSetting('announcement', id).then(() => {
                 let index = this.findIndexOfQueryset(id)
                 this.queryset.splice(index, 1)
                 if (this.id === id) {
@@ -203,29 +207,28 @@ export default {
             this.showAll = true
         },
         onSubmit () {
-            if (this.id) {
-                this.$http.put(`${this.api}${this.id}/`, this.announcement).then(data => {
-                    this.showAll = false
-                    this.id = ''
-                    let index = this.findIndexOfQueryset(data.id)
-                    this.queryset[index] = Object.assign({}, data)
-                    this.showSuccessMsg()
-                }, error => {
-                    this.errorMsg = error
-                })
-            } else {
-                this.$http.post(this.api, this.announcement).then(data => {
-                    this.showAll = false
-                    this.queryset = [data, ...this.queryset]
-                    this.showSuccessMsg()
-                }, error => {
-                    this.errorMsg = error
-                })
-            }
+            updateSetting('announcement', {
+                id: this.id,
+                data: this.announcement
+            }).then(data => {
+                this.showAll = false
+                this.id = ''
+                let index = this.findIndexOfQueryset(data.id)
+                if (index !== -1) {
+                    this.queryset.splice(index, 1)
+                }
+                this.queryset = [data, ...this.queryset]
+                this.showSuccessMsg()
+            }, error => {
+                this.errorMsg = error
+            })
         },
         toggleStatus (announcement) {
-            this.$http.put(`${this.api}${announcement.id}/`, {
-                'status': announcement.status === 0 ? 1 : 0
+            updateSetting('announcement', {
+                id: announcement.id,
+                data: {
+                    status: announcement.status ^ 1
+                }
             }).then(data => {
                 announcement.status = data.status
                 if (data.id === this.id) {
@@ -237,10 +240,12 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(`${this.api}rank/`, this.queryset.map((element, index) => Object({
-                    id: element.id,
-                    rank: index + 1
-                }))).then(data => {
+                updateSetting('announcementRank', {
+                    data: this.queryset.map((element, index) => Object({
+                        id: element.id,
+                        rank: index + 1
+                    }))
+                }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })

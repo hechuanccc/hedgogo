@@ -511,7 +511,7 @@
 </div>
 </template>
 <script>
-import api from '../../api.js'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import AlertMsg from '../../components/AlertMsg'
 import DatePicker from 'vue2-datepicker'
@@ -519,7 +519,10 @@ import Vue from 'vue'
 import _ from 'lodash'
 import date from '../../utils/date'
 import $ from '../../utils/util'
+import { getGame, updateGame } from '../../service'
 
+const historyURL = url.game.history
+const schedURL = url.game.schedule
 const dateFormat = 'YYYY-MM-DD'
 
 export default {
@@ -531,7 +534,7 @@ export default {
                 start: date[element][0],
                 end: date[element][1]
             })),
-            mode: 0,
+            mode: '',
             game: {
                 id: '',
                 display_name: '',
@@ -616,7 +619,7 @@ export default {
         if (this.mode) {
             // abnormal message
             this.extra = `game=${gameid}&date=${this.today}&abnormal=True`
-            this.pullingApi = api.game.schedule
+            this.pullingApi = schedURL
         } else {
             // game result in detail
             if (this.timeRangeGames.includes(this.game.code)) {
@@ -624,7 +627,7 @@ export default {
             } else {
                 this.extra = `date=${this.today}`
             }
-            this.pullingApi = api.game.history
+            this.pullingApi = historyURL
             this.getRetreatedSchedules(gameid)
         }
         this.$nextTick(() => {
@@ -645,11 +648,11 @@ export default {
         mode (newMode) {
             if (this.mode) {
                 this.extra = `game=${this.game.id}&date=${this.today}&abnormal=True`
-                this.pullingApi = api.game.schedule
+                this.pullingApi = schedURL
                 clearInterval(this.timingRetreatShced)
             } else {
                 this.extra = `date=${this.today}`
-                this.pullingApi = api.game.history
+                this.pullingApi = historyURL
                 this.timingRetreatShced = setInterval(() => {
                     this.getRetreatedSchedules()
                 }, 5 * 1000)
@@ -660,7 +663,7 @@ export default {
             })
         },
         queryCondition (condition) {
-            this.pullingApi = api.game.history
+            this.pullingApi = historyURL
             this.queryset = []
             clearInterval(this.timingPulling)
             this.extra = `game_code=${this.game.code}${condition}`
@@ -678,13 +681,17 @@ export default {
     methods: {
         getRetreatedSchedules (gameid) {
             gameid = gameid || this.game.id
-            this.$http.get(`${api.game.schedule}?game=${gameid}&ongoing=True`)
-            .then(data => {
+            getGame('schedule', {
+                params: {
+                    game: gameid,
+                    ongoing: 'True'
+                }
+            }).then(data => {
                 this.retreatedScheds = data
             })
         },
-        getGameInfo (gameid) {
-            this.$http.get(api.game.list + gameid).then(data => {
+        getGameInfo (id) {
+            getGame('list', { id }).then(data => {
                 this.game = data
             })
         },
@@ -706,12 +713,12 @@ export default {
                     inform: false,
                     retreat: false
                 })
-                this.$nextTick(() => {
-                    this.$refs.alertMsg.trigger('warning')
-                })
+                // this.$nextTick(() => {
+                //     this.$refs.alertMsg.trigger('warning')
+                // })
             } else if (modalMode === 'retreat_sched') {
                 let id = sched.status === 'open' ? sched.id : sched.schedule_id
-                id && this.$http.get(`${api.game.scheduleRetreat}${id}/`).then(data => {
+                id && getGame('scheduleRetreat', { id }).then(data => {
                     let memberAmount = data.bets_info && data.bets_info
                         .map(b => [b.win_bets.settled_amount, b.lose_bets.settled_amount])
                         .reduce((acc, cur) => [cur[0] + acc[0], cur[1] + acc[1]])
@@ -738,8 +745,11 @@ export default {
         },
         retreatSchedule () {
             this.modal.loading = true
-            this.$http.put(`${api.game.scheduleRetreat}${this.modal.id}/`, {
-                status: this.modal.status === 'close' ? 'force_cancelled' : 'cancelled'
+            updateGame('scheduleRetreat', {
+                id: this.modal.id,
+                data: {
+                    status: this.modal.status === 'close' ? 'force_cancelled' : 'cancelled'
+                }
             }).then(data => {
                 this.modal.msg = this.$t('game_history.schedule_cancelled')
                 this.$refs.alertMsg.trigger('success', 1, true)
@@ -753,10 +763,13 @@ export default {
         },
         noDrawHandler () {
             this.modal.loading = true
-            this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.game_schedule}/`, {
-                status: 'no_draw',
-                inform: this.modal.inform ? 1 : 0,
-                retreat: this.modal.retreat ? 1 : 0
+            updateGame('scheduleRetreat', {
+                id: this.modal.scheduleResult.game_schedul,
+                data: {
+                    status: 'no_draw',
+                    inform: this.modal.inform ? 1 : 0,
+                    retreat: this.modal.retreat ? 1 : 0
+                }
             }).then(data => {
                 this.modal.msg = this.$t('common.setting') + this.$t('status.success')
                 this.$refs.alertMsg.trigger('success', 1, true)
@@ -779,7 +792,9 @@ export default {
                     this.modal.scheduleResult.result_str = result
                 }
                 this.modal.loading = true
-                this.$http.post(api.game.result, this.modal.scheduleResult).then(() => {
+                updateGame('result', {
+                    data: this.modal.scheduleResult
+                }).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.$refs.pulling.rebase()

@@ -10,7 +10,7 @@
                 </button>
                 <div class="dropdown-menu text-left text-sm" v-show="$root.dropdown">
                     <router-link  class="dropdown-item" to="/change_password/">{{$t('nav.change_password')}}</router-link>
-                    <a class="dropdown-item" @click="logout">{{$t('action.logout')}}</a>
+                    <a class="dropdown-item" @click="logoutHandler">{{$t('action.logout')}}</a>
                 </div>
             </div>
             <div class="collapse navbar-toggleable-sm" id="collapse">
@@ -73,7 +73,7 @@
     </div>
 </template>
 <script>
-    import api from '../api'
+    import { logout, getSystemCount } from '../service'
     import VueCookie from 'vue-cookie'
     import INotify from 'title-notify'
     import axios from 'axios'
@@ -82,7 +82,6 @@
     export default {
         data () {
             return {
-                memberApi: api.user.member,
                 query: {
                     username_q: ''
                 },
@@ -190,8 +189,8 @@
                 })
                 this.iNotify.setTitle(true)
             },
-            logout () {
-                this.$http.post(api.identity.logout).then(data => {
+            logoutHandler () {
+                logout().then(data => {
                     this.$root.dropdown = false
                     this.loading = true
                     this.$router.push('/login')
@@ -238,7 +237,7 @@
 
                     let userCookie = VueCookie.get('access_token')
                     if (authenticationCookie === userCookie) {
-                        this.$http.get(api.count).then(data => {
+                        getSystemCount().then(data => {
                             if (data) {
                                 this.remit_count = data.remit_count
                                 this.withdraw_count = data.withdraw_count

@@ -123,7 +123,7 @@
 </template>
 
 <script>
-    import api from '../../api'
+    import { getMerchant } from '../../service'
     import $ from '../../utils/util'
     export default {
         data () {
@@ -166,11 +166,15 @@
         },
         methods: {
             getPayee (id) {
-                this.$http.get(api.transaction.onlinePayee + id + '/?opt_expand=1').then(data => {
-                    let keys = Object.keys(data)
-                    for (let i = 0; i < keys.length; i++) {
-                        this[keys[i]] = data[keys[i]]
+                getMerchant('onlinePayee', {
+                    id,
+                    params: {
+                        opt_expand: 1
                     }
+                }).then(data => {
+                    Object.keys(data).forEach(key => {
+                        this[key] = data[key]
+                    })
                 })
             },
             'htmlTransform': $.htmlTransform

@@ -405,7 +405,7 @@
 import VueTypeahead from 'vue-typeahead'
 import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
-import api from '../../api'
+import { getUser, updateUser, getSetting } from '../../service'
 import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
@@ -463,9 +463,6 @@ export default {
             let bankinfo = this.agent.bank
             return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
         },
-        src () {
-            return api.user.agent + '?opt_fields=username,id,&username_q=' + this.query + '&level=' + this.parentLevel
-        },
         parentLevel () {
             let level = parseInt(this.agent.level) - parseInt(1)
             level = level <= 0 ? 1 : level
@@ -515,11 +512,6 @@ export default {
         bank (val) {
             this.agent.bank.bank = val
         },
-        getLevels () {
-            this.$http.get(api.setting.memberLevel).then(data => {
-                this.levels = data
-            })
-        },
         onSubmit (e) {
             let agent = Object.assign({}, this.agent)
             if (agent.birthday) {
@@ -537,43 +529,27 @@ export default {
             } else {
                 this.formError = ''
             }
-            if (agent.id) {
-                for (let x in agent) {
-                    if (!agent[x]) {
-                        delete agent[x]
-                    }
+            for (let x in agent) {
+                if (!agent[x]) {
+                    delete agent[x]
                 }
-                this.$http.put(api.user.agentApplication + agent.id + '/', agent).then(() => {
-                    this.$router.push('/agent/applications/')
-                }, error => {
-                    this.errorMsg = error
-                })
-            } else {
-                this.$http.post(api.user.agentApplication, agent).then(() => {
-                    this.$router.push('/agent/applications/')
-                }, error => {
-                    this.errorMsg = error
-                })
             }
-        },
-        checkAgent () {
-            if (this.query !== '') {
-                this.$http.get(api.user.agent + '?opt_fields=username,id&username=' + this.query + '&level=' + this.parentLevel).then(data => {
-                    if (data.length === 1) {
-                        this.agentValid = true
-                        this.agent.parent_agent = data[0].id
-                    } else {
-                        this.agentValid = false
-                        this.agent.parent_agent = ''
-                    }
-                })
-            } else {
-                this.agentValid = false
-                this.agent.parent_agent = ''
-            }
+            updateUser('agentApplication', {
+                id: agent.id,
+                data: agent
+            }).then(() => {
+                this.$router.push('/agent/applications/')
+            }, error => {
+                this.errorMsg = error
+            })
         },
         getAgent (id) {
-            this.$http.get(api.user.agentApplication + id + '/?opt_expand=detail').then(data => {
+            getUser('agentApplication', {
+                id,
+                params: {
+                    opt_expand: 'detail'
+                }
+            }).then(data => {
                 if (!data.bank) {
                     data.bank = {
                         bank: ''
@@ -601,7 +577,7 @@ export default {
             })
         },
         getAgentLevels () {
-            this.$http.get(api.setting.agentLevel).then(data => {
+            getSetting('agentLevel').then(data => {
                 this.agentLevels = data
                 this.agentLevelLoading = false
             }, error => {
@@ -613,15 +589,6 @@ export default {
         },
         agentLevelSelect (val) {
             this.agent.level = val
-        },
-        reset () {
-            this.checkAgent()
-        },
-        // for agent field typeahead
-        onHit (item) {
-            this.items = []
-            this.query = item.username
-            this.checkAgent()
         },
         // for agent field typeahead
         prepareResponseData (data) {

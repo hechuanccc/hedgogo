@@ -156,26 +156,6 @@
                             <button type="button" class="btn btn-sm blue" @click="updateImage('icon')">{{$t('action.update')}}</button>
                         </div>
                     </div>
-                    <div class="row"></div>
-                    <div class="row m-t m-b">
-                        <span>{{ $t('game_manage.setting_icon_background') }}</span>
-                    </div>
-                    <div class="row m-b m-l">
-                        <div class="col-xs-5 text-center" v-if="modal.bg_icon">
-                            <img :src="modal.bg_icon" width="180" height="180">
-                        </div>
-                        <div class="col-xs-5 text-center" v-else>
-                            <div class="m-l-sm" style="width:180px; height:180px; background:lightgrey; line-height:180px;">
-                                {{ $t('game_manage.no_setting_icon_background') }}
-                            </div>
-                        </div>
-                        <div class="col-xs-5 inline-form-control" style="margin-top:75px;" v-if="$root.permissions.includes('update_game_icon_background')">
-                            <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'bg_icon')" required>
-                        </div>
-                        <div class="col-xs-2 text-right" style="margin-top:75px;" v-if="$root.permissions.includes('update_game_icon_background')">
-                            <button type="button" class="btn btn-sm blue" @click="updateImage('bg_icon')">{{$t('action.update')}}</button>
-                        </div>
-                    </div>
                     <div class="row m-l m-r">
                         <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
                     </div>
@@ -191,7 +171,7 @@
 <script>
 import DatePicker from 'vue2-datepicker'
 import draggable from 'vuedraggable'
-import api from '../../api'
+import { getGame, updateGame } from '../../service'
 import AlertMsg from '../../components/AlertMsg'
 import $ from '../../utils/util'
 
@@ -201,7 +181,6 @@ export default {
     data () {
         return {
             mode: 1,
-            api: api.game.list,
             query: {},
             queryset: [],
             initialQueryset: [],
@@ -239,19 +218,22 @@ export default {
     },
     methods: {
         getGameList () {
-            this.$http.get(this.api).then(data => {
+            getGame('list').then(data => {
                 this.queryset = data
                 this.loading = false
             })
         },
         toggleEnable (index) {
             const game = this.queryset[index]
-            const params = {
+            const data = {
                 display_name: game.display_name,
                 code: game.code,
                 to_display: !game.to_display
             }
-            this.$http.put(this.api + game.id + '/', params).then(data => {
+            updateGame('list', {
+                id: game.id,
+                data
+            }).then(data => {
                 this.$set(this.queryset, index, data)
             }, error => {
                 $.notify({
@@ -262,12 +244,15 @@ export default {
         },
         toggleClose (index) {
             const game = this.queryset[index]
-            const params = {
+            const data = {
                 display_name: game.display_name,
                 code: game.code,
                 status: game.status === 0 ? 1 : 0
             }
-            this.$http.put(this.api + game.id + '/', params).then(data => {
+            updateGame('list', {
+                id: game.id,
+                data
+            }).then(data => {
                 this.$set(this.queryset, index, data)
             }, error => {
                 $.notify({
@@ -310,10 +295,13 @@ export default {
             } else {
                 endDate = ''
             }
-            this.$http.put(this.api + this.modal.id + '/', {
-                display_name: this.modal.display_name,
-                start_date: startDate,
-                end_date: endDate
+            updateGame('list', {
+                id: this.modal.id,
+                data: {
+                    display_name: this.modal.display_name,
+                    start_date: startDate,
+                    end_date: endDate
+                }
             }).then(data => {
                 this.$set(this.queryset, this.modal.index, data)
                 this.modal.msg = this.$t('game_manage.modify_success')
@@ -338,8 +326,11 @@ export default {
                 formData.append('display_name', this.modal.iconResult.display_name)
                 formData.append('code', this.modal.iconResult.code)
                 formData.append(attr, this.modal.iconResult[attr])
-                this.$http.put(this.api + this.modal.id + '/', formData)
-                .then(() => {
+
+                updateGame('list', {
+                    id: this.modal.id,
+                    data: formData
+                }).then(() => {
                     this.getGameList()
                     this.modal.msg = this.$t('game_manage.modify_success')
                     this.$refs.alertMsg.trigger('success', 3)
@@ -354,11 +345,13 @@ export default {
         },
         changeMode () {
             if (!this.mode) {
-                this.$http.post(this.api, this.queryset.map((game, index) => Object({
-                    id: game.id,
-                    display_name: game.display_name,
-                    rank: index + 1
-                }))).then(data => {
+                updateGame('list', {
+                    data: this.queryset.map((game, index) => Object({
+                        id: game.id,
+                        display_name: game.display_name,
+                        rank: index + 1
+                    }))
+                }).then(data => {
                     $.notify({
                         message: this.$t('game_manage.modify_success')
                     })
@@ -386,8 +379,11 @@ export default {
         },
         submitName (id, name) {
             this.$set(this.editNameLoading, id, true)
-            this.$http.put(`${this.api}${id}/`, {
-                display_name: name
+            updateGame('list', {
+                id,
+                data: {
+                    display_name: name
+                }
             }).then(data => {
                 Object.assign(this.queryset.find(game => game.id === id), {
                     display_name: data.display_name

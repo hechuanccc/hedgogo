@@ -119,9 +119,8 @@
         </div>
     </div>
 </template>
-
 <script>
-    import api from '../../api'
+    import { getMerchant, deleteMerchant } from '../../service'
     export default {
         data () {
             return {
@@ -131,24 +130,20 @@
                 errorMsg: ''
             }
         },
-        // route: {
-        //     data (transition) {
-        //         let id = transition.to.params.payeeId
-        //         this.getPayee(id)
-        //         this.remitTransactions()
-        //     }
-        // },
         beforeRouteEnter (to, from, next) {
             next(vm => {
                 let id = to.params.payeeId
-                if (id) {
-                    vm.getPayee(id)
-                }
+                id && vm.getPayee(id)
             })
         },
         methods: {
             getPayee (id) {
-                this.$http.get(api.transaction.remitPayee + id + '/?opt_expand=1').then(data => {
+                getMerchant('remitPayee', {
+                    id,
+                    params: {
+                        opt_expand: 1
+                    }
+                }).then(data => {
                     this.remit_payee = data
                 })
             },
@@ -161,7 +156,7 @@
                     }
                 }
                 if (!this.isActive) {
-                    this.$http.delete(api.transaction.remitPayee + id + '/').then(() => {
+                    deleteMerchant('remitPayee', id).then(() => {
                         this.$router.push('/remit_payee')
                     })
                 } else {

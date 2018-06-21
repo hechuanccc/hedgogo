@@ -67,7 +67,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getMerchant, updateMerchant } from '../../service'
 export default {
     data () {
         return {
@@ -76,7 +76,13 @@ export default {
         }
     },
     created () {
-        this.getPayees()
+        getMerchant('onlinePayee', {
+            params: {
+                opt_expand: 1
+            }
+        }).then(data => {
+            this.onlinePayee = data.sort((a, b) => a.id - b.id)
+        })
     },
     watch: {
         '$route.query.status' (newStatus) {
@@ -98,15 +104,13 @@ export default {
     },
     methods: {
         toggleStatus (payee) {
-            this.$http.put(api.transaction.onlinePayee + payee.id + '/', {
-                'status': payee.status === 0 ? 1 : 0
+            updateMerchant('onlinePayee', {
+                id: payee.id,
+                data: {
+                    status: payee.status ^ 1
+                }
             }).then(data => {
                 payee.status = data.status
-            })
-        },
-        getPayees () {
-            this.$http.get(api.transaction.onlinePayee + '?opt_expand=1').then(data => {
-                this.onlinePayee = data.sort((a, b) => a.id - b.id)
             })
         }
     }

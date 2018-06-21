@@ -202,7 +202,7 @@
 </div>
 </template>
 <script>
-import api from '../../api.js'
+import { getGame, updateGame } from '../../service'
 import AlertMsg from '../../components/AlertMsg'
 import Vue from 'vue'
 import $ from '../../utils/util'
@@ -247,15 +247,19 @@ export default{
     methods: {
         getPeriods () {
             this.isLatest = false
-            this.$http.get(`${api.game.draw}?abnormal=5`).then(data => {
+            getGame('draw', {
+                params: {
+                    abnormal: 5
+                }
+            }).then(data => {
                 this.gameDraw = data
                 this.isLatest = true
                 this.loading = false
             })
         },
-        getGameInfo (gameId) {
+        getGameInfo (id) {
             return new Promise((resolve, reject) => {
-                this.$http.get(`${api.game.list}${gameId}/`).then(data => {
+                getGame('list', { id }).then(data => {
                     resolve(data)
                 })
             })
@@ -303,7 +307,9 @@ export default{
                     this.modal.scheduleResult.result_str = result
                 }
                 this.modal.loading = true
-                this.$http.post(api.game.result, this.modal.scheduleResult).then(() => {
+                updateGame('result', {
+                    data: this.modal.scheduleResult
+                }).then(() => {
                     this.modal.msg = this.$t('game_history.manual_draw_success')
                     this.$refs.alertMsg.trigger('success', 1, true)
                     this.getPeriods()
@@ -320,10 +326,13 @@ export default{
         },
         noDrawHandler () {
             this.modal.loading = true
-            this.$http.put(`${api.game.scheduleRetreat}${this.modal.scheduleResult.game_schedule}/`, {
-                status: 'no_draw',
-                inform: this.modal.inform ? 1 : 0,
-                retreat: this.modal.retreat ? 1 : 0
+            updateGame('scheduleRetreat', {
+                id: this.modal.scheduleResult.game_schedule,
+                data: {
+                    status: 'no_draw',
+                    inform: this.modal.inform ? 1 : 0,
+                    retreat: this.modal.retreat ? 1 : 0
+                }
             }).then(data => {
                 this.modal.msg = this.$t('common.setting') + this.$t('status.success')
                 this.$refs.alertMsg.trigger('success', 1, true)

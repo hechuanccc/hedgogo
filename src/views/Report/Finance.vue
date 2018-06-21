@@ -165,7 +165,7 @@
     </div>
     <div class="row m-b-lg">
       <pulling
-        :api="api"
+        :api="url"
         :queryset="queryset"
         :query="query"
         :extra="extra"
@@ -189,7 +189,7 @@ import DatePicker from 'vue2-datepicker'
 import _ from 'lodash'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import SelectorTransactionType from '../../components/SelectorTransactionType'
 import SelectorGame from '../../components/SelectorGame'
@@ -204,7 +204,7 @@ export default {
         return {
             agentReport: false,
             date: ['', ''],
-            api: api.report.finance,
+            url: url.report.finance,
             queryset: [],
             query: {},
             extra: '',
@@ -260,7 +260,7 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}${this.agentReport ? `&agent=${this.agent}` : ''}&opt_expand=download_report&${this.export_query}`
+            this.href = `${this.url}?token=${VueCookie.get('access_token')}${this.agentReport ? `&agent=${this.agent}` : ''}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
         },
         isQueryEmpty () {

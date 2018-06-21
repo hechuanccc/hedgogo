@@ -147,7 +147,7 @@
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
 import random from 'lodash/random'
-import api from '../../api'
+import { getSetting, updateSetting } from '../../service'
 import Tinymce from '../../components/Tinymce'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import $ from '../../utils/util'
@@ -157,7 +157,6 @@ export default {
     data () {
         return {
             id: '',
-            api: api.setting.promotion,
             promotion: {
                 id: '',
                 image: '',
@@ -189,7 +188,7 @@ export default {
     },
     methods: {
         getPromotions () {
-            this.$http.get(this.api).then(data => {
+            getSetting('promotion').then(data => {
                 this.promotions = data
                 if (this.$route.params.promotionId) {
                     this.id = this.$route.params.promotionId
@@ -244,9 +243,8 @@ export default {
             formData.append('mobile_description', this.promotion.mobile_description)
 
             this.loading = true
-            this.$http({
-                method: this.id ? 'put' : 'post',
-                url: `${this.api}${this.id && this.id + '/'}`,
+            updateSetting('promotion', {
+                id: this.id,
                 data: formData
             }).then(data => {
                 $.notify({

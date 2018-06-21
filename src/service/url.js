@@ -1,6 +1,6 @@
 'use strict'
 
-const config = require('../config')
+const config = require('../../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 const host = env.HOST.replace(/"/g, '')
 const chatHost = env.CHATHOST.replace(/"/g, '') + '/v1/'
@@ -52,18 +52,18 @@ export default {
     setting: {
         agentLevel: managePrefix + 'agent_level/',
         announcement: managePrefix + 'announcement/',
-        advpermission: managePrefix + 'advpermissions/',
+        announcementRank: managePrefix + 'announcement/rank/',
         bank: managePrefix + 'bank/',
         banner: managePrefix + 'banner/',
+        bannerRank: managePrefix + 'banner/rank/',
         chatroom: chatHost + 'manage/room/',
         commission: managePrefix + 'commissionsetting/',
-        envelope: managePrefix + 'envelope/',
-        envelopeConfig: managePrefix + 'envelope/settings/',
         memberLevel: managePrefix + 'level/',
         message: managePrefix + 'message/',
         parameter: managePrefix + 'global-preferences/',
         permission: managePrefix + 'permissions/',
         promotion: managePrefix + 'promotion/',
+        promotionRank: managePrefix + 'promotion/rank/',
         robot: chatHost + 'robot/',
         role: managePrefix + 'group/',
         website: managePrefix + 'website/home-page/',

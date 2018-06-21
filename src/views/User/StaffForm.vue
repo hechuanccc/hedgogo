@@ -105,7 +105,8 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getUser, updateUser, getSetting } from '../../service'
+
 export default {
     data () {
         return {
@@ -153,22 +154,22 @@ export default {
                     password: this.staff.password
                 })
             }
-            if (this.staff.id) {
-                this.$http.put(api.user.staff + this.staff.id + '/', staffResult).then(data => {
-                    this.$router.push('/staff/' + data.id)
-                }, error => {
-                    this.errorMsg = error
-                })
-            } else {
-                this.$http.post(api.user.staff, staffResult).then(data => {
-                    this.$router.push('/staff/' + data.id)
-                }, error => {
-                    this.errorMsg = error
-                })
-            }
+            updateUser('staff', {
+                id: this.staff.id,
+                data: staffResult
+            }).then(data => {
+                this.$router.push('/staff/' + data.id)
+            }, error => {
+                this.errorMsg = error
+            })
         },
         getStaff (id) {
-            this.$http.get(api.user.staff + id + '/?opt_expand=group,permissions').then(data => {
+            getUser('staff', {
+                id,
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
                 this.staff = Object.assign(this.staff, data)
                 if (data.user_group) {
                     this.permissions = data.user_group.permissions
@@ -180,7 +181,11 @@ export default {
             })
         },
         getRoles () {
-            this.$http.get(api.setting.role + '?opt_expand=group,permissions').then(data => {
+            getSetting('role', {
+                params: {
+                    opt_expand: 'group,permissions'
+                }
+            }).then(data => {
                 this.roles = data
             }, error => {
                 this.errorMsg = error

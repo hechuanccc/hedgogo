@@ -257,7 +257,7 @@
                 class="md-btn w-xs btn blue"
                 style="position: absolute; bottom: 0;"
                 type="button"
-                @click="batchBan"
+                @click="batchBanHandler"
               >
                 <span v-if="!batchBanLoading">{{ $t('member.confirm_ban') }}</span>
                 <i class="fa fa-spin fa-spinner" v-else></i>
@@ -436,7 +436,7 @@
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
-        :api="memberApi"
+        :api="url.user.member"
         ref="pulling"
       />
     </div>
@@ -447,7 +447,8 @@
 import DatePicker from 'vue2-datepicker'
 import VueCookie from 'vue-cookie'
 import _ from 'lodash'
-import api from '../../api'
+import url from '../../service/url'
+import { batchBanMember } from '../../service'
 import Pulling from '../../components/Pulling'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import date from '../../utils/date'
@@ -456,7 +457,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            memberApi: api.user.member,
+            url,
             queryset: [],
             query: {},
             created_at: ['', ''],
@@ -536,7 +537,7 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${api.report.member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
+            this.href = `${url.report.member}?token=${VueCookie.get('access_token')}&report_flag=true&${this.export_query}`
             return this.queryset.length
         },
         isQueryEmpty () {
@@ -618,12 +619,10 @@ export default {
             })
             this.search()
         },
-        batchBan () {
+        batchBanHandler () {
             if (!this.batchBanLoading && this.query.last_login_ip && this.queryset.length) {
                 this.batchBanLoading = true
-                this.$http.put(api.user.batchBan, {
-                    ip: this.query.last_login_ip
-                }).then(data => {
+                batchBanMember(this.query.last_login_ip).then(data => {
                     $.notify({
                         message: this.$t('action.batch_ban') + this.$t('status.success')
                     })

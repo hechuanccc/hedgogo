@@ -125,7 +125,7 @@
     </div>
     <div class="row m-b-lg">
       <pulling
-        :api="api"
+        :api="url"
         :queryset="queryset"
         :query="query"
         :extra="extra"
@@ -141,7 +141,7 @@
 
 <script>
 import DatePicker from 'vue2-datepicker'
-import api from '../../api'
+import url from '../../service/url'
 import SelectorAgentLevel from '../../components/SelectorAgentLevel'
 import Pulling from '../../components/Pulling'
 import VueCookie from 'vue-cookie'
@@ -154,8 +154,8 @@ const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
+            url: url.report.commission,
             date: ['', ''],
-            api: api.report.commission,
             queryset: [],
             query: {},
             extra: '',
@@ -198,7 +198,7 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${this.api}?token=${VueCookie.get('access_token')}&opt_expand=download_report&${this.export_query}`
+            this.href = `${this.url}?token=${VueCookie.get('access_token')}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
         },
         isQueryEmpty () {

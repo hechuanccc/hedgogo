@@ -177,7 +177,7 @@
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
 import date from '../../utils/date'
-import api from '../../api'
+import { getReport } from '../../service'
 import $ from '../../utils/util'
 
 const format = 'YYYY-MM-DD'
@@ -352,7 +352,7 @@ export default {
             this[`${type}List`] = []
             type === 'game' && (this.categoryData = this.playData = {}, this.categoryList = this.playList = [])
             type === 'category' && (this.playData = {}, this.playList = [])
-            this.$http.get(api.report.game, {
+            getReport('game', {
                 params: {
                     ...((type === 'category' || type === 'play') && { game_code: game }),
                     ...(type === 'play' && { category }),

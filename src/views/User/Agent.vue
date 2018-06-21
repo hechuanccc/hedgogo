@@ -267,7 +267,7 @@
         <div class="row m-b-lg">
             <pulling
                 :queryset="queryset"
-                :api="agentApi"
+                :api="url.user.agent"
                 :query="query"
                 :optexpand="optexpand"
                 ref="pulling"
@@ -281,7 +281,7 @@
 <script>
 import DatePicker from 'vue2-datepicker'
 import _ from 'lodash'
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import SelectorCommission from '../../components/SelectorCommission'
 import date from '../../utils/date'
@@ -290,7 +290,7 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            agentApi: api.user.agent,
+            url,
             queryset: [],
             query: {},
             created_at: ['', ''],

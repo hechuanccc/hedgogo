@@ -115,7 +115,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getGame, updateGame } from '../../service'
 export default {
     data () {
         return {
@@ -152,11 +152,9 @@ export default {
         })
     },
     methods: {
-        getPlaySet (id) {
-            this.$http.get(api.game.playset, {
-                params: {
-                    game: id
-                }
+        getPlaySet (game) {
+            getGame('playset', {
+                params: { game }
             }).then(data => {
                 this.playsets = data
             })
@@ -166,7 +164,12 @@ export default {
         },
         updatePlayset () {
             if (this.updatedPlaysets.length > 0) {
-                this.$http.post(`${api.game.playset}?game=${this.game.id}`, this.updatedPlaysets).then(data => {
+                updateGame('playset', {
+                    data: this.updatedPlaysets,
+                    params: {
+                        game: this.game.id
+                    }
+                }).then(data => {
                     this.successMsg = `${this.$t('game_manage.modify_success')}`
                     setTimeout(() => {
                         this.successMsg = ''
