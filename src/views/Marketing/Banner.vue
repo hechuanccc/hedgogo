@@ -124,14 +124,17 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import api from '../../api'
+import {
+    getSetting,
+    updateSetting,
+    deleteSetting
+} from '../../service'
 import $ from '../../utils/util'
 
 export default {
     data () {
         return {
             mode: true,
-            api: api.setting.banner,
             queryset: [],
             banner: {
                 platform: 2,
@@ -156,7 +159,7 @@ export default {
     methods: {
         getBanners () {
             this.loading = true
-            this.$http.get(this.api).then(data => {
+            getSetting('banner').then(data => {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
                 this.loading = false
             }, error => {
@@ -170,7 +173,7 @@ export default {
             }))) {
                 return
             }
-            this.$http.delete(this.api + id + '/').then(() => {
+            deleteSetting('banner', id).then(() => {
                 $.notify({
                     message: this.$t('action.delete') + this.$t('status.success')
                 })
@@ -183,7 +186,9 @@ export default {
             let formData = new window.FormData()
             formData.append('image', this.banner.image)
             formData.append('platform', this.banner.platform)
-            this.$http.post(this.api, formData).then(data => {
+            updateSetting('banner', {
+                data: formData
+            }).then(data => {
                 this.queryset = []
                 this.loading = true
                 this.getBanners()
@@ -213,8 +218,11 @@ export default {
             }
         },
         toggleStatus (banner) {
-            this.$http.put(this.api + banner.id + '/', {
-                'status': banner.status === 0 ? 1 : 0
+            updateSetting('banner', {
+                id: banner.id,
+                data: {
+                    status: banner.status ^ 1
+                }
             }).then(data => {
                 banner.status = data.status
                 $.notify({
@@ -227,10 +235,12 @@ export default {
         changeMode () {
             if (!this.mode) {
                 this.reorderLoading = true
-                this.$http.post(`${this.api}rank/`, this.queryset.map((element, index) => Object({
-                    id: element.id,
-                    rank: index + 1
-                }))).then(data => {
+                updateSetting('bannerRank', {
+                    data: this.queryset.map((element, index) => Object({
+                        id: element.id,
+                        rank: index + 1
+                    }))
+                }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })

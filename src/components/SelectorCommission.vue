@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getSetting } from '../service'
 export default {
     props: ['required', 'commissionsetting', 'default'],
     data () {
@@ -25,8 +25,11 @@ export default {
     },
     created () {
         this.$nextTick(() => {
-            this.$http.get(api.setting.commission + '?opt_fields=id,name')
-            .then(data => {
+            getSetting('commission', {
+                params: {
+                    opt_field: 'id,name'
+                }
+            }).then(data => {
                 this.commissionsettings = data
             })
         })

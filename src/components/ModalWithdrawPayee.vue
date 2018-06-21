@@ -78,7 +78,7 @@
     </div>
 </template>
 <script>
-import api from '../api'
+import { autoWithdraw } from '../service'
 import $ from '../utils/util'
 import SelectorOnlinePayer from '../components/SelectorOnlinePayer'
 
@@ -121,12 +121,15 @@ export default {
         update () {
             if (this.transaction.id && this.transaction.member.id && this.selectedPayer) {
                 this.modal.loading = true
-                this.$http.put(`${api.transaction.withdraw}${this.transaction.id}/`, {
-                    memo: this.transaction.memo,
-                    member: this.transaction.member.id,
-                    online_payer: this.selectedPayer,
-                    transaction_type: parseInt(this.transaction.transaction_type.id),
-                    status: 1
+                autoWithdraw({
+                    id: this.transaction.id,
+                    data: {
+                        memo: this.transaction.memo,
+                        member: this.transaction.member.id,
+                        transaction_type: parseInt(this.transaction.transaction_type.id),
+                        status: 1,
+                        online_payer: this.selectedPayer
+                    }
                 }).then(data => {
                     $.notify({
                         message: this.$t('bill.withdraw_payee') + this.$t('status.success')

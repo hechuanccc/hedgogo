@@ -38,7 +38,7 @@
 <script>
 import LineChart from '../components/LineChart'
 import BarChart from '../components/BarChart'
-import api from '../api'
+import { getReport } from '../service'
 export default {
     data () {
         return {
@@ -83,7 +83,7 @@ export default {
     },
     methods: {
         getOverviewData () {
-            this.$http.get(api.report.general).then(data => {
+            getReport('general').then(data => {
                 this.fillData(data)
                 this.loading = false
             })

@@ -229,7 +229,7 @@
             @query-data="queryData"
             @query-param="queryParam"
             @export-query="exportQuery"
-            :api="api"
+            :api="url.transaction.bill"
             ref="pulling"
         />
     </div>
@@ -237,7 +237,7 @@
 </template>
 
 <script>
-    import api from '../../api'
+    import url from '../../service/url'
     import DatePicker from 'vue2-datepicker'
     import TransactionStatus from '../../components/TransactionStatus'
     import SelectorTransactionType from '../../components/SelectorTransactionType'
@@ -253,7 +253,6 @@
             return {
                 queryset: [],
                 created_at: ['', ''],
-                api: api.transaction.bill,
                 order_id: '',
                 query: {},
                 member: {
@@ -275,7 +274,8 @@
                     start: date[element][0],
                     end: date[element][1]
                 })),
-                loading: true
+                loading: true,
+                url
             }
         },
         watch: {
@@ -306,7 +306,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report.transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                this.href = `${url.report.transaction}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {

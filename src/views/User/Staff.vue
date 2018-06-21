@@ -41,18 +41,26 @@
             </table>
         </div>
         <div class="row m-b-lg">
-            <pulling :queryset="queryset" :api="staffApi" :query="query" :optexpand="optexpand" ref="pulling" @query-data="queryData" @query-param="queryParam"></pulling>
+            <pulling
+                :queryset="queryset"
+                :api="url.user.staff"
+                :query="query"
+                :optexpand="optexpand"
+                ref="pulling"
+                @query-data="queryData"
+                @query-param="queryParam"
+            />
         </div>
     </div>
 </template>
 <script>
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 
 export default {
     data () {
         return {
-            staffApi: api.user.staff,
+            url,
             query: {},
             queryset: [],
             optexpand: 'group'

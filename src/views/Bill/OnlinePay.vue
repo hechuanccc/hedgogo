@@ -261,7 +261,7 @@
         </table>
         <div class="row m-b-lg">
             <pulling
-                :api="api"
+                :api="url.transaction.bill"
                 :extra="'transaction_type=online_pay&report_flag=true'"
                 :queryset="queryset"
                 :query="query"
@@ -277,7 +277,7 @@
     </div>
 </template>
 <script>
-    import api from '../../api'
+    import url from '../../service/url'
     import DatePicker from 'vue2-datepicker'
     import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
@@ -291,7 +291,6 @@
         data () {
             return {
                 queryset: [],
-                api: api.transaction.bill,
                 query: {},
                 created_at: ['', ''],
                 updated_at: ['', ''],
@@ -309,7 +308,8 @@
                 autoTogglePopup: false,
                 period: 30 * 1000,
                 timer: undefined,
-                loading: true
+                loading: true,
+                url
             }
         },
         watch: {
@@ -376,7 +376,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report.onlinepay}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
+                this.href = `${url.report.onlinepay}?token=${VueCookie.get('access_token')}&report=online_pay&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {

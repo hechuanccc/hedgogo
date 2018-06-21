@@ -79,7 +79,7 @@
 </template>
 
 <script>
-    import api from '../../api'
+    import { getMerchant } from '../../service'
     import $ from '../../utils/util'
     export default {
         data () {
@@ -106,7 +106,7 @@
         },
         methods: {
             getPayer (id) {
-                this.$http.get(`${api.transaction.onlinePayer}${id}/`).then(data => {
+                getMerchant('onlinePayer', { id }).then(data => {
                     for (let key in data) {
                         this[key] = data[key]
                     }

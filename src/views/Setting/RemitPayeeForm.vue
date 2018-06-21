@@ -92,7 +92,7 @@
                                 <div class="form-group">
                                     <label  class="label-width">{{$t('common.qr_code')}}</label>
                                     <div class="inline-form-control" v-if="hasImage">
-                                        <img :src="qr_code_image" width="112" class="qr-code">
+                                        <img :src="payee.qr_code" width="112" class="qr-code">
                                     </div>
                                     <div v-else>
                                         {{ $t('action.no_setting')}}
@@ -133,10 +133,9 @@
             </div>
         </div>
     </div>
-
 </template>
 <script>
-    import api from '../../api'
+    import { getMerchant, updateMerchant } from '../../service'
     import SelectorBank from '../../components/SelectorBank'
     import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 
@@ -154,10 +153,10 @@
                     client_description: '',
                     level: [],
                     qr_code: [],
+                    qr_code_file: '',
                     remit_type: '1'
                 },
                 showLevelError: false,
-                qr_code_image: '',
                 hasImage: false,
                 errorMsg: ''
             }
@@ -173,9 +172,7 @@
         beforeRouteEnter (to, from, next) {
             next(vm => {
                 let id = to.params.payeeId
-                if (id) {
-                    vm.getPayee(id)
-                }
+                id && vm.getPayee(id)
             })
         },
         methods: {
@@ -192,7 +189,7 @@
                     formData.append('client_description', this.payee.client_description)
                     formData.append('level', this.payee.level)
                     if (this.hasImage) {
-                        formData.append('qr_code', this.payee.qr_code)
+                        formData.append('qr_code', this.payee.qr_code_file)
                     }
                 } else {
                     formData.append('remit_type', this.payee.remit_type)
@@ -205,23 +202,19 @@
                     formData.append('level', this.payee.level)
                 }
 
-                if (this.payee.id) {
-                    this.$http.put(api.transaction.remitPayee + this.payee.id + '/', formData).then(data => {
-                        this.$router.push('/remit_payee/' + data.id)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                } else {
-                    this.$http.post(api.transaction.remitPayee, formData).then(data => {
-                        this.$router.push('/remit_payee/' + data.id)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                }
+                updateMerchant('remitPayee', {
+                    id: this.payee.id,
+                    data: formData
+                }).then(data => {
+                    this.$router.push('/remit_payee/' + data.id)
+                }, error => {
+                    this.errorMsg = error
+                })
             },
             getPayee (id) {
-                this.$http.get(api.transaction.remitPayee + id + '/').then(data => {
+                getMerchant('remitPayee', { id }).then(data => {
                     data.remit_type += ''
+                    this.hasImage = !!data.qr_code
                     this.payee = data
                 })
             },
@@ -229,10 +222,10 @@
                 var reader = new FileReader()
 
                 reader.onload = (e) => {
-                    this.qr_code_image = e.target.result
+                    this.payee.qr_code = e.target.result
                 }
                 reader.readAsDataURL(e.target.files[0])
-                this.payee.qr_code = e.target.files[0]
+                this.payee.qr_code_file = e.target.files[0]
                 this.hasImage = true
             },
             levelSelect (val) {

@@ -123,7 +123,7 @@
     </div>
 </template>
 <script>
-import api from '../../api'
+import { getMerchant, updateMerchant } from '../../service'
 import $ from '../../utils/util'
 
 export default {
@@ -173,9 +173,8 @@ export default {
                     data[key] = this.payer[key]
                 }
             })
-            this.$http({
-                method: this.id ? 'put' : 'post',
-                url: `${api.transaction.onlinePayer}${this.id && this.id + '/'}`,
+            updateMerchant('onlinePayer', {
+                id: this.id,
                 data
             }).then(data => {
                 if (data) {
@@ -194,14 +193,14 @@ export default {
             })
         },
         getPayer (id) {
-            this.$http.get(`${api.transaction.onlinePayer}${id}/`).then(data => {
+            getMerchant('onlinePayer', { id }).then(data => {
                 Object.assign(this.payer, data, {
                     withdraw_gateway: data.withdraw_gateway.id
                 })
             })
         },
         getWithdrawGateway () {
-            this.$http.get(api.transaction.withdrawGateway).then(data => {
+            getMerchant('withdrawGateway').then(data => {
                 this.withdrawGateway = data
                 if (this.withdrawGateway.length && !this.$route.params.online_payerId) {
                     this.payer.withdraw_gateway = data[0].id

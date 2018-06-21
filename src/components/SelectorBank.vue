@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getSetting } from '../service'
 export default {
     props: ['bank', 'req', 'showStatus'],
     data () {
@@ -62,7 +62,7 @@ export default {
     },
     created () {
         this.$nextTick(() => {
-            this.$http.get(api.setting.bank).then(data => {
+            getSetting('bank').then(data => {
                 this.showStatus && data.sort((a, b) => b.status - a.status)
                 this.banks = data
                 this.myBank = this.bank

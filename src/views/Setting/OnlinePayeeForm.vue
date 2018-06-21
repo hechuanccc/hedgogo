@@ -27,7 +27,7 @@
                             <label class="label-width">{{$t('setting.type')}}</label>
                             <div class="inline-form-control">
                                 <select class="form-control c-select" v-model="payee.payment_gateway" required>
-                                    <option :value="p.id" v-for="p in paymenttypes">{{p.name}}</option>
+                                    <option :value="p.id" v-for="p in paymentGateways">{{p.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
     </div>
 </template>
 <script>
-    import api from '../../api'
+    import { getMerchant, updateMerchant } from '../../service'
     import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 
     export default {
@@ -168,7 +168,7 @@
                     display_name: ''
                 },
                 errorMsg: '',
-                paymenttypes: []
+                paymentGateways: []
             }
         },
         beforeRouteEnter (to, from, next) {
@@ -177,12 +177,14 @@
                 if (id) {
                     vm.getPayee(id)
                 }
-                vm.getPaymentTypes()
+                getMerchant('paymentGateway').then(data => {
+                    vm.paymentGateways = data
+                })
             })
         },
         computed: {
             disabledDomainURL () {
-                let paymentGateway = this.paymenttypes.find(p => p.id === this.payee.payment_gateway)
+                let paymentGateway = this.paymentGateways.find(p => p.id === this.payee.payment_gateway)
                 if (paymentGateway && !paymentGateway.need_domain_url) {
                     this.payee.domain_url = ''
                 }
@@ -191,27 +193,17 @@
         },
         methods: {
             onSubmit (e) {
-                if (this.payee.id) {
-                    this.$http.put(api.transaction.onlinePayee + this.payee.id + '/', this.payee).then(data => {
-                        this.$router.push('/online_payee/' + data.id)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                } else {
-                    this.$http.post(api.transaction.onlinePayee, this.payee).then(data => {
-                        this.$router.push('/online_payee/' + data.id)
-                    }, error => {
-                        this.errorMsg = error
-                    })
-                }
-            },
-            getPaymentTypes () {
-                this.$http.get(api.transaction.paymentGateway).then(data => {
-                    this.paymenttypes = data
+                updateMerchant('onlinePayee', {
+                    id: this.payee.id,
+                    data: this.payee
+                }).then(data => {
+                    this.$router.push('/online_payee/' + data.id)
+                }, error => {
+                    this.errorMsg = error
                 })
             },
             getPayee (id) {
-                this.$http.get(api.transaction.onlinePayee + id + '/').then(data => {
+                getMerchant('onlinePayee', { id }).then(data => {
                     Object.assign(this.payee, data)
                 })
             },

@@ -35,7 +35,7 @@
 <script>
 import axios from 'axios'
 import $ from '../utils/util'
-import api from '../api'
+import { identity, permission, refresh } from '../service'
 import AsideMenu from '../components/AsideMenu.vue'
 import PageHeader from '../components/Header.vue'
 
@@ -108,7 +108,7 @@ export default {
             if (!this.$cookie.get('access_token')) {
                 return
             }
-            this.$http.get(api.identity.my).then(data => {
+            identity().then(data => {
                 if (data) {
                     this.username = data.username
                     this.userType = data.type
@@ -121,9 +121,7 @@ export default {
             if (!refreshToken) {
                 return
             }
-            this.$http.post(api.identity.refresh, {
-                refresh_token: this.$cookie.get('refresh_token')
-            }).then(data => {
+            refresh({ token: this.$cookie.get('refresh_token') }).then(data => {
                 let d = new Date(data.expires_in)
                 // use access_token to access APIs
                 window.document.cookie = 'access_token=' + data.access_token + ';path=/;expires=' + d.toGMTString()
@@ -133,7 +131,7 @@ export default {
             })
         },
         getPermissions () {
-            this.$http.get(api.identity.permission).then(data => {
+            permission().then(data => {
                 this.permissions = data
                 // permissions must be loaded before we can handle other data
                 // 20180323 Remove refresh mechanism and extend access token expiry.

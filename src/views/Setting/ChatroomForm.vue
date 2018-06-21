@@ -400,7 +400,7 @@
 <script>
 import Draggable from 'vuedraggable'
 import TimePicker from 'vue2-timepicker'
-import api from '../../api'
+import { getSetting, getGame, updateSetting } from '../../service'
 import $ from '../../utils/util'
 import * as defaultAvatar from '../../../static/images/avatar.png'
 import { debounce } from 'lodash'
@@ -464,31 +464,33 @@ export default {
     },
     methods: {
         getChatroom (id = this.id) {
-            if (id) {
-                this.$http.get(`${api.setting.chatroom}${id}/`).then(data => {
-                    this.title = data.title
-                    data.robots && data.robots.forEach(robot => {
-                        robot.day_of_week = this.splitDayOfWeek(robot)
-                    })
-                    data.bulletin && data.bulletin.forEach(bulletin => {
-                        Object.assign(bulletin, {
-                            editing: false,
-                            iniContent: bulletin.content
-                        })
-                    })
-                    Object.assign(this.chatroom, data)
-                    this.loading = false
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
-                    this.loading = false
+            id && getSetting('chatroom', { id }).then(data => {
+                this.title = data.title
+                data.robots && data.robots.forEach(robot => {
+                    robot.day_of_week = this.splitDayOfWeek(robot)
                 })
-            }
+                data.bulletin && data.bulletin.forEach(bulletin => {
+                    Object.assign(bulletin, {
+                        editing: false,
+                        iniContent: bulletin.content
+                    })
+                })
+                Object.assign(this.chatroom, data)
+                this.loading = false
+            }, error => {
+                $.notify({
+                    message: error,
+                    type: 'danger'
+                })
+                this.loading = false
+            })
         },
         getGamesName () {
-            this.$http.get(`${api.game.list}?opt_fields=code,display_name`).then(data => {
+            getGame('list', {
+                params: {
+                    opt_fields: 'code,display_name'
+                }
+            }).then(data => {
                 data.forEach(game => {
                     this.$set(this.gamesMapping, game.code, game.display_name)
                 })
@@ -520,7 +522,10 @@ export default {
             result.status = this.chatroom.status
 
             this[`${category}SubmitLoading`] = true
-            this.$http.put(`${api.setting.chatroom}${this.id}/`, result).then(data => {
+            updateSetting('chatroom', {
+                id: this.id,
+                data: result
+            }).then(data => {
                 if (category === 'bulletin') {
                     this.chatroom.bulletin.forEach(bulletin => {
                         Object.assign(bulletin, {
@@ -600,7 +605,10 @@ export default {
             }
 
             this.modal.loading = true
-            this.$http.put(`${api.setting.robot}${resultRobot.id}/`, result).then(data => {
+            updateSetting('robot', {
+                id: resultRobot.id,
+                data: result
+            }).then(data => {
                 this.$set(this.chatroom.robots, this.chatroom.robots.findIndex(e => e.id === data.id), Object.assign(data, {
                     day_of_week: this.splitDayOfWeek(data)
                 }))

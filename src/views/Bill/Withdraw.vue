@@ -400,7 +400,7 @@
     <div class="row m-b-lg">
         <pulling
             :extra="'transaction_type=withdraw&report_flag=true'"
-            :api="api"
+            :api="url.transaction.bill"
             :queryset="queryset"
             :query="query"
             :total_amount="total_amount"
@@ -414,7 +414,8 @@
 </div>
 </template>
 <script>
-    import api from '../../api'
+    import url from '../../service/url'
+    import { autoWithdraw, updateTransaction } from '../../service'
     import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
     import SelectorMemberLevel from '../../components/SelectorMemberLevel'
@@ -430,7 +431,6 @@
         data () {
             return {
                 queryset: [],
-                api: api.transaction.bill,
                 query: {},
                 href: '',
                 status: '',
@@ -462,7 +462,8 @@
                 withdrawPayeeTransaction: {},
                 withdrawPayee: '',
                 isAutoWithdraw: true,
-                withdrawLoading: {}
+                withdrawLoading: {},
+                url
             }
         },
         watch: {
@@ -521,7 +522,7 @@
         computed: {
             getReport () {
                 this.$refs.pulling.getExportQuery()
-                this.href = `${api.report.withdraw}?token=${VueCookie.get('access_token')}&${this.export_query}`
+                this.href = `${url.report.withdraw}?token=${VueCookie.get('access_token')}&${this.export_query}`
                 return this.queryset.length
             },
             isQueryEmpty () {
@@ -609,12 +610,15 @@
             autoWithdraw (transaction = {}, payer = '') {
                 if (transaction && transaction.id && payer) {
                     this.$set(this.withdrawLoading, transaction.id, true)
-                    this.$http.put(`${api.transaction.withdraw}${transaction.id}/`, {
-                        memo: transaction.memo,
-                        member: transaction.member.id,
-                        online_payer: payer,
-                        transaction_type: parseInt(transaction.transaction_type.id),
-                        status: 1
+                    autoWithdraw({
+                        id: transaction.id,
+                        data: {
+                            memo: transaction.memo,
+                            member: transaction.member.id,
+                            transaction_type: parseInt(transaction.transaction_type.id),
+                            status: 1,
+                            online_payer: payer
+                        }
                     }).then(data => {
                         $.notify({
                             message: this.$t('bill.withdraw_payee') + this.$t('status.success')
@@ -638,11 +642,14 @@
                 transactionType
             }) {
                 this.modal.loading = true
-                this.$http.put(api.transaction.withdraw + transactionId + '/', {
-                    status,
-                    memo,
-                    member,
-                    transaction_type: transactionType
+                updateTransaction('withdraw', {
+                    id: transactionId,
+                    data: {
+                        memo,
+                        member,
+                        transaction_type: transactionType,
+                        status
+                    }
                 }).then(data => {
                     this.$refs.pulling.rebase()
                     $.notify({

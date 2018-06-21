@@ -114,7 +114,7 @@
         </div>
         <div class="row m-b-sm">
             <pulling
-                :api="api"
+                :api="url.log.login"
                 :extra="'report_flag=true'"
                 :query="query"
                 :queryset="queryset"
@@ -128,7 +128,7 @@
 
 <script>
 import DatePicker from 'vue2-datepicker'
-import api from '../../api'
+import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import date from '../../utils/date'
 import _ from 'lodash'
@@ -137,7 +137,6 @@ import $ from '../../utils/util'
 export default {
     data () {
         return {
-            api: api.log.login,
             query: {},
             queryset: [],
             logindate: ['', ''],
@@ -147,7 +146,8 @@ export default {
                 start: date[element][0],
                 end: date[element][1]
             })),
-            loading: true
+            loading: true,
+            url
         }
     },
     watch: {

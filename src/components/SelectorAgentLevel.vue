@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getSetting } from '../service'
 export default {
     props: {
         level: ''
@@ -53,7 +53,7 @@ export default {
         }
     },
     created () {
-        this.$http.get(api.setting.agentLevel).then(data => {
+        getSetting('agentLevel').then(data => {
             this.levels = data
             this.selectedLevel = this.level || ''
             this.loading = false

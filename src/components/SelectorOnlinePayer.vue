@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import api from '../api'
+import { getMerchant } from '../service'
 export default {
     props: {
         clearable: {
@@ -92,7 +92,9 @@ export default {
     },
     methods: {
         getPayer (id) {
-            this.$http.get(`${api.transaction.onlinePayer}?${id ? `member=${id}` : ''}`).then(data => {
+            getMerchant('onlinePayer', {
+                ...(id && { member: id })
+            }).then(data => {
                 if (data.length && this.mode === 'selector' && !this.payer && !this.clearable) {
                     this.selectedPayer = data[0].id
                 }

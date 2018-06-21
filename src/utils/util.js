@@ -1,6 +1,5 @@
 import Vue from 'vue'
 // import VueResource from 'vue-resource'
-import urls from '../api'
 
 const STORAGE_KEY = 'data-storage'
 const typeIcon = {
@@ -10,19 +9,6 @@ const typeIcon = {
 }
 
 export default class $ {
-    static fetchMember (cb, successCb, errorCb) {
-        return Vue.http.get(urls.member + '?opt_expand=1').then(data => {
-            cb(data)
-            if (successCb) {
-                successCb(data)
-            }
-        }, error => {
-            if (errorCb) {
-                errorCb(error)
-            }
-        })
-    }
-
     static setIndicator (onActivate, onInactivate) {
         let hidden = 'hidden'
 
