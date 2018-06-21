@@ -648,7 +648,11 @@ export default {
                 this.pullingApi = api.game.schedule
                 clearInterval(this.timingRetreatShced)
             } else {
-                this.extra = `date=${this.today}`
+                if (this.timeRangeGames.includes(this.game.code)) {
+                    this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
+                } else {
+                    this.extra = `date=${this.today}`
+                }
                 this.pullingApi = api.game.history
                 this.timingRetreatShced = setInterval(() => {
                     this.getRetreatedSchedules()
