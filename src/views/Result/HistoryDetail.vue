@@ -534,7 +534,7 @@ export default {
                 start: date[element][0],
                 end: date[element][1]
             })),
-            mode: '',
+            mode: 0,
             game: {
                 id: '',
                 display_name: '',
@@ -651,7 +651,11 @@ export default {
                 this.pullingApi = schedURL
                 clearInterval(this.timingRetreatShced)
             } else {
-                this.extra = `date=${this.today}`
+                if (this.timeRangeGames.includes(this.game.code)) {
+                    this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
+                } else {
+                    this.extra = `date=${this.today}`
+                }
                 this.pullingApi = historyURL
                 this.timingRetreatShced = setInterval(() => {
                     this.getRetreatedSchedules()

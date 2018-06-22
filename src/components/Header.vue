@@ -67,6 +67,12 @@
                             <span v-else class="label label-sm up">{{online_member}} </span>
                         </router-link>
                     </li>
+                    <li class="nav-item dropdown pos-stc-xs pointer" v-show="agent_application">
+                        <router-link class="nav-link" to="/agent/applications">
+                            <label class="label pointer" >{{$t('title.agent_application')}}</label>
+                            <span class="label label-sm up warn">{{agent_application}} </span>
+                        </router-link>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -93,7 +99,8 @@
                 num: 0,
                 remit_count: '',
                 withdraw_count: '',
-                abnormal_count: ''
+                abnormal_count: '',
+                agent_application: ''
             }
         },
         props: {
@@ -169,6 +176,16 @@
                         this.iNotify.setFavicon(newObj)
                     }
                 }
+            },
+            agent_application (newObj, old) {
+                if (this.iNotify) {
+                    if (newObj > old) {
+                        this.message(newObj, 'agent')
+                        this.iNotify.player()
+                    } else if (old !== '') {
+                        this.iNotify.setFavicon(newObj)
+                    }
+                }
             }
         },
         methods: {
@@ -214,6 +231,9 @@
                 } else if (messageType === 'abnormal') {
                     url = '/game_history' + vm.status
                     title = this.$t('game.period_abnormal') + this.$t('system.inform')
+                } else if (messageType === 'agent') {
+                    url = '/agent/applications'
+                    title = '代理申请通知'
                 }
                 let titleD = vm.iNotify.setTitle()
                 this.oldTitle = titleD.title
@@ -221,7 +241,7 @@
                 titleD.title = '...'
                 this.iNotify.setFavicon(num)
                 vm.iNotify.notify({
-                    title: title,
+                    title,
                     body: '您有信息待处理',
                     onclick: function () {
                         vm.$router.push(url)
@@ -243,6 +263,7 @@
                                 this.withdraw_count = data.withdraw_count
                                 this.online_member = data.online_member
                                 this.abnormal_count = data.abnormal_count
+                                this.agent_application = data.agent_application
                             }
                         })
                     } else {
