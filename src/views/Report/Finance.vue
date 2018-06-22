@@ -50,6 +50,7 @@
               <selector-agent
                 style="display: block;"
                 :agent="agent"
+                :attribute="'username'"
                 @agent-select="agentSelect"
                 :placeholder="$t('dic.agent')"
                 :disabled="!agentReport"
@@ -81,6 +82,7 @@
                 style="display: block;"
                 :transactionType="transaction_type"
                 :displayList="['remit', 'online_pay']"
+                :attribute="'code'"
                 @transaction-type-select="transactionTypeSelect"
                 :placeholder="$t('finance.transaction_type')"
               />
@@ -110,6 +112,7 @@
               <selector-game
                 style="display: block;"
                 :game="game"
+                :attribute="'id'"
                 @game-select="gameSelect"
                 :placeholder="$t('dic.game')"
               />
@@ -144,21 +147,45 @@
         <tbody v-if="queryset.length > 0" class="text-right">
           <tr v-for="data in queryset" :key="data.time">
             <td class="text-center">{{ data.time | moment('YYYY-MM-DD') }}</td>
-            <td>{{ data.amount | currency('￥') }}</td>
-            <td>{{ data.betrecord_count.toLocaleString() }}</td>
-            <td>{{ data.deposit_amount | currency('￥') }}</td>
-            <td>{{ data.manual_operation_amount | currency('￥') }}</td>
-            <td>{{ data.withdraw_amount | currency('￥') }}</td>
-            <td :class="data.profit < 0 ? 'text-danger' : 'text-success'">{{ data.profit | currency('￥') }}</td>
+            <td @click="routerGo([data.time, data.time], 'amount')" class="pointer">
+                <a>{{ data.amount | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo([data.time, data.time], 'betrecord_count')" class="pointer">
+                <a>{{ data.betrecord_count.toLocaleString() }}</a>
+            </td>
+            <td @click="routerGo([data.time, data.time], 'deposit_amount')" class="pointer">
+                <a>{{ data.deposit_amount | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo([data.time, data.time], 'manual_operation_amount')" class="pointer">
+                <a>{{ data.manual_operation_amount | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo([data.time, data.time], 'withdraw_amount')" class="pointer">
+                <a>{{ data.withdraw_amount | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo([data.time, data.time], 'profit')" class="pointer">
+                <a>{{ data.profit | currency('￥') }}</a>
+            </td>
           </tr>
           <tr class="_600">
-              <td class="text-center">{{ $t('dic.total') }}</td>
-              <td>{{ totalAmount | currency('￥') }}</td>
-              <td>{{ totalBetCount.toLocaleString() }}</td>
-              <td>{{ totalDeposit | currency('￥') }}</td>
-              <td>{{ totalManualOperation | currency('￥') }}</td>
-              <td>{{ totalWithdraw | currency('￥') }}</td>
-              <td :class="totalProfit < 0 ? 'text-danger' : 'text-success'">{{ totalProfit | currency('￥') }}</td>
+            <td class="text-center">{{ $t('dic.total') }}</td>
+            <td @click="routerGo(date, 'amount')" class="pointer">
+                <a>{{ totalAmount | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo(date, 'betrecord_count')" class="pointer">
+                <a>{{ totalBetCount.toLocaleString() }}</a>
+            </td>
+            <td @click="routerGo(date, 'deposit_amount')" class="pointer">
+                <a>{{ totalDeposit | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo(date, 'manual_operation_amount')" class="pointer">
+                <a>{{ totalManualOperation | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo(date, 'withdraw_amount')" class="pointer">
+                <a>{{ totalWithdraw | currency('￥') }}</a>
+            </td>
+            <td @click="routerGo(date, 'profit')" class="pointer">
+                <a>{{ totalProfit | currency('￥') }}</a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -227,7 +254,9 @@ export default {
             totalDeposit: 0,
             totalManualOperation: 0,
             totalWithdraw: 0,
-            totalProfit: 0
+            totalProfit: 0,
+            bet: [ 'amount', 'betrecord_count', 'profit' ],
+            transaction: [ 'deposit_amount', 'manual_operation_amount', 'withdraw_amount' ]
         }
     },
     created () {
@@ -340,6 +369,35 @@ export default {
             this.$nextTick(() => {
                 this.submit()
             })
+        },
+        routerGo (date, category) {
+            if (this.bet.includes(category)) {
+                this.$router.push({
+                    path: '/report/betrecord',
+                    query: {
+                        settled_at_0: date[0],
+                        settled_at_1: date[1],
+                        ...(this.query.game && { game: this.query.game }),
+                        ...(this.platform && { platform: this.platform })
+                    }
+                })
+            }
+            if (this.transaction.includes(category)) {
+                this.$router.push({
+                    path: '/bill/search',
+                    query: {
+                        updated_at_0: date[0],
+                        updated_at_1: date[1],
+                        status: 1,
+                        ...(this.query.transaction_type
+                            ? { transaction_type: this.query.transaction_type }
+                            : { transaction_type: category === 'deposit_amount' ? 'remit,online_pay' : (category === 'manual_operation_amount' ? 'manual_operation' : 'withdraw') }
+                        ),
+                        ...(this.query.agent && { agent_q: this.query.agent }),
+                        ...(this.query.member_level && { member_level: this.query.member_level })
+                    }
+                })
+            }
         }
     },
     components: {
