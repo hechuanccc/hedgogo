@@ -23,23 +23,6 @@
                 <div class="pull-left m-r-xs">
                     <label
                         class="form-control-label p-b-0"
-                        :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
-                    >{{ $t('common.date') }}
-                    </label>
-                    <date-picker
-                        width='244'
-                        style="display: block;"
-                        :not-after="today"
-                        :shortcuts="shortcuts"
-                        type="date"
-                        v-model="created_at"
-                        format="yyyy-MM-dd"
-                        range
-                    />
-                </div>
-                <div class="pull-left m-r-xs">
-                    <label
-                        class="form-control-label p-b-0"
                         :class="{'text-blue': transaction_type}"
                     >{{ $t('bill.transaction_type') }}
                     </label>
@@ -152,6 +135,25 @@
                             @input="search"
                         />
                     </div>
+                </div>
+            </div>
+            <div class="row m-l-xs m-r-xs">
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
+                    >{{ $t('common.date') }}
+                    </label>
+                    <date-picker
+                        width='244'
+                        style="display: block;"
+                        :not-after="today"
+                        :shortcuts="shortcuts"
+                        type="date"
+                        v-model="created_at"
+                        format="yyyy-MM-dd"
+                        range
+                    />
                 </div>
                 <div class="pull-left m-r-xs">
                     <label
