@@ -123,18 +123,79 @@
                             <div class="pull-left m-r-xs">
                                 <label
                                     class="form-control-label p-b-0"
-                                    :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
-                                >{{ $t('common.date') }}
-                                </label>
-                                <date-picker
-                                    width='244'
+                                    :class="{'text-blue': platform}"
                                     style="display: block;"
-                                    :shortcuts="shortcuts"
-                                    type="date"
-                                    v-model="created_at"
-                                    format="yyyy-MM-dd"
-                                    range
-                                />
+                                >{{ $t('manage.platform') }}
+                                </label>
+                                <label class="sm-check m-r m-t-sm m-l">
+                                    <input class="c-radio" type="radio" value="" v-model="platform">
+                                    <i class="blue m-r-xs"></i>
+                                    {{ $t('common.show_all') }}
+                                </label>
+                                <label class="sm-check m-r">
+                                    <input class="c-radio" type="radio" value="pc" v-model="platform">
+                                    <i class="blue m-r-xs"></i>
+                                    <span>{{ $t('manage.pc') }}</span>
+                                </label>
+                                <label class="sm-check m-r">
+                                    <input class="c-radio" type="radio" value="mobile" v-model="platform">
+                                    <i class="blue m-r-xs"></i>
+                                    <span>{{ $t('manage.mobile') }}</span>
+                                </label>
+                            </div>
+                            <button
+                                class="md-btn w-xs pull-right btn m-t-md"
+                                type="button"
+                                @click="clearAll"
+                                :disabled="isQueryEmpty"
+                            >
+                                <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                                <i v-else class="fa fa-trash-o"></i> 
+                                <span>{{ $t('action.reset_condition') }}</span>
+                            </button>
+                        </div>
+                        <div class="row m-l-xs m-r-xs">
+                            <div class="pull-left m-r-xs">
+                                <label
+                                    class="form-control-label p-b-0"
+                                    :class="{'text-blue': timeCategory === 'created'
+                                        ? created_at && (created_at[0] || created_at[1])
+                                        : settled_at && (settled_at[0] || settled_at[1])
+                                    }"
+                                >{{ '投注时间' }} / {{ '结算时间' }} 
+                                </label>
+                                <div style="display: block;">
+                                    <select
+                                        class="pull-left form-control w-sm c-select no-b-r"
+                                        v-model="timeCategory"
+                                        @change="autoTogglePopup = true"
+                                    >
+                                        <option value="created">{{ '投注时间' }}</option>
+                                        <option value="settled">{{ '结算时间' }}</option>
+                                    </select>
+                                    <date-picker
+                                        width="248"
+                                        :not-after="today"
+                                        :shortcuts="shortcuts"
+                                        type="date"
+                                        v-model="created_at"
+                                        format="yyyy-MM-dd"
+                                        range
+                                        ref="created"
+                                        v-show="timeCategory === 'created'"
+                                    />
+                                    <date-picker
+                                        width="248"
+                                        :not-after="today"
+                                        :shortcuts="shortcuts"
+                                        type="date"
+                                        v-model="settled_at"
+                                        format="yyyy-MM-dd"
+                                        range
+                                        ref="settled"
+                                        v-show="timeCategory === 'settled'"
+                                    />
+                                </div>
                             </div>
                             <div class="pull-left m-r-xs">
                                 <label
@@ -167,39 +228,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="pull-left m-r-xs">
-                                <label
-                                    class="form-control-label p-b-0"
-                                    :class="{'text-blue': platform}"
-                                    style="display: block;"
-                                >{{ $t('manage.platform') }}
-                                </label>
-                                <label class="sm-check m-r m-t-sm m-l">
-                                    <input class="c-radio" type="radio" value="" v-model="platform">
-                                    <i class="blue m-r-xs"></i>
-                                    {{ $t('common.show_all') }}
-                                </label>
-                                <label class="sm-check m-r">
-                                    <input class="c-radio" type="radio" value="pc" v-model="platform">
-                                    <i class="blue m-r-xs"></i>
-                                    <span>{{ $t('manage.pc') }}</span>
-                                </label>
-                                <label class="sm-check m-r">
-                                    <input class="c-radio" type="radio" value="mobile" v-model="platform">
-                                    <i class="blue m-r-xs"></i>
-                                    <span>{{ $t('manage.mobile') }}</span>
-                                </label>
-                            </div>
-                            <button
-                                class="md-btn w-xs pull-right btn m-t-md"
-                                type="button"
-                                @click="clearAll"
-                                :disabled="isQueryEmpty"
-                            >
-                                <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
-                                <i v-else class="fa fa-trash-o"></i> 
-                                <span>{{ $t('action.reset_condition') }}</span>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -365,15 +393,19 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th class="text-center">{{ $t('betrecord.betted_at') }}&nbsp;/&nbsp;{{ $t('common.settledat') }}</th>
+                        <th class="text-center">
+                            {{ $t('betrecord.betted_at') }}&nbsp;/
+                            <br/>
+                            {{ $t('common.settledat') }}
+                        </th>
                         <th>{{ $t('common.member') }}</th>
                         <th>{{ $t('manage.platform') }}</th>
                         <th>{{ $t('common.game') }}</th>
                         <th>{{ $t('game_history.periods') }}</th>
                         <th>{{ $t('game_manage.play') }}</th>
-                        <th>{{ $t('common.betamount') }}</th>
-                        <th>{{ $t('common.settlementamount') }}</th>
-                        <th>{{ $t('game_manage.odds') }}&nbsp;/&nbsp;{{ $t('bill.return') }}&nbsp;(%)</th>
+                        <th class="text-right">{{ $t('common.betamount') }}</th>
+                        <th class="text-right">{{ $t('common.settlementamount') }}</th>
+                        <th class="text-right">{{ $t('game_manage.odds') }}&nbsp;/&nbsp;{{ $t('bill.return') }}</th>
                         <th class="text-right">{{ $t('common.profit') }}</th>
                         <th class="text-center" width="5%">{{ $t('common.status') }}</th>
                         <th class="text-center">{{ $t('betrecord.cancel_bet') }}</th>
@@ -382,9 +414,9 @@
                 <tbody>
                     <tr v-for="t in queryset" :key="t.id">
                         <td><router-link :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link></td>
-                        <td class="text-center p-l-0 p-r-0 text-xs">
-                            <span>{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
-                            <span v-if="t.settled_at">{{ t.settled_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
+                        <td class="text-center p-l-0 p-r-0">
+                            <span class="text-xs">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
+                            <span class="text-xs" v-if="t.settled_at">{{ t.settled_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
                             <span v-else>-</span>
                         </td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
@@ -392,9 +424,9 @@
                         <td>{{ t.game.display_name }}</td>
                         <td>{{ t.issue_number }}</td>
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
-                        <td>{{ t.bet_amount | currency('￥') }}</td>
-                        <td>{{ t.settlement_amount | currency('￥') }}</td>
-                        <td>{{ t.odds }}&nbsp;/&nbsp;{{ t.return_rate | fixed }}&nbsp;%</td>
+                        <td class="text-right">{{ t.bet_amount | currency('￥') }}</td>
+                        <td class="text-right">{{ t.settlement_amount | currency('￥') }}</td>
+                        <td class="text-right">{{ t.odds }}&nbsp;/&nbsp;{{ t.return_rate | fixed }}&nbsp;%</td>
                         <td class="text-right">{{ t.profit || 0 | currency('￥') }}</td>
                         <td class="text-center p-l-xs p-r-xs">
                             <div class="flex-value status">
@@ -497,6 +529,7 @@
                 status: '',
                 platform: '',
                 created_at: ['', ''],
+                settled_at: ['', ''],
                 period: '',
                 game: '',
                 game_category: '',
@@ -514,7 +547,9 @@
                     start: date[element][0],
                     end: date[element][1]
                 })),
+                timeCategory: 'created',
                 loading: true,
+                autoTogglePopup: false,
                 url
             }
         },
@@ -555,9 +590,9 @@
             },
             filter_game (newObj) {
                 if (newObj.length === 0) {
-                    this.query.game_q = ''
+                    this.query.game = ''
                 } else {
-                    this.query.game_q = newObj
+                    this.query.game = newObj
                 }
                 this.submit()
             },
@@ -570,11 +605,21 @@
                 deep: true
             },
             created_at (newObj) {
-                if (`${newObj}` === `${this.defaultDate}`) {
+                if (`${newObj}` === `${this.defaultDate}` && `${[this.query.created_at_0, this.query.created_at_1]}` !== `${this.defaultDate}`) {
                     [this.query.created_at_0, this.query.created_at_1] = [undefined, undefined]
                 } else {
                     [this.query.created_at_0, this.query.created_at_1] = [...newObj]
                 }
+                this.autoTogglePopup = false
+                this.submit()
+            },
+            settled_at (newObj) {
+                if (`${newObj}` === `${this.defaultDate}` && `${[this.query.settled_at_0, this.query.settled_at_1]}` !== `${this.defaultDate}`) {
+                    [this.query.settled_at_0, this.query.settled_at_1] = [undefined, undefined]
+                } else {
+                    [this.query.settled_at_0, this.query.settled_at_1] = [...newObj]
+                }
+                this.autoTogglePopup = false
                 this.submit()
             },
             period (newObj, old) {
@@ -590,6 +635,21 @@
                     } else if (newObj === 'normal') {
                         this.query = {}
                     }
+                }
+            },
+            timeCategory (newObj, old) {
+                this.query = Object.assign(this.query, {
+                    created_at_0: undefined,
+                    created_at_1: undefined,
+                    settled_at_0: undefined,
+                    settled_at_1: undefined
+                })
+                if (this.autoTogglePopup) {
+                    this.$nextTick(() => {
+                        if (newObj !== old) {
+                            this.$refs[newObj].togglePopup()
+                        }
+                    })
                 }
             }
         },
@@ -607,7 +667,7 @@
             getGameCategory (game) {
                 getGame('category', {
                     params: {
-                        game: this.query.game_q,
+                        game: this.query.game,
                         opt_fields: 'id,display_name'
                     }
                 }).then(data => {
@@ -615,7 +675,7 @@
                 })
             },
             gameSelect (val) {
-                this.query.game_q = val
+                this.query.game = val
                 this.submit()
             },
             queryData (queryset) {
@@ -646,20 +706,26 @@
                 this.platform = query.platform || ''
                 if (this.$route.name === 'report_betrecord') {
                     if (query.created_at_0 || query.created_at_1) {
+                        this.timeCategory = 'created'
                         this.created_at = [query.created_at_0, query.created_at_1]
+                        this.extra = 'account_type=1,2'
+                    } else if (query.settled_at_0 || query.settled_at_1) {
+                        this.timeCategory = 'settled'
+                        this.settled_at = [query.settled_at_0, query.settled_at_1]
                         this.extra = 'account_type=1,2'
                     } else {
                         // default date is today
+                        this.timeCategory = 'created'
                         this.created_at = [this.today, this.today]
                         this.extra = `created_at_0=${this.today}&created_at_1=${this.today}&account_type=1,2`
                     }
-                    this.game = query.game_q || ''
+                    this.game = query.game || ''
                     this.game_category = query.category || ''
                     this.status = query.status || ''
                     this.pageSelected = 'normal'
                 } else if (this.$route.path === '/report/betrecord/realtime') {
-                    if (query.game_q) {
-                        this.filter_game = query.game_q.split(',')
+                    if (query.game) {
+                        this.filter_game = query.game.split(',')
                     } else {
                         this.filter_game = []
                     }
