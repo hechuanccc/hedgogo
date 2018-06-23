@@ -42,7 +42,7 @@ Vue.use(VueCookie)
 Vue.use(Notifications)
 
 const i18n = new VueI18n({
-    locale: 'cn', // Vue.config.lang,
+    locale: Vue.config.lang,
     messages: locales
 })
 

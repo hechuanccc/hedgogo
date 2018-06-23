@@ -234,7 +234,7 @@
             <h5 class="modal-title">
               {{ modal.mode && $t('title.action_object', {
                 action: $t('dic.' + modal.mode),
-                object: $t('robot.plan_robot')
+                object: $t('chatroom.plan_robot')
               }) }}
             </h5>
           </div>
