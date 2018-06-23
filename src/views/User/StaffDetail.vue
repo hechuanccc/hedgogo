@@ -45,7 +45,7 @@
                                     <td>{{ staff.email ? staff.email : $t('system.no_setting') }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50">{{$t('user.permission')}}</th>
+                                    <th class="grey-50">{{$t('dic.permission')}}</th>
                                     <td v-if="staff.user_group">
                                         <template v-for="(list, index) in staff.user_group.permissions">
                                             <div class="row">

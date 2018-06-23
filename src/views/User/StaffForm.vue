@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="label-width">{{$t('user.permission')}}</label>
+                                <label class="label-width">{{$t('dic.permission')}}</label>
                                 <div class="box" v-if="permissions.length">
                                     <template v-for="(list, index) in permissions">
                                         <div class="row">

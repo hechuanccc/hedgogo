@@ -67,7 +67,6 @@ export default {
         info: '信息',
         bank: '银行',
         profit: '盈利',
-        sorting: '排序',
         period: '期数',
         list: '列表',
         detail: '详情',
@@ -96,7 +95,6 @@ export default {
         trial_account: '试玩账户',
         real_account: '真实账户',
         default_member_level: '预设@:dic.member_level',
-        permission: '权限',
         visitor: '游客',
         phone: '电话',
         wechat: '微信',
@@ -315,7 +313,7 @@ export default {
         server_error: '服务异常，请稍后再试',
         confirm_action_object: '@:dic.confirm要{action}{object}吗？',
         confirm_retreat_schedule: '确定撤销 {game} {period} 所有已结算的注单吗？',
-        confirm_manual_draw: '请确认是否手动开奖，该操作将会影响%{bet_record_count}个注单',
+        confirm_manual_draw: '请确认是否手动开奖，该操作将会影响 {bet_record_count} 个注单',
         action_object_status: '{action}{object}{status}！',
         no_select_object: '尚未选择{object}！',
         click_submit_and_clear: '请按下提交按钮后才能成功清除',
@@ -567,11 +565,10 @@ export default {
     },
     robot: {
         nickname: '@:user.nickname',
-        manager: '管理员',
-        member: '普通会员',
+        manager: '管理员', // Back-end parameter
+        member: '普通会员', // Back-end parameter
         online_time: '在线@:dic.time',
         speak_interval: '发言间隔',
-        plan_robot: '计划机器人',
         on_time: '上线@:dic.time',
         off_time: '下线@:dic.time'
     },

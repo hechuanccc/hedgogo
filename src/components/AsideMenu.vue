@@ -15,14 +15,14 @@
                             <li><div class="b-b b m-t-sm m-b-sm"></div></li>
                             <li :class="$route.meta.group == 'overview' ? 'active' : ''" >
                                 <router-link to="/" >
-                                  <span class="nav-icon"><i class="material-icons m-r-xs">&#xe3fc;</i>总览</span>
+                                  <span class="nav-icon"><i class="material-icons m-r-xs">&#xe3fc;</i>{{$t('title.overview')}}</span>
                                 </router-link>
                             </li>
                             <li><div class="b-b b m-t-sm"></div></li>
                         </template>
                         <li :class="$route.meta.group == 'financing' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon" ><i class="material-icons m-r-xs">&#xE227;</i>财务管理</span>
+                                <span class="nav-icon" ><i class="material-icons m-r-xs">&#xE227;</i>{{$t('title.finance_management')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li v-if="$root.permissions.includes('view_remit_transaction_page')">
@@ -45,7 +45,7 @@
                         </li>
                         <li :class="$route.meta.group == 'report' ? 'active' : ''">
                             <a>
-                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xe24b;</i>报表管理</span>
+                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xe24b;</i>{{$t('title.report_management')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/report/finance_report"><span class="nav-text">{{$t('title.report_finance')}}</span></router-link></li>
@@ -56,7 +56,7 @@
 
                         <li :class="$route.meta.group == 'betrecord' ? 'active' : ''">
                             <a>
-                              <span class="nav-icon"> <i class="material-icons m-r-xs">&#xe1b8;</i>投注记录</span>
+                              <span class="nav-icon"> <i class="material-icons m-r-xs">&#xe1b8;</i>{{$t('title.betting_record')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/report/betrecord"><span class="nav-text">{{$t('title.betting_record')}}</span></router-link></li>
@@ -67,7 +67,7 @@
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'users' ? 'active' : ''">
                             <a>
-                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FC;</i>用户管理</span>
+                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FC;</i>{{$t('title.user_management')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li>
@@ -101,20 +101,20 @@
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'game_manage' ? 'active' : ''">
                             <router-link to="/game_list">
-                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>游戏管理</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>{{$t('title.game')}}</span>
                             </router-link>
                         </li>
                         
                         <li :class="$route.meta.group == 'game_history' ? 'active' : ''">
                             <router-link to="/game_history">
-                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE889;</i>历史开奖</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE889;</i>{{$t('title.drawing_history')}}</span>
                             </router-link>
                         </li>
 
                         <li><div class="b-b b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'transaction' ? 'active' : ''">
                             <a>
-                              <span class="nav-icon"><i class="fa fa-suitcase m-r-xs"></i>交易配置</span>
+                              <span class="nav-icon"><i class="fa fa-suitcase m-r-xs"></i>{{$t('title.transaction_setting')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/paymenttype"><span class="nav-text">{{$t('title.payment_type_management')}}</span></router-link></li>
@@ -127,7 +127,7 @@
 
                         <li :class="$route.meta.group == 'setting' ? 'active' : ''">
                             <a>
-                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xE8B8;</i>系统配置</span>
+                              <span class="nav-icon"><i class="material-icons m-r-xs">&#xE8B8;</i>{{$t('title.setting')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/roles"><span class="nav-text">{{$t('title.role_management')}}</span></router-link></li>
@@ -140,7 +140,7 @@
 
                         <li :class="$route.meta.group == 'logging' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xe873;</i>日志管理</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xe873;</i>{{$t('title.log_management')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/login_record"><span class="nav-text">{{$t('title.log_login')}}</span></router-link></li>
@@ -149,7 +149,7 @@
                         </li>
                         <li :class="$route.meta.group == 'agent' ? 'active' : ''" v-if="$root.permissions.includes('export_agent_commission_report')">
                             <a>
-                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FB;</i>代理结算</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE7FB;</i>{{$t('title.agent_commission')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/agent/commission"><span class="nav-text">{{$t('title.report_commission')}}</span></router-link></li>
@@ -157,7 +157,7 @@
                         </li>
                         <li :class="$route.meta.group == 'manage' ? 'active' : ''">
                             <a>
-                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE051;</i>运营管理</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE051;</i>{{$t('title.marketing_management')}}</span>
                             </a>
                             <ul class="nav-sub">
                                 <li><router-link to="/messages"><span class="nav-text">{{$t('title.message')}}</span></router-link></li>

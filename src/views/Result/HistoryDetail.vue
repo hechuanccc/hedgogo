@@ -222,7 +222,7 @@
                         <td v-if="sched.status !== 'cancelled'">
                             <span
                                 class="label btn blue"
-                                @click="showModal(sched, 'retreat_sched')"
+                                @click="showModal(sched, 'retreat_schedule')"
                                 v-if="$root.permissions.includes('retrieve_ongoing_bets')"
                             >
                                 <b>{{ $t('game.retreat_schedule') }}</b>
@@ -352,7 +352,7 @@
                             </span>
                             <span
                                 class="label btn blue"
-                                @click="showModal(result, 'retreat_sched')"
+                                @click="showModal(result, 'retreat_schedule')"
                                 v-if="$root.permissions.includes('retrieve_ongoing_bets') && result.bets_count && result.status !== 'cancelled' && !mode"
                             >
                                 <b>{{ $t('game.retreat_schedule') }}</b>
@@ -372,7 +372,7 @@
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="modal-body p-a-md">
-                    <template v-if="modal.mode === 'retreat_sched' && modal.status === 'close'">
+                    <template v-if="modal.mode === 'retreat_schedule' && modal.status === 'close'">
                         <p>
                             {{ $t('system_msg.confirm_retreat_schedule', {
                                 game: game.display_name,
@@ -418,7 +418,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <template v-if="modal.mode === 'retreat_sched' && modal.status === 'close'">
+                    <template v-if="modal.mode === 'retreat_schedule' && modal.status === 'close'">
                         <table class="table b-t m-t v-m">
                             <thead>
                                 <tr>
@@ -720,7 +720,7 @@ export default {
                 // this.$nextTick(() => {
                 //     this.$refs.alertMsg.trigger('warning')
                 // })
-            } else if (modalMode === 'retreat_sched') {
+            } else if (modalMode === 'retreat_schedule') {
                 let id = sched.status === 'open' ? sched.id : sched.schedule_id
                 id && getGame('scheduleRetreat', { id }).then(data => {
                     let memberAmount = data.bets_info && data.bets_info
