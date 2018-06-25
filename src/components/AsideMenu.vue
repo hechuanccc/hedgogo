@@ -101,7 +101,7 @@
                         <li><div class="b-b m-t-sm m-b-sm"></div></li>
                         <li :class="$route.meta.group == 'game_manage' ? 'active' : ''">
                             <router-link to="/game_list">
-                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>{{$t('title.game')}}</span>
+                                <span class="nav-icon"><i class="material-icons m-r-xs">&#xE021;</i>{{$t('title.game_setting')}}</span>
                             </router-link>
                         </li>
                         

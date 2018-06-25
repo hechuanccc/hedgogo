@@ -403,6 +403,7 @@ export default {
         user_management: 'User',
         agent_application: '@:dic.agent Application',
         online_member: 'Online @:dic.member',
+        game_setting: 'Game',
         drawing_history: 'Draw History',
         transaction_setting: 'Transaction',
         setting: 'System',
