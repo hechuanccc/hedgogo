@@ -159,13 +159,10 @@ span.time-picker{
         height: 33px;
         width: 35px;
     }
-
     .multiselect__single {
         font-size: $font-size-sm;
-        margin-top: 3px;
-        margin-bottom: 0;
+        margin: 3px auto 0 2px;
     }
-
     .multiselect__tags {
         padding: 4px 40px 0 4px;
         border-radius: 3px;
@@ -177,11 +174,12 @@ span.time-picker{
         font-size: $font-size-sm;
         margin-top: 4px;
     }
-
+    .multiselect__option {
+        font-size: $font-size-sm;
+    }
     .multiselect__option--highlight {
         background-color: $blue;
     }
-
     .custom__tag.label {
         margin-top: 3px;
     }

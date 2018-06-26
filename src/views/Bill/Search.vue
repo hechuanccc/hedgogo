@@ -162,36 +162,37 @@
                         :class="{'text-blue': query.description_q}"
                     >{{ $t('finance.transaction_type') }}
                     </label>
-                    <multiselect
-                        v-model="transactionType"
-                        :options="transactionTypeOptions"
-                        :multiple="true"
-                        :close-on-select="false"
-                        :clear-on-select="false"
-                        :hide-selected="true"
-                        :preserve-search="false"
-                        :searchable="false"
-                        :placeholder="$t('system.please_select')"
-                        label="display_name"
-                        track-by="id" 
-                        :preselect-first="false"
-                        :selectLabel="''"
-                        :class="{
+                    <div :class="{
                             'w-sm': !transactionType || transactionType.length === 0
-                        }"
-                        @close="closeTransactionTypeSelector"
-                    >
-                        <template
-                            slot="tag"
-                            slot-scope="props"
+                        }">
+                        <multiselect
+                            v-model="transactionType"
+                            :options="transactionTypeOptions"
+                            :multiple="true"
+                            :close-on-select="false"
+                            :clear-on-select="false"
+                            :hide-selected="true"
+                            :preserve-search="false"
+                            :searchable="false"
+                            :placeholder="$t('system.please_select')"
+                            label="display_name"
+                            track-by="id" 
+                            :preselect-first="false"
+                            :selectLabel="''"
+                            @close="closeTransactionTypeSelector"
                         >
-                            <span class="custom__tag label m-l-xs blue pointer" @click="props.remove(props.option)">
-                                {{ props.option.display_name }}
-                                <i class="fa fa-times"></i>
-                            </span>
-                        </template>
-                        <template slot="noResult">{{ $t('system.no_record') }}</template>
-                    </multiselect>
+                            <template
+                                slot="tag"
+                                slot-scope="props"
+                            >
+                                <span class="custom__tag label m-l-xs blue pointer" @click="props.remove(props.option)">
+                                    {{ props.option.display_name }}
+                                    <i class="fa fa-times"></i>
+                                </span>
+                            </template>
+                            <template slot="noResult">{{ $t('system.no_record') }}</template>
+                        </multiselect>
+                    </div>
                 </div>
                 <button
                     class="md-btn w-xs pull-right btn m-t-md"
