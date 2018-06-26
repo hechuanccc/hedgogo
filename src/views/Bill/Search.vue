@@ -23,19 +23,6 @@
                 <div class="pull-left m-r-xs">
                     <label
                         class="form-control-label p-b-0"
-                        :class="{'text-blue': transaction_type}"
-                    >{{ $t('bill.transaction_type') }}
-                    </label>
-                    <selector-transaction-type
-                        style="display: block;"
-                        :transactionType="transaction_type"
-                        :attribute="'code'"
-                        @transaction-type-select="transactionTypeSelect"
-                    />
-                </div>
-                <div class="pull-left m-r-xs">
-                    <label
-                        class="form-control-label p-b-0"
                         :class="{'text-blue': status}"
                     >{{ $t('common.status') }}
                     </label>
@@ -169,6 +156,43 @@
                         @input="search"
                     />
                 </div>
+                <div class="pull-left m-r-xs">
+                    <label
+                        class="form-control-label p-b-0"
+                        :class="{'text-blue': query.description_q}"
+                    >{{ $t('bill.transaction_type') }}
+                    </label>
+                    <multiselect
+                        v-model="transactionType"
+                        :options="transactionTypeOptions"
+                        :multiple="true"
+                        :close-on-select="false"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :preserve-search="false"
+                        :searchable="false"
+                        :placeholder="$t('common.please_select')"
+                        label="display_name"
+                        track-by="id" 
+                        :preselect-first="false"
+                        :selectLabel="''"
+                        :class="{
+                            'w-sm': !transactionType || transactionType.length === 0
+                        }"
+                        @close="closeTransactionTypeSelector"
+                    >
+                        <template
+                            slot="tag"
+                            slot-scope="props"
+                        >
+                            <span class="custom__tag label m-l-xs blue pointer" @click="props.remove(props.option)">
+                                {{ props.option.display_name }}
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </template>
+                        <template slot="noResult">{{ $t('common.no_record') }}</template>
+                    </multiselect>
+                </div>
                 <button
                     class="md-btn w-xs pull-right btn m-t-md"
                     type="button"
@@ -239,7 +263,9 @@
 </template>
 
 <script>
+    import Multiselect from 'vue-multiselect'
     import url from '../../service/url'
+    import { getTransactionType } from '../../service'
     import DatePicker from 'vue2-datepicker'
     import TransactionStatus from '../../components/TransactionStatus'
     import SelectorTransactionType from '../../components/SelectorTransactionType'
@@ -264,10 +290,9 @@
                 },
                 status: '',
                 member_level: '',
-                // use selectd transaction types
-                transaction_type: '',
                 // all of the transaction types
-                trans_type: [],
+                transactionType: [],
+                transactionTypeOptions: [],
                 href: '',
                 export_query: '',
                 today: date.today[0],
@@ -316,22 +341,25 @@
             }
         },
         methods: {
-            setQueryAll () {
+            async setQueryAll () {
+                this.transactionTypeOptions.length || (this.transactionTypeOptions = await getTransactionType())
+                if (this.$route.query.transaction_type) {
+                    let transactionType = this.$route.query.transaction_type.split(',')
+                    this.transactionType = this.transactionTypeOptions.filter(d => transactionType.includes(d.code))
+                } else {
+                    this.transactionType = []
+                }
+
                 if (this.$route.query.created_at_0 || this.$route.query.created_at_1) {
                     this.created_at = [this.$route.query.created_at_0, this.$route.query.created_at_1]
                 } else {
                     this.created_at = [undefined, undefined]
                 }
                 this.status = this.$route.query.status || ''
-                this.transaction_type = this.$route.query.transaction_type || ''
                 this.query = Object.assign({}, this.$route.query)
             },
             levelSelect (val) {
                 this.query.member_level = val
-                this.submit()
-            },
-            transactionTypeSelect (val) {
-                this.query.transaction_type = val
                 this.submit()
             },
             queryData (queryset) {
@@ -359,9 +387,14 @@
                 this.$nextTick(() => {
                     this.submit()
                 })
+            },
+            closeTransactionTypeSelector (value, id) {
+                this.query.transaction_type = `${value.map(v => v.code)}`
+                this.submit()
             }
         },
         components: {
+            Multiselect,
             DatePicker,
             Pulling,
             TransactionStatus,
