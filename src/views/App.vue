@@ -159,7 +159,7 @@ export default {
     }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
     .loading-layer {
         display: block;
