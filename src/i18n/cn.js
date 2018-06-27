@@ -100,7 +100,8 @@ export default {
         marketing: '运营管理',
         game_settings: '游戏设定',
         game_play_configurations: '交易设定',
-        odds_management: '盘口设定'
+        odds_management: '盘口设定',
+        operation_guide: '运营手册'
     },
     envelope: {
         name: '名称',

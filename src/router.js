@@ -46,6 +46,17 @@ export default new Router({
         }
     },
     {
+        path: '/operation_guide',
+        name: 'operation-guide',
+        component: function (resolve) {
+            require(['./views/OperationGuide.vue'], resolve)
+        },
+        meta: {
+            auth: true,
+            title: Vue.t('nav.operation_guide')
+        }
+    },
+    {
         path: '/bill/remit',
         name: 'bill-remit',
         component: function (resolve) {

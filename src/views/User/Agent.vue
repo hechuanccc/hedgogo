@@ -192,7 +192,6 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th width="7%" class="text-center">{{ $t("common.login_status") }}</th>
                         <th>{{ $t('agent.account') }}</th>
                         <th>{{ $t('agent.level') }}</th>
                         <th>{{ $t('agent.parent_agent') }}</th>
@@ -207,16 +206,13 @@
                 <tbody v-if="queryset.length">
                     <tr v-for="agent in queryset" :key="agent.id">
                         <td>
-                            <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="agent.is_logged_in==true">&#x25CF;</div>
-                            <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
-                        </td>
-                        <td>
+                            <span class="circle text-success m-r-xs" style="font-size: 12px;" v-if="agent.is_logged_in==true">&#x25CF;</span>
+                            <span class="circle text-grey-400 m-r-xs" style="font-size: 12px;" v-else>&#x25CF;</span>
                             <router-link :to="'/agent/' + agent.id">
                                 {{ agent.username }}
                             </router-link>
                             <br/>
-                            <span class="label success" v-if="agent.status===1">{{ $t('status.active') }}</span>
-                            <span class="label" v-else>{{ $t('status.inactive') }}</span>
+                            <span class="label danger m-l" v-if="agent.status!==1">{{ $t('status.inactive') }}</span>
                         </td>
                         <td>
                             <span v-if="agent.level">{{ agent.level.name }}</span>

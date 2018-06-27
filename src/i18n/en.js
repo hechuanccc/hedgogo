@@ -100,7 +100,8 @@ export default {
         marketing: 'Marketing',
         game_settings: 'Game Settings',
         game_play_configurations: 'Game Play Configurations',
-        odds_management: 'Odds Management'
+        odds_management: 'Odds Management',
+        operation_guide: 'Operation Guide'
     },
     envelope: {
         name: 'Name',
