@@ -403,7 +403,7 @@ export default {
         user_management: '用户@:dic.management',
         agent_application: '@:dic.agent申请',
         online_member: '在线@:dic.member',
-        game_setting: '游戏配置',
+        game_setting: '游戏管理',
         drawing_history: '历史开奖',
         transaction_setting: '交易配置',
         setting: '系统配置',
@@ -419,6 +419,7 @@ export default {
         marketing_management: '运营@:dic.management',
         marketing_banner: 'Banner @:dic.management',
         marketing_website: '网站@:dic.management',
+        operation_guide: '营运手册',
         action_object: '{action}{object}',
         ...autoAddTitle
     },

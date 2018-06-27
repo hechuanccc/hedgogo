@@ -170,6 +170,11 @@
                     </ul>
                 </nav>
             </div>
+            <div class="b-t navbar-helper w-sm text-center">
+                <router-link tag="a" class="navbar-brand" to="/operation_guide">
+                  <i class="fa fa-question-circle"></i>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -183,3 +188,10 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.navbar-helper {
+    position: absolute;
+    bottom: 0;
+}
+</style>
+

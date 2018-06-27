@@ -419,6 +419,7 @@ export default {
         marketing_management: 'Marketing',
         marketing_banner: 'Banner @:dic.management',
         marketing_website: 'Website @:dic.management',
+        operation_guide: 'Operation Guide',
         action_object: '{action}{object}',
         ...autoAddTitle
     },
