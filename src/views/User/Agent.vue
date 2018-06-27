@@ -206,8 +206,8 @@
                 <tbody v-if="queryset.length">
                     <tr v-for="agent in queryset" :key="agent.id">
                         <td>
-                            <span class="circle text-success m-r-xs" style="font-size: 12px;" v-if="agent.is_logged_in==true">&#x25CF;</span>
-                            <span class="circle text-grey-400 m-r-xs" style="font-size: 12px;" v-else>&#x25CF;</span>
+                            <i class="fa fa-circle text-success m-r-xs" v-if="agent.is_logged_in==true"></i>
+                            <i class="fa fa-circle text-grey-400 m-r-xs" v-else></i>
                             <router-link :to="'/agent/' + agent.id">
                                 {{ agent.username }}
                             </router-link>

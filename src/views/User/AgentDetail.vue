@@ -23,7 +23,7 @@
               <span class="text-muted text-sm" v-if="agent.created_by">{{ agent.created_at | moment( "YYYY-MM-DD HH:mm") }} 加盟</span>
             </div>
             <div class="col-xs-8 col-md-offset-1 text-right">
-              <router-link class="md-btn md-flat m-r-sm" :to="`/report/finance_report/${agent.id}?${agent.default_member_lv ? `member_level=${agent.default_member_lv.id}` : ''}`">{{ $t('action.view_agent_report') }}</router-link>
+              <router-link class="md-btn md-flat m-r-sm" :to="`/agent/commission?agent=${agent.username}`">{{ $t('action.view_agent_report') }}</router-link>
               <router-link class="md-btn md-flat m-r-sm" :to="'/bill/search?agent_q=' + agent.username">{{ $t('action.view_member_record') }}</router-link>
               <a class="md-btn md-flat m-r-sm" @click="resetPassword($event)" v-if="this.$root.permissions.includes('reset_agent_password')">{{ $t('action.reset_password') }}</a>
               <router-link class="md-btn md-flat m-r-sm" :to="'/agent/' + agent.id + '/edit'">{{ $t('action.update_agent') }}</router-link>
