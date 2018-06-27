@@ -310,8 +310,7 @@
         <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset" :key="member.id">
             <td>
-              <span class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</span>
-              <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
+              <i class="text-success fa fa-circle m-r-xs" v-if="member.is_logged_in==true"></i>
               <router-link :to="'/member/' + member.id" v-if="member.account_type !== 0">{{ member.username }}</router-link>
               <span v-else>{{ $t('member.visitor') }}</span>
               <br/>
@@ -373,8 +372,8 @@
         <tbody v-if="queryset.length > 0">
           <tr v-for="member in queryset" :key="member.id">
             <td>
-              <span class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="member.is_logged_in==true">&#x25CF;</span>
-              <span class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</span>
+              <i class="fa fa-circle text-success m-r-xs" v-if="member.is_logged_in==true"></i>
+              <i class="fa fa-circle text-grey-400 m-r-xs " v-else></i>
               <router-link :to="'/member/' + member.id" class="m-b-0">{{ member.username }}</router-link>
               <span class="label red" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
               <br/>
