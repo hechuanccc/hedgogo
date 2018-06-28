@@ -179,6 +179,7 @@ export default {
         payment_wechat: 'Wechat',
         payment_normal: 'Normal',
         payment_domain: 'Payment Domain',
+        payment_gateway: 'Payment Gateway',
         no_payment_gateway: 'No set payment gateway',
         merchant: 'Merchant',
         merchant_id: '@:finance.merchant ID',
