@@ -157,6 +157,7 @@ span.time-picker{
     font-size: $font-size-sm;
     border-radius: 3px;
     .multiselect__select {
+        min-height: 33px;
         height: 33px;
         width: 35px;
     }
