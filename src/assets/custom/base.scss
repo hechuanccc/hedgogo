@@ -155,14 +155,14 @@ span.time-picker{
 .multiselect {
     min-height: 33px;
     font-size: $font-size-sm;
-
+    border-radius: 3px;
     .multiselect__select {
         height: 33px;
         width: 35px;
     }
     .multiselect__single {
         font-size: $font-size-sm;
-        margin: 3px auto 0 2px;
+        margin: 2px auto 0 2px;
     }
     .multiselect__tags {
         padding: 4px 40px 0 4px;
