@@ -4,10 +4,20 @@
             <div class="navbar-item pull-left h5 ng-binding" id="pageTitle">{{$route.meta.title}}</div>
 
             <div class="dropdown pull-right my">
-                <button class="btn white btn-sm dropdown-toggle" @click="$root.dropdown=!$root.dropdown">
+                <button
+                    class="btn white dropdown-toggle"
+                    @click="$root.dropdown = true"
+                    @mouseover="$root.dropdown = true"
+                >
                     <span class="dropdown-label">{{$root.username}}</span>
                     <span class="caret"></span>
                 </button>
+                <div
+                    class="modal-backdrop fade"
+                    v-show="$root.dropdown"
+                    @click="$root.dropdown = false"
+                >
+                </div>
                 <div class="dropdown-menu text-left text-sm" v-show="$root.dropdown">
                     <router-link  class="dropdown-item" to="/change_password/">{{$t('nav.change_password')}}</router-link>
                     <a class="dropdown-item" @click="logoutHandler">{{$t('action.logout')}}</a>
