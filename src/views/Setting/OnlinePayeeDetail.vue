@@ -43,6 +43,18 @@
                                     <td>{{display_name}}</td>
                                 </tr>
                                 <tr>
+                                    <th class="grey-50">{{$t('setting.payment_gateway')}}</th>
+                                    <td>{{payment_gateway.name || $t('action.no_setting')}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="grey-50">{{$t('setting.payment_type')}} - {{$t('manage.pc')}}</th>
+                                    <td>{{filteredPaymentType(0) || $t('action.no_setting')}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="grey-50">{{$t('setting.payment_type')}} - {{$t('manage.mobile')}}</th>
+                                    <td>{{filteredPaymentType(1) || $t('action.no_setting')}}</td>
+                                </tr>
+                                <tr>
                                     <th class="grey-50">{{$t('setting.merchant_num')}}</th>
                                     <td>{{merchant_num}}</td>
                                 </tr>
@@ -169,7 +181,8 @@
                 getMerchant('onlinePayee', {
                     id,
                     params: {
-                        opt_expand: 1
+                        opt_expand: 1,
+                        embed: 'payment_type'
                     }
                 }).then(data => {
                     Object.keys(data).forEach(key => {
@@ -177,7 +190,10 @@
                     })
                 })
             },
-            'htmlTransform': $.htmlTransform
+            'htmlTransform': $.htmlTransform,
+            filteredPaymentType (platform) {
+                return this.payment_type.filter(pt => pt.platform === platform).map(pt => pt.name).join(', ')
+            }
         }
     }
 
