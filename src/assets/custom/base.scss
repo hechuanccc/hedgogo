@@ -171,9 +171,6 @@ span.time-picker{
         border-radius: 3px;
         min-height: 33px;
     }
-    .multiselect--disabled {
-        min-height: 33px;
-    }
     .multiselect__input {
         min-height: $font-size-sm;
         line-height: $font-size-sm;
@@ -189,4 +186,7 @@ span.time-picker{
     .custom__tag.label {
         margin-top: 3px;
     }
+}
+.multiselect.multiselect--disabled {
+    min-height: 33px;
 }
