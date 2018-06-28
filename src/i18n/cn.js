@@ -179,6 +179,7 @@ export default {
         payment_wechat: '微信',
         payment_normal: '银行轉帳',
         payment_domain: '支付域名',
+        payment_gateway: '支付网关',
         no_payment_gateway: '没有付款网关设置',
         merchant: '商户',
         merchant_id: '@:finance.merchant号',
