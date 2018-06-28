@@ -150,16 +150,17 @@ span.time-picker{
 
 .form-control{
     border-radius: 3px;
-  }
+}
 
 .multiselect {
+    height: 33px;
     min-height: 33px;
     font-size: $font-size-sm;
     border-radius: 3px;
     .multiselect__select {
-        min-height: 33px;
         height: 33px;
         width: 35px;
+        padding: 0;
     }
     .multiselect__single {
         font-size: $font-size-sm;
@@ -185,4 +186,7 @@ span.time-picker{
     .custom__tag.label {
         margin-top: 3px;
     }
+}
+.multiselect.multiselect--disabled {
+    min-height: 33px;
 }
