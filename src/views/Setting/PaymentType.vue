@@ -203,7 +203,7 @@ export default {
                 adjustPaymentTypeOrder({
                     data: this.filteredPaymentTypes.map((p, index) => Object({
                         id: p.id,
-                        [`${this.type ? 'mobile' : 'pc'}_rank`]: index + 1
+                        [`${parseInt(this.type) ? 'mobile' : 'pc'}_rank`]: index + 1
                     })),
                     params: {
                         opt_expand: 1
@@ -237,7 +237,7 @@ export default {
                 .filter(element => element.platform === 2 || parseInt(element.platform) === parseInt(this.type))
                 .filter(element => !this.mode || !this.status || parseInt(element.status) === parseInt(this.status))
                 .sort((a, b) => {
-                    let attribute = this.type ? 'mobile_rank' : 'pc_rank'
+                    let attribute = parseInt(this.type) ? 'mobile_rank' : 'pc_rank'
                     return a[attribute] - b[attribute]
                 })
         }
