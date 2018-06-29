@@ -23,7 +23,7 @@
                                     <label class="md-check m-l-lg" >
                                         <input type="radio" name="remit_type" v-model="payee.remit_type" value="2">
                                         <i class="blue"></i>
-                                        {{$t('finance.payment_alipay')}}
+                                        {{$t('finance.payment_wechat')}}
                                     </label>
                                     <label class="md-check m-l-lg" >
                                         <input type="radio" name="remit_type" v-model="payee.remit_type" value="3">
