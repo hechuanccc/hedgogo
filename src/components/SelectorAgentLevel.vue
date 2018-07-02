@@ -14,13 +14,13 @@
     </option>
   </select>
   <span
-    class="p-b-xs p-t-sm form-control w-sm"
+    class="p-b-xs p-t-xs form-control w-sm"
     v-else-if="loading"
   >
     <i class="fa fa-spin fa-spinner"></i>
   </span>
   <span
-    class="p-b-xs p-t-sm form-control w-sm"
+    class="p-b-xs p-t-xs form-control w-sm"
     v-else-if="!levels.length"
   >
     {{ $t('system.no_record') }}
