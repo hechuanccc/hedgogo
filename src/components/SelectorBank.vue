@@ -17,14 +17,14 @@
         </option>
     </select>
     <span
-        class="p-b-xs p-t-sm form-control inline"
+        class="p-b-xs p-t-xs form-control inline"
         :class="width"
         v-else-if="loading"
     >
         <i class="fa fa-spin fa-spinner"></i>
     </span>
     <span
-        class="p-b-xs p-t-sm form-control inline"
+        class="p-b-xs p-t-xs form-control inline"
         :class="width"
         v-else-if="!banks.length"
     >
