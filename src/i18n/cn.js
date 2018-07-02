@@ -99,7 +99,7 @@ export default {
         phone: '电话',
         wechat: '微信',
         gender: '性别',
-        email: '邮件',
+        email: '邮箱',
         birthday: '生日',
         qq: 'QQ',
         male: '男',
