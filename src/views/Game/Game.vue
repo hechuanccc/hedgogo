@@ -30,7 +30,10 @@
             <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
             <td class="text-uppercase text-left">
               <!-- game_type: 0 => lottery ; 1 => sports -->
-              <span v-if="game.game_type === 1">{{game.display_name}}</span>
+              <span
+                v-show="editNameList[game.id] === undefined"
+                v-if="game.game_type === 1"
+              >{{game.display_name}}</span>
               <router-link
                 :to="`/game_detail/${game.id}/?display_name=${game.display_name}`"
                 v-show="editNameList[game.id] === undefined"
