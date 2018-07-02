@@ -17,7 +17,7 @@
         </label>
     </div>
     <span
-        class="p-b-xs p-t-sm w-sm"
+        class="p-b-xs p-t-xs w-sm"
         :class="{'form-control': mode === 'select'}"
         v-else-if="loading"
     >
