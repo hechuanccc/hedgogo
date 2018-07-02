@@ -17,7 +17,7 @@
         </option>
     </select>
     <span
-        class="p-b-xs p-t-sm w-sm form-control"
+        class="p-b-xs p-t-xs w-sm form-control"
         v-else
     >
         <i class="fa fa-spin fa-spinner"></i>

@@ -17,13 +17,13 @@
         </option>
     </select>
     <span
-        class="p-b-xs p-t-sm form-control w-sm inline"
+        class="p-b-xs p-t-xs form-control w-sm inline"
         v-else-if="loading"
     >
         <i class="fa fa-spin fa-spinner"></i>
     </span>
     <span
-        class="p-b-xs p-t-sm form-control w-sm inline"
+        class="p-b-xs p-t-xs form-control w-sm inline"
         v-else-if="!agents.length"
     >
         {{ $t('common.no_record') }}
