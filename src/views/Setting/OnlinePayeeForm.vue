@@ -138,7 +138,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width v-t">{{$t('finance.public_key')}}</label>
+                            <label class="label-width v-t">{{$t('finance.private_key')}}</label>
                             <div class="inline-form-control">
                                 <textarea
                                     class="form-control"
@@ -162,7 +162,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="label-width v-t">{{$t('finance.merchant_public_key')}}</label>
+                            <label class="label-width v-t">{{$t('finance.merchant_private_key')}}</label>
                             <div class="inline-form-control">
                                 <textarea
                                     class="form-control"

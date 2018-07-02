@@ -68,7 +68,7 @@
                                     <td v-else>{{$t('system.no_setting')}}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50">{{$t('finance.public_key')}}</th>
+                                    <th class="grey-50">{{$t('finance.private_key')}}</th>
                                     <td class="text-break-all" v-if="private_key" v-html="htmlTransform(private_key)"></td>
                                     <td v-else>{{$t('system.no_setting')}}</td>
                                 </tr>
@@ -78,7 +78,7 @@
                                     <td v-else>{{$t('system.no_setting')}}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50">{{$t('finance.merchant_public_key')}}</th>
+                                    <th class="grey-50">{{$t('finance.merchant_private_key')}}</th>
                                     <td class="text-break-all" v-if="merchant_private_key" v-html="htmlTransform(merchant_private_key)"></td>
                                     <td v-else>{{$t('system.no_setting')}}</td>
                                 </tr>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-                <div class="row p-t" v-if="memo">
+                <div class="row" v-if="memo">
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('dic.memo')}}</span>
                         <div>{{memo}} </div>
