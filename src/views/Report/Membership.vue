@@ -24,7 +24,34 @@
       <div class="box m-t-sm m-b-sm">
         <div class="box-body clearfix form-input-sm">
           <div class="row m-l-xs m-r-xs">
-            <div class="pull-left m-r-xs">
+            <div class="pull-left m-r-xs" v-show="report_type === 'monthly'">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.start_date && query.end_date}"
+              >
+                <span v-show="report_type === 'monthly'">月份</span>
+              </label>
+              <div>
+                <el-date-picker
+                  v-model="date[0]"
+                  type="month"
+                  :editable="false"
+                  :clearable="false"
+                  placeholder="起始月"
+                  value-format="yyyy-MM"
+                />
+                <span class="text-xs">-</span>
+                <el-date-picker
+                  v-model="date[1]"
+                  type="month"
+                  :editable="false"
+                  :clearable="false"
+                  placeholder="结束月"
+                  value-format="yyyy-MM"
+                />
+              </div>
+            </div>
+            <div class="pull-left m-r-xs"  v-show="report_type === 'daily'">
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.start_date && query.end_date}"
@@ -39,7 +66,6 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 :picker-options="{shortcuts}"
-                :clearable="false"
               />
             </div>
               <div class="pull-left m-r-xs">
@@ -119,13 +145,33 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('action.reset_condition') }}</span>
+              {{ $t('action.reset_condition') }}
             </button>
           </div>
         </div>
       </div>
     </form>
     <div class="box m-t-xs" v-if="queryset.length > 0">
+      <div class="b-b nav-active-blue p-t-sm">
+        <ul class="nav nav-tabs m-l" >
+          <li class="nav-item">
+            <router-link
+              :to="'/report/member_report'"
+              class="nav-link _500"
+              :class="{ 'active': report_type === 'daily' }"
+            >日报表
+            </router-link>
+          </li>
+          <li class="nav-item" @click="report_type = 'monthly'">
+            <router-link
+              :to="'/report/member_report?report_type=monthly'"
+              class="nav-link _500"
+              :class="{ 'active': report_type === 'monthly' }"
+            >月报表
+            </router-link>
+          </li>
+        </ul>
+      </div>
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
@@ -138,7 +184,7 @@
         </thead>
         <tbody v-if="queryset.length > 0">
           <tr v-for="data in queryset" :key="data.time">
-            <td>{{ data.time | moment('YYYY-MM-DD') }}</td>
+            <td>{{ data.time | moment(format) }}</td>
             <td>{{ data.real_member_registration }}</td>
             <td>{{ data.deposit_member_count }}</td>
             <td>{{ data.bet_member_count }}</td>
@@ -162,7 +208,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
 import url from '../../service/url'
@@ -174,7 +220,6 @@ import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import date from '../../utils/date'
 import $ from '../../utils/util'
 
-const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
@@ -185,6 +230,7 @@ export default {
             agent: '',
             member_level: '',
             transaction_type: '',
+            report_type: this.$route.query.type || 'daily',
             platform: '',
             game: '',
             href: '',
@@ -197,11 +243,11 @@ export default {
                 }
             })),
             defaultDate: ['', ''],
-            loading: true
+            loading: true,
+            format: 'YYYY-MM-DD'
         }
     },
     created () {
-        this.defaultDate = [Vue.moment(this.today).subtract(6, 'days').format(format), this.today]
         this.setQueryAll()
         this.rebase()
     },
@@ -211,6 +257,9 @@ export default {
             this.submit()
         },
         date (newObj, old) {
+            if (newObj && Vue.moment(newObj[0]).diff(newObj[1]) > 0) {
+                [...newObj] = [newObj[1], newObj[0]]
+            }
             if (`${newObj}` === `${this.defaultDate}`) {
                 [this.query.start_date, this.query.end_date] = [undefined, undefined]
             } else {
@@ -234,15 +283,19 @@ export default {
             return this.queryset.length
         },
         isQueryEmpty () {
-            return $.compareQuery(this.query, {})
+            return $.compareQuery(this.query, { ...(this.report_type && this.report_type !== 'daily' && { report_type: this.report_type }) })
         }
     },
     methods: {
         setQueryAll () {
+            this.report_type = this.$route.query.report_type || 'daily'
+            this.format = this.report_type === 'daily' ? 'YYYY-MM-DD' : 'YYYY-MM'
+            this.defaultDate = [Vue.moment().subtract(6, this.report_type === 'daily' ? 'days' : 'months').format(this.format), Vue.moment().format(this.format)]
+
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
-                this.date = this.defaultDate
+                this.date = [...this.defaultDate]
             }
             this.transaction_type = this.$route.query.transaction_type || ''
             this.platform = this.$route.query.platform || ''
@@ -286,12 +339,14 @@ export default {
             }
         },
         search:
-            _.debounce(function () {
+            debounce(function () {
                 this.submit()
             },
         700),
         clearAll () {
-            this.query = {}
+            this.query = {
+                ...(this.report_type && this.report_type !== 'daily' && { report_type: this.report_type })
+            }
             this.$nextTick(() => {
                 this.submit()
             })
