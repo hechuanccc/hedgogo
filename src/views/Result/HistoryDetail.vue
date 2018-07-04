@@ -21,23 +21,26 @@
                     <label class="form-control-label p-b-0">
                         {{$t('game_history.date')}}
                     </label>
-                    <date-picker
-                        style="display:block"
-                        width='140'
-                        v-model="input.date"
-                        v-if="!timeRangeGames.includes(game.code)"
-                    />
-                    <date-picker
-                        style="display:block"
-                        width="248"
-                        :not-after="today"
-                        :shortcuts="shortcuts"
-                        type="date"
-                        v-model="input.date"
-                        format="yyyy-MM-dd"
-                        range
-                        v-else
-                    />
+                    <div>
+                        <el-date-picker
+                            v-model="input.date"
+                            type="date"
+                            placeholder="请输入日期"
+                            v-if="!timeRangeGames.includes(game.code)"
+                            :clearable="false"
+                        />
+                        <el-date-picker
+                            v-model="input.date"
+                            size="mini"
+                            type="daterange"
+                            unlink-panels
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="{shortcuts}"
+                            :clearable="false"
+                            v-else
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -514,7 +517,6 @@
 import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import AlertMsg from '../../components/AlertMsg'
-import DatePicker from 'vue2-datepicker'
 import Vue from 'vue'
 import _ from 'lodash'
 import date from '../../utils/date'
@@ -531,8 +533,9 @@ export default {
             today: Vue.moment().format(dateFormat),
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             mode: 0,
             game: {
@@ -542,11 +545,11 @@ export default {
                 code: ''
             },
             retreatedScheds: [],
+            timeRangeGames: ['hkl', 'fc3d'],
             input: {
-                date: date.this_month,
+                date: '',
                 period: ''
             },
-            timeRangeGames: ['hkl', 'fc3d'],
             inputPeriod: '',
             modal: {
                 id: '',
@@ -623,8 +626,10 @@ export default {
         } else {
             // game result in detail
             if (this.timeRangeGames.includes(this.game.code)) {
+                this.input.date = date.this_month
                 this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
             } else {
+                this.input.date = this.today
                 this.extra = `date=${this.today}`
             }
             this.pullingApi = historyURL
@@ -652,8 +657,10 @@ export default {
                 clearInterval(this.timingRetreatShced)
             } else {
                 if (this.timeRangeGames.includes(this.game.code)) {
+                    this.input.date = date.this_month
                     this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
                 } else {
+                    this.input.date = this.today
                     this.extra = `date=${this.today}`
                 }
                 this.pullingApi = historyURL
@@ -926,7 +933,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         Pulling,
         AlertMsg
     },

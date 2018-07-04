@@ -162,15 +162,15 @@
                                 :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
                             >{{ $t('agent.joined_at') }}
                             </label>
-                            <date-picker
-                                width='244'
+                            <el-date-picker
                                 style="display: block;"
-                                :not-after="today"
-                                :shortcuts="shortcuts"
-                                type="date"
                                 v-model="created_at"
-                                format="yyyy-MM-dd"
-                                range
+                                size="mini"
+                                type="daterange"
+                                unlink-panels
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                :picker-options="{shortcuts}"
                             />
                         </div>
                         <button
@@ -275,7 +275,6 @@
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
 import _ from 'lodash'
 import url from '../../service/url'
 import Pulling from '../../components/Pulling'
@@ -297,8 +296,9 @@ export default {
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             userInfos: ['phone', 'email', 'qq', 'wechat'],
             userInfoSelect: '',
@@ -408,7 +408,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         Pulling,
         SelectorCommission
     }

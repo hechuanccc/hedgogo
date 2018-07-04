@@ -128,15 +128,14 @@
                     </div>
                     <div class="row m-b m-l" v-if="updateGameStatusPermission">
                         <div class="col-xs-8">
-                            <date-picker
-                                :shortcuts="[]"
+                            <el-date-picker
                                 v-model="modal.value"
-                                type="datetime"
-                                format="yyyy-MM-dd HH:mm"
-                                :minute-step="1"
-                                range
-                            >
-                            </date-picker>
+                                size="mini"
+                                type="datetimerange"
+                                unlink-panels
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                            />
                         </div>
                         <div class="col-xs-2 col-xs-offset-2 text-right">
                             <button type="button" class="btn btn-sm blue" @click="updateTime">{{$t('action.update')}}</button>
@@ -175,7 +174,6 @@
   </div>
 </template>
 <script>
-import DatePicker from 'vue2-datepicker'
 import draggable from 'vuedraggable'
 import { getGame, updateGame } from '../../service'
 import AlertMsg from '../../components/AlertMsg'
@@ -274,7 +272,7 @@ export default {
                 display_name: game.display_name,
                 id: game.id,
                 index: index,
-                value: [game.holidates.schedule_open, game.holidates.schedule_close],
+                value: [game.holidates.schedule_open || undefined, game.holidates.schedule_close || undefined],
                 iconResult: {
                     display_name: game.display_name,
                     code: game.code,
@@ -290,16 +288,12 @@ export default {
             this.modal.isShow = false
         },
         updateTime () {
-            let [startDate, endDate] = [...this.modal.value]
+            let [startDate, endDate] = [...(this.modal.value || ['', ''])]
             if (startDate) {
                 startDate = Vue.moment(startDate).format('YYYY-MM-DD HH:mm')
-            } else {
-                startDate = ''
             }
             if (endDate) {
                 endDate = Vue.moment(endDate).format('YYYY-MM-DD HH:mm')
-            } else {
-                endDate = ''
             }
             updateGame('list', {
                 id: this.modal.id,
@@ -420,7 +414,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         AlertMsg,
         draggable
     }
@@ -435,11 +428,5 @@ export default {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-}
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0
 }
 </style>
