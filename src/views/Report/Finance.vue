@@ -209,7 +209,10 @@
                 <a>{{ data.withdraw_amount | currency('￥') }}</a>
             </td>
             <td @click="routerGo([data.time, data.time], 'profit')" class="pointer">
-                <a>{{ data.profit | currency('￥') }}</a>
+                <span :class="{
+                    'text-success': data.profit >= 0,
+                    'text-danger': data.profit < 0
+                }">{{ data.profit | currency('￥') }}</span>
             </td>
           </tr>
           <tr class="_600">
@@ -230,7 +233,10 @@
                 <a>{{ totalWithdraw | currency('￥') }}</a>
             </td>
             <td @click="routerGo(date, 'profit')" class="pointer">
-                <a>{{ totalProfit | currency('￥') }}</a>
+                <span :class="{
+                    'text-success': totalProfit >= 0,
+                    'text-danger': totalProfit < 0
+                }">{{ totalProfit | currency('￥') }}</span>
             </td>
           </tr>
         </tbody>
@@ -408,12 +414,17 @@ export default {
             })
         },
         routerGo (date, category) {
+            let [startDate, endDate] = date
+            if (this.report_type === 'monthly') {
+                startDate = Vue.moment(startDate).startOf('month').format('YYYY-MM-DD')
+                endDate = Vue.moment(endDate).endOf('month').format('YYYY-MM-DD')
+            }
             if (this.bet.includes(category)) {
                 this.$router.push({
                     path: '/report/betrecord',
                     query: {
-                        settled_at_0: date[0],
-                        settled_at_1: date[1],
+                        settled_at_0: startDate,
+                        settled_at_1: endDate,
                         ...(this.query.game && { game: this.query.game }),
                         ...(this.platform && { platform: this.platform })
                     }
@@ -423,8 +434,8 @@ export default {
                 this.$router.push({
                     path: '/bill/search',
                     query: {
-                        updated_at_0: date[0],
-                        updated_at_1: date[1],
+                        updated_at_0: startDate,
+                        updated_at_1: endDate,
                         status: 1,
                         ...(this.query.transaction_type
                             ? { transaction_type: this.query.transaction_type }
