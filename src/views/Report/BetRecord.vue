@@ -143,16 +143,6 @@
                                     <span>{{ $t('manage.mobile') }}</span>
                                 </label>
                             </div>
-                            <button
-                                class="md-btn w-xs pull-right btn m-t-md"
-                                type="button"
-                                @click="clearAll"
-                                :disabled="isQueryEmpty"
-                            >
-                                <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
-                                <i v-else class="fa fa-trash-o"></i> 
-                                <span>{{ $t('action.reset_condition') }}</span>
-                            </button>
                         </div>
                         <div class="row m-l-xs m-r-xs">
                             <div class="pull-left m-r-xs">
@@ -173,25 +163,28 @@
                                         <option value="created">{{ '投注时间' }}</option>
                                         <option value="settled">{{ '结算时间' }}</option>
                                     </select>
-                                    <date-picker
-                                        width="248"
-                                        :not-after="today"
-                                        :shortcuts="shortcuts"
-                                        type="date"
+
+                                    <el-date-picker
+                                        style="width: 248px;"
                                         v-model="created_at"
-                                        format="yyyy-MM-dd"
-                                        range
+                                        size="mini"
+                                        type="daterange"
+                                        unlink-panels
+                                        start-placeholder="开始日期"
+                                        end-placeholder="结束日期"
+                                        :picker-options="{shortcuts}"
                                         ref="created"
                                         v-show="timeCategory === 'created'"
                                     />
-                                    <date-picker
-                                        width="248"
-                                        :not-after="today"
-                                        :shortcuts="shortcuts"
-                                        type="date"
+                                    <el-date-picker
+                                        style="width: 248px;"
                                         v-model="settled_at"
-                                        format="yyyy-MM-dd"
-                                        range
+                                        size="mini"
+                                        type="daterange"
+                                        unlink-panels
+                                        start-placeholder="开始日期"
+                                        end-placeholder="结束日期"
+                                        :picker-options="{shortcuts}"
                                         ref="settled"
                                         v-show="timeCategory === 'settled'"
                                     />
@@ -228,6 +221,16 @@
                                     </select>
                                 </div>
                             </div>
+                            <button
+                                class="md-btn w-xs pull-right btn m-t-md"
+                                type="button"
+                                @click="clearAll"
+                                :disabled="isQueryEmpty"
+                            >
+                                <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
+                                <i v-else class="fa fa-trash-o"></i> 
+                                <span>{{ $t('action.reset_condition') }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -512,7 +515,6 @@
     import url from '../../service/url'
     import Pulling from '../../components/Pulling'
     import SelectorGame from '../../components/SelectorGame'
-    import DatePicker from 'vue2-datepicker'
     import VueCookie from 'vue-cookie'
     import date from '../../utils/date'
     import $ from '../../utils/util'
@@ -544,8 +546,9 @@
                 defaultDate: [],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                     text: this.$t(`common.${element}`),
-                    start: date[element][0],
-                    end: date[element][1]
+                    onClick (p) {
+                        p.$emit('pick', date[element])
+                    }
                 })),
                 timeCategory: 'created',
                 loading: true,
@@ -608,7 +611,7 @@
                 if (`${newObj}` === `${this.defaultDate}` && `${[this.query.created_at_0, this.query.created_at_1]}` !== `${this.defaultDate}`) {
                     [this.query.created_at_0, this.query.created_at_1] = [undefined, undefined]
                 } else {
-                    [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                    [this.query.created_at_0, this.query.created_at_1] = [...(newObj || [])]
                 }
                 this.autoTogglePopup = false
                 this.submit()
@@ -617,7 +620,7 @@
                 if (`${newObj}` === `${this.defaultDate}` && `${[this.query.settled_at_0, this.query.settled_at_1]}` !== `${this.defaultDate}`) {
                     [this.query.settled_at_0, this.query.settled_at_1] = [undefined, undefined]
                 } else {
-                    [this.query.settled_at_0, this.query.settled_at_1] = [...newObj]
+                    [this.query.settled_at_0, this.query.settled_at_1] = [...(newObj || [])]
                 }
                 this.autoTogglePopup = false
                 this.submit()
@@ -647,7 +650,7 @@
                 if (this.autoTogglePopup) {
                     this.$nextTick(() => {
                         if (newObj !== old) {
-                            this.$refs[newObj].togglePopup()
+                            this.$refs[newObj].focus()
                         }
                     })
                 }
@@ -813,7 +816,6 @@
             }
         },
         components: {
-            DatePicker,
             Pulling,
             SelectorGame
         },

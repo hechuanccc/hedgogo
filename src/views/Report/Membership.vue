@@ -30,15 +30,16 @@
                 :class="{'text-blue': query.start_date && query.end_date}"
               >{{ $t('common.date') }}
               </label>
-              <date-picker
-                width='244'
+              <el-date-picker
                 style="display: block;"
-                :not-after="today"
-                :shortcuts="shortcuts"
                 v-model="date"
-                type="date"
-                format="yyyy-MM-dd"
-                range
+                size="mini"
+                type="daterange"
+                unlink-panels
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="{shortcuts}"
+                :clearable="false"
               />
             </div>
               <div class="pull-left m-r-xs">
@@ -161,7 +162,6 @@
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
 import _ from 'lodash'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
@@ -192,8 +192,9 @@ export default {
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             defaultDate: ['', ''],
             loading: true
@@ -213,7 +214,7 @@ export default {
             if (`${newObj}` === `${this.defaultDate}`) {
                 [this.query.start_date, this.query.end_date] = [undefined, undefined]
             } else {
-                [this.query.start_date, this.query.end_date] = [...newObj]
+                [this.query.start_date, this.query.end_date] = [...(newObj || [])]
             }
             this.submit()
         },
@@ -297,7 +298,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         SelectorMemberLevel,
         SelectorTransactionType,
         SelectorGame,

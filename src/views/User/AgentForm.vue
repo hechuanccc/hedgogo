@@ -133,7 +133,7 @@
                 <div class="form-group">
                   <label for="realname"  class="label-width">{{$t('agent.domain')}}</label>
                   <div class="inline-form-control">
-                    <input class="form-control input-lg" placeholder="123.com, abc.com" v-model="agent.domain" :disabled="!updateAgentPermission('settings')">
+                    <input class="form-control w-md" placeholder="123.com, abc.com" v-model="agent.domain" :disabled="!updateAgentPermission('settings')">
                   </div>
                   <label class="t-red"> {{$t('agent.domain_label')}}</label>
                 </div>
@@ -180,7 +180,13 @@
                 <div class="form-group">
                   <label for="birthday" class="label-width">{{$t('common.birthday')}}</label>
                   <div class="inline-form-control" v-if="updateAgentPermission('details')">
-                    <date-picker width='153' v-model="agent.birthday"></date-picker>
+                    <el-date-picker
+                      style="width: 153px;"
+                      v-model="agent.birthday"
+                      type="date"
+                      placeholder="请输入日期"
+                      value-format="yyyy-MM-dd"
+                    />
                   </div>
                   <div class="inline-form-control" v-else>
                       <input type="text" class="form-control" placeholder="请选择日期" v-model="agent.birthday" disabled>
@@ -223,7 +229,7 @@
                   <label for="realname"  class="label-width">{{$t('bank.account')}}</label>
                   <div class="inline-form-control">
                     <input
-                        class="form-control input-lg"
+                        class="form-control w-md"
                         type="number"
                         v-model="agent.bank.account"
                         :disabled="!updateAgentPermission('bank')"
@@ -253,15 +259,12 @@
 </template>
 <script>
 import VueTypeahead from 'vue-typeahead'
-import DatePicker from 'vue2-datepicker'
-import Vue from 'vue'
 import { getUser, updateUser, getSetting } from '../../service'
 import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import SelectorCommission from '../../components/SelectorCommission'
 
-const format = 'YYYY-MM-DD'
 export default {
     extends: VueTypeahead,
     data () {
@@ -274,7 +277,6 @@ export default {
             minChars: 1,
             query: '',
             errorMsg: '',
-            birthdayFormat: '',
             agent: {
                 id: '',
                 level: 4,
@@ -360,11 +362,6 @@ export default {
                     _this.getAgent(id)
                 }
             }, 100)
-        },
-        'agent.birthday' (newObj, old) {
-            if (newObj) {
-                this.agent.birthday = Vue.moment(this.agent.birthday).format(format)
-            }
         },
         'agent.level' (newObj, old) {
             if (parseInt(newObj) !== parseInt(old) && this.filteredParentAgents.length && !this.filteredParentAgents.find(a => a.id === this.agent.parent_agent)) {
@@ -462,7 +459,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         SelectorBank,
         SelectorMemberLevel,
         SelectorCommission

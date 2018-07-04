@@ -104,21 +104,20 @@
                             </div>
                             <div class="form-group">
                                 <label class="label-width">{{ $t('promotion.availability') }}</label>
-                                <date-picker
+                                <el-date-picker
                                     v-model="promotion.start_date"
                                     type="date"
-                                    format="yyyy-MM-dd"
                                     ref="start_date"
                                     :placeholder="$t('promotion.start_date')"
-                                    :not-before="yesterday"
+                                    value-format="yyyy-MM-dd"
                                 />
                                 &nbsp;~&nbsp;
-                                <date-picker
+                                <el-date-picker
                                     v-model="promotion.end_date"
                                     type="date"
-                                    format="yyyy-MM-dd"
                                     ref="end_date"
                                     :placeholder="`${$t('promotion.end_date')}, ${$t('common.not_required')}`"
+                                    value-format="yyyy-MM-dd"
                                 />
                             </div>
                             <div class="form-group">
@@ -144,14 +143,11 @@
     </div>
 </template>
 <script>
-import Vue from 'vue'
-import DatePicker from 'vue2-datepicker'
 import random from 'lodash/random'
 import { getSetting, updateSetting } from '../../service'
 import Tinymce from '../../components/Tinymce'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import $ from '../../utils/util'
-const format = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -179,7 +175,6 @@ export default {
             hasImage: false,
             hasImageMobile: false,
             selectedPromotion: '',
-            yesterday: Vue.moment().subtract(1, 'days').format(format),
             loading: false
         }
     },
@@ -197,27 +192,23 @@ export default {
             })
         },
         onSubmit (e) {
-            if (!this.$moment(this.promotion.start_date).isValid()) {
+            if (!this.promotion.start_date) {
                 $.notify({
                     message: `${this.$t('common.unfilled')}(${this.$t('promotion.availability')})`,
                     type: 'danger'
                 })
-                this.$refs.start_date.togglePopup()
+                this.$refs.start_date.focus()
                 return
-            } else {
-                this.promotion.start_date = Vue.moment(this.promotion.start_date).format(format)
             }
 
-            if (this.$moment(this.promotion.end_date).isValid()) {
-                if (this.$moment(this.promotion.end_date).diff(this.promotion.start_date, 'days') < 0) {
+            if (this.promotion.end_date) {
+                if (this.$moment(this.promotion.end_date).diff(this.promotion.start_date) < 0) {
                     $.notify({
                         message: this.$t('promotion.end_date_not_before_start_date'),
                         type: 'danger'
                     })
-                    this.$refs.end_date.togglePopup()
+                    this.$refs.end_date.focus()
                     return
-                } else {
-                    this.promotion.end_date = Vue.moment(this.promotion.end_date).format(format)
                 }
             } else {
                 this.promotion.end_date = ''
@@ -296,7 +287,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         Tinymce,
         SelectorMemberLevel
     }

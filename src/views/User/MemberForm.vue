@@ -116,7 +116,13 @@
                 <div class="form-group">
                   <label for="birthday" class="label-width">{{$t('common.birthday')}} </label>
                   <div class="inline-form-control" v-if="updateMemberPermission('details')">
-                    <date-picker width='153' v-model="member.birthday"></date-picker>
+                    <el-date-picker
+                      style="width: 153px;"
+                      v-model="member.birthday"
+                      type="date"
+                      placeholder="请输入日期"
+                      value-format="yyyy-MM-dd"
+                    />
                   </div>
                   <div class="inline-form-control" v-else>
                     <input
@@ -217,14 +223,11 @@
     </div>
 </template>
 <script>
-import DatePicker from 'vue2-datepicker'
 import SelectorAgent from '../../components/SelectorAgent'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import { getUser, updateUser } from '../../service'
 import $ from '../../utils/util'
-import Vue from 'vue'
-const format = 'YYYY-MM-DD'
 
 export default {
     data () {
@@ -254,13 +257,6 @@ export default {
         bankFilled: function () {
             let bankinfo = this.member.bank
             return bankinfo.bank || bankinfo.province || bankinfo.id || bankinfo.account
-        }
-    },
-    watch: {
-        'member.birthday' (newObj, old) {
-            if (newObj) {
-                this.member.birthday = Vue.moment(this.member.birthday).format(format)
-            }
         }
     },
     beforeRouteEnter (to, from, next) {
@@ -324,15 +320,9 @@ export default {
         }
     },
     components: {
-        DatePicker,
         SelectorBank,
         SelectorMemberLevel,
         SelectorAgent
     }
 }
 </script>
-<style scoped>
-.dropdown-menu .active{
-  background-color: #0275d8;
-}
-</style>
