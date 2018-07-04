@@ -155,27 +155,31 @@
                             <option value="0">{{ $t('time.applied_at') }}</option>
                             <option value="1">{{ $t('time.updated_at') }}</option>
                         </select>
-                        <date-picker
-                            width="248"
-                            :not-after="today"
-                            :shortcuts="shortcuts"
-                            type="date"
+                        <el-date-picker
+                            style="width: 248px;"
                             v-model="created_at"
-                            format='yyyy-MM-dd'
-                            range
-                            ref="created"
+                            size="mini"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="{shortcuts}"
                             v-show="selected === '0'"
+                            ref="created"
                         />
-                        <date-picker
-                            width="248"
-                            :not-after="today"
-                            :shortcuts="shortcuts"
-                            type="date"
+                        <el-date-picker
+                            style="width: 248px;"
                             v-model="updated_at"
-                            format='yyyy-MM-dd'
-                            range
-                            ref="updated"
+                            size="mini"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="{shortcuts}"
                             v-show="selected === '1'"
+                            ref="updated"
                         />
                     </div>
                 </div>
@@ -312,7 +316,6 @@
 <script>
     import url from '../../service/url'
     import { updateTransaction } from '../../service'
-    import DatePicker from 'vue2-datepicker'
     import Pulling from '../../components/Pulling'
     import $ from '../../utils/util'
     import SelectorMemberLevel from '../../components/SelectorMemberLevel'
@@ -336,8 +339,9 @@
                 today: date.today[0],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                     text: this.$t(`time.${element}`),
-                    start: date[element][0],
-                    end: date[element][1]
+                    onClick (p) {
+                        p.$emit('pick', date[element])
+                    }
                 })),
                 autoTogglePopup: false,
                 loading: true,
@@ -366,12 +370,12 @@
                 this.submit()
             },
             created_at (newObj) {
-                [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                [this.query.created_at_0, this.query.created_at_1] = [...(newObj || [])]
                 this.autoTogglePopup = false
                 this.submit()
             },
             updated_at (newObj) {
-                [this.query.updated_at_0, this.query.updated_at_1] = [...newObj]
+                [this.query.updated_at_0, this.query.updated_at_1] = [...(newObj || [])]
                 this.autoTogglePopup = false
                 this.submit()
             },
@@ -386,9 +390,9 @@
                     this.$nextTick(() => {
                         if (newObj !== old) {
                             if (newObj === '1') {
-                                this.$refs.updated.togglePopup()
+                                this.$refs.updated.focus()
                             } else {
-                                this.$refs.created.togglePopup()
+                                this.$refs.created.focus()
                             }
                         }
                     })
@@ -488,7 +492,6 @@
             }
         },
         components: {
-            DatePicker,
             Pulling,
             SelectorMemberLevel
         }

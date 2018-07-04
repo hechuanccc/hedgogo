@@ -24,27 +24,55 @@
       <div class="box m-t-sm m-b-sm">
         <div class="box-body clearfix form-input-sm">
           <div class="row m-l-xs m-r-xs">
-            <div class="pull-left m-r-xs">
+            <div class="pull-left m-r-xs" v-show="report_type === 'monthly'">
+              <label
+                class="form-control-label p-b-0"
+                :class="{'text-blue': query.start_date && query.end_date}"
+              >
+                <span v-show="report_type === 'monthly'">月份</span>
+              </label>
+              <div>
+                <el-date-picker
+                  v-model="date[0]"
+                  type="month"
+                  :editable="false"
+                  :clearable="false"
+                  placeholder="起始月"
+                  value-format="yyyy-MM"
+                />
+                <span class="text-xs">-</span>
+                <el-date-picker
+                  v-model="date[1]"
+                  type="month"
+                  :editable="false"
+                  :clearable="false"
+                  placeholder="结束月"
+                  value-format="yyyy-MM"
+                />
+              </div>
+            </div>
+            <div class="pull-left m-r-xs" v-show="report_type === 'daily'">
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.start_date && query.end_date}"
               >{{ $t('dic.date') }}
               </label>
-              <date-picker
-                width='244'
-                style="display: block;"
-                :not-after="today"
-                :shortcuts="shortcuts"
-                v-model="date"
-                type="date"
-                format='yyyy-MM-dd'
-                range
+              <el-date-picker
+                  style="display: block;"
+                  v-model="date"
+                  size="mini"
+                  type="daterange"
+                  align="right"
+                  unlink-panels
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  :picker-options="{shortcuts}"
               />
             </div>
             <div class="pull-left m-r-xs">
               <label
                   class="form-control-label p-b-0"
-                  :class="{'text-blue': agent && !agentReport}"
+                  :class="{'text-blue': agent}"
               >{{ $t('dic.agent') }}
               </label>
               <selector-agent
@@ -53,13 +81,12 @@
                 :attribute="'username'"
                 @agent-select="agentSelect"
                 :placeholder="$t('dic.agent')"
-                :disabled="!agentReport"
               />
             </div>
             <div class="pull-left m-r-xs">
               <label
                   class="form-control-label p-b-0"
-                  :class="{'text-blue': query.member_level && !agentReport}"
+                  :class="{'text-blue': query.member_level}"
               >{{ $t('dic.member_level') }}
               </label>
               <selector-member-level
@@ -68,7 +95,6 @@
                 :reportFlag="true"
                 :accountType="''"
                 :placeholder="$t('dic.member_level')"
-                :disabled="agentReport"
                 @level-select="levelSelect"
               />
             </div>
@@ -125,13 +151,33 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('system.reset_condition') }}</span>
+              {{ $t('system.reset_condition') }}
             </button>
           </div>
         </div>
       </div>
     </form>
     <div class="box m-t-xs" v-if="queryset.length > 0">
+      <div class="b-b nav-active-blue p-t-sm">
+        <ul class="nav nav-tabs m-l" >
+          <li class="nav-item">
+            <router-link
+              :to="'/report/finance_report'"
+              class="nav-link _500"
+              :class="{ 'active': report_type === 'daily' }"
+            >日报表
+            </router-link>
+          </li>
+          <li class="nav-item" @click="report_type = 'monthly'">
+            <router-link
+              :to="'/report/finance_report?report_type=monthly'"
+              class="nav-link _500"
+              :class="{ 'active': report_type === 'monthly' }"
+            >月报表
+            </router-link>
+          </li>
+        </ul>
+      </div>
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
@@ -146,7 +192,7 @@
         </thead>
         <tbody v-if="queryset.length > 0" class="text-right">
           <tr v-for="data in queryset" :key="data.time">
-            <td class="text-center">{{ data.time | moment('YYYY-MM-DD') }}</td>
+            <td class="text-center">{{ data.time | moment(format) }}</td>
             <td @click="routerGo([data.time, data.time], 'amount')" class="pointer">
                 <a>{{ data.amount | currency('￥') }}</a>
             </td>
@@ -163,7 +209,10 @@
                 <a>{{ data.withdraw_amount | currency('￥') }}</a>
             </td>
             <td @click="routerGo([data.time, data.time], 'profit')" class="pointer">
-                <a>{{ data.profit | currency('￥') }}</a>
+                <span :class="{
+                    'text-success': data.profit >= 0,
+                    'text-danger': data.profit < 0
+                }">{{ data.profit | currency('￥') }}</span>
             </td>
           </tr>
           <tr class="_600">
@@ -184,7 +233,10 @@
                 <a>{{ totalWithdraw | currency('￥') }}</a>
             </td>
             <td @click="routerGo(date, 'profit')" class="pointer">
-                <a>{{ totalProfit | currency('￥') }}</a>
+                <span :class="{
+                    'text-success': totalProfit >= 0,
+                    'text-danger': totalProfit < 0
+                }">{{ totalProfit | currency('￥') }}</span>
             </td>
           </tr>
         </tbody>
@@ -195,7 +247,6 @@
         :api="url"
         :queryset="queryset"
         :query="query"
-        :extra="extra"
         @query-data="queryData"
         @query-param="queryParam"
         @export-query="exportQuery"
@@ -212,8 +263,7 @@
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import VueCookie from 'vue-cookie'
 import Vue from 'vue'
 import url from '../../service/url'
@@ -225,18 +275,16 @@ import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import date from '../../utils/date'
 import $ from '../../utils/util'
 
-const format = 'YYYY-MM-DD'
 export default {
     data () {
         return {
-            agentReport: false,
             date: ['', ''],
             url: url.report.finance,
             queryset: [],
             query: {},
-            extra: '',
             agent: '',
             transaction_type: '',
+            report_type: this.$route.query.type || 'daily',
             platform: '',
             game: '',
             href: '',
@@ -244,8 +292,9 @@ export default {
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`time.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             defaultDate: ['', ''],
             loading: true,
@@ -256,11 +305,11 @@ export default {
             totalWithdraw: 0,
             totalProfit: 0,
             bet: [ 'amount', 'betrecord_count', 'profit' ],
-            transaction: [ 'deposit_amount', 'manual_operation_amount', 'withdraw_amount' ]
+            transaction: [ 'deposit_amount', 'manual_operation_amount', 'withdraw_amount' ],
+            format: 'YYYY-MM-DD'
         }
     },
     created () {
-        this.defaultDate = [Vue.moment(this.today).subtract(6, 'days').format(format), this.today]
         this.setQueryAll()
         this.rebase()
     },
@@ -270,10 +319,13 @@ export default {
             this.submit()
         },
         date (newObj, old) {
+            if (newObj && Vue.moment(newObj[0]).diff(newObj[1]) > 0) {
+                [...newObj] = [newObj[1], newObj[0]]
+            }
             if (`${newObj}` === `${this.defaultDate}`) {
                 [this.query.start_date, this.query.end_date] = [undefined, undefined]
             } else {
-                [this.query.start_date, this.query.end_date] = [...newObj]
+                [this.query.start_date, this.query.end_date] = [...(newObj || [])]
             }
             this.submit()
         },
@@ -289,29 +341,24 @@ export default {
     computed: {
         getReport () {
             this.$refs.pulling.getExportQuery()
-            this.href = `${this.url}?token=${VueCookie.get('access_token')}${this.agentReport ? `&agent=${this.agent}` : ''}&opt_expand=download_report&${this.export_query}`
+            this.href = `${this.url}?token=${VueCookie.get('access_token')}&opt_expand=download_report&${this.export_query}`
             return this.queryset.length
         },
         isQueryEmpty () {
-            return $.compareQuery(this.query, {})
+            return $.compareQuery(this.query, { ...(this.report_type && this.report_type !== 'daily' && { report_type: this.report_type }) })
         }
     },
     methods: {
         setQueryAll () {
-            if (this.$route.params.agentId) {
-                this.agentReport = true
-                this.extra = `agent=${this.$route.params.agentId}`
-                this.agent = this.$route.params.agentId
-            } else {
-                this.agentReport = false
-                this.extra = ''
-                this.agent = this.$route.query.agent || ''
-            }
+            this.report_type = this.$route.query.report_type || 'daily'
+            this.format = this.report_type === 'daily' ? 'YYYY-MM-DD' : 'YYYY-MM'
+            this.defaultDate = [Vue.moment().subtract(6, this.report_type === 'daily' ? 'days' : 'months').format(this.format), Vue.moment().format(this.format)]
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
-                this.date = this.defaultDate
+                this.date = [...this.defaultDate]
             }
+            this.agent = this.$route.query.agent || ''
             this.transaction_type = this.$route.query.transaction_type || ''
             this.platform = this.$route.query.platform || ''
             this.game = this.$route.query.game || ''
@@ -354,29 +401,30 @@ export default {
             }
         },
         search:
-            _.debounce(function () {
+            debounce(function () {
                 this.submit()
             },
         700),
         clearAll () {
-            if (this.agentReport) {
-                this.query = {
-                    member_level: this.query.member_level
-                }
-            } else {
-                this.query = {}
+            this.query = {
+                ...(this.report_type && this.report_type !== 'daily' && { report_type: this.report_type })
             }
             this.$nextTick(() => {
                 this.submit()
             })
         },
         routerGo (date, category) {
+            let [startDate, endDate] = date
+            if (this.report_type === 'monthly') {
+                startDate = Vue.moment(startDate).startOf('month').format('YYYY-MM-DD')
+                endDate = Vue.moment(endDate).endOf('month').format('YYYY-MM-DD')
+            }
             if (this.bet.includes(category)) {
                 this.$router.push({
                     path: '/report/betrecord',
                     query: {
-                        settled_at_0: date[0],
-                        settled_at_1: date[1],
+                        settled_at_0: startDate,
+                        settled_at_1: endDate,
                         ...(this.query.game && { game: this.query.game }),
                         ...(this.platform && { platform: this.platform })
                     }
@@ -386,8 +434,8 @@ export default {
                 this.$router.push({
                     path: '/bill/search',
                     query: {
-                        updated_at_0: date[0],
-                        updated_at_1: date[1],
+                        updated_at_0: startDate,
+                        updated_at_1: endDate,
                         status: 1,
                         ...(this.query.transaction_type
                             ? { transaction_type: this.query.transaction_type }
@@ -401,7 +449,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         SelectorMemberLevel,
         SelectorTransactionType,
         SelectorGame,

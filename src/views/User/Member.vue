@@ -186,17 +186,16 @@
                 :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
               >{{ $t('time.registered_at') }}
               </label>
-              <date-picker
-                width='244'
+              <el-date-picker
                 style="display: block;"
-                :not-after="today"
-                :shortcuts="shortcuts"
-                :inputClass="mode === 'normal' ? 'mx-input form-control pointer' : 'form-control'"
-                :disabled="mode !== 'normal'"
-                type="date"
                 v-model="created_at"
-                format='yyyy-MM-dd'
-                range
+                size="mini"
+                type="daterange"
+                unlink-panels
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="{shortcuts}"
+                :disabled="mode !== 'normal'"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -445,7 +444,6 @@
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
 import VueCookie from 'vue-cookie'
 import _ from 'lodash'
 import url from '../../service/url'
@@ -472,8 +470,9 @@ export default {
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`time.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             userInfos: [
                 'phone',
@@ -507,7 +506,7 @@ export default {
             deep: true
         },
         created_at (newObj) {
-            [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+            [this.query.created_at_0, this.query.created_at_1] = [...(newObj || [])]
             this.submit()
         },
         userInfo_q (newObj) {
@@ -640,7 +639,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         SelectorMemberLevel,
         Pulling
     }

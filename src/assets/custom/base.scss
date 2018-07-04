@@ -156,6 +156,9 @@ span.time-picker{
     min-height: 33px;
     font-size: $font-size-sm;
     border-radius: 3px;
+    &.multiselect--disabled {
+        min-height: 33px;
+    }
     .multiselect__select {
         height: 33px;
         width: 35px;
@@ -186,6 +189,46 @@ span.time-picker{
         margin-top: 3px;
     }
 }
-.multiselect.multiselect--disabled {
-    min-height: 33px;
+
+.el-date-editor {
+    &.el-date-editor--month {
+        width: 120px;
+    }
+    &.el-date-editor--daterange {
+        width: 244px;
+    }
+    .el-input__inner, &.el-input__inner {
+        font-size: $font-size-sm;
+        line-height: $font-size-sm;
+        height: 33px;
+        border-radius: 3px;
+        border-color: rgba(120, 130, 140, 0.2);
+    }
+    &.el-range-editor.is-active, &.el-range-editor.is-active:hover {
+        border-color: rgba(120, 130, 140, 0.2);
+    }
+    .el-range-input {
+        height: 25px;
+        font-size: $font-size-sm;
+        line-height: $font-size-sm;
+        &:disabled {
+            background-color: #eceeef;
+        }
+    }
+    .el-range-separator {
+        height: 25px;
+        line-height: 25px;
+    }
+    .el-range__close-icon {
+        width: 15px;
+    }
+    &.is-disabled {
+        background-color: #eceeef;
+    }
+}
+
+.el-picker-panel {
+    .el-date-table th {
+        text-align: center;
+    }
 }

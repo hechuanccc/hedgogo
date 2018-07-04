@@ -186,7 +186,13 @@
                 <div class="form-group">
                   <label class="label-width">{{$t('user.birthday')}}</label>
                   <div class="inline-form-control">
-                    <date-picker width='153' v-model="agent.birthday"></date-picker>
+                    <el-date-picker
+                      style="width: 153px;"
+                      v-model="agent.birthday"
+                      type="date"
+                      placeholder="请输入日期"
+                      value-format="yyyy-MM-dd"
+                    />
                   </div>
                 </div>
 
@@ -406,15 +412,11 @@
 </template>
 <script>
 import VueTypeahead from 'vue-typeahead'
-import DatePicker from 'vue2-datepicker'
-import Vue from 'vue'
 import { getUser, updateUser, getSetting } from '../../service'
 import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import SelectorCommission from '../../components/SelectorCommission'
-
-const format = 'YYYY-MM-DD'
 
 export default {
     extends: VueTypeahead,
@@ -517,9 +519,7 @@ export default {
         },
         onSubmit (e) {
             let agent = Object.assign({}, this.agent)
-            if (agent.birthday) {
-                agent.birthday = Vue.moment(agent.birthday).format(format)
-            }
+
             if (!agent.bank.bank) {
                 this.$delete(agent, 'bank')
             }
@@ -531,11 +531,6 @@ export default {
                 return
             } else {
                 this.formError = ''
-            }
-            for (let x in agent) {
-                if (!agent[x]) {
-                    delete agent[x]
-                }
             }
             updateUser('agentApplication', {
                 id: agent.id,
@@ -599,7 +594,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         SelectorBank,
         SelectorMemberLevel,
         SelectorCommission

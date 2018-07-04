@@ -241,9 +241,9 @@ export default {
                 this.$emit('query-data', this.myQueryset)
                 this.next = data.next
                 this.loading = false
-            }, () => {
+            }, error => {
                 $.notify({
-                    message: this.$t('system_msg.server_error'),
+                    message: error,
                     type: 'danger'
                 })
                 this.$emit('query-data', [])

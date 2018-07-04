@@ -10,15 +10,16 @@
                                 :class="{'text-blue': action_time && (action_time[0] || action_time[1])}"
                             >{{ $t('time.operated_at') }}
                             </label>
-                            <date-picker
-                                width='227'
+                            <el-date-picker
                                 style="display: block;"
-                                :not-after="today"
-                                :shortcuts="shortcuts"
-                                type="date"
                                 v-model="action_time"
-                                format='yyyy-MM-dd'
-                                range
+                                size="mini"
+                                type="daterange"
+                                align="right"
+                                unlink-panels
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                :picker-options="{shortcuts}"
                             />
                         </div>
                         <div class="pull-left m-r-xs">
@@ -165,7 +166,6 @@
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
 import url from '../../service/url'
 import Pulling from '../../components/Pulling'
 import date from '../../utils/date'
@@ -184,8 +184,9 @@ export default {
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`time.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             loading: true,
             url
@@ -216,7 +217,7 @@ export default {
             deep: true
         },
         action_time (newObj) {
-            [this.query.action_time_0, this.query.action_time_1] = [...newObj]
+            [this.query.action_time_0, this.query.action_time_1] = [...(newObj || [])]
             this.submit()
         }
     },
@@ -264,7 +265,6 @@ export default {
         }
     },
     components: {
-        DatePicker,
         Pulling
     }
 }
