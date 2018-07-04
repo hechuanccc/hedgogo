@@ -21,24 +21,23 @@
                                 <label for="" class="label-width">{{ $t('role_manage.role_permission') }}</label>
                                 <div class="form-control">
                                     <template v-for="(list, index) in permissions">
-                                        <div class="row">
+                                        <div class="row" :key="'group_' + index">
                                             <div class="col-sm-12">
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input type="checkbox" v-model="list.checked" :checked="selectMax" @click="toggleSelect(list, list.checked^1)">
+                                                        <input type="checkbox" v-model="list.checked" :checked="selectMax" @change="toggleSelect(list, list.checked)">
                                                         <strong> {{ list.display_name }}</strong>
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-offset-1 col-sm-11" v-for="advpermission in list.advpermissions">
+                                        <div class="row" :key="'adv_' + index">
+                                            <div class="col-sm-offset-1 col-sm-11" v-for="advpermission in list.advpermissions" :key="advpermission.id">
                                                 <div class="checkbox">
                                                     <label>
                                                         <input type="checkbox" v-model="advpermission.checked">
-                                                        <span class="">{{ advpermission.display_name }}</span>
+                                                        <span>{{ advpermission.display_name }}</span>
                                                         <span class="text-muted">- {{ advpermission.description }}</span>
-                                                        <span class="text-danger"></span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -128,8 +127,7 @@ export default {
             })
         },
         toggleSelect (list, value) {
-            list.checked = value
-            list.advpermissions.forEach((advpermission) => {
+            list.advpermissions.forEach(advpermission => {
                 advpermission.checked = value
             })
         },
