@@ -67,6 +67,7 @@
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   :picker-options="{shortcuts}"
+                  :clearable="false"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -351,8 +352,14 @@ export default {
     methods: {
         setQueryAll () {
             this.report_type = this.$route.query.report_type || 'daily'
-            this.format = this.report_type === 'daily' ? 'YYYY-MM-DD' : 'YYYY-MM'
-            this.defaultDate = [Vue.moment().subtract(6, this.report_type === 'daily' ? 'days' : 'months').format(this.format), Vue.moment().format(this.format)]
+            if (this.report_type === 'daily') {
+                this.format = 'YYYY-MM-DD'
+                this.defaultDate = [Vue.moment().subtract(6, 'days').format(this.format), Vue.moment().format(this.format)]
+            } else if (this.report_type === 'monthly') {
+                this.format = 'YYYY-MM'
+                this.defaultDate = [Vue.moment().subtract(5, 'months').format(this.format), Vue.moment().format(this.format)]
+            }
+
             if (this.$route.query.start_date || this.$route.query.end_date) {
                 this.date = [this.$route.query.start_date, this.$route.query.end_date]
             } else {
