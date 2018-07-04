@@ -11,6 +11,7 @@ import router from './router'
 import Vue2Filters from 'vue2-filters'
 import axios from 'axios'
 import Notifications from './plugin/NotificationPlugin'
+import { DatePicker } from 'element-ui'
 
 import App from './views/App'
 
@@ -40,6 +41,7 @@ Vue.use(Moment)
 Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(Notifications)
+Vue.use(DatePicker)
 
 const i18n = new VueI18n({
     locale: Vue.config.lang,
