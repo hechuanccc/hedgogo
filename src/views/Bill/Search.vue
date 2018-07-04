@@ -131,15 +131,16 @@
                         :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
                     >{{ $t('common.date') }}
                     </label>
-                    <date-picker
-                        width='244'
+                    <el-date-picker
                         style="display: block;"
-                        :not-after="today"
-                        :shortcuts="shortcuts"
-                        type="date"
                         v-model="created_at"
-                        format="yyyy-MM-dd"
-                        range
+                        size="mini"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="{shortcuts}"
                     />
                 </div>
                 <div class="pull-left m-r-xs">
@@ -267,7 +268,6 @@
     import Multiselect from 'vue-multiselect'
     import url from '../../service/url'
     import { getTransactionType } from '../../service'
-    import DatePicker from 'vue2-datepicker'
     import TransactionStatus from '../../components/TransactionStatus'
     import SelectorTransactionType from '../../components/SelectorTransactionType'
     import Pulling from '../../components/Pulling'
@@ -299,8 +299,9 @@
                 today: date.today[0],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                     text: this.$t(`common.${element}`),
-                    start: date[element][0],
-                    end: date[element][1]
+                    onClick (p) {
+                        p.$emit('pick', date[element])
+                    }
                 })),
                 loading: true,
                 url
@@ -317,7 +318,7 @@
                 deep: true
             },
             created_at (newObj) {
-                [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+                [this.query.created_at_0, this.query.created_at_1] = [...(newObj || [])]
                 this.submit()
             },
             status (newObj) {
@@ -396,7 +397,6 @@
         },
         components: {
             Multiselect,
-            DatePicker,
             Pulling,
             TransactionStatus,
             SelectorTransactionType,

@@ -13,14 +13,16 @@
                 :class="{'text-blue': query.start_date && query.end_date}"
               >{{ $t('common.date') }}
               </label>
-              <date-picker
-                width="244"
+              <el-date-picker
                 style="display: block;"
-                :shortcuts="shortcuts"
                 v-model="date"
-                type="date"
-                format="yyyy-MM-dd"
-                range
+                size="mini"
+                type="daterange"
+                unlink-panels
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="{shortcuts}"
+                :clearable="false"
               />
             </div>
             <div class="pull-left m-r-xs">
@@ -175,7 +177,6 @@
 
 <script>
 import Vue from 'vue'
-import DatePicker from 'vue2-datepicker'
 import date from '../../utils/date'
 import { getReport } from '../../service'
 import $ from '../../utils/util'
@@ -212,8 +213,9 @@ export default {
             yesterday: date.yesterday[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
                 text: this.$t(`common.${element}`),
-                start: date[element][0],
-                end: date[element][1]
+                onClick (p) {
+                    p.$emit('pick', date[element])
+                }
             })),
             defaultDate: [],
             loading: {
@@ -474,9 +476,6 @@ export default {
             this.query = {}
             this.$router.push('/report/game/')
         }
-    },
-    components: {
-        DatePicker
     }
 }
 </script>
