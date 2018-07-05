@@ -149,8 +149,8 @@
                                 end-placeholder="结束日期"
                             />
                         </div>
-                        <div class="col-xs-2 col-xs-offset-2 text-right">
-                            <button type="button" class="btn btn-sm blue" @click="updateTime">{{$t('dic.update')}}</button>
+                        <div class="col-xs-3 col-xs-offset-1 text-right">
+                            <button type="button" class="md-btn w-xs btn blue" @click="updateTime">{{$t('dic.update')}}</button>
                         </div>
                     </div>
                     <div class="row"></div>
@@ -166,10 +166,10 @@
                                 <span>{{ $t('game.no_set_icon') }}</span>
                             </div>
                         </div>
-                        <div class="col-xs-5 inline-form-control m-t-lg" v-if="$root.permissions.includes('update_game_icon')">
-                            <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'icon')" required>
+                        <div class="col-xs-3 inline-form-control m-t-lg" v-if="$root.permissions.includes('update_game_icon')">
+                            <input type="file" class="form-control w-md" accept="image/*" @change="syncImg($event, 'icon')" required>
                         </div>
-                        <div class="col-xs-3 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
+                        <div class="col-xs-3 col-xs-offset-2 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
                             <button type="button" class="md-btn w-xs btn blue" @click="updateImage('icon')">{{$t('dic.update')}}</button>
                         </div>
                     </div>
