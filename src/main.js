@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
-import locales from './i18n/locales'
+import i18n from './i18n'
 import VueCookie from 'vue-cookie'
 import Moment from 'vue-moment'
 import store from './vuex/store'
@@ -23,15 +23,6 @@ if (HTTPS && HTTPS.replace(/"/g, '') === '1') {
     }
 }
 
-let navLang = navigator.language || navigator.userLanguage
-if (navLang === 'zh-CN' || navLang === 'zh-cn') {
-    Vue.config.lang = 'cn'
-} else if (navLang === 'en-US' || navLang === 'en-us') {
-    Vue.config.lang = 'en'
-} else {
-    Vue.config.lang = 'cn'
-}
-
 const config = require('../config')
 const env = process.env.NODE_ENV === 'development' ? config.dev.env : config.build.env
 Vue.prototype.$http = axios
@@ -42,11 +33,6 @@ Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(Notifications)
 Vue.use(DatePicker)
-
-const i18n = new VueI18n({
-    locale: Vue.config.lang,
-    messages: locales
-})
 
 // if we set xhr.withCredentials = true, all xhr request will send with credential cookies
 // for example (session_id, access_token, csrf_token), but not all the browser supports
@@ -72,7 +58,7 @@ axios.interceptors.response.use(response => {
         return Promise.reject(handleError(response.data.msg))
     }
 }, () => {
-    return Promise.reject(Vue.config.lang === 'cn' ? '服务异常，请稍后再试' : 'An error occured. Please try again later.')
+    return Promise.reject(i18n.t('system_msg.server_error'))
 })
 
 router.beforeEach((to, from, next) => {

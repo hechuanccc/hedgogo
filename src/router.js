@@ -1,24 +1,5 @@
-import Vue from 'vue'
-import VueI18n from 'vue-i18n'
 import Router from 'vue-router'
-import locales from './i18n/locales'
-
-Vue.use(Router)
-Vue.use(VueI18n)
-
-let navLang = navigator.language || navigator.userLanguage
-if (navLang === 'zh-CN' || navLang === 'zh-cn') {
-    Vue.config.lang = 'cn'
-} else if (navLang === 'en-US' || navLang === 'en-us') {
-    Vue.config.lang = 'en'
-} else {
-    Vue.config.lang = 'cn'
-}
-
-const i18n = new VueI18n({
-    locale: Vue.config.lang,
-    messages: locales
-})
+import i18n from './i18n'
 
 export default new Router({
     scrollBehavior: () => ({ y: 0 }),

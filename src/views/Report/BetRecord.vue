@@ -784,10 +784,10 @@
                     cancelBet({
                         id: betrecord.id,
                         data: { status }
+                    }, {
+                        action: this.$t('bet.cancel_bet')
                     }).then(data => {
                         betrecord.status = data.status
-                    }, error => {
-                        this.errorMsg = error
                     })
                 }
             },

@@ -12,7 +12,7 @@
                 <span class="v-m pull-left p-t-sm m-l-xs">{{ $t('user.agent_count') }}：{{ commissionsetting.agent_count || 0 }}</span>
                 <button
                     type="button"
-                    class="md-btn md-flat pull-right t-red"
+                    class="md-btn pull-right danger"
                     @click="deleteMode = true"
                     :disabled="commissionsetting.agent_count > 0"
                     v-if="$root.permissions.includes('delete_commission_setting') && !deleteMode"
@@ -27,14 +27,15 @@
                 </button>
                 <button
                     type="button"
-                    class="md-btn blue pull-right w-xs m-r-xs"
+                    class="md-btn danger pull-right m-r-xs"
                     @click="deleteCommission"
                     v-if="deleteMode"
                 >
-                    <span v-if="!deleteLoading">{{ $t('system_msg.confirm_action_object', {
+                    <i class="fa fa-spin fa-spinner" v-if="deleteLoading"></i>
+                    {{ $t('system_msg.confirm_action_object', {
                         action: $t('dic.delete')
-                    }) }}</span>
-                    <i class="fa fa-spin fa-spinner" v-else></i>
+                    }) }}
+                    
                 </button>
             </div>
         </div>
@@ -220,34 +221,26 @@ export default {
             updateSetting('commission', {
                 id: this.id,
                 data
+            }, {
+                action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.commission')
             }).then(data => {
-                $.notify({
-                    message: `${this.id ? this.$t('dic.update') : this.$t('dic.create')}${this.$t('title.commission')}${this.$t('status.success')}`
-                })
                 this.$router.push('/commission/')
                 this.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.loading = false
             })
         },
         deleteCommission () {
             this.deleteLoading = true
-            deleteSetting('commission', this.commissionsetting.id).then(() => {
+            deleteSetting('commission', this.commissionsetting.id, {
+                action: this.$t('dic.delete'),
+                object: this.$t('dic.commission')
+            }).then(() => {
                 this.deleteMode = false
-                $.notify({
-                    message: this.$t('dic.delete') + this.$t('status.success')
-                })
                 this.$router.push('/commission')
-            }, error => {
+            }, () => {
                 this.deleteLoading = false
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         },
         incomeThresholdValidate (rates) {

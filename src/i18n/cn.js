@@ -312,8 +312,8 @@ export default {
     },
     system_msg: {
         server_error: '服务异常，请稍后再试',
-        confirm_action_object: '@:dic.confirm要{action}{object}吗？',
-        confirm_retreat_schedule: '确定撤销 {game} {period} 所有已结算的注单吗？',
+        confirm_action_object: '@:dic.confirm要{action}{object}吗?',
+        confirm_retreat_schedule: '确定撤销 {game} {period} 所有已结算的注单吗?',
         confirm_manual_draw: '请确认是否手动开奖，该操作将会影响 {bet_record_count} 个注单',
         action_object_status: '{action}{object}{status}！',
         no_select_object: '尚未选择{object}！',
@@ -535,7 +535,7 @@ export default {
         action_types: {
             finance: '财务', // Back-end key
             configuration: '配置', // Back-end key
-            member_information: '@:dic.member@:dic.info', // Back-end key
+            member_information: '@:dic.member资料', // Back-end key
             game: '@:dic.game' // Back-end key
         },
         description: '操作说明'

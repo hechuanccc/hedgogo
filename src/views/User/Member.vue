@@ -248,12 +248,12 @@
               </button>
             </div>
             <div
-              class="pull-left w-xs m-r-xs"
+              class="pull-left w-sm m-r-xs"
               style="height: 60px; position: relative;"
               v-if="mode === 'confirm-ban'"
             >
               <button
-                class="md-btn w-xs btn blue"
+                class="md-btn w-sm btn blue"
                 style="position: absolute; bottom: 0;"
                 type="button"
                 @click="batchBanHandler"
@@ -374,7 +374,7 @@
           <tr v-for="member in queryset" :key="member.id">
             <td>
               <i class="fa fa-circle text-success m-r-xs" v-if="member.is_logged_in==true"></i>
-              <i class="fa fa-circle text-grey-400 m-r-xs " v-else></i>
+              <i class="fa fa-circle text-grey-400 m-r-xs" v-else></i>
               <router-link :to="'/member/' + member.id" class="m-b-0">{{ member.username }}</router-link>
               <span class="label red" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
               <br/>

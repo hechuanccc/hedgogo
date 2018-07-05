@@ -2,7 +2,7 @@
   <div>
     <div class="row">
         <div class="pull-left m-l" v-if="$root.permissions.includes('add_new_role')">
-            <router-link tag="button" class="md-btn w-sm blue m-b" to="/roles/add">{{ $t('title.role_add') }}</router-link>
+            <router-link tag="button" class="md-btn w-sm blue m-b" to="/roles/add">{{ $t('dic.create') }}</router-link>
         </div>
     </div>
     <div class="box" v-if="queryset.length>0">
@@ -11,7 +11,7 @@
                 <tr>
                     <th>{{ $t('title.role_name') }}</th>
                     <th>{{ $t('time.created_at') }}</th>
-                    <th v-if="$root.permissions.includes('update_role_name_advpermission') || $root.permissions.includes('remove_role')">
+                    <th class="text-center" v-if="$root.permissions.includes('update_role_name_advpermission') || $root.permissions.includes('remove_role')">
                         {{ $t('dic.operate') }}
                     </th>
                 </tr>
@@ -20,9 +20,9 @@
                 <tr v-for="role in queryset" :key="role.id">
                     <td><router-link :to="'/roles/' + role.id">{{ role.name }}</router-link></td>
                     <td>{{ role.created_at | datetimeFilter }}</td>
-                    <td v-if="$root.permissions.includes('update_role_name_advpermission') || $root.permissions.includes('remove_role')">
-                        <router-link class="p-l-xs" :to="`/roles/${role.id}/edit`" v-if="$root.permissions.includes('update_role_name_advpermission')">{{ $t('dic.update') }}</router-link>
-                        <a class="p-l-xs" @click="deleteRole(role.id)" v-if="role.id!==4 && $root.permissions.includes('remove_role')">{{ $t('dic.delete') }}</a>
+                    <td class="text-center" v-if="$root.permissions.includes('update_role_name_advpermission') || $root.permissions.includes('remove_role')">
+                        <router-link :to="`/roles/${role.id}/edit`" v-if="$root.permissions.includes('update_role_name_advpermission')">{{ $t('dic.update') }}</router-link>
+                        <a class="m-l-xs" @click="deleteRole(role.id)" v-if="role.id!==4 && $root.permissions.includes('remove_role')">{{ $t('dic.delete') }}</a>
                     </td>
                 </tr>
             </tbody>

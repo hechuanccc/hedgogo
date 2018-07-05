@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="p-b inline m-r-sm" v-if="$root.permissions.includes('add_online_payee')" >
-            <router-link tag="button" class="md-btn blue" to="/online_payee/add">{{$t('title.online_payee_add')}}</router-link>
+            <router-link tag="button" class="md-btn blue w-sm" to="/online_payee/add">{{$t('dic.create')}}</router-link>
         </div>
         <div class="inline">
             <label

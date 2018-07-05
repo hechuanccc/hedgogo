@@ -4,11 +4,11 @@ const NotificationStore = {
     state: [], // here the notifications will be added
 
     removeNotification (index) {
-        this.state.splice(index, 1)
+        this.state.splice(index, this.state.length)
     },
-    notify (notification) {
+    async notify (notification) {
         if (this.state.length) {
-            this.removeNotification(0)
+            await this.removeNotification(0)
         }
         this.state.push(notification)
     }

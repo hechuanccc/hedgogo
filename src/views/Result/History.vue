@@ -135,10 +135,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
-                    <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
-                    </div>                
+                    </table>         
                 </div>
                 <div class="modal-footer">
                     <div class="inline pull-left m-l-sm m-t-sm checkbox" v-if="modal.mode === 'manual_draw'">
@@ -203,7 +200,6 @@
 </template>
 <script>
 import { getGame, updateGame } from '../../service'
-import AlertMsg from '../../components/AlertMsg'
 import Vue from 'vue'
 import $ from '../../utils/util'
 const dateFormat = 'YYYY-MM-DD'
@@ -229,7 +225,6 @@ export default{
                 },
                 inform: false,
                 retreat: false,
-                msg: '',
                 loading: false
             },
             today: Vue.moment().format(dateFormat),
@@ -285,11 +280,11 @@ export default{
                     sureDraw: 0,
                     inform: false,
                     retreat: false,
-                    isShow: true,
-                    msg: this.$t(`system_msg.${mode}_alert`)
+                    isShow: true
                 }
-                this.$nextTick(() => {
-                    this.$refs.alertMsg.trigger('warning')
+                $.notify({
+                    message: this.$t(`system_msg.${mode}_alert`),
+                    type: 'warning'
                 })
             })
         },
@@ -300,8 +295,10 @@ export default{
             if (this.modal.scheduleResult.result_str) {
                 let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
                 if (!judgement) {
-                    this.modal.msg = this.$t('system_msg.draw_number_wrong')
-                    this.$refs.alertMsg.trigger('danger')
+                    $.notify({
+                        message: this.$t('system_msg.draw_number_wrong'),
+                        type: 'danger'
+                    })
                     return
                 } else {
                     this.modal.scheduleResult.result_str = result
@@ -309,25 +306,20 @@ export default{
                 this.modal.loading = true
                 updateGame('result', {
                     data: this.modal.scheduleResult
+                }, {
+                    action: this.$t('game.manual_draw')
                 }).then(() => {
-                    this.modal.msg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('game.manual_draw'),
-                        status: this.$t('status.success')
-                    })
-                    this.$refs.alertMsg.trigger('success', 1, true)
                     this.getPeriods()
                     this.modal.loading = false
-                }, error => {
-                    this.modal.msg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('game.manual_draw'),
-                        status: this.$t('status.failed')
-                    }) + `（${error}）`
-                    this.$refs.alertMsg.trigger('danger')
+                    this.hideModal()
+                }, () => {
                     this.modal.loading = false
                 })
             } else {
-                this.modal.msg = this.$t('game.draw_number_no_set')
-                this.$refs.alertMsg.trigger('warning')
+                $.notify({
+                    message: this.$t('game.draw_number_no_set'),
+                    type: 'warning'
+                })
             }
         },
         noDrawHandler () {
@@ -339,23 +331,19 @@ export default{
                     inform: this.modal.inform ? 1 : 0,
                     retreat: this.modal.retreat ? 1 : 0
                 }
-            }).then(data => {
-                this.modal.msg = this.$t('dic.set') + this.$t('status.success')
-                this.$refs.alertMsg.trigger('success', 1, true)
+            }, {
+                action: this.$t('dic.set')
+            }).then(() => {
                 this.getPeriods()
                 this.modal.loading = false
-            }, error => {
-                this.modal.msg = `${this.$t('status.failed')}（${error}）`
-                this.$refs.alertMsg.trigger('danger')
+                this.hideModal()
+            }, () => {
                 this.modal.loading = false
             })
         }
     },
     beforeDestroy () {
         clearInterval(this.timing)
-    },
-    components: {
-        AlertMsg
     }
 }
 </script>

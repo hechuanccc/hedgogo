@@ -37,7 +37,6 @@
 </template>
 <script>
 import { getSetting, updateSetting } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -67,17 +66,13 @@ export default {
                 data: {
                     status: bank.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 bank.status = data.status
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this.$delete(this.toggleLoading, bank.id)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.$delete(this.toggleLoading, bank.id)
             })
         }

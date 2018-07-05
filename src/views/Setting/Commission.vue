@@ -5,7 +5,7 @@
             tag="button"
             class="md-btn blue w-sm"
             to="/commission/add"
-        >{{ $t('title.commission_add') }}
+        >{{ $t('dic.create') }}
         </router-link>
     </div>
     <div class="box p-b-xs">
@@ -108,10 +108,7 @@ export default {
                 this.commissionsettings = data
                 this.loading = false
             }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+                $.errorNotify(error)
                 this.loading = false
             })
         },
@@ -123,17 +120,13 @@ export default {
                     name: commission.name,
                     status: commission.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 commission.status = data.status
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('dic.status') + this.$t('status.success')
-                })
                 this.$delete(this.toggleLoading, index)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.$delete(this.toggleLoading, index)
             })
         }

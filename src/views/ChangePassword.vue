@@ -3,27 +3,17 @@
         <div class="box-body">
             <form class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
                 <div class="row b-b p-b m-b">
-                    <div class="col-md-10">
-                        <div>
-                            <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('user.prev_password')}} </label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control w-lg inline" placeholder="请输入旧密码" v-model="user.prev_password" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('user.new_password')}} </label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control w-lg inline" placeholder="至少包含一个字符，数字或符号" v-model="user.new_password" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('user.repeat_password')}} </label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control w-lg inline" placeholder="重复输入新密码" v-model="user.repeat_password" required/>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label class="m-b-0">{{$t('user.prev_password')}}</label>
+                        <input type="password" class="form-control w-lg" v-model="user.prev_password" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="m-b-0">{{$t('user.new_password')}}</label>
+                        <input type="password" class="form-control w-lg" v-model="user.new_password" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="m-b-0">{{$t('user.repeat_password')}}</label>
+                        <input type="password" class="form-control w-lg" v-model="user.repeat_password" required/>
                     </div>
                 </div>
                 <div class="m-t">

@@ -13,7 +13,7 @@
                         <h2 class="v-m m-t-sm">{{promotion.name}} </h2>
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right">
-                        <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('update_promotion_activity')" :to="'/promotion/' + promotion.id + '/edit'">{{$t('title.promotion_edit')}}</router-link>
+                        <router-link class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('update_promotion_activity')" :to="'/promotion/' + promotion.id + '/edit'">{{$t('dic.update')}}</router-link>
                         <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('delete_promotion_activity')" @click="deletePromotion(promotion.id, true, $event)">{{$t('dic.delete')}}</a>
                     </div>
                 </div>
@@ -68,12 +68,12 @@
                     </div>
                 </div>
 
-                <div class="row p-t">
+                <div class="row">
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('dic.status')}}</span>
                         <div>
                             <span class="label success" v-if="promotion.status==1">{{$t('status.active')}}</span>
-                            <span class="label" v-else>{{$t('status.inactive')}}</span>
+                            <span class="label danger" v-else>{{$t('status.inactive')}}</span>
                         </div>
                     </div>
                     <div class="col-xs-5">
@@ -129,7 +129,10 @@
                         return
                     }
                 }
-                deleteSetting('promotion', id).then(() => {
+                deleteSetting('promotion', id, {
+                    action: this.$t('dic.delete'),
+                    object: this.$t('dic.promotion')
+                }).then(() => {
                     this.$router.push('/promotion')
                 })
             }

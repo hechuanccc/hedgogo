@@ -28,7 +28,12 @@
           >
           <tr v-for="(game, index) in queryset" :key="game.id">
             <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
-            <td class="text-uppercase text-left">
+            <td
+              class="text-uppercase text-left"
+              :class="{
+                'p-t-xs p-b-xs p-l-sm': editNameList[game.id] !== undefined
+              }"
+            >
               <!-- game_type: 0 => lottery ; 1 => sports -->
               <span
                 v-show="editNameList[game.id] === undefined"
@@ -42,7 +47,7 @@
                 {{game.display_name}}
               </router-link>
               <input
-                class="form-control w-sm inline"
+                class="form-control w-sm inline p-l-sm"
                 v-model="editNameList[game.id]"
                 :ref="`input${game.id}`"
                 v-show="editNameList[game.id] !== undefined"
@@ -125,7 +130,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span>{{ modal.display_name }}- {{ $t('dic.set') }}</span>
-                    <button type="button" class="close" aria-hidden="true" @click="hideModal">×
+                    <button type="button" class="close" aria-hidden="true" @click="hideModal">
+                        <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body m-r m-l">
@@ -152,10 +158,10 @@
                         <span>{{ $t('game.set_icon') }}</span>
                     </div>
                     <div class="row m-b m-l">
-                        <div class="col-xs-5 text-center" v-if="modal.icon">
+                        <div class="col-xs-4 text-center" v-if="modal.icon">
                             <img :src="modal.icon" width="108" height="108">
                         </div>
-                        <div class="col-xs-5 text-center" v-else>
+                        <div class="col-xs-4 text-center" v-else>
                             <div id="circle">
                                 <span>{{ $t('game.no_set_icon') }}</span>
                             </div>
@@ -163,16 +169,13 @@
                         <div class="col-xs-5 inline-form-control m-t-lg" v-if="$root.permissions.includes('update_game_icon')">
                             <input type="file" class="form-control" accept="image/*" @change="syncImg($event, 'icon')" required>
                         </div>
-                        <div class="col-xs-2 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
-                            <button type="button" class="btn btn-sm blue" @click="updateImage('icon')">{{$t('dic.update')}}</button>
+                        <div class="col-xs-3 text-right m-t-lg"  v-if="$root.permissions.includes('update_game_icon')">
+                            <button type="button" class="md-btn w-xs btn blue" @click="updateImage('icon')">{{$t('dic.update')}}</button>
                         </div>
-                    </div>
-                    <div class="row m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal" ></alert-msg>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click="hideModal">{{$t('dic.close')}}</button>
+                    <button type="button" class="btn w-xs" @click="hideModal">{{$t('dic.close')}}</button>
                 </div>
             </div>
         </div>
@@ -182,7 +185,6 @@
 <script>
 import draggable from 'vuedraggable'
 import { getGame, updateGame } from '../../service'
-import AlertMsg from '../../components/AlertMsg'
 import $ from '../../utils/util'
 
 import Vue from 'vue'
@@ -208,7 +210,6 @@ export default {
                     display_name: '',
                     code: '',
                     icon: '',
-                    bg_icon: '',
                     to_display: true
                 },
                 msg: ''
@@ -243,13 +244,11 @@ export default {
             updateGame('list', {
                 id: game.id,
                 data
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('system.enabled_status')
             }).then(data => {
                 this.$set(this.queryset, index, data)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         },
         toggleClose (index) {
@@ -262,13 +261,11 @@ export default {
             updateGame('list', {
                 id: game.id,
                 data
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('game.closed_status')
             }).then(data => {
                 this.$set(this.queryset, index, data)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         },
         showModal (index) {
@@ -308,19 +305,10 @@ export default {
                     start_date: startDate,
                     end_date: endDate
                 }
+            }, {
+                object: this.$t('game.set_holiday')
             }).then(data => {
                 this.$set(this.queryset, this.modal.index, data)
-                this.modal.msg = this.$t('system_msg.action_object_status', {
-                    action: this.$t('dic.update'),
-                    status: this.$t('status.success')
-                })
-                this.$refs.alertMsg.trigger('success', 3)
-            }, error => {
-                this.modal.msg = this.$t('system_msg.action_object_status', {
-                    action: this.$t('dic.update'),
-                    status: this.$t('status.failed')
-                }) + error
-                this.$refs.alertMsg.trigger('danger')
             })
         },
         syncImg (e, attr) {
@@ -342,45 +330,29 @@ export default {
                 updateGame('list', {
                     id: this.modal.id,
                     data: formData
+                }, {
+                    object: this.$t('game.set_icon')
                 }).then(() => {
                     this.getGameList()
-                    this.modal.msg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('dic.update'),
-                        status: this.$t('status.success')
-                    })
-                    this.$refs.alertMsg.trigger('success', 3)
-                }, error => {
-                    this.modal.msg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('dic.update'),
-                        status: this.$t('status.failed')
-                    }) + error
-                    this.$refs.alertMsg.trigger('danger')
                 })
             } else {
-                this.modal.msg = this.$t('game.no_set_icon')
-                this.$refs.alertMsg.trigger('warning', 3)
+                $.notify({
+                    message: this.$t('game.no_set_icon'),
+                    type: 'warning'
+                })
             }
         },
         changeMode () {
             if (!this.mode) {
                 updateGame('list', {
-                    data: this.queryset.map((game, index) => Object({
-                        id: game.id,
-                        display_name: game.display_name,
+                    data: this.queryset.map(({ id, display_name }, index) => Object({
+                        id,
+                        display_name,
                         rank: index + 1
                     }))
-                }).then(data => {
-                    $.notify({
-                        message: this.$t('system_msg.action_object_status', {
-                            action: this.$t('dic.update'),
-                            status: this.$t('status.success')
-                        })
-                    })
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
+                }, {
+                    action: this.$t('system.adjust_rank')
+                }).then(() => {}, () => {
                     this.queryset = this.initialQueryset
                 })
             } else {
@@ -405,20 +377,17 @@ export default {
                 data: {
                     display_name: name
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('title.game_name')
             }).then(data => {
                 Object.assign(this.queryset.find(game => game.id === id), {
                     display_name: data.display_name
                 })
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this.$delete(this.editNameLoading, id)
                 this.cancelEditName(id)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
+                this.$delete(this.editNameLoading, id)
             })
         },
         cancelEditName (id) {
@@ -426,7 +395,6 @@ export default {
         }
     },
     components: {
-        AlertMsg,
         draggable
     }
 }

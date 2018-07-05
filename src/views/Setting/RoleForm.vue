@@ -48,7 +48,6 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="errorMsg">{{ errorMsg }}</div>
                         <button type="submit" class="md-btn w-sm blue">{{ $t('dic.submit') }}</button>
                     </div>
                 </form>
@@ -66,8 +65,7 @@ export default {
                 name: ''
             },
             selectId: [[], []],
-            permissions: [],
-            errorMsg: ''
+            permissions: []
         }
     },
     computed: {
@@ -109,10 +107,11 @@ export default {
                 params: {
                     opt_expand: 'group,permissions'
                 }
+            }, {
+                action: this.role.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.role')
             }).then(data => {
                 this.$router.push('/roles/' + data.id)
-            }, error => {
-                this.errorMsg = error
             })
         },
         getPermissionsAll () {
@@ -122,8 +121,6 @@ export default {
                 }
             }).then(data => {
                 this.permissions = data
-            }, error => {
-                this.errorMsg = error
             })
         },
         toggleSelect (list, value) {

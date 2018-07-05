@@ -300,17 +300,13 @@ export default {
                     title: chatroom.title,
                     status: chatroom.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 chatroom.status = data.status
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('dic.status') + this.$t('status.success')
-                })
                 this.$delete(this.toggleLoading, index)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.$delete(this.toggleLoading, index)
             })
         },
@@ -365,19 +361,15 @@ export default {
             updateSystemParameter({
                 key,
                 data: result
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('misc.parameter_value')
             }).then(data => {
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this.typeTransform(data)
                 Object.assign(this.preferences[index], data)
                 this.modal.showModal = false
                 this.modal.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.modal.loading = false
             })
         }

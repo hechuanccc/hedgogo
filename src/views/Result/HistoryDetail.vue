@@ -441,9 +441,6 @@
                             </tbody>
                         </table>
                     </template>
-                    <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="inline pull-left m-l-sm m-t-sm" v-if="modal.mode === 'manual_draw' && $root.permissions.includes('manually_draw_game_result')">
@@ -516,7 +513,6 @@
 <script>
 import url from '../../service/url'
 import Pulling from '../../components/Pulling'
-import AlertMsg from '../../components/AlertMsg'
 import Vue from 'vue'
 import _ from 'lodash'
 import date from '../../utils/date'
@@ -561,7 +557,6 @@ export default {
                 sureDraw: false,
                 inform: false,
                 retreat: false,
-                msg: '',
                 loading: false
             },
             extra: '',
@@ -718,15 +713,15 @@ export default {
                     },
                     time: this.mode ? sched.schedule_result : sched.created_at,
                     betrecords: sched.bets_count,
-                    msg: this.$t(`system_msg.${modalMode}_alert`),
                     sureDraw: false,
                     isShow: true,
                     inform: false,
                     retreat: false
                 })
-                // this.$nextTick(() => {
-                //     this.$refs.alertMsg.trigger('warning')
-                // })
+                $.notify({
+                    message: this.$t(`system_msg.${modalMode}_alert`),
+                    type: 'warning'
+                })
             } else if (modalMode === 'retreat_schedule') {
                 let id = sched.status === 'open' ? sched.id : sched.schedule_id
                 id && getGame('scheduleRetreat', { id }).then(data => {
@@ -761,17 +756,13 @@ export default {
                 data: {
                     status: this.modal.status === 'close' ? 'force_cancelled' : 'cancelled'
                 }
+            }, {
+                action: this.$t('game.retreat_schedule')
             }).then(data => {
-                this.modal.msg = this.$t('game.cancelled')
-                this.$refs.alertMsg.trigger('success', 1, true)
                 this.modal.status === 'open' ? this.getRetreatedSchedules() : this.$refs.pulling.rebase()
                 this.modal.loading = false
-            }, error => {
-                this.modal.msg = this.$t('system_msg.action_object_status', {
-                    action: this.$t('game.retreat_schedule'),
-                    status: this.$t('status.failed')
-                }) + `（${error}）`
-                this.$refs.alertMsg.trigger('danger')
+                this.hideModal()
+            }, () => {
                 this.modal.loading = false
             })
         },
@@ -784,14 +775,13 @@ export default {
                     inform: this.modal.inform ? 1 : 0,
                     retreat: this.modal.retreat ? 1 : 0
                 }
+            }, {
+                action: this.$t('dic.set')
             }).then(data => {
-                this.modal.msg = this.$t('dic.set') + this.$t('status.success')
-                this.$refs.alertMsg.trigger('success', 1, true)
                 this.$refs.pulling.rebase()
                 this.modal.loading = false
-            }, error => {
-                this.modal.msg = `${this.$t('status.failed')}（${error}）`
-                this.$refs.alertMsg.trigger('danger')
+                this.hideModal()
+            }, () => {
                 this.modal.loading = false
             })
         },
@@ -799,8 +789,10 @@ export default {
             if (this.modal.scheduleResult.result_str) {
                 let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
                 if (!judgement) {
-                    this.modal.msg = this.$t('system_msg.draw_number_wrong')
-                    this.$refs.alertMsg.trigger('danger')
+                    $.notify({
+                        message: this.$t('system_msg.draw_number_wrong'),
+                        type: 'danger'
+                    })
                     return
                 } else {
                     this.modal.scheduleResult.result_str = result
@@ -808,25 +800,20 @@ export default {
                 this.modal.loading = true
                 updateGame('result', {
                     data: this.modal.scheduleResult
+                }, {
+                    action: this.$t('game.manual_draw')
                 }).then(() => {
-                    this.modal.msg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('game.manual_draw'),
-                        status: this.$t('status.success')
-                    })
-                    this.$refs.alertMsg.trigger('success', 1, true)
                     this.$refs.pulling.rebase()
                     this.modal.loading = false
-                }, error => {
-                    this.modal.msg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('game.manual_draw'),
-                        status: this.$t('status.failed')
-                    }) + `（${error}）`
-                    this.$refs.alertMsg.trigger('danger')
+                    this.hideModal()
+                }, () => {
                     this.modal.loading = false
                 })
             } else {
-                this.modal.msg = this.$t('game.draw_number_no_set')
-                this.$refs.alertMsg.trigger('warning')
+                $.notify({
+                    message: this.$t('game.draw_number_no_set'),
+                    type: 'warning'
+                })
             }
         },
         submit () {
@@ -942,8 +929,7 @@ export default {
         }
     },
     components: {
-        Pulling,
-        AlertMsg
+        Pulling
     },
     beforeDestroy () {
         clearInterval(this.timingPulling)

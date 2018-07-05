@@ -402,16 +402,11 @@ export default {
             updateSetting('memberLevel', {
                 id: this.level.id,
                 data: this.level
+            }, {
+                action: this.level.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.member_level')
             }).then(data => {
                 this.$router.push('/level/' + data.id)
-                this.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
-            }, error => {
-                this.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         },
         getLevel (id) {

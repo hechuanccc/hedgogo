@@ -87,7 +87,10 @@ export default {
                 action: this.$t('dic.delete'),
                 object: this.$t('dic.role')
             }))) {
-                deleteSetting('role', id).then(() => {
+                deleteSetting('role', id, {
+                    action: this.$t('dic.delete'),
+                    object: this.$t('dic.role')
+                }).then(() => {
                     this.$router.push('/roles')
                 })
             }

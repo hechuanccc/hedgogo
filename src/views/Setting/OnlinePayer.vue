@@ -3,9 +3,9 @@
         <div class="p-b">
             <router-link
                 tag="button"
-                class="md-btn blue"
+                class="md-btn blue w-sm"
                 to="/online_payer/add"
-            >{{$t('title.online_payer_add')}}
+            >{{$t('dic.create')}}
             </router-link>
         </div>
         <div class="box">
