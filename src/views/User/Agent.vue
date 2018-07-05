@@ -331,7 +331,7 @@ export default {
             this.setUserInfo()
         },
         created_at (newObj) {
-            [this.query.created_at_0, this.query.created_at_1] = [...newObj]
+            [this.query.created_at_0, this.query.created_at_1] = [...(newObj || [])]
             this.submit()
         }
     },

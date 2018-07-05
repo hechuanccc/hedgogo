@@ -374,7 +374,7 @@
               <i class="fa fa-circle text-success m-r-xs" v-if="member.is_logged_in==true"></i>
               <i class="fa fa-circle text-grey-400 m-r-xs " v-else></i>
               <router-link :to="'/member/' + member.id" class="m-b-0">{{ member.username }}</router-link>
-              <span class="label red" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
+              <span class="label red m-l" v-if="member.status !== 1">{{ $t('status.inactive') }}</span>
               <br/>
               <router-link v-if="member.level" :to="'/level/' + member.level.id" class="text-xs m-l">{{ member.level.name }}</router-link>
             </td>

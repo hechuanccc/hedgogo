@@ -9,7 +9,6 @@
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>
-                      <th class="text-center">{{$t('common.login_status')}}</th>
                       <th>{{$t('staff.account')}}</th>
                       <th>{{$t('common.status')}}</th>
                       <th>{{$t('staff.permission')}}</th>
@@ -19,12 +18,11 @@
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length > 0">
-                    <tr v-for="staff in queryset" >
+                    <tr v-for="staff in queryset" :key="staff.id">
                         <td>
-                          <div class="circle" style="font-size: 25px; text-align: center; color:#42b72a;" v-if="staff.is_logged_in==true">&#x25CF;</div>
-                          <div class="circle" style="font-size: 25px; text-align: center; color:#d3d3d3;" v-else>&#x25CF;</div>
-                        </td>
-                        <td><router-link :to="'/staff/' + staff.id">{{staff.username}}</router-link></td>
+                          <i class="fa fa-circle text-success m-r-xs" v-if="staff.is_logged_in"></i>
+                          <i class="fa fa-circle text-grey-400 m-r-xs " v-else></i>
+                          <router-link :to="'/staff/' + staff.id">{{staff.username}}</router-link></td>
                         <td>
                             <span class="label success" v-if="staff.status === 1">{{$t('status.active')}}</span>
                             <span class="label" v-else>{{$t('status.inactive')}}</span>
