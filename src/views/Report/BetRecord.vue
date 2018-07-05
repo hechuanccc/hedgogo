@@ -74,23 +74,46 @@
                             <div class="pull-left m-r-xs">
                                 <label
                                     class="form-control-label p-b-0"
-                                    :class="{'text-blue': status}"
+                                    :class="{'text-blue': status && status.length}"
                                 >{{ $t('common.status') }}
                                 </label>
-                                <select
-                                    class="form-control c-select w-sm"
-                                    style="display: block;"
-                                    v-model="status"
-                                    type="search"
-                                >
-                                    <option value="">{{ $t('common.please_select') }} </option>
-                                    <option value="ongoing">{{ $t('betrecord.ongoing') }}</option>
-                                    <option value="win">{{ $t('betrecord.win') }}</option>
-                                    <option value="lose">{{ $t('betrecord.lose') }}</option>
-                                    <option value="cancelled">{{ $t('status.cancelled') }}</option>
-                                    <option value="tie">{{ $t('betrecord.tie') }}</option>
-                                    <option value="no_draw">{{ $t('game_history.no_draw') }}</option>
-                                </select>
+                                <div :class="{'w-sm': !status || status.length <= 1}">
+                                    <multiselect
+                                        v-model="status"
+                                        :options="statusOptions"
+                                        :multiple="true"
+                                        :close-on-select="false"
+                                        :clear-on-select="false"
+                                        :hide-selected="true"
+                                        :preserve-search="false"
+                                        :searchable="false"
+                                        :placeholder="$t('common.please_select')"
+                                        label="title"
+                                        track-by="value" 
+                                        :preselect-first="false"
+                                        :selectLabel="''"
+                                        @close="closeStatusSelector"
+                                    >
+                                        <template
+                                            slot="tag"
+                                            slot-scope="props"
+                                        >
+                                            <span
+                                                class="custom__tag label m-l-xs pointer"
+                                                @click="props.remove(props.option)"
+                                                :class="{
+                                                    'success': props.option.value === 'win',
+                                                    'danger': props.option.value === 'lose',
+                                                    'warn': props.option.value === 'ongoing'
+                                                }"
+                                            >
+                                                {{ props.option.title }}
+                                                <i class="fa fa-times"></i>
+                                            </span>
+                                        </template>
+                                        <template slot="noResult">{{ $t('common.no_record') }}</template>
+                                    </multiselect>
+                                </div>
                             </div>
                             <div class="pull-left m-r-xs">
                                 <label
@@ -511,6 +534,7 @@
     </div>
 </template>
 <script>
+    import Multiselect from 'vue-multiselect'
     import { cancelBet, getGame } from '../../service'
     import url from '../../service/url'
     import Pulling from '../../components/Pulling'
@@ -528,7 +552,26 @@
                 extra: '',
                 query: {},
                 account_type: true,
-                status: '',
+                status: [],
+                statusOptions: [{
+                    value: 'ongoing',
+                    title: this.$t('betrecord.ongoing')
+                }, {
+                    value: 'win',
+                    title: this.$t('betrecord.win')
+                }, {
+                    value: 'lose',
+                    title: this.$t('betrecord.lose')
+                }, {
+                    value: 'cancelled',
+                    title: this.$t('status.cancelled')
+                }, {
+                    value: 'tie',
+                    title: this.$t('betrecord.tie')
+                }, {
+                    value: 'no_draw',
+                    title: this.$t('game_history.no_draw')
+                }],
                 platform: '',
                 created_at: ['', ''],
                 settled_at: ['', ''],
@@ -563,10 +606,6 @@
             this.rebase()
         },
         watch: {
-            status (newObj) {
-                this.query.status = newObj || ''
-                this.submit()
-            },
             account_type (newObj, old) {
                 if (newObj) {
                     this.query.account_type = '1,2'
@@ -724,7 +763,12 @@
                     }
                     this.game = query.game || ''
                     this.game_category = query.category || ''
-                    this.status = query.status || ''
+                    if (query.status) {
+                        let status = query.status.split(',')
+                        this.status = this.statusOptions.filter(s => status.includes(s.value))
+                    } else {
+                        this.status = []
+                    }
                     this.pageSelected = 'normal'
                 } else if (this.$route.path === '/report/betrecord/realtime') {
                     if (query.game) {
@@ -802,6 +846,10 @@
                 this.$nextTick(() => {
                     this.submit()
                 })
+            },
+            closeStatusSelector (value, id) {
+                this.query.status = `${value.map(v => v.value)}`
+                this.submit()
             }
         },
         filters: {
@@ -816,6 +864,7 @@
             }
         },
         components: {
+            Multiselect,
             Pulling,
             SelectorGame
         },
