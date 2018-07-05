@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length > 0">
-                    <tr v-for="staff in queryset">
+                    <tr v-for="staff in queryset" :key="staff.id">
                         <td>
                           <i class="fa fa-circle text-success m-r-xs" v-if="staff.is_logged_in"></i>
                           <i class="fa fa-circle text-grey-400 m-r-xs" v-else></i>
