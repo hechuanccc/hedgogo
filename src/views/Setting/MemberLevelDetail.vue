@@ -234,7 +234,6 @@
 
 <script>
 import { getSetting, deleteSetting } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -297,13 +296,11 @@ export default {
             }))) {
                 return
             }
-            deleteSetting('memberLevel', id).then(() => {
+            deleteSetting('memberLevel', id, {
+                action: this.$t('dic.delete'),
+                object: this.$t('dic.member_level')
+            }).then(() => {
                 this.$router.push('/level')
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         },
         getLevel (id) {

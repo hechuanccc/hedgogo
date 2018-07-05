@@ -4,40 +4,38 @@
             <div class="row b-b p-b m-b">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="label-width col-xs-1">{{$t('website.name')}} </label>
-                        <div class="inline-form-control">
-                            <input
-                                class="form-control"
-                                placeholder="Name"
-                                v-model="website.name"
-                                v-if="updateWebsiteManagementPermission"
-                                required
-                            />
-                            <span v-else>{{ website.name }}</span>
-                        </div>
+                        <label class="m-b-0">{{$t('website.name')}}</label>
+                        <input
+                            class="form-control w-md"
+                            placeholder="Name"
+                            v-model="website.name"
+                            v-if="updateWebsiteManagementPermission"
+                            required
+                        />
+                        <span v-else>{{ website.name }}</span>
                     </div>
                     <div class="form-group">
-                        <label class="label-width col-xs-1">{{$t('website.second_name')}} </label>
-                        <div class="inline-form-control">
-                            <input
-                                class="form-control"
-                                placeholder="Name"
-                                v-model="website.second_name"
-                                v-if="updateWebsiteManagementPermission"
-                                required
-                            />
-                            <span v-else>{{ website.second_name }}</span>
-                        </div>
+                        <label class="m-b-0">{{$t('website.second_name')}}</label>
+                        <input
+                            class="form-control w-md"
+                            placeholder="Name"
+                            v-model="website.second_name"
+                            v-if="updateWebsiteManagementPermission"
+                            required
+                        />
+                        <span v-else>{{ website.second_name }}</span>
                     </div>
                     <div class="form-group">
-                        <label class="label-width col-xs-1 text-uppercase m-t-xs">{{$t('misc.logo')}}</label>
-                        <div class="inline-form-control" v-if="hasIcon">
-                            <img :src="website.icon" height="30">
-                        </div>
+                        <label class="text-uppercase m-b-0">{{$t('misc.logo')}}</label>
+                        <img :src="website.icon" height="30" v-if="hasIcon">
                         <span class="m-r-xs" v-else>{{ $t('system.no_setting') }}</span>
-                        <div class="inline-form-control" v-if="updateWebsiteManagementPermission">
-                            <input type="file" class="form-control w-md" accept="image/*" @change="syncImg($event, 'Icon')">
-                        </div>
+                        <input
+                            type="file"
+                            class="form-control w-md"
+                            accept="image/*"
+                            @change="syncImg($event, 'Icon')"
+                            v-if="updateWebsiteManagementPermission"
+                        >
                     </div>
                     <div class="p-b m-t" v-if="updateWebsiteManagementPermission">
                         <button
@@ -80,12 +78,11 @@
                 <label class="m-l-sm label-width col-xs-1">{{$t('website.advertisement')}} </label>
             </div>
             <div :class="['row text-center m-b-sm', `col-xs-${boxes.length<4?'11':'12'}`]" v-if="!mode && updateWebsiteManagementPermission">
-                <button class="md-btn w-sm blue" @click="mode=1"><i class="fa fa-arrows-h"></i> {{ $t('system.adjust_rank') }}</button>
-                <span class="text-success text-sm m-l" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>                                                                                      
+                <button class="md-btn w-sm blue" @click="mode=1">{{ $t('system.adjust_rank') }}</button>
             </div>
             <div :class="['row text-center m-b-sm', `col-xs-${boxes.length<4?'11':'12'}`]" v-else-if="updateWebsiteManagementPermission">
-                <button class="btn btn-sm blue" @click="updateRank"><i class="fa fa-check"></i> {{ $t('dic.confirm') }}</button>                                
-                <button class="m-l-xs btn btn-sm" @click="cancelUpdateRank"><i class="fa fa-repeat"></i> {{ $t('dic.cancel') }}</button>
+                <button class="md-btn w-xs btn blue" @click="updateRank">{{ $t('dic.confirm') }}</button>                                
+                <button class="m-l-xs md-btn btn w-xs" @click="cancelUpdateRank">{{ $t('dic.cancel') }}</button>
             </div>
             <div class="row b-b p-b">
                 <div :class="`col-xs-${boxes.length<4?'11':'12'}`">
@@ -102,7 +99,7 @@
                                         </ul>
                                     </div>
                                     <div class="box-body text-center">
-                                        <div class="m-a-sm" v-if="box.mode">{{ $t('manage.header_img') }}</div>
+                                        <div class="m-a-sm" v-if="box.mode">{{ $t('website.header_img') }}</div>
                                         <div v-if="box.header_image">
                                             <img :src="box.header_image" width="250" height="50">
                                         </div>
@@ -147,12 +144,10 @@
                                         <div class="row m-l-xs m-r-xs" v-else-if="box.status===1">
                                             <textarea class="form-control" rows="15" cols="12" v-model="box.main_description" :disabled="!box.mode" style="resize:none;"></textarea>
                                         </div>
-                                        <div class="m-a alert alert-danger" v-if="box.errorMsg">{{ box.errorMsg }}</div>
                                         <div class="row m-t-sm" v-if="updateWebsiteManagementPermission">
-                                            <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0"><i class="fa fa-wrench"></i> {{ $t('dic.update')}}</button>
-                                            <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i><i class="fa fa-check" v-else></i> {{ $t('dic.confirm')}}</button>
-                                            <button class="btn btn-sm" @click="cancelUpdateBox(box.id, index)" v-if="box.mode===1"><i class="fa fa-repeat"></i> {{ $t('dic.cancel')}}</button>  
-                                            <span class="text-success text-sm m-l" v-if="box.successMsg"><i class="fa fa-check"></i> {{ box.successMsg }}</span>                                                      
+                                            <button class="md-btn w-sm blue" @click="changeBoxMode(box.id, index)" v-if="box.mode===0">{{ $t('dic.update')}}</button>
+                                            <button class="btn btn-sm blue loading" @click="updateBox(box.id, index)" v-if="box.mode===1"><i class='fa fa-spin fa-spinner' v-if="box.loading"></i>{{ $t('dic.confirm')}}</button>
+                                            <button class="btn btn-sm" @click="cancelUpdateBox(box.id, index)" v-if="box.mode===1">{{ $t('dic.cancel')}}</button>  
                                         </div>
                                     </div>
                                 </div>
@@ -228,8 +223,7 @@ export default {
             hasIconFile: false,
             hasRightFloatImg: false,
             hasRightFloatImgFile: false,
-            websiteAgreement: '',
-            successMsg: ''
+            websiteAgreement: ''
         }
     },
     computed: {
@@ -261,8 +255,6 @@ export default {
                 this.boxes = data.map(box => Object({
                     ...box,
                     mode: 0,
-                    errorMsg: '',
-                    successMsg: '',
                     loading: false
                 }))
             })
@@ -274,12 +266,13 @@ export default {
         },
         createBox () {
             this.boxes = [...this.boxes, {}]
-            updateSetting('websiteDescription').then(data => {
+            updateSetting('websiteDescription', {}, {
+                action: this.$t('dic.create'),
+                object: this.$t('website.advertisement')
+            }).then(data => {
                 let box = Object({
                     ...data,
                     mode: 1,
-                    errorMsg: '',
-                    successMsg: '',
                     loading: false
                 })
                 this.initialBoxes[box.id] = Object({
@@ -294,7 +287,10 @@ export default {
             })
         },
         deleteBox (id, index) {
-            deleteSetting('websiteDescription', id).then(() => {
+            deleteSetting('websiteDescription', id, {
+                action: this.$t('dic.delete'),
+                object: this.$t('website.advertisement')
+            }).then(() => {
                 if (this.boxes[index].mode) {
                     delete this.boxResults[id]
                     delete this.initialBoxes[id]
@@ -318,7 +314,7 @@ export default {
             let boxResult = this.boxResults[id]
             const errorMsg = `${this.$t('system.no_setting')}: ${this.$t('website.main_content')}`
             if (!box.header_image) {
-                box.errorMsg = `${this.$t('system.no_setting')}: ${this.$t('manage.header_img')}`
+                $.errorNotify(`${this.$t('system.no_setting')}: ${this.$t('website.header_img')}`)
                 return
             } else if (boxResult && boxResult.header_image) {
                 formData.append('header_image', boxResult.header_image)
@@ -327,14 +323,14 @@ export default {
             formData.append('status', box.status)
             if (box.status === 0) {
                 if (!box.main_image) {
-                    box.errorMsg = errorMsg
+                    $.errorNotify(errorMsg)
                     return
                 } else if (boxResult && boxResult.main_image) {
                     formData.append('main_image', boxResult.main_image)
                 }
             } else if (box.status === 1) {
                 if (!box.main_description) {
-                    box.errorMsg = errorMsg
+                    $.errorNotify(errorMsg)
                     return
                 } else {
                     formData.append('main_description', box.main_description)
@@ -344,72 +340,55 @@ export default {
             updateSetting('websiteDescription', {
                 id,
                 data: formData
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('website.advertisement')
             }).then(data => {
-                this.updateBoxSuccess(box.id, index)
                 this.$set(this.boxes, index, {
                     ...this.boxes[index],
                     ...data,
                     mode: 0,
-                    errorMsg: '',
                     loading: false
                 })
                 delete this.boxResults[id]
                 delete this.initialBoxes[id]
-            }, error => {
-                this.boxes[index].errorMsg = error
             })
         },
         cancelUpdateBox (id, index) {
             this.$set(this.boxes, index, {
                 ...this.boxes[index],
                 ...this.initialBoxes[id],
-                mode: 0,
-                errorMsg: ''
+                mode: 0
             })
             delete this.initialBoxes[id]
         },
-        updateBoxSuccess (id, index) {
-            this.boxes[index].successMsg = this.$t('status.success')
-            setTimeout(() => {
-                this.boxes[index].successMsg = ''
-            }, 2000)
-        },
         updateRank () {
             updateSetting('websiteDescriptionRank', {
-                data: this.boxes.map((box, index) => Object({
-                    id: box.id,
+                data: this.boxes.map(({ id }, index) => Object({
+                    id,
                     rank: index + 1
                 }))
+            }, {
+                action: this.$t('system.adjust_rank')
             }).then(() => {
                 this.boxes.forEach((box, index) => {
-                    this.boxes[index].rank = index + 1
+                    box.rank = index + 1
                 })
                 this.mode = 0
-                this.updateRankSuccess()
             })
-        },
-        updateRankSuccess () {
-            this.successMsg = this.$t('status.success')
-            setTimeout(() => {
-                this.successMsg = ''
-            }, 2000)
         },
         updateWebsiteAgreement () {
             this.websiteAgreementLoading = true
 
             updateWebsite('websiteAgreement', {
                 description: this.websiteAgreement
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('website.agent_joining_agreement')
             }).then(data => {
                 this.websiteAgreement = data.description
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this.websiteAgreementLoading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.websiteAgreementLoading = false
             })
         },
@@ -440,10 +419,8 @@ export default {
         syncBoxImg (e, box, index, attr) {
             if (!this.checkFileSize(e.target.files[0])) {
                 e.target.value = ''
-                this.boxes[index].errorMsg = this.$t('system_msg.file_size_too_large')
+                $.errorNotify(this.$t('system_msg.file_size_too_large'))
                 return
-            } else {
-                this.boxes[index].errorMsg = ''
             }
             var reader = new FileReader()
 
@@ -474,17 +451,12 @@ export default {
                     formData.append(snakeCase, '')
                 }
             })
-            updateWebsite('website', formData).then(data => {
+            updateWebsite('website', formData, {
+                action: this.$t('dic.update')
+            }).then(data => {
                 this.setWebsiteData(data)
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this.websiteSettingLoading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.websiteSettingLoading = false
             })
         }

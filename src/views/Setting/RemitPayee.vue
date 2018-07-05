@@ -10,7 +10,7 @@
             </select>
           </div>
           <div v-if="$root.permissions.includes('add_remit_account')">
-            <router-link tag="button" class="md-btn blue inline" to="/remit_payee/add">{{$t('title.payment_type_add')}}</router-link>
+            <router-link tag="button" class="md-btn blue inline w-sm" to="/remit_payee/add">{{$t('dic.create')}}</router-link>
           </div>
         </div>
       </div>

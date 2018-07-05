@@ -237,17 +237,13 @@ export default {
             updateSetting('promotion', {
                 id: this.id,
                 data: formData
+            }, {
+                action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.promotion')
             }).then(data => {
-                $.notify({
-                    message: `${this.id ? this.$t('title.promotion_edit') : this.$t('title.promotion_add')}${this.$t('status.success')}`
-                })
                 this.$router.push('/promotion/' + data.id)
                 this.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.loading = false
             })
         },

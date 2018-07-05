@@ -163,7 +163,7 @@ export default {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
                 this.loading = false
             }, error => {
-                this.errorNotify({error})
+                $.errorNotify(error)
                 this.loading = false
             })
         },
@@ -173,13 +173,11 @@ export default {
             }))) {
                 return
             }
-            deleteSetting('banner', id).then(() => {
-                $.notify({
-                    message: this.$t('dic.delete') + this.$t('status.success')
-                })
+            deleteSetting('banner', id, {
+                action: this.$t('dic.delete'),
+                object: 'Banner'
+            }).then(() => {
                 this.queryset.splice(index, 1)
-            }, error => {
-                this.errorNotify({error})
             })
         },
         onSubmit () {
@@ -188,16 +186,14 @@ export default {
             formData.append('platform', this.banner.platform)
             updateSetting('banner', {
                 data: formData
+            }, {
+                action: this.$t('dic.create'),
+                object: 'Banner'
             }).then(data => {
                 this.queryset = []
-                this.loading = true
                 this.getBanners()
-                $.notify({
-                    message: this.$t('dic.create') + this.$t('status.success')
-                })
                 this.uploadLoading = false
-            }, error => {
-                this.errorNotify({error})
+            }, () => {
                 this.uploadLoading = false
             })
         },
@@ -223,34 +219,30 @@ export default {
                 data: {
                     status: banner.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 banner.status = data.status
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
-            }, error => {
-                this.errorNotify({error})
             })
         },
         changeMode () {
             if (!this.mode) {
                 this.reorderLoading = true
                 updateSetting('bannerRank', {
-                    data: this.queryset.map((element, index) => Object({
-                        id: element.id,
+                    data: this.queryset.map(({ id }, index) => Object({
+                        id,
                         rank: index + 1
                     }))
+                }, {
+                    action: this.$t('system.adjust_rank')
                 }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })
-                    $.notify({
-                        message: this.$t('system.adjust_rank') + this.$t('status.success')
-                    })
                     this.mode = 1
                     this.reorderLoading = false
-                }, error => {
-                    this.errorNotify({error})
+                }, () => {
                     this.reorderLoading = false
                 })
             } else {
@@ -260,12 +252,6 @@ export default {
         cancelAdjustRank () {
             this.queryset = this.queryset.sort((a, b) => a.rank - b.rank)
             this.mode = !this.mode
-        },
-        errorNotify ({error: message}) {
-            $.notify({
-                message,
-                type: 'danger'
-            })
         }
     },
     components: {

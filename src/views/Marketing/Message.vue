@@ -1,27 +1,27 @@
 <template>
     <div>
-        <div class="m-b" v-if="$root.permissions.includes('add_new_message')">
-            <router-link tag="button" class="md-btn blue w-sm" to="/messages/add">{{ $t('title.message_add') }}</router-link>
+        <div class="m-b-sm" v-if="$root.permissions.includes('add_new_message')">
+            <router-link tag="button" class="md-btn blue w-sm" to="/messages/add">{{ $t('dic.create') }}</router-link>
         </div>
 
         <div class="box">
-            <table st-table="rowCollectionBasic" class="table table-striped">
+            <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>{{ $t('message.title') }}</th>
-                    <th>{{ $t('message.content') }}</th>
-                    <th>{{ $t('message.receiver') }} / {{ $t('message.receiver_group') }}</th>
-                    <th>{{ $t('message.sent_at') }}</th>
+                    <th width="30%">{{ $t('message.title') }}</th>
+                    <th width="40%">{{ $t('message.content') }}</th>
+                    <th>{{ $t('message.receiver') }}&nbsp;/<br/>{{ $t('message.receiver_group') }}</th>
+                    <th class="text-center">{{ $t('message.sent_at') }}</th>
                     <th>{{ $t('message.sender') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="message in messages" :key="message.id">
+                <tr class="text-break-all" v-for="message in messages" :key="message.id">
                     <td><router-link :to="'/messages/'+ message.id">{{ message.title }}</router-link></td>
-                    <td class="word-break">{{ message.content }}</td>
+                    <td >{{ message.content }}</td>
                     <td v-if="message.receiver_group">{{ message.receiver_group.split(',').join(' ') }}</td>
                     <td v-else>-</td>
-                    <td>{{ message.sent_at | moment('YYYY-MM-DD HH:mm') }}</td>
+                    <td class="text-center text-sm">{{ message.sent_at | moment('YYYY-MM-DD HH:mm') }}</td>
                     <td>{{ message.sender_displayname }}</td>
                 </tr>
                 </tbody>
@@ -54,9 +54,6 @@ export default {
         })
     },
     methods: {
-        submit () {
-            this.$refs.pulling.submit()
-        },
         queryData (queryset) {
             this.messages = queryset
         }
@@ -66,10 +63,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .word-break {
-       word-break: break-all;
-       max-width: 500px;
-    }
-</style>

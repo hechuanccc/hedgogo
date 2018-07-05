@@ -2,7 +2,7 @@
     <div>
         <div class="row m-l-xs m-r-xs m-b-xs">
             <div class="pull-left" v-if="$root.permissions.includes('add_promotion_activity')">
-                <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('title.promotion_add')}}</router-link>
+                <router-link tag="button" class="md-btn w-sm blue" to="/promotion/add">{{$t('dic.create')}}</router-link>
             </div>
             <div class="pull-right">
                 <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</button>
@@ -32,7 +32,7 @@
                         <td>{{promotion.end_date || '-'}}</td>
                         <td>
                             <span class="label success" v-if="promotion.status==1">{{$t('status.active')}}</span>
-                            <span class="label" v-else>{{$t('status.inactive')}}</span>
+                            <span class="label danger" v-else>{{$t('status.inactive')}}</span>
                         </td>
                     </tr>
                 </draggable>
@@ -43,7 +43,6 @@
 <script>
 import { getSetting, updateSetting } from '../../service'
 import draggable from 'vuedraggable'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -68,26 +67,20 @@ export default {
         changeMode () {
             if (!this.mode) {
                 updateSetting('promotionRank', {
-                    data: this.queryset.map((element, index) => Object({
-                        id: element.id,
+                    data: this.queryset.map(({ id }, index) => Object({
+                        id,
                         rank: index + 1
                     })),
                     params: {
                         opt_expand: 'level'
                     }
+                }, {
+                    action: this.$t('system.adjust_rank')
                 }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })
                     this.mode = true
-                    $.notify({
-                        message: this.$t('system.adjust_rank') + this.$t('status.success')
-                    })
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
                 })
             } else {
                 this.mode = false

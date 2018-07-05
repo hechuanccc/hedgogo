@@ -20,7 +20,7 @@
                             <div class="form-group">
                                 <label  class="label-width">{{ $t('message.receiver') }}</label>
                                 <div class="inline-form-control">
-                                    <input  type="text" class="form-control" @blur='checkMemberHandler' v-model="message.receiver" :disabled="!(!message.member_level)">
+                                    <input class="form-control" @blur='checkMemberHandler' v-model="message.receiver" :disabled="!(!message.member_level)">
                                 </div>
                                 <label class="text-danger m-l">  * 接收人或群发只能选择一个，接收人可以同时填写多个（以英文 "," 隔开）</label>
                             </div>
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label  class="label-width">{{ $t('message.content') }} </label>
+                                <label class="label-width">{{ $t('message.content') }} </label>
                                 <textarea v-model="message.content" class="form-control" rows="3" placeholder="内容不能超过500个字节" required></textarea>
                             </div>
                         </div>
@@ -79,10 +79,11 @@
                     }
                     updateSetting('message', {
                         data: this.message
+                    }, {
+                        action: this.$t('dic.create'),
+                        object: this.$t('dic.message')
                     }).then(() => {
                         this.$router.push('/messages/')
-                    }, error => {
-                        this.errorMsg = error
                     })
                 } else {
                     this.errorMsg = '群发或接收人必须填写一个'

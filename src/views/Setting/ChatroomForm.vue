@@ -377,9 +377,6 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn dark-white p-x-md w-xs" @click="modal.showModal = false">
-              {{ $t('dic.cancel') }}
-            </button>
             <button
               type="button"
               class="btn blue p-x-md w-xs"
@@ -392,6 +389,9 @@
             >
               <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
               <span v-else>{{ $t('dic.confirm') }}</span>
+            </button>
+            <button type="button" class="btn dark-white p-x-md w-xs" @click="modal.showModal = false">
+              {{ $t('dic.cancel') }}
             </button>
           </div>
         </div>
@@ -481,10 +481,7 @@ export default {
                 Object.assign(this.chatroom, data)
                 this.loading = false
             }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+                $.errorNotify(error)
                 this.loading = false
             })
         },
@@ -528,6 +525,9 @@ export default {
             updateSetting('chatroom', {
                 id: this.id,
                 data: result
+            }, {
+                action: this.$t('dic.update'),
+                object: (category === 'bulletin' || category === 'setting') ? this.$t('chatroom.' + category) : ''
             }).then(data => {
                 if (category === 'bulletin') {
                     this.chatroom.bulletin.forEach(bulletin => {
@@ -538,15 +538,8 @@ export default {
                 } else {
                     this.title = data.title
                 }
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this[`${category}SubmitLoading`] = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this[`${category}SubmitLoading`] = false
             })
         },
@@ -589,12 +582,9 @@ export default {
             result.append('type', type)
             let unfinished = this.robotUpdateFields.filter(key => resultRobot[key] === '' || resultRobot[key] === undefined)
             if (unfinished.length > 0 && mode !== 'delete') {
-                $.notify({
-                    message: this.$t('system.fill_object', {
-                        object: unfinished.map(key => this.$t('robot.' + key)).join(',')
-                    }),
-                    type: 'danger'
-                })
+                $.errorNotify(this.$t('system.fill_object', {
+                    object: unfinished.map(key => this.$t('robot.' + key)).join(',')
+                }))
                 return
             } else {
                 this.robotUpdateFields.forEach(key => {
@@ -611,13 +601,16 @@ export default {
             updateSetting('robot', {
                 id: resultRobot.id,
                 data: result
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('chatroom.plan_robot')
             }).then(data => {
                 this.$set(this.chatroom.robots, this.chatroom.robots.findIndex(e => e.id === data.id), Object.assign(data, {
                     day_of_week: this.splitDayOfWeek(data)
                 }))
-                this.notify(mode, 'success', 'success', true)
-            }, error => {
-                this.notify(mode, 'danger', 'failed', false, error)
+                this.closeModal()
+            }, () => {
+                this.modal.loading = false
             })
         },
         openModal (mode = '', type = 2, robot = {
@@ -679,14 +672,6 @@ export default {
         },
         closeModal () {
             this.modal.showModal = false
-        },
-        notify (operate = 'update', type = 'success', status = 'success', closeModal = false, addMsg = '') {
-            this.modal.loading = false
-            $.notify({
-                message: this.$t('dic.' + operate) + this.$t('status.' + status) + (addMsg && ` (${addMsg})`),
-                type
-            })
-            closeModal && this.closeModal()
         }
     },
     components: {

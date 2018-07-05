@@ -267,19 +267,15 @@ export default {
             updateSystemParameter({
                 key,
                 data: result
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('misc.parameter_value')
             }).then(data => {
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 this.typeTransform(data)
                 Object.assign(this.queryset[index], data)
                 this.modal.showModal = false
                 this.modal.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.modal.loading = false
             })
         }

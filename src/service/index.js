@@ -1,5 +1,6 @@
 import axios from 'axios'
 import url from './url.js'
+import $ from '../utils/util'
 
 export * from './identity.js'
 export * from './user.js'
@@ -17,7 +18,8 @@ export const getReport = (type, { params } = {}) =>
  * 获取系统即时信息
  * Get system instant information
  */
-export const getSystemCount = () => axios.get(url.count)
+export const getSystemCount = () =>
+    axios.get(url.count)
 
 /**
  * 获取游戏信息 (游戏列表、玩法分类、玩法、开奖结果、期数和撤单期数)
@@ -28,16 +30,22 @@ export const getGame = (type, { id, params } = {}) =>
     axios.get(`${url.game[type]}${id ? (id + '/') : ''}`, { params })
 
 /**
- * 更新游戏信息 (游戏列表、开奖结果和撤单期数)
- * Update game information (game list, result and retreating schedule)
- * @param {String} type - 'list', 'result', and 'scheduleRetreat'
+ * 更新游戏信息 (游戏列表、游戏玩法、开奖结果和撤单期数)
+ * Update game information (game list, playset, result and retreating schedule)
+ * @param {String} type - 'list', 'playset', 'result', and 'scheduleRetreat'
  */
-export const updateGame = (type = '', { id, data, params } = {}) =>
+export const updateGame = (type = '', { id, data, params } = {}, { action, object } = {}) =>
     axios({
         method: id ? 'put' : 'post',
         url: `${url.game[type]}${id ? (id + '/') : ''}`,
         data,
         params
+    }).then(data => {
+        $.notify({}, { action, object })
+        return Promise.resolve(data)
+    }, error => {
+        $.errorNotify(error)
+        return Promise.reject()
     })
 
 /**
@@ -51,5 +59,11 @@ export const getBetRecord = ({ id, params } = {}) =>
  * 取消押注
  * Cancel a bet
  */
-export const cancelBet = ({ id, data } = {}) =>
-    axios.put(`${url.bet.retreat}${id ? (id + '/') : ''}`, data)
+export const cancelBet = ({ id, data } = {}, { action, object } = {}) =>
+    axios.put(`${url.bet.retreat}${id ? (id + '/') : ''}`, data).then(data => {
+        $.notify({}, { action, object })
+        return Promise.resolve(data)
+    }, error => {
+        $.errorNotify(error)
+        return Promise.reject()
+    })

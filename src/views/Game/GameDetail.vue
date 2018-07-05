@@ -100,15 +100,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="box-footer text-center" v-if="updatePlaysetDetailsPermission">
-                    <button class="btn md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('dic.confirm') }}</button>
-                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('dic.cancel') }}</button>
-                    <transition name="fade">
-                        <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
-                    </transition>
-                    <transition name="fade">                    
-                        <span class="text-warning m-l-sm" v-show="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
-                    </transition>
+                <div class="box-footer text-center p-t-0" v-if="updatePlaysetDetailsPermission">
+                    <button class="btn md-btn w-sm blue" type="submit">{{ $t('dic.confirm') }}</button>
+                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)">{{ $t('dic.cancel') }}</button>
                 </div>
             </form>
         </div>
@@ -116,6 +110,7 @@
 </template>
 <script>
 import { getGame, updateGame } from '../../service'
+import $ from '../../utils/util'
 export default {
     data () {
         return {
@@ -123,9 +118,7 @@ export default {
                 id: '',
                 display_name: ''
             },
-            playsets: [],
-            successMsg: '',
-            errorMsg: ''
+            playsets: []
         }
     },
     computed: {
@@ -169,25 +162,18 @@ export default {
                     params: {
                         game: this.game.id
                     }
+                }, {
+                    action: this.$t('dic.update')
                 }).then(data => {
-                    this.successMsg = this.$t('system_msg.action_object_status', {
-                        action: this.$t('dic.update'),
-                        status: this.$t('status.success')
-                    })
-                    setTimeout(() => {
-                        this.successMsg = ''
-                    }, 2000)
                     this.playsets.forEach(playset => {
                         this.$set(playset, 'updated', false)
                     })
-                }, error => {
-                    this.errorMsg = error
                 })
             } else {
-                this.errorMsg = this.$t('system_msg.no_change')
-                setTimeout(() => {
-                    this.errorMsg = ''
-                }, 2000)
+                $.notify({
+                    message: this.$t('system_msg.no_change'),
+                    type: 'warning'
+                })
             }
         }
     }
@@ -196,11 +182,5 @@ export default {
 <style lang="scss" scoped>
 .text-center th {
     text-align: center;
-}
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0
 }
 </style>
