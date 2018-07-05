@@ -432,6 +432,7 @@ export default {
                     query: {
                         settled_at_0: startDate,
                         settled_at_1: endDate,
+                        status: 'win,lose,tie',
                         ...(this.query.game && { game: this.query.game }),
                         ...(this.platform && { platform: this.platform })
                     }
