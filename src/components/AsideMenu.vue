@@ -165,6 +165,7 @@
                                 <li><router-link to="/banner"><span class="nav-text">{{$t('title.marketing_banner')}}</span></router-link></li>
                                 <li><router-link to="/announcement"><span class="nav-text">{{$t('title.announcement_management')}}</span></router-link></li>
                                 <li><router-link to="/website"><span class="nav-text">{{$t('title.marketing_website')}}</span></router-link></li>
+                                <li><router-link to="/agent_agreement"><span class="nav-text">{{$t('title.marketing_agreement')}}</span></router-link></li>
                             </ul>
                         </li>
                     </ul>

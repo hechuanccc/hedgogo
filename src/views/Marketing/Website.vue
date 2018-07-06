@@ -159,34 +159,6 @@
                     <button class="md-btn md-fab m-b-sm blue" @click="createBox"><i class="material-icons md-24">&#xe145;</i></button>
                 </div>
             </div>
-            <div class="row m-t">
-                <label class="m-l-sm col-xs-2">{{$t('website.agent_joining_agreement')}} </label>
-            </div>
-            <div class="row m-t-xs">
-                <div class="col-md-12">
-                    <textarea
-                        style="width: 930px;"
-                        rows="40"
-                        class="m-l form-control"
-                        v-model="websiteAgreement"
-                        :disabled="!updateWebsiteManagementPermission"
-                    >
-                    </textarea>
-                </div>
-            </div>
-            <div class="row b-b p-b m-t">
-                <div class="col-md-12" v-if="updateWebsiteManagementPermission">
-                    <button
-                        type="button"
-                        class="m-l md-btn w-sm blue m-r-sm"
-                        @click="updateWebsiteAgreement"
-                        :disabled="!updateWebsiteManagementPermission"
-                    >
-                        <span v-if="!websiteAgreementLoading">{{$t('dic.submit')}}</span>
-                        <i class="fa fa-spin fa-spinner" v-else></i>
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -214,7 +186,6 @@ export default {
             },
             websiteImg: ['Icon', 'RightFloatImg'],
             websiteSettingLoading: false,
-            websiteAgreementLoading: false,
             mode: 0,
             boxes: [],
             initialBoxes: {},
@@ -222,8 +193,7 @@ export default {
             hasIcon: false,
             hasIconFile: false,
             hasRightFloatImg: false,
-            hasRightFloatImgFile: false,
-            websiteAgreement: ''
+            hasRightFloatImgFile: false
         }
     },
     computed: {
@@ -234,7 +204,6 @@ export default {
     created () {
         this.getWebsite()
         this.getWebsiteDescription()
-        this.getWebsiteAgreement()
     },
     methods: {
         getWebsite () {
@@ -257,11 +226,6 @@ export default {
                     mode: 0,
                     loading: false
                 }))
-            })
-        },
-        getWebsiteAgreement () {
-            getSetting('websiteAgreement').then(data => {
-                this.websiteAgreement = data.description
             })
         },
         createBox () {
@@ -375,21 +339,6 @@ export default {
                     box.rank = index + 1
                 })
                 this.mode = 0
-            })
-        },
-        updateWebsiteAgreement () {
-            this.websiteAgreementLoading = true
-
-            updateWebsite('websiteAgreement', {
-                description: this.websiteAgreement
-            }, {
-                action: this.$t('dic.update'),
-                object: this.$t('website.agent_joining_agreement')
-            }).then(data => {
-                this.websiteAgreement = data.description
-                this.websiteAgreementLoading = false
-            }, () => {
-                this.websiteAgreementLoading = false
             })
         },
         cancelUpdateRank () {

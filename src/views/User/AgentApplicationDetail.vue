@@ -101,7 +101,12 @@
                 <div class="form-group m-t-md">
                   <label class="label-width">{{$t('title.commission')}}</label>
                   <div class="inline-form-control">
-                    <selector-commission :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true"/>
+                    <selector-commission
+                      :commissionsetting="agent.commission_settings"
+                      @myCommission="myCommission"
+                      :required="true"
+                      :show-status="true"
+                    />
                   </div>
                 </div>
 
@@ -532,6 +537,11 @@ export default {
             } else {
                 this.formError = ''
             }
+
+            Object.keys(agent).forEach(k => {
+                !agent[k] && (delete agent[k])
+            })
+
             updateUser('agentApplication', {
                 id: agent.id,
                 data: agent

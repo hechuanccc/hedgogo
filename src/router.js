@@ -726,6 +726,17 @@ export default new Router({
         }
     },
     {
+        path: '/agent_agreement',
+        component: function (resolve) {
+            require(['./views/Marketing/AgentAgreement.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: i18n.t('title.marketing_agreement')
+        }
+    },
+    {
         path: '/messages',
         name: 'message',
         component: function (resolve) {
