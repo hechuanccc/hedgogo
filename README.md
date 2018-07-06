@@ -60,6 +60,7 @@ npm run build --report
     │   │   ├──Action.vue                   // 操作日志页
     │   │   └──Login.vue                    // 登录日志页
     │   ├──Marketing
+    │   │   ├──AgentAgreement.vue           // 加盟协议页
     │   │   ├──Announcement.vue             // 公告管理页
     │   │   ├──Banner.vue                   // Banner管理页
     │   │   ├──Message.vue                  // 站内信页

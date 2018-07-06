@@ -420,6 +420,7 @@ export default {
         marketing_management: '运营@:dic.management',
         marketing_banner: 'Banner @:dic.management',
         marketing_website: '网站@:dic.management',
+        marketing_agreement: '加盟协议',
         operation_guide: '营运手册',
         action_object: '{action}{object}',
         ...autoAddTitle
