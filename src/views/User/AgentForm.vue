@@ -100,7 +100,13 @@
                 <div class="form-group m-t-md">
                   <label for="agent" class="label-width">{{$t('agent.commission_setting')}} </label>
                   <div class="inline-form-control">
-                    <selector-commission :commissionsetting="agent.commission_settings" @myCommission="myCommission" :required="true" :disabled="!updateAgentPermission('settings')"/>
+                    <selector-commission
+                        :commissionsetting="agent.commission_settings"
+                        @myCommission="myCommission"
+                        :required="true"
+                        :disabled="!updateAgentPermission('settings')"
+                        :show-status="true"
+                    />
                   </div>
                 </div>
 

@@ -32,7 +32,7 @@
               >{{ $t('common.game') }}
               </label>
               <select
-                class="form-control w-sm c-select block"
+                class="form-control c-select block"
                 v-model="query.game_code"
                 @change="clickGame()"
               >

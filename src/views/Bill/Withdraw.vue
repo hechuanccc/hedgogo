@@ -254,13 +254,14 @@
                         <br/>
                         <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                     </td>
-                    <td class="text-center text-sm p-l-xs p-r-xs">
-                        {{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}<br/>{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}
+                    <td class="text-center p-l-xs p-r-xs">
+                        <span class="text-xs">{{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
+                        <span class="text-xs">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
                     </td>
                     <td v-if="t.ip_info" class="text-sm p-r-xs">
                         <span>{{ t.ip_info.ip || '-' }}</span>
                         <br/>
-                        <span class="text-muted">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>
+                        <span class="text-muted text-xs">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>
                         <br/>
                         <span class="label danger" v-if="t.ip_info && t.ip_info.ip_repeated">{{ $t('common.repeat') }}</span>
                     </td>
