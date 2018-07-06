@@ -167,6 +167,7 @@
                                 <li><router-link to="/banner"><span class="nav-text">{{$t("nav.title_banner")}}</span></router-link></li>
                                 <li><router-link to="/announcement"><span class="nav-text">{{$t("nav.title_announcement")}}</span></router-link></li>
                                 <li><router-link to="/website"><span class="nav-text">{{$t("nav.title_website")}}</span></router-link></li>
+                                <li><router-link to="/agent_agreement"><span class="nav-text">加盟协议</span></router-link></li>
                             </ul>
                         </li>
                     </ul>

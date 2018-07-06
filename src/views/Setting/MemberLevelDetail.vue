@@ -5,30 +5,32 @@
         <li class="active">{{ $route.meta.title }}</li>
     </ol>
     <div class="box">
-        <div class="box-header p-b-xs b-b row">
-            <div class="col-md-4">
-                <h2 class="m-t-sm">{{ `${$t('nav.setting_level')}：${name}` }}</h2>
-            </div>
-            <div class="col-md-8 text-right">
-                <router-link
-                    class="md-btn md-flat m-r-sm"
-                    to="/level/add"
-                    v-if="$root.permissions.includes('add_member_level')"
-                >{{ $t('action.add_level') }}
-                </router-link>
-                <router-link
-                    class="md-btn md-flat m-r-sm"
-                    v-if="$root.permissions.includes('update_memberlevel')"
-                    :to="'/level/' + id + '/edit'"
-                >{{ $t('action.edit_level') }}
-                </router-link>
-                <!-- test member and normal member couldn't be deleted -->
-                <a
-                    class="md-btn md-flat"
-                    v-if="$root.permissions.includes('delete_member_level') && !(id == 1 || id == 2)"
-                    @click="deleteLevel(id, $event)"
-                >{{ $t('action.delete_level') }}
-                </a>
+        <div class="box-header p-b-xs b-b">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2 class="m-t-sm">{{ `${$t('nav.setting_level')}：${name}` }}</h2>
+                </div>
+                <div class="col-md-8 text-right" v-if="id">
+                    <router-link
+                        class="md-btn md-flat m-r-sm"
+                        to="/level/add"
+                        v-if="$root.permissions.includes('add_member_level')"
+                    >{{ $t('action.add_level') }}
+                    </router-link>
+                    <router-link
+                        class="md-btn md-flat m-r-sm"
+                        v-if="$root.permissions.includes('update_memberlevel')"
+                        :to="'/level/' + id + '/edit'"
+                    >{{ $t('action.edit_level') }}
+                    </router-link>
+                    <!-- trial, test, and normal member level couldn't be deleted -->
+                    <a
+                        class="md-btn md-flat"
+                        @click="deleteLevel(id, $event)"
+                        v-if="id && !(id === 1 || id === 2 || id === 3) && $root.permissions.includes('delete_member_level')"
+                    >{{ $t('action.delete_level') }}
+                    </a>
+                </div>
             </div>
         </div>
         <div class="box-body">
@@ -286,7 +288,7 @@ export default {
     },
     beforeRouteEnter (to, from, next) {
         next(vm => {
-            vm.id = to.params.levelId
+            vm.id = parseInt(to.params.levelId)
             vm.getLevel(vm.id)
         })
     },

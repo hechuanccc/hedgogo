@@ -744,6 +744,17 @@ export default new Router({
         }
     },
     {
+        path: '/agent_agreement',
+        component: function (resolve) {
+            require(['./views/Marketing/AgentAgreement.vue'], resolve)
+        },
+        meta: {
+            group: 'manage',
+            auth: true,
+            title: '加盟协议'
+        }
+    },
+    {
         path: '/messages',
         name: 'message',
         component: function (resolve) {
