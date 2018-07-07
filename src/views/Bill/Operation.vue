@@ -205,7 +205,6 @@
 </template>
 <script>
 import { manuallyAdjust } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -236,19 +235,13 @@ export default {
             this.loading = true
             this.transaction.is_compensation = this.compensation === 1
 
-            manuallyAdjust(this.transaction).then(data => {
+            manuallyAdjust(this.transaction, {
+                action: this.$t('finance.manual_adjust')
+            }).then(data => {
                 this.loading = false
                 this.$router.push('/transaction/' + data.id)
-                $.notify({
-                    message: `${this.$t('finance.manual_adjust')}${this.$t('status.success')}`,
-                    type: 'success'
-                })
-            }, error => {
+            }, () => {
                 this.loading = false
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         }
     }

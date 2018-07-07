@@ -21,13 +21,7 @@ export const updateSetting = (type, { id, data, params } = {}, { action, object 
         url: `${url.setting[type]}${id ? (id + '/') : ''}`,
         data,
         params
-    }).then(data => {
-        $.notify({}, { action, object })
-        return Promise.resolve(data)
-    }, error => {
-        $.errorNotify(error)
-        return Promise.reject()
-    })
+    }).then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 删除配置信息(公告、Banner、优惠活动、网站描述、佣金、会员等级、角色)
@@ -35,36 +29,21 @@ export const updateSetting = (type, { id, data, params } = {}, { action, object 
  * @param {String} type - 'announcement', 'banner', 'promotion', 'websiteDescription', 'commission', 'memberLevel', and 'role'
  */
 export const deleteSetting = (type, id, { action, object } = {}) =>
-    axios.delete(`${url.setting[type]}${id ? (id + '/') : ''}`).then(data => {
-        $.notify({}, { action, object })
-        return Promise.resolve(data)
-    }, error => {
-        $.errorNotify(error)
-        return Promise.reject()
-    })
+    axios.delete(`${url.setting[type]}${id ? (id + '/') : ''}`)
+    .then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 更新系统参数
  * Update system parameters
  */
 export const updateSystemParameter = ({ key, data } = {}, { action, object } = {}) =>
-    axios.patch(`${url.setting.parameter}${key ? (key + '/') : ''}`, data).then(data => {
-        $.notify({}, { action, object })
-        return Promise.resolve(data)
-    }, error => {
-        $.errorNotify(error)
-        return Promise.reject()
-    })
+    axios.patch(`${url.setting.parameter}${key ? (key + '/') : ''}`, data)
+    .then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 更新网站、网站加盟合作文
  * Update website and agreement
  */
 export const updateWebsite = (type, data, { action, object } = {}) =>
-    axios.put(url.setting[type], data).then(data => {
-        $.notify({}, { action, object })
-        return Promise.resolve(data)
-    }, error => {
-        $.errorNotify(error)
-        return Promise.reject()
-    })
+    axios.put(url.setting[type], data)
+    .then(data => $.successHandler(data, { action, object }), $.errorHandler)

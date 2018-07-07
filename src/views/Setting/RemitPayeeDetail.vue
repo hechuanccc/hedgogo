@@ -30,7 +30,6 @@
                         </a>
                     </div>
                 </div>
-                <div class="alert alert-danger" v-if="showDeleteError">{{$t('system_msg.remit_payee_delete_error')}}</div>
             </div>
             <div class="box-body">
                 <div class="row m-b p-b b-b">
@@ -121,12 +120,12 @@
 </template>
 <script>
     import { getMerchant, deleteMerchant } from '../../service'
+    import $ from '../../utils/util'
     export default {
         data () {
             return {
                 remit_payee: [],
                 isActive: false,
-                showDeleteError: false,
                 errorMsg: ''
             }
         },
@@ -156,11 +155,14 @@
                     }
                 }
                 if (!this.isActive) {
-                    deleteMerchant('remitPayee', id).then(() => {
+                    deleteMerchant('remitPayee', id, {
+                        action: this.$t('dic.delete'),
+                        object: this.$t('dic.remit_payee')
+                    }).then(() => {
                         this.$router.push('/remit_payee')
-                    })
+                    }, () => {})
                 } else {
-                    this.showDeleteError = true
+                    $.errorNotify(this.$t('system_msg.remit_payee_delete_error'))
                 }
             }
         }

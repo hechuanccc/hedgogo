@@ -193,20 +193,14 @@ export default {
         },
         onSubmit (e) {
             if (!this.promotion.start_date) {
-                $.notify({
-                    message: `${this.$t('system.unfilled')}(${this.$t('promotion.availability')})`,
-                    type: 'danger'
-                })
+                $.errorNotify(`${this.$t('system.unfilled')}(${this.$t('promotion.availability')})`)
                 this.$refs.start_date.focus()
                 return
             }
 
             if (this.promotion.end_date) {
                 if (this.$moment(this.promotion.end_date).diff(this.promotion.start_date) < 0) {
-                    $.notify({
-                        message: this.$t('promotion.end_date_not_before_start_date'),
-                        type: 'danger'
-                    })
+                    $.errorNotify(this.$t('promotion.end_date_not_before_start_date'))
                     this.$refs.end_date.focus()
                     return
                 }

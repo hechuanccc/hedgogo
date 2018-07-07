@@ -33,7 +33,7 @@
                     >
                         <option value="">{{ $t('system.please_select') }}</option>
                         <option value="1">{{ $t('finance.payment_normal') }}</option>
-                        <option value="2">{{ $t('finance.payment_alipay') }}</option>
+                        <option value="2">{{ $t('finance.payment_wechat') }}</option>
                         <option value="3">{{ $t('finance.payment_alipay') }}</option>
                     </select>
                 </div>
@@ -481,13 +481,15 @@
                         params: {
                             opt_expand: 'bank,updated_by'
                         }
+                    }, {
+                        action: status === 1 ? this.$t('finance.check_passed')
+                            : (status === 5 ? this.$t('finance.remit_deny')
+                            : '')
                     }).then(data => {
                         transaction.status = data.status
                         transaction.balance_after = data.balance_after
                         transaction.updated_at = data.updated_at
-                    }, error => {
-                        this.errorMsg = error
-                    })
+                    }, () => {})
                 }
             }
         },

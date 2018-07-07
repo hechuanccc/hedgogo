@@ -6,7 +6,7 @@
             <label class="text-danger m-r inline">{{$t('system.select_remit_type')}}:</label>
             <select class="w c-select inline" v-model="remittype">
               <option value="1">{{$t('finance.payment_normal')}}</option>
-              <option value="2">{{$t('finance.payment_alipay')}} / {{$t('finance.payment_alipay')}}</option>
+              <option value="2">{{$t('finance.payment_wechat')}} / {{$t('finance.payment_alipay')}}</option>
             </select>
           </div>
           <div v-if="$root.permissions.includes('add_remit_account')">
@@ -116,9 +116,12 @@ export default {
                 data: {
                     status: payee.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 payee.status = data.status
-            })
+            }, () => {})
         }
     }
 }

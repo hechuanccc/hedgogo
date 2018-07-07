@@ -322,8 +322,9 @@ export default {
         agent_login_error: 'You\'re an agent. Please log in Agent Dashboard.',
         error_occurred: 'An error occurred. Please contact support.',
         file_size_too_large: 'File size is too large, please select another one.',
-        password_changed: '登录密码已修改为：',
+        password_changed: 'The password has been modified to: ',
         withdraw_password_changed: 'The withdraw password has been modified to: ',
+        password_changed_success: 'The password has been modified successfully. It is routing to login page.',
         agent_password_changed: 'The agent password has been modified to: ',
         separated_by_comma: 'separated by \',\'',
         no_change: 'No change.',
@@ -420,6 +421,7 @@ export default {
         marketing_management: 'Marketing',
         marketing_banner: 'Banner @:dic.management',
         marketing_website: 'Website @:dic.management',
+        marketing_agreement: 'Agent Agreement',
         operation_guide: 'Operation Guide',
         action_object: '{action}{object}',
         ...autoAddTitle

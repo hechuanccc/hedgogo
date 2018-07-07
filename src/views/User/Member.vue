@@ -622,17 +622,12 @@ export default {
         batchBanHandler () {
             if (!this.batchBanLoading && this.query.last_login_ip && this.queryset.length) {
                 this.batchBanLoading = true
-                batchBanMember(this.query.last_login_ip).then(data => {
-                    $.notify({
-                        message: this.$t('system.batch_ban') + this.$t('status.success')
-                    })
+                batchBanMember(this.query.last_login_ip, {
+                    action: this.$t('system.batch_ban')
+                }).then(data => {
                     this.refresh()
                     this.batchBanLoading = false
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
+                }, () => {
                     this.batchBanLoading = false
                 })
             }

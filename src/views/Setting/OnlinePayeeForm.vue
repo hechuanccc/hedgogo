@@ -290,23 +290,18 @@
             onSubmit (e) {
                 let unfilled = Object.keys(this.validateField).filter(k => !this.payee[k] || this.payee[k].length === 0)
                 if (unfilled.length > 0) {
-                    $.notify({
-                        message: `${this.$t('system.please_select')} ${unfilled.map(v => this.$t(this.validateField[v])).join(', ')}`,
-                        type: 'danger'
-                    })
+                    $.errorNotify(`${this.$t('system.please_select')} ${unfilled.map(v => this.$t(this.validateField[v])).join(', ')}`)
                     return
                 }
                 updateMerchant('onlinePayee', {
                     id: this.id,
                     data: this.payee
+                }, {
+                    action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
+                    object: this.$t('dic.online_payee')
                 }).then(data => {
                     this.$router.push('/online_payee/' + data.id)
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
-                })
+                }, () => {})
             },
             getPayee (id) {
                 return getMerchant('onlinePayee', { id })

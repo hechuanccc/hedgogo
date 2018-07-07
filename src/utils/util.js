@@ -142,8 +142,18 @@ export default class $ {
         })
     }
 
+    static successHandler (data, { action, object } = {}) {
+        $.notify({}, { action, object })
+        return Promise.resolve(data)
+    }
+
+    static errorHandler (error) {
+        $.errorNotify(error)
+        return Promise.reject(error)
+    }
+
     static errorNotify (error) {
-        this.notify({
+        $.notify({
             message: error,
             type: 'danger'
         })

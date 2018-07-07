@@ -8,15 +8,12 @@
       </div>
       <div class="box">
         <div class="box-header b-b">
-          <div class="alert alert-success" v-if="passwordChanged >= 1">
-            <span v-if="passwordChanged === 1">{{$t('system_msg.password_changed')}}</span>
-            <span v-if="passwordChanged === 2">{{$t('system_msg.withdraw_password_changed')}}</span>
+          <div class="alert alert-success" v-if="passwordChanged">
+            <span v-if="passwordChanged === 'member'">{{$t('system_msg.password_changed')}}</span>
+            <span v-if="passwordChanged === 'withdraw'">{{$t('system_msg.withdraw_password_changed')}}</span>
             <strong>{{newPassword}}</strong>
           </div>
 
-          <div class="alert alert-danger" v-if="passwordChanged === -1">
-            修改失败：{{errorMsg}}
-          </div>
           <div class="row">
             <div class="col-xs-4">
               <h2><strong>{{member.username}}</strong>
@@ -37,8 +34,8 @@
                 >{{$t('misc.view_betting_record')}}
                 </router-link>
                 <template>
-                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword(1, $event)">{{$t('user.reset_password')}}</a>
-                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword(2, $event)">{{$t('user.reset_withdraw_password')}}</a>
+                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_password')" @click="resetPassword('member', $event)">{{$t('user.reset_password')}}</a>
+                  <a class="md-btn md-flat m-r-sm" v-if="$root.permissions.includes('reset_member_withdraw_password')" @click="resetPassword('withdraw', $event)">{{$t('user.reset_withdraw_password')}}</a>
                   <router-link class="md-btn md-flat" :to="'/member/' + member.id + '/edit'">{{$t('title.member_edit')}}</router-link>
                   <a class="md-btn md-flat" @click="changeAudit" v-if="$root.permissions.includes('update_member_audit')">{{$t('user.update_member_audit')}}</a>
                 </template>
@@ -281,7 +278,6 @@
                 <template v-if="$root.permissions.includes('update_member_status')">
                   <a class="text-sm m-l" @click="toggleStatus" v-if="member.status === 1">禁用</a>
                   <a class="text-sm m-l" @click="toggleStatus" v-else>启用</a>
-                  <span class="text-success text-sm m-l" v-show="statusUpdated" @click="toggleStatus">状态已更新</span>
                 </template>
               </div>
             </div>
@@ -297,7 +293,7 @@
 </template>
 
 <script>
-    import { getUser, updateUser, resetMemberPassword } from '../../service'
+    import { getUser, updateUser, resetPassword } from '../../service'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
 
@@ -305,10 +301,9 @@
         data () {
             return {
                 showAccounts: false,
-                statusUpdated: false,
-                passwordChanged: false,
+                passwordChanged: '',
                 newPassword: '',
-                today: '',
+                today: Vue.moment().format(format),
                 member: {
                     id: '',
                     account_type: '',
@@ -359,25 +354,15 @@
             next(vm => {
                 let id = to.params.memberId
                 vm.getMember(id)
-                vm.today = Vue.moment(new Date()).format(format)
             })
         },
         watch: {
-            passwordChanged (newObj, old) {
-                setTimeout(() => {
-                    this.passwordChanged = 0
-                }, 8000)
-            },
             '$route.params' (newObj, old) {
                 this.getMember(this.$route.params.memberId)
             }
         },
         methods: {
-            toggleProvider (account) {
-                this.providerActive = account
-            },
             toggleStatus () {
-                this.statusUpdated = false
                 updateUser('member', {
                     id: this.member.id,
                     data: {
@@ -386,30 +371,26 @@
                     params: {
                         opt_fields: 'status'
                     }
+                }, {
+                    action: this.$t('dic.update'),
+                    object: this.$t('dic.status')
                 }).then(data => {
                     this.member.status = data.status
-                    this.statusUpdated = true
-                    setTimeout(() => {
-                        this.statusUpdated = false
-                    }, 2000)
-                })
+                }, () => {})
             },
             resetPassword (type, event) {
-                // type = 1 for reset login password
-                // type = 2 for reset withdraw password
+                // type = member,  for reset member login password
+                // type = withdraw,  for reset member withdraw password
                 if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                     action: event.target.innerText
                 }))) {
                     return
                 }
-
-                resetMemberPassword(this.member.id, type).then(data => {
+                this.passwordChanged = ''
+                resetPassword(this.member.id, type).then(data => {
                     this.passwordChanged = type
                     this.newPassword = data.new_password || data.new_withdraw_password
-                }, error => {
-                    this.passwordChanged = -1
-                    this.errorMsg = error
-                })
+                }, () => {})
             },
             getMember (id) {
                 getUser('member', {
@@ -442,6 +423,8 @@
                     params: {
                         audit: id
                     }
+                }, {
+                    action: this.$t('user.update_member_audit')
                 }).then(data => {
                     this.member.balance.bet_amount = data.balance.bet_amount
                     this.member.balance.audit_amount = data.balance.audit_amount

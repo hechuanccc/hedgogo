@@ -8,14 +8,11 @@
       </div>
       <div class="box">
         <div class="box-header b-b">
-          <div class="alert alert-success" v-if="passwordChanged === 1">
+          <div class="alert alert-success" v-if="passwordChanged">
             {{ $t('system_msg.agent_password_changed') }}
-            <strong>{{ newPassword }}</strong>
+            <b>{{ newPassword }}</b>
           </div>
 
-          <div class="alert alert-error" v-if="passwordChanged === -1">
-            {{ errorMsg }}
-          </div>
           <div class="row">
             <div class="col-xs-3">
               <h2><strong>{{ agent.username }}</strong>
@@ -211,8 +208,7 @@
     </div>
 </template>
 <script>
-    import { getUser, updateUser, deleteAgent, resetAgentPassword } from '../../service'
-    import $ from '../../utils/util'
+    import { getUser, updateUser, deleteAgent, resetPassword } from '../../service'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
 
@@ -247,11 +243,6 @@
             })
         },
         watch: {
-            passwordChanged (newObj, old) {
-                setTimeout(() => {
-                    this.passwordChanged = 0
-                }, 8000)
-            },
             '$route': 'nextTickFetch'
         },
         methods: {
@@ -267,15 +258,12 @@
                     params: {
                         opt_fields: 'status'
                     }
+                }, {
+                    action: this.$t('dic.update'),
+                    object: this.$t('dic.status')
                 }).then(data => {
                     this.agent.status = data.status
-                    $.notify({
-                        message: this.$t('system_msg.action_object_status', {
-                            object: this.$t('dic.status'),
-                            status: this.$t('status.updated')
-                        })
-                    })
-                })
+                }, () => {})
             },
             resetPassword (event) {
                 if (!window.confirm(this.$t('system_msg.confirm_action_object', {
@@ -283,13 +271,11 @@
                 }))) {
                     return
                 }
-                resetAgentPassword(this.agent.id).then(data => {
-                    this.passwordChanged = 1
+                this.passwordChanged = false
+                resetPassword(this.agent.id, 'agent').then(data => {
+                    this.passwordChanged = true
                     this.newPassword = data.new_password
-                }, error => {
-                    this.passwordChanged = -1
-                    this.errorMsg = error
-                })
+                }, () => {})
             },
             deleteAgent (id, confirm, event) {
                 if (!window.confirm(this.$t('system_msg.confirm_action_object', {
@@ -297,9 +283,12 @@
                 }))) {
                     return
                 }
-                deleteAgent(id).then(() => {
-                    this.$router.go('/agent')
-                })
+                deleteAgent(id, {
+                    action: this.$t('dic.delete'),
+                    object: this.$t('dic.agent')
+                }).then(() => {
+                    this.$router.push('/agent')
+                }, () => {})
             },
             getAgent (id) {
                 let fields = 'level,commission_settings,default_member_lv,parent_agent,bank'
@@ -313,7 +302,6 @@
                         data.commission_settings.profit_set.sort((a, b) => a.income_threshold - b.income_threshold)
                     }
                     this.agent = data
-                    this.account_id = {'account_id': data.id}
                 })
             },
             isArray (o) {

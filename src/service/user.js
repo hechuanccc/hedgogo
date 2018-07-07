@@ -1,5 +1,6 @@
 import axios from 'axios'
 import url from './url.js'
+import $ from '../utils/util'
 
 /**
  * 获取用户(会员、代理、代理申请、子帐号)信息
@@ -14,13 +15,13 @@ export const getUser = (type = '', { id, params } = {}) =>
  * Get user (member, agent, agent application, and staff) information
  * @param {String} type - 'member', 'agent', 'agentApplication', and 'staff'
  */
-export const updateUser = (type = '', { id, data, params } = {}) =>
+export const updateUser = (type = '', { id, data, params } = {}, { action, object } = {}) =>
     axios({
         method: id ? 'put' : 'post',
         url: `${url.user[type]}${id ? (id + '/') : ''}`,
         data,
         params
-    })
+    }).then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 快速搜索会员 by username_q
@@ -36,38 +37,39 @@ export const checkMember = (params = {}) => axios.get(url.user.memberCheck, { pa
 
 /**
  * 重设会员密码 / 重设会员取款密码
- * Reset member's password / Reset member's withdrawal password
- * @param {Number} type - 1 for password / 2 for withdrawal password
+ * Reset member's password / Reset member's withdrawal password / Reset agnet's password
+ * @param {Number} type - member / withdraw / agent
  */
-export const resetMemberPassword = (id, type) => {
+export const resetPassword = (id, type) => {
     let _url = {
-        1: url.user.resetMemberPassword,
-        2: url.user.resetWithdrawPassword
+        member: url.user.resetMemberPassword,
+        withdraw: url.user.resetWithdrawPassword,
+        agent: url.user.resetAgentPassword
     }
-    return axios.post(_url[type], { account_id: id }, { emulateJSON: true })
+    return axios.post(_url[type], { account_id: id }, { emulateJSON: true }).then(data => {
+        return Promise.resolve(data)
+    }, $.errorHandler)
 }
 
 /**
  * 批量禁用会员 by IP
  * Batch ban member(s) by ip
  */
-export const batchBanMember = (ip) => axios.put(url.user.batchBan, { ip })
+export const batchBanMember = (ip, { action, object } = {}) =>
+    axios.put(url.user.batchBan, { ip })
+    .then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 删除代理
  * Delete agent
  */
-export const deleteAgent = (id) => axios.delete(`${url.user.agent}${id}/`)
-
-/**
- * 重设代理密码
- * Reset Agent's password
- */
-export const resetAgentPassword = (id) =>
-    axios.post(url.user.resetAgentPassword, { account_id: id }, { emulateJSON: true })
+export const deleteAgent = (id, { action, object } = {}) =>
+    axios.delete(`${url.user.agent}${id}/`)
+    .then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 删除子帐号
  * Delete staff
  */
-export const deleteStaff = (id) => axios.delete(`${url.user.staff}${id}/`)
+export const deleteStaff = (id, { action, object } = {}) => axios.delete(`${url.user.staff}${id}/`)
+.then(data => $.successHandler(data, { action, object }), $.errorHandler)

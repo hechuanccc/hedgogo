@@ -157,11 +157,12 @@ export default {
             updateUser('staff', {
                 id: this.staff.id,
                 data: staffResult
+            }, {
+                action: this.staff.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.staff')
             }).then(data => {
                 this.$router.push('/staff/' + data.id)
-            }, error => {
-                this.errorMsg = error
-            })
+            }, () => {})
         },
         getStaff (id) {
             getUser('staff', {

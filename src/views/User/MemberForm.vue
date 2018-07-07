@@ -227,7 +227,6 @@ import SelectorAgent from '../../components/SelectorAgent'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import { getUser, updateUser } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -289,16 +288,12 @@ export default {
             updateUser('member', {
                 id: this.id,
                 data: memberResult
+            }, {
+                action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.member')
             }).then(data => {
-                $.notify({
-                    message: `${this.id ? this.$t('dic.update') : this.$t('dic.create')}${this.$t('status.success')}`
-                })
                 this.$router.push('/member/' + data.id)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.loading = false
             })
         },

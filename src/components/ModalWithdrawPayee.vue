@@ -79,7 +79,6 @@
 </template>
 <script>
 import { autoWithdraw } from '../service'
-import $ from '../utils/util'
 import SelectorOnlinePayer from '../components/SelectorOnlinePayer'
 
 export default {
@@ -130,17 +129,12 @@ export default {
                         status: 1,
                         online_payer: this.selectedPayer
                     }
+                }, {
+                    action: this.$t('finance.withdraw_payee')
                 }).then(data => {
-                    $.notify({
-                        message: this.$t('finance.withdraw_payee') + this.$t('status.success')
-                    })
                     this.$emit('withdraw-payee-status', 1)
                     this.modal.loading = false
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
+                }, () => {
                     this.modal.loading = false
                 })
             }

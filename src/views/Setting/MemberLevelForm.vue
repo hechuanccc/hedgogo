@@ -314,7 +314,6 @@
 </template>
 <script>
 import { getSetting, updateSetting } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -431,13 +430,6 @@ export default {
                 this.level = Object.assign(this.level, data)
                 this.loading = false
             })
-        },
-        notify ({message, type = 'success'}, loading = false) {
-            $.notify({
-                message,
-                type
-            })
-            this.loading = loading
         }
     }
 }

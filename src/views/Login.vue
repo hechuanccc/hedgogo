@@ -59,7 +59,9 @@
         },
         methods: {
             loginHandler () {
-                login(this.user).then(data => {
+                login(this.user, {
+                    action: this.$t('title.login')
+                }).then(data => {
                     if (data.type === 'agent') {
                         this.errorMsg = this.$t('system_msg.agent_login_error')
                         return

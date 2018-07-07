@@ -40,7 +40,6 @@
 </template>
 <script>
 import { getMerchant, updateMerchant } from '../../service'
-import $ from '../../utils/util'
 export default {
     data () {
         return {
@@ -62,17 +61,12 @@ export default {
                     status: payer.status ^ 1,
                     withdraw_gateway: payer.withdraw_gateway.id
                 })
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
-                $.notify({
-                    message: this.$t('dic.update') + this.$t('status.success')
-                })
                 payer.status = data.status
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
-            })
+            }, () => {})
         }
     }
 }

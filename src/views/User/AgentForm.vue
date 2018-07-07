@@ -252,10 +252,6 @@
 
             </div>
             <div>
-              <div class="alert alert-danger" v-if="errorMsg">
-                <span>{{ errorMsg }}</span>
-              </div>
-              <div class="alert alert-success" v-if="statusUpdated"></div>
               <button type="submit" class="md-btn blue w-sm" >{{$t('dic.submit')}}</button>
             </div>
           </form>
@@ -282,7 +278,6 @@ export default {
             limit: 5,
             minChars: 1,
             query: '',
-            errorMsg: '',
             agent: {
                 id: '',
                 level: 4,
@@ -308,7 +303,6 @@ export default {
             },
             initAgent: {},
             done: false,
-            statusUpdated: false,
             agentLevelLoading: true,
             agentLevels: []
         }
@@ -398,10 +392,8 @@ export default {
         },
         onSubmit (e) {
             if (!this.agent.parent_agent && parseInt(this.agent.level) !== 1) {
-                this.errorMsg = '请选择正确的上线'
+                $.errorNotify('请选择正确的上线')
                 return
-            } else {
-                this.errorMsg = ''
             }
             this.initAgent = Object.assign({}, this.initAgent, this.agent)
             if (!this.initAgent.bank.bank) {
@@ -416,14 +408,12 @@ export default {
             updateUser('agent', {
                 id: this.agent.id,
                 data: this.initAgent
+            }, {
+                action: this.agent.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.agent')
             }).then(data => {
-                this.statusUpdated = true
-                setTimeout(() => {
-                    this.$router.push('/agent/' + data.id)
-                }, 2000)
-            }, error => {
-                this.errorMsg = error
-            })
+                this.$router.push('/agent/' + data.id)
+            }, () => {})
         },
         getAgent (id) {
             getUser('agent', {

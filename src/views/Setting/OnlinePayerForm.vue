@@ -124,7 +124,6 @@
 </template>
 <script>
 import { getMerchant, updateMerchant } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -176,19 +175,13 @@ export default {
             updateMerchant('onlinePayer', {
                 id: this.id,
                 data
+            }, {
+                action: this.payer.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.online_payer')
             }).then(data => {
-                if (data) {
-                    $.notify({
-                        message: `${this.payer.id ? this.$t('dic.update') : this.$t('dic.create')}${this.$t('status.success')}`
-                    })
-                    this.$router.push(`/online_payer/${data.id}`)
-                }
+                this.$router.push(`/online_payer/${data.id}`)
                 this.submitLoading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.submitLoading = false
             })
         },

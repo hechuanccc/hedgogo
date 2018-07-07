@@ -40,13 +40,7 @@ export const updateGame = (type = '', { id, data, params } = {}, { action, objec
         url: `${url.game[type]}${id ? (id + '/') : ''}`,
         data,
         params
-    }).then(data => {
-        $.notify({}, { action, object })
-        return Promise.resolve(data)
-    }, error => {
-        $.errorNotify(error)
-        return Promise.reject()
-    })
+    }).then(data => $.successHandler(data, { action, object }), $.errorHandler)
 
 /**
  * 获取下注纪录
@@ -60,10 +54,5 @@ export const getBetRecord = ({ id, params } = {}) =>
  * Cancel a bet
  */
 export const cancelBet = ({ id, data } = {}, { action, object } = {}) =>
-    axios.put(`${url.bet.retreat}${id ? (id + '/') : ''}`, data).then(data => {
-        $.notify({}, { action, object })
-        return Promise.resolve(data)
-    }, error => {
-        $.errorNotify(error)
-        return Promise.reject()
-    })
+    axios.put(`${url.bet.retreat}${id ? (id + '/') : ''}`, data)
+    .then(data => $.successHandler(data, { action, object }), $.errorHandler)

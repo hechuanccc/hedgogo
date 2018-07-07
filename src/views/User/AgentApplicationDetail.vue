@@ -418,7 +418,6 @@
 <script>
 import VueTypeahead from 'vue-typeahead'
 import { getUser, updateUser, getSetting } from '../../service'
-import $ from '../../utils/util'
 import SelectorBank from '../../components/SelectorBank'
 import SelectorMemberLevel from '../../components/SelectorMemberLevel'
 import SelectorCommission from '../../components/SelectorCommission'
@@ -545,11 +544,12 @@ export default {
             updateUser('agentApplication', {
                 id: agent.id,
                 data: agent
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('title.agent_application')
             }).then(() => {
                 this.$router.push('/agent/applications/')
-            }, error => {
-                this.errorMsg = error
-            })
+            }, () => {})
         },
         getAgent (id) {
             getUser('agentApplication', {
@@ -588,11 +588,6 @@ export default {
             getSetting('agentLevel').then(data => {
                 this.agentLevels = data
                 this.agentLevelLoading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
             })
         },
         agentLevelSelect (val) {
