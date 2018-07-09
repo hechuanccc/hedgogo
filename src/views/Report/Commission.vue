@@ -13,7 +13,7 @@
             <i class="fa fa-download"></i>
           </span>
         </a>
-        <span disabled v-else>
+        <span class="md-btn w-sm" disabled v-else>
           {{ $t('action.download_report') }}
           <i class="fa fa-download"></i>
         </span>

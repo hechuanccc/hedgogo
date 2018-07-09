@@ -12,7 +12,7 @@
                 <i class="fa fa-download"></i>
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
+        <span class="md-btn w-sm" disabled v-else>
             {{ $t('action.download_report') }}
             <i class="fa fa-download"></i>
         </span>
@@ -222,23 +222,23 @@
     <div class="box">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>{{ $t('common.member') }}</th>
-                    <th width="11%" class="text-center p-l-xs p-r-xs text-sm">
+                <tr class="text-sm">
+                    <th class="p-r-xs">{{ $t('common.member') }}</th>
+                    <th width="11%" class="text-center p-l-0 p-r-xs">
                         {{ $t('common.applied_at') }}&nbsp;/
                         <br/>
                         {{ $t('common.status_updated_at') }}
                     </th>
-                    <th>{{ $t('common.ip_info') }}</th>
-                    <th class="text-right text-sm p-r-xs">
-                        {{ $t('common.balance_before') }} /
+                    <th class="p-l-sm p-r-xs">{{ $t('common.ip_info') }}</th>
+                    <th class="text-right p-r-xs">
+                        {{ $t('common.balance_before') }}&nbsp;/
                         <br/>
                         {{ $t('common.balance_after') }}
                     </th>
                     <th class="text-center p-r-xs">{{ $t('common.amount') }}</th>
                     <th>{{ $t('bank.bank_title') }}</th>
                     <th>{{ $t('bill.operator') }}</th>
-                    <th class="text-center">{{ $t('bill.payer_type') }}</th>
+                    <th width="5%" class="text-center">{{ $t('bill.payer_type') }}</th>
                     <th width="7%" class="text-center">{{ $t('setting.check_amount') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('bill.withdraw') }}<br/>{{ $t('common.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('common.operate') }}</th>
@@ -254,11 +254,11 @@
                         <br/>
                         <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                     </td>
-                    <td class="text-center p-l-xs p-r-xs">
+                    <td class="text-center p-l-0 p-r-xs">
                         <span class="text-xs">{{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
                         <span class="text-xs">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
                     </td>
-                    <td v-if="t.ip_info" class="text-sm p-r-xs">
+                    <td v-if="t.ip_info" class="text-sm p-l-sm p-r-xs">
                         <span>{{ t.ip_info.ip || '-' }}</span>
                         <br/>
                         <span class="text-muted text-xs">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>

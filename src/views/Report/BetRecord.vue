@@ -419,7 +419,7 @@
                 <thead>
                     <tr>
                         <th>{{ $t('report.bet_record_number') }}</th>
-                        <th class="text-center">
+                        <th class="text-center text-xs">
                             {{ $t('betrecord.betted_at') }}&nbsp;/
                             <br/>
                             {{ $t('common.settledat') }}

@@ -12,7 +12,7 @@
                 <i class="fa fa-download"></i>
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
+        <span class="md-btn w-sm" disabled v-else>
             {{ $t('action.download_report') }}
             <i class="fa fa-download"></i>
         </span>
@@ -220,28 +220,34 @@
         <thead>
             <tr>
                 <th>{{ $t('common.member') }}</th>
-                <th width="5%">{{ $t('member.level') }}</th>
-                <th width="11%" class="text-center">{{ $t('bill.created_at') }}</th>
+                <th class="text-center text-sm">
+                    {{ $t('bill.created_at') }}&nbsp;/
+                    <br/>
+                    {{ $t('common.status_updated_at') }}
+                </th>
                 <th>{{ $t('bill.depositor') }}</th>
-                <th class="text-center">{{ $t('common.balance_before') }}</th>
-                <th class="text-center">{{ $t('common.balance_after') }}</th>
+                <th class="text-center">
+                    {{ $t('common.balance_before') }}
+                </th>
+                <th class="text-center">
+                    {{ $t('common.balance_after') }}
+                </th>
                 <th class="text-center">{{ $t('common.amount') }}</th>
                 <th>{{ $t('bank.name') }} - {{ $t('bill.remit_payee') }}</th>
-                <th width="11%" class="text-center">{{ $t('common.status_updated_at') }}</th>
-                <th width="5%" class="text-center">{{ $t('common.status') }}</th>
-                <th width="5%" class="text-center">{{ $t('bill.order_detail') }}</th>
+                <th class="text-center">{{ $t('common.status') }}</th>
+                <th class="text-center">{{ $t('bill.order_detail') }}</th>
             </tr>
         </thead>
         <tbody v-if="queryset.length >0">
             <tr v-for="t in queryset" :key="t.id" class="v-m">
                 <td>
                     <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
-                </td>
-                <td>
-                    <router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link>
+                    <br/>
+                    <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                 </td>
                 <td class="text-center">
-                    <span v-if="t.remit_info">{{ t.remit_info.deposited_at | moment("YYYY-MM-DD HH:mm") }}</span>
+                    <span v-if="t.remit_info" class="text-xs">{{ t.remit_info.deposited_at | moment("YYYY-MM-DD HH:mm") }}</span><br/>
+                    <span class="text-xs">{{ t.updated_at | moment("YYYY-MM-DD HH:mm") }}</span>
                 </td>
                 <td>
                     {{ t.remit_info.depositor || '-' }}
@@ -268,7 +274,6 @@
                     </router-link>
                     <span v-else>-</span>
                 </td>
-                <td class="text-center">{{ t.updated_at | moment("YYYY-MM-DD HH:mm") }}</td>
                 <td class="text-center">
                     <span class="label success" v-if="t.status === 1">{{ $t('status.success') }}</span>
                     <span class="label danger" v-else-if="t.status === 5">{{ $t('status.declined') }}</span>

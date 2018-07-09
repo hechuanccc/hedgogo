@@ -1,27 +1,26 @@
 <template>
   <div>
-    <div class="row" v-if="pageSelected === 'allMember'">
-      <div class="col-md-6"  v-if="$root.permissions.includes('add_new_member')">
-        <router-link
-          tag="button"
-          class="md-btn w-sm blue"
-          to="/member/add"
-        >{{ $t('action.add_member') }}
-        </router-link>
-      </div>
-      <div class="col-md-6" v-if="$root.permissions.includes('export_member_report')">
+    <div class="row m-r-xs m-l-xs" v-if="pageSelected === 'allMember'">
+      <router-link
+        tag="button"
+        class="md-btn w-sm blue pull-left"
+        to="/member/add"
+        v-if="$root.permissions.includes('add_new_member')"
+      >{{ $t('action.add_member') }}
+      </router-link>
+      <div class="pull-right" v-if="$root.permissions.includes('export_member_report')">
         <a
           :href="href"
           :getReport="getReport"
           v-if="queryset.length"
-          class="md-btn w-sm text-white-dk blue pull-right"
+          class="md-btn w-sm text-white-dk blue"
         >
           <span>
             {{ $t('action.download_report') }}
             <i class="fa fa-download"></i>
           </span>
         </a>
-        <span class="pull-right m-t-sm m-r" disabled v-else>
+        <span class="md-btn w-sm" disabled v-else>
           {{ $t('action.download_report') }}
           <i class="fa fa-download"></i>
         </span>

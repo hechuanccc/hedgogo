@@ -12,7 +12,7 @@
                 <i class="fa fa-download"></i>
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
+        <span class="md-btn w-sm" disabled v-else>
             {{ $t('action.download_report') }}
             <i class="fa fa-download"></i>
         </span>
@@ -228,7 +228,9 @@
                     <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
                 </td>
                 <td><router-link :to="'/agent/' + t.member.agent.id ">{{ t.member.agent.username }}</router-link></td>
-                <td class="text-center">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                <td class="text-center">
+                    <span class="text-xs">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
+                </td>
                 <td class="text-center">{{ t.transaction_type.display_name }}</td>
                 <td class="text-right">
                     <span v-if="t.balance_before || t.balance_before === 0">{{ t.balance_before | currency('￥') }}</span>
