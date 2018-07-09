@@ -207,6 +207,9 @@ span.time-picker{
     &.el-range-editor.is-active, &.el-range-editor.is-active:hover {
         border-color: rgba(120, 130, 140, 0.2);
     }
+    .el-input__icon {
+        line-height: 25px;
+    }
     .el-range-input {
         height: 25px;
         font-size: $font-size-sm;
