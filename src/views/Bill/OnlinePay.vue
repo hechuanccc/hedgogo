@@ -12,7 +12,7 @@
                     <i class="fa fa-download"></i>
                 </span>
             </a>
-            <span class="m-t-sm m-r-sm" disabled v-else>
+            <span class="md-btn w-sm" disabled v-else>
                 {{ $t('action.download_report') }}
                 <i class="fa fa-download"></i>
             </span>
@@ -220,13 +220,14 @@
             <thead>
                 <tr>
                     <th>{{ $t('common.member') }}</th>
-                    <th class="text-center">{{ $t('member.level') }}</th>
-                    <th class="text-center">{{ $t('common.applied_at') }}</th>
+                    <th class="text-center text-sm">
+                        {{ $t('common.applied_at') }}&nbsp;/<br/>
+                        {{ $t('common.status_updated_at') }}
+                    </th>
                     <th>{{ $t('common.merchant') }}</th>
                     <th class="text-center">{{ $t('common.balance_before') }}</th>
                     <th class="text-center">{{ $t('common.balance_after') }}</th>
                     <th class="text-center">{{ $t('common.amount') }}</th>
-                    <th class="text-center">{{ $t('common.status_updated_at') }}</th>
                     <th class="text-center">{{ $t('common.status') }}</th>
                     <th class="text-center">{{ $t('bill.order_detail') }}</th>
                 </tr>
@@ -235,11 +236,13 @@
                 <tr v-for="t in queryset" :key="t.id">
                     <td>
                         <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
+                        <br/>
+                        <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                     </td>
                     <td class="text-center">
-                        <router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link>
+                        <span class="text-xs">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
+                        <span class="text-xs">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
                     </td>
-                    <td class="text-center">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                     <td>
                         <router-link :to="'/online_payee/' + t.online_payee.id">{{ t.online_payee.name }}</router-link>
                     </td>
@@ -254,7 +257,6 @@
                     <td class="text-right">
                         {{ t.amount | currency('￥') }}
                     </td>
-                    <td class="text-center">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                     <td class="text-center">
                         <transaction-status :transaction="t"></transaction-status>
                     </td>
