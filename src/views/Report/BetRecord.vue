@@ -419,7 +419,7 @@
                 <thead>
                     <tr>
                         <th>{{ $t('bet.bet_id') }}</th>
-                        <th class="text-center">
+                        <th class="text-center text-xs">
                             {{ $t('time.betted_at') }}&nbsp;/
                             <br/>
                             {{ $t('time.settled_at') }}

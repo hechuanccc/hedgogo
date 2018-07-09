@@ -8,13 +8,13 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
+                {{ $t('system.download_report') }}
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('system.download_report') }}
+        <span class="md-btn w-sm" disabled v-else>
             <i class="fa fa-download"></i>
+            {{ $t('system.download_report') }}
         </span>
     </div>
     <form class="form box m-b-sm" @submit.prevent="submit">
@@ -228,7 +228,9 @@
                     <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
                 </td>
                 <td><router-link :to="'/agent/' + t.member.agent.id ">{{ t.member.agent.username }}</router-link></td>
-                <td class="text-center">{{ t.created_at | moment('YYYY-MM-DD HH:mm:ss') }}</td>
+                <td class="text-center">
+                    <span class="text-xs">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
+                </td>
                 <td class="text-center">{{ t.transaction_type.display_name }}</td>
                 <td class="text-right">
                     <span v-if="t.balance_before || t.balance_before === 0">{{ t.balance_before | currency('￥') }}</span>

@@ -27,7 +27,6 @@
                             type="date"
                             placeholder="请输入日期"
                             v-if="!timeRangeGames.includes(game.code)"
-                            :clearable="false"
                         />
                         <el-date-picker
                             v-model="input.date"
@@ -37,7 +36,6 @@
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
                             :picker-options="{shortcuts}"
-                            :clearable="false"
                             v-else
                         />
                     </div>
@@ -621,10 +619,8 @@ export default {
         } else {
             // game result in detail
             if (this.timeRangeGames.includes(this.game.code)) {
-                this.input.date = date.this_month
-                this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
+                this.extra = `created_at_0=${date.this_month[0]}&created_at_1=${date.this_month[1]}`
             } else {
-                this.input.date = this.today
                 this.extra = `date=${this.today}`
             }
             this.pullingApi = historyURL
@@ -652,10 +648,8 @@ export default {
                 clearInterval(this.timingRetreatShced)
             } else {
                 if (this.timeRangeGames.includes(this.game.code)) {
-                    this.input.date = date.this_month
-                    this.extra = `created_at_0=${this.input.date[0]}&created_at_1=${this.input.date[1]}`
+                    this.extra = `created_at_0=${date.this_month[0]}&created_at_1=${date.this_month[1]}`
                 } else {
-                    this.input.date = this.today
                     this.extra = `date=${this.today}`
                 }
                 this.pullingApi = historyURL
@@ -966,9 +960,9 @@ export default {
 }
 .circle {
   color: aliceblue;
-  width: 28px;
+  width: 29px;
   height: 28px;
-  line-height: 30px;
+  line-height: 28px;
   border-radius: 50%;
 }
 </style>
