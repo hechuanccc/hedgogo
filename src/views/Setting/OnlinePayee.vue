@@ -109,9 +109,12 @@ export default {
                 data: {
                     status: payee.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 payee.status = data.status
-            })
+            }, () => {})
         }
     }
 }

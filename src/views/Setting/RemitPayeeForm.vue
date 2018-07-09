@@ -124,9 +124,6 @@
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="errorMsg">
-                            <span>{{ errorMsg }}</span> 
-                        </div>
                         <button type="submit" class="md-btn w-sm blue">{{$t('dic.submit')}}</button>
                     </div>
                 </form>
@@ -156,9 +153,7 @@
                     qr_code_file: '',
                     remit_type: '1'
                 },
-                showLevelError: false,
-                hasImage: false,
-                errorMsg: ''
+                hasImage: false
             }
         },
         computed: {
@@ -205,11 +200,12 @@
                 updateMerchant('remitPayee', {
                     id: this.payee.id,
                     data: formData
+                }, {
+                    action: this.payee.id ? this.$t('dic.update') : this.$t('dic.create'),
+                    object: this.$t('dic.remit_payee')
                 }).then(data => {
                     this.$router.push('/remit_payee/' + data.id)
-                }, error => {
-                    this.errorMsg = error
-                })
+                }, () => {})
             },
             getPayee (id) {
                 getMerchant('remitPayee', { id }).then(data => {

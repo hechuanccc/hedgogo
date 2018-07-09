@@ -122,7 +122,6 @@
 <script>
 import draggable from 'vuedraggable'
 import { getMerchant, updateMerchant, adjustPaymentTypeOrder } from '../../service'
-import $ from '../../utils/util'
 export default {
     data () {
         return {
@@ -166,20 +165,13 @@ export default {
                     status: paymentType.status ^ 1,
                     code: paymentType.code
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 paymentType.status = data.status
-                $.notify({
-                    message: this.$t('system_msg.action_object_status', {
-                        action: this.$t('dic.update'),
-                        status: this.$t('status.success')
-                    })
-                })
                 this.$delete(this.toggleLoading, paymentType.id)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.changeType(this.type)
                 this.$delete(this.toggleLoading, paymentType.id)
             })
@@ -208,20 +200,11 @@ export default {
                     params: {
                         opt_expand: 1
                     }
+                }, {
+                    action: this.$t('system.adjust_rank')
                 }).then(data => {
-                    $.notify({
-                        message: this.$t('system_msg.action_object_status', {
-                            action: this.$t('dic.update'),
-                            status: this.$t('status.success')
-                        })
-                    })
                     this.getPaymentType()
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
-                })
+                }, () => {})
             } else {
                 this.status = ''
                 this.changeType()

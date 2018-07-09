@@ -324,6 +324,7 @@ export default {
         file_size_too_large: '文件太大，请选择另一个',
         password_changed: '登录密码已修改为：',
         withdraw_password_changed: '取款密码已修改为：',
+        password_changed_success: '密码设置成功，即将跳转至登录页',
         agent_password_changed: '代理登录密码已修改为:',
         separated_by_comma: '请用 \',\' 分隔',
         no_change: '未侦测到修改',

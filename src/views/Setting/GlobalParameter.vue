@@ -194,11 +194,7 @@ export default {
                     this.typeTransform(e)
                 })
                 this.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.loading = false
             })
         },

@@ -121,9 +121,12 @@ export default {
                     group: this.staff.user_group.id,
                     status: this.staff.status ^ 1
                 }
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             }).then(data => {
                 this.staff.status = data.status
-            })
+            }, () => {})
         },
         deleteStaff (id, confirm, event) {
             if (confirm) {
@@ -133,9 +136,12 @@ export default {
                     return
                 }
             }
-            deleteStaff(id).then(() => {
+            deleteStaff(id, {
+                action: this.$t('dic.delete'),
+                object: this.$t('dic.staff')
+            }).then(() => {
                 this.$router.push('/staff')
-            })
+            }, () => {})
         }
     }
 }

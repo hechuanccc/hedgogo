@@ -624,17 +624,12 @@
                             status: 1,
                             online_payer: payer
                         }
+                    }, {
+                        action: this.$t('finance.withdraw_payee')
                     }).then(data => {
-                        $.notify({
-                            message: this.$t('finance.withdraw_payee') + this.$t('status.success')
-                        })
                         this.$refs.pulling.rebase()
                         this.$delete(this.withdrawLoading, transaction.id)
-                    }, error => {
-                        $.notify({
-                            message: error,
-                            type: 'danger'
-                        })
+                    }, () => {
                         this.$delete(this.withdrawLoading, transaction.id)
                     })
                 }
@@ -655,18 +650,16 @@
                         transaction_type: transactionType,
                         status
                     }
+                }, {
+                    action: status === 1 ? this.$t('finance.check_passed')
+                        : (status === 4 ? this.$t('finance.withdraw_cancel')
+                        : (status === 5 ? this.$t('finance.withdraw_deny')
+                        : ''))
                 }).then(data => {
                     this.$refs.pulling.rebase()
-                    $.notify({
-                        message: status === 1 ? this.$t('bill.audit') : (status === 4 ? this.$t('bill.cancel') : '') + this.$t('status.success')
-                    })
                     this.modal.showModal = false
                     this.modal.loading = false
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
+                }, () => {
                     this.modal.loading = false
                 })
             },

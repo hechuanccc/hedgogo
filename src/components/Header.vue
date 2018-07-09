@@ -217,7 +217,9 @@
                 this.iNotify.setTitle(true)
             },
             logoutHandler () {
-                logout().then(data => {
+                logout({
+                    action: this.$t('title.logout')
+                }).then(data => {
                     this.$root.dropdown = false
                     this.loading = true
                     this.$router.push('/login')

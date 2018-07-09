@@ -789,10 +789,7 @@ export default {
             if (this.modal.scheduleResult.result_str) {
                 let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
                 if (!judgement) {
-                    $.notify({
-                        message: this.$t('system_msg.draw_number_wrong'),
-                        type: 'danger'
-                    })
+                    $.errorNotify(this.$t('system_msg.draw_number_wrong'))
                     return
                 } else {
                     this.modal.scheduleResult.result_str = result

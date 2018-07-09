@@ -182,10 +182,8 @@ export default {
                 this.addConfig()
                 this.loading = false
             }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+                $.errorNotify(error)
+                this.loading = false
             })
         },
         deleteConfig (index) {

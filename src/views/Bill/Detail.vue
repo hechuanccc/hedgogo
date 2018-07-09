@@ -182,7 +182,6 @@
 
                     </div>
                 </div>
-                <div class="text-danger p-t p-b" v-if="errorMsg">{{errorMsg}}</div>
                 <div v-if="transaction.transaction_type.code ==='remit'">
                     <div v-if="transaction.status ===5 " class="t-red">
                         {{$t('system_msg.action_object_status', {
@@ -230,7 +229,7 @@
                     <div v-if="transaction.status === 3">
                         <div  v-if="loading"><i class='fa fa-spinner'></i>   <b class="">正在加载中...</b></div>
                         <button class="btn w-sm md-btn blue" v-else @click="update('onlinePay', 1, true, $event)">{{$t('finance.manual_confirm')}}</button>
-                        <div  v-if="!loading && !errorMsg" class="text-muted m-t-sm">请求状态需要时间，请耐心等待</div>
+                        <div  v-if="!loading" class="text-muted m-t-sm">请求状态需要时间，请耐心等待</div>
 
                     </div>
                 </div>
@@ -311,7 +310,6 @@
 </template>
 <script>
 import { getTransaction, updateTransaction, withdrawCheckOrder } from '../../service'
-import $ from '../../utils/util'
 import TransactionStatus from '../../components/TransactionStatus'
 import ModalWithdrawPayee from '../../components/ModalWithdrawPayee'
 
@@ -323,7 +321,6 @@ export default {
                 'online_pay',
                 'withdraw'
             ],
-            errorMsg: '',
             transaction: {
                 member: {
                     level: {},
@@ -398,27 +395,22 @@ export default {
                 }).then(data => {
                     this.transaction.status = data.status
                     this.loading = false
-                    if (routerLink) {
-                        this.$router.go(routerLink)
-                    }
-                }, error => {
+                    routerLink && this.$router.go(routerLink)
+                }, () => {
                     this.loading = false
-                    this.errorMsg = error
                 })
             }
         },
         withdrawCheckOrder (id) {
             if (id) {
                 this.loading = true
-                withdrawCheckOrder(id).then(data => {
+                withdrawCheckOrder(id, {
+                    action: this.$t('finance.manual_confirm')
+                }).then(data => {
                     this.loading = false
                     this.transaction = data
-                    $.notify({
-                        message: this.$t('finance.manual_confirm') + this.$t('status.success')
-                    })
-                }, error => {
+                }, () => {
                     this.loading = false
-                    this.errorMsg = error
                 })
             }
         },

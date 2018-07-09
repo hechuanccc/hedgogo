@@ -1,30 +1,35 @@
 import qs from 'qs'
 import axios from 'axios'
 import url from './url.js'
+import $ from '../utils/util'
 
 /**
  * 修改密码
  * Change password
  */
-export const changePassword = (user) =>
-    axios.post(url.identity.changePassword, user)
+export const changePassword = (user, { action } = {}) =>
+    axios.post(url.identity.changePassword, user).then(() => {
+        return Promise.resolve()
+    }, $.errorHandler)
 
 /**
  * 登录
  * Login
  */
-export const login = (user) =>
+export const login = (user, { action } = {}) =>
     axios.post(url.identity.login, qs.stringify(user), {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-    })
+    }).then(data => $.successHandler(data, { action }), $.errorHandler)
 
 /**
  * 登出
  * Logout
  */
-export const logout = () => axios.post(url.identity.logout)
+export const logout = ({ action } = {}) =>
+    axios.post(url.identity.logout)
+    .then(data => $.successHandler(data, { action }), $.errorHandler)
 
 /**
  * 取得使用者身份

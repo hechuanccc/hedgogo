@@ -371,10 +371,7 @@ export default {
                 }))
                 this.loading[type] = false
             }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+                $.errorNotify(error)
                 this.loading[type] = false
             })
         },

@@ -159,21 +159,13 @@ export default {
                 updateMerchant('paymentType', {
                     id: this.payment.id,
                     data: formData
+                }, {
+                    action: this.$t('dic.update'),
+                    object: this.$t('dic.payment_type')
                 }).then(() => {
                     this.loading = false
                     this.$router.push('/paymenttype/?type=' + this.payment.platform)
-                    $.notify({
-                        message: this.$t('system_msg.action_object_status', {
-                            action: this.$t('dic.update'),
-                            object: this.$t('dic.payment_type'),
-                            status: this.$t('status.success')
-                        })
-                    })
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
+                }, () => {
                     this.loading = false
                 })
             }
