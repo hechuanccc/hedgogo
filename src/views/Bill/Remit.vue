@@ -8,13 +8,13 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
+                {{ $t('system.download_report') }}
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('system.download_report') }}
+        <span class="md-btn w-sm" disabled v-else>
             <i class="fa fa-download"></i>
+            {{ $t('system.download_report') }}
         </span>
     </div>
     <form class="form box m-b-sm" @submit.prevent="submit">
@@ -219,28 +219,34 @@
         <thead>
             <tr>
                 <th>{{ $t('dic.member') }}</th>
-                <th width="5%">{{ $t('dic.member_level') }}</th>
-                <th width="11%" class="text-center">{{ $t('time.transaction_at') }}</th>
+                <th class="text-center text-sm">
+                    {{ $t('time.transaction_at') }}&nbsp;/
+                    <br/>
+                    {{ $t('time.updated_at') }}
+                </th>
                 <th>{{ $t('finance.depositor') }}</th>
-                <th class="text-center">{{ $t('user.balance_before') }}</th>
-                <th class="text-center">{{ $t('user.balance_after') }}</th>
+                <th class="text-center">
+                    {{ $t('user.balance_before') }}
+                </th>
+                <th class="text-center">
+                    {{ $t('user.balance_after') }}
+                </th>
                 <th class="text-center">{{ $t('dic.amount') }}</th>
                 <th>{{ $t('dic.bank') }} - {{ $t('bank.account') }}</th>
-                <th width="11%" class="text-center">{{ $t('time.updated_at') }}</th>
-                <th width="5%" class="text-center">{{ $t('dic.status') }}</th>
-                <th width="5%" class="text-center">{{ $t('finance.order_detail') }}</th>
+                <th class="text-center">{{ $t('dic.status') }}</th>
+                <th class="text-center">{{ $t('finance.order_detail') }}</th>
             </tr>
         </thead>
         <tbody v-if="queryset.length >0">
             <tr v-for="t in queryset" :key="t.id" class="v-m">
                 <td>
                     <router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link>
-                </td>
-                <td>
-                    <router-link :to="'/level/' + t.member.level.id">{{ t.member.level.name }}</router-link>
+                    <br/>
+                    <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                 </td>
                 <td class="text-center">
-                    <span v-if="t.remit_info">{{ t.remit_info.deposited_at | moment('YYYY-MM-DD HH:mm') }}</span>
+                    <span v-if="t.remit_info" class="text-xs">{{ t.remit_info.deposited_at | moment("YYYY-MM-DD HH:mm") }}</span><br/>
+                    <span class="text-xs">{{ t.updated_at | moment("YYYY-MM-DD HH:mm") }}</span>
                 </td>
                 <td>
                     {{ t.remit_info.depositor || '-' }}
@@ -267,7 +273,6 @@
                     </router-link>
                     <span v-else>-</span>
                 </td>
-                <td class="text-center">{{ t.updated_at | moment('YYYY-MM-DD HH:mm') }}</td>
                 <td class="text-center">
                     <span class="label success" v-if="t.status === 1">{{ $t('status.success') }}</span>
                     <span class="label danger" v-else-if="t.status === 5">{{ $t('status.declined') }}</span>

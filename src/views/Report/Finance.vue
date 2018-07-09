@@ -8,13 +8,13 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
+                {{ $t('system.download_report') }}
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('system.download_report') }}
+        <span class="md-btn w-sm" disabled v-else>
             <i class="fa fa-download"></i>
+            {{ $t('system.download_report') }}
         </span>
     </div>
     <form 

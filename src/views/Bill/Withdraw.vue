@@ -8,13 +8,13 @@
             class="md-btn w-sm text-white-dk blue"
         >
             <span>
-                {{ $t('system.download_report') }}
                 <i class="fa fa-download"></i>
+                {{ $t('system.download_report') }}
             </span>
         </a>
-        <span class="m-t-sm m-r-sm" disabled v-else>
-            {{ $t('system.download_report') }}
+        <span class="md-btn w-sm" disabled v-else>
             <i class="fa fa-download"></i>
+            {{ $t('system.download_report') }}
         </span>
     </div>
     <form class="form box m-b-sm" @submit.prevent="submit">
@@ -222,23 +222,23 @@
     <div class="box">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>{{ $t('dic.member') }}</th>
-                    <th width="11%" class="text-center p-l-xs p-r-xs text-sm">
+                <tr class="text-sm">
+                    <th class="p-r-xs">{{ $t('dic.member') }}</th>
+                    <th width="11%" class="text-center p-l-0 p-r-xs">
                         {{ $t('time.applied_at') }}&nbsp;/
                         <br/>
                         {{ $t('time.updated_at') }}
                     </th>
-                    <th>{{ $t('misc.ip') }}</th>
-                    <th class="text-right text-sm p-r-xs">
-                        {{ $t('user.balance_before') }} /
+                    <th class="p-l-sm p-r-xs">{{ $t('misc.ip') }}</th>
+                    <th class="text-right p-r-xs">
+                        {{ $t('user.balance_before') }}&nbsp;/
                         <br/>
                         {{ $t('user.balance_after') }}
                     </th>
                     <th class="text-center p-r-xs">{{ $t('dic.amount') }}</th>
                     <th>{{ $t('bank.bank_info') }}</th>
                     <th>{{ $t('dic.operator') }}</th>
-                    <th class="text-center">{{ $t('finance.payer_type') }}</th>
+                    <th width="5%" class="text-center">{{ $t('finance.payer_type') }}</th>
                     <th width="7%" class="text-center">{{ $t('finance.audit') }}<br/>{{ $t('dic.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('finance.withdraw') }}<br/>{{ $t('dic.status') }}</th>
                     <th width="5%" class="text-center">{{ $t('dic.operate') }}</th>
@@ -254,11 +254,11 @@
                         <br/>
                         <router-link :to="'/level/' + t.member.level.id" class="text-xs">{{ t.member.level.name }}</router-link>
                     </td>
-                    <td class="text-center p-l-xs p-r-xs">
+                    <td class="text-center p-l-0 p-r-xs">
                         <span class="text-xs">{{ t.created_at  | moment("YYYY-MM-DD HH:mm:ss") }}</span><br/>
                         <span class="text-xs">{{ t.updated_at | moment("YYYY-MM-DD HH:mm:ss") }}</span>
                     </td>
-                    <td v-if="t.ip_info" class="text-sm p-r-xs">
+                    <td v-if="t.ip_info" class="text-sm p-l-sm p-r-xs">
                         <span>{{ t.ip_info.ip || '-' }}</span>
                         <br/>
                         <span class="text-muted text-xs">{{ `${t.ip_info.country || '-'} ${t.ip_info.region || '-'} ${t.ip_info.city || '-'}` }}</span>

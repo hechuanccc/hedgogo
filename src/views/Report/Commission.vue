@@ -6,16 +6,16 @@
           :href="href"
           :getReport="getReport"
           v-if="queryset.length"
-          class="md-btn w-sm blue pull-right text-white"
+          class="md-btn w-sm blue pull-right text-white-dk"
         >
           <span class="font-weight-normal">
-            {{ $t('system.download_report') }}
             <i class="fa fa-download"></i>
+            {{ $t('system.download_report') }}
           </span>
         </a>
-        <span disabled v-else>
-          {{ $t('system.download_report') }}
+        <span class="md-btn w-sm" disabled v-else>
           <i class="fa fa-download"></i>
+          {{ $t('system.download_report') }}
         </span>
       </div>
     </div>
