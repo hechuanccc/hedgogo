@@ -921,7 +921,7 @@ export default {
         },
         isShowRetreatedSched () {
             return this.$refs.pulling.isPageOne &&
-            (Array.isArray(this.input.date) ? this.today === Vue.moment(this.input.date[1]).format(dateFormat) : this.today === Vue.moment(this.input.date).format(dateFormat)) &&
+            (!this.input.date || (Array.isArray(this.input.date) ? this.today === Vue.moment(this.input.date[1]).format(dateFormat) : this.today === Vue.moment(this.input.date).format(dateFormat))) &&
             !this.input.period &&
             !this.mode
         }
