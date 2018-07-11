@@ -103,6 +103,7 @@ export default {
                     this.payerList = [...this.payerList, ...this.addOptions]
                 }
                 this.$emit('no-payer', !data.length)
+            }).finally(() => {
                 this.loading = false
             })
         },

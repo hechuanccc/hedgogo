@@ -83,6 +83,7 @@ export default {
             }
         }).then(data => {
             this.agents = data
+        }).finally(() => {
             this.loading = false
         })
         this.myAgent = this.agent

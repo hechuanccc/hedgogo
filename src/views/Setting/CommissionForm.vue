@@ -180,11 +180,8 @@ export default {
                 data.groups && data.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
                 Object.assign(this.commissionsetting, data)
                 this.addConfig()
-                this.loading = false
-            }, error => {
-                $.errorNotify(error)
-                this.loading = false
-            })
+            }).catch($.errorNotify)
+            .finally(() => { this.loading = false })
         },
         deleteConfig (index) {
             this.commissionsetting.groups[0].rates.splice(index, 1)
@@ -224,10 +221,7 @@ export default {
                 object: this.$t('dic.commission')
             }).then(data => {
                 this.$router.push('/commission/')
-                this.loading = false
-            }, () => {
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         deleteCommission () {
             this.deleteLoading = true

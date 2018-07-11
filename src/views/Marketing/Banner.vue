@@ -159,13 +159,12 @@ export default {
     methods: {
         getBanners () {
             this.loading = true
-            getSetting('banner').then(data => {
+            getSetting('banner')
+            .then(data => {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
-                this.loading = false
-            }, error => {
-                $.errorNotify(error)
-                this.loading = false
             })
+            .catch($.errorNotify)
+            .finally(() => { this.loading = false })
         },
         deleteBanner (id, event, index) {
             if (!window.confirm(this.$t('system_msg.confirm_action_object', {

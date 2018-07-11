@@ -50,8 +50,7 @@ export default {
     created () {
         getMerchant('onlinePayer').then(data => {
             this.onlinePayers = data
-            this.loading = false
-        })
+        }).finally(() => { this.loading = false })
     },
     methods: {
         toggleStatus (payer) {

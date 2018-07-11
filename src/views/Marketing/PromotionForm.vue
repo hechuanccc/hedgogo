@@ -236,8 +236,7 @@ export default {
                 object: this.$t('dic.promotion')
             }).then(data => {
                 this.$router.push('/promotion/' + data.id)
-                this.loading = false
-            }, () => {
+            }).finally(() => {
                 this.loading = false
             })
         },

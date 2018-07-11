@@ -43,14 +43,13 @@
             onSubmit (e) {
                 this.loading = true
                 changePassword(this.user).then(() => {
-                    this.loading = false
                     $.notify({
                         message: this.$t('system_msg.password_changed_success')
                     })
                     setTimeout(() => {
                         this.$router.push('/login')
                     }, 3000)
-                }, () => {
+                }).finally(() => {
                     this.loading = false
                 })
             }

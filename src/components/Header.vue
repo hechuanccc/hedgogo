@@ -221,12 +221,10 @@
                     action: this.$t('title.logout')
                 }).then(data => {
                     this.$root.dropdown = false
-                    this.loading = true
                     this.$router.push('/login')
                     this.$cookie.delete('access_token')
                     this.$cookie.delete('refresh_token')
                 }, error => {
-                    this.loading = false
                     this.errorMsg = error
                 })
             },

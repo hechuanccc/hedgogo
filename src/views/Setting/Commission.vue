@@ -98,7 +98,8 @@ export default {
     },
     methods: {
         getCommissionSetting () {
-            getSetting('commission').then(data => {
+            getSetting('commission')
+            .then(data => {
                 data.forEach(c => {
                     c.groups && c.groups[0].rates.sort((a, b) => a.income_threshold - b.income_threshold)
                     Object.assign(c, c.groups[0], {
@@ -106,11 +107,9 @@ export default {
                     })
                 })
                 this.commissionsettings = data
-                this.loading = false
-            }, error => {
-                $.errorNotify(error)
-                this.loading = false
             })
+            .catch($.errorNotify)
+            .finally(() => { this.loading = false })
         },
         toggleStatus (index, commission) {
             this.$set(this.toggleLoading, index, true)
@@ -123,12 +122,9 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                commission.status = data.status
-                this.$delete(this.toggleLoading, index)
-            }, () => {
-                this.$delete(this.toggleLoading, index)
             })
+            .then(data => { commission.status = data.status })
+            .finally(() => { this.$delete(this.toggleLoading, index) })
         }
     }
 }

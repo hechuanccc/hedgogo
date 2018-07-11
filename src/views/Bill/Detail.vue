@@ -394,9 +394,8 @@ export default {
                     }
                 }).then(data => {
                     this.transaction.status = data.status
-                    this.loading = false
                     routerLink && this.$router.go(routerLink)
-                }, () => {
+                }).finally(() => {
                     this.loading = false
                 })
             }
@@ -407,9 +406,8 @@ export default {
                 withdrawCheckOrder(id, {
                     action: this.$t('finance.manual_confirm')
                 }).then(data => {
-                    this.loading = false
                     this.transaction = data
-                }, () => {
+                }).finally(() => {
                     this.loading = false
                 })
             }

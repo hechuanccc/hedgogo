@@ -658,8 +658,7 @@
                 }).then(data => {
                     this.$refs.pulling.rebase()
                     this.modal.showModal = false
-                    this.modal.loading = false
-                }, () => {
+                }).finally(() => {
                     this.modal.loading = false
                 })
             },

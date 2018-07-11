@@ -85,8 +85,7 @@ export default {
         getOverviewData () {
             getReport('general').then(data => {
                 this.fillData(data)
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         fillData (data) {
             this.dataCategory.forEach(category => {

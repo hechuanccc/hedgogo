@@ -187,8 +187,7 @@ export default {
                     paymentType.detail = paymentType.detail.filter(payee => payee.activate)
                 })
                 this.changeType()
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         changeMode () {
             if (!this.mode) {

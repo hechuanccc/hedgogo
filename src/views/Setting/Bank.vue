@@ -56,8 +56,7 @@ export default {
                     data[index] && this.bankList[0].push(data[index])
                     data[index + 1] && this.bankList[1].push(data[index + 1])
                 }
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         toggleStatus (bank = {}) {
             this.$set(this.toggleLoading, bank.id, true)
@@ -69,12 +68,9 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                bank.status = data.status
-                this.$delete(this.toggleLoading, bank.id)
-            }, () => {
-                this.$delete(this.toggleLoading, bank.id)
             })
+            .then(data => { bank.status = data.status })
+            .finally(() => { this.$delete(this.toggleLoading, bank.id) })
         }
     }
 }

@@ -133,8 +133,7 @@ export default {
                     action: this.$t('finance.withdraw_payee')
                 }).then(data => {
                     this.$emit('withdraw-payee-status', 1)
-                    this.modal.loading = false
-                }, () => {
+                }).finally(() => {
                     this.modal.loading = false
                 })
             }
