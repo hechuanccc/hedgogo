@@ -428,8 +428,7 @@
                         </th>
                         <th>{{ $t('dic.member') }}</th>
                         <th>{{ $t('dic.platform') }}</th>
-                        <th>{{ $t('dic.game') }}</th>
-                        <th>{{ $t('dic.period') }}</th>
+                        <th>{{ $t('dic.game') }}&nbsp;/&nbsp;{{ $t('dic.period') }}</th>
                         <th>{{ $t('game.play') }}</th>
                         <th class="text-right">{{ $t('bet.bet_amount') }}</th>
                         <th class="text-right">{{ $t('bet.settled_amount') }}</th>
@@ -449,8 +448,10 @@
                         </td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
                         <td>{{ (t.platform && $t('dic.' + t.platform)) || '-' }}</td>
-                        <td>{{ t.game.display_name }}</td>
-                        <td>{{ t.issue_number }}</td>
+                        <td>
+                            {{ t.game.display_name }}<br/>
+                            {{ t.issue_number }}
+                        </td>
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
                         <td class="text-right">{{ t.bet_amount | currency('￥') }}</td>
                         <td class="text-right">{{ t.settlement_amount | currency('￥') }}</td>
