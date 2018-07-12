@@ -406,7 +406,7 @@ export default {
                 object: this.$t('dic.member_level')
             }).then(data => {
                 this.$router.push('/level/' + data.id)
-            })
+            }).finally(() => { this.loading = false })
         },
         getLevel (id) {
             this.loading = true
@@ -428,8 +428,7 @@ export default {
                     if (data[key] === null) delete data[key]
                 }
                 this.level = Object.assign(this.level, data)
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         }
     }
 }

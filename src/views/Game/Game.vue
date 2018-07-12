@@ -229,10 +229,9 @@ export default {
     },
     methods: {
         getGameList () {
-            getGame('list').then(data => {
-                this.queryset = data
-                this.loading = false
-            })
+            getGame('list')
+            .then(data => { this.queryset = data })
+            .finally(() => { this.loading = false })
         },
         toggleEnable (index) {
             const game = this.queryset[index]
@@ -384,11 +383,8 @@ export default {
                 Object.assign(this.queryset.find(game => game.id === id), {
                     display_name: data.display_name
                 })
-                this.$delete(this.editNameLoading, id)
                 this.cancelEditName(id)
-            }, () => {
-                this.$delete(this.editNameLoading, id)
-            })
+            }).finally(() => { this.$delete(this.editNameLoading, id) })
         },
         cancelEditName (id) {
             this.$delete(this.editNameList, id)

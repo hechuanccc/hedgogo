@@ -163,11 +163,8 @@ export default {
                     action: this.$t('dic.update'),
                     object: this.$t('dic.payment_type')
                 }).then(() => {
-                    this.loading = false
                     this.$router.push('/paymenttype/?type=' + this.payment.platform)
-                }, () => {
-                    this.loading = false
-                })
+                }).finally(() => { this.loading = false })
             }
         },
         getPaymentType (id) {

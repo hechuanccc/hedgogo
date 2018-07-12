@@ -238,9 +238,8 @@ export default {
             manuallyAdjust(this.transaction, {
                 action: this.$t('finance.manual_adjust')
             }).then(data => {
-                this.loading = false
                 this.$router.push('/transaction/' + data.id)
-            }, () => {
+            }).finally(() => {
                 this.loading = false
             })
         }

@@ -240,13 +240,10 @@ export default {
                 this.myQueryset = this.myQueryset.concat(data.results)
                 this.$emit('query-data', this.myQueryset)
                 this.next = data.next
-                this.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }).catch(error => {
+                $.errorNotify(error)
                 this.$emit('query-data', [])
+            }).finally(() => {
                 this.loading = false
             })
             this.$emit('query-param', this.myQuery)

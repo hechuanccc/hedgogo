@@ -293,9 +293,7 @@ export default {
                 object: this.$t('dic.member')
             }).then(data => {
                 this.$router.push('/member/' + data.id)
-            }, () => {
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         getMember (id) {
             getUser('member', {

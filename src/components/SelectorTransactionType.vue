@@ -70,6 +70,7 @@ export default {
             } else {
                 this.transactionTypes = data
             }
+        }).finally(() => {
             this.loading = false
         })
         this.myTransactionType = this.transactionType

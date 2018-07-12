@@ -66,6 +66,7 @@ export default {
                 this.showStatus && data.sort((a, b) => b.status - a.status)
                 this.banks = data
                 this.myBank = this.bank
+            }).finally(() => {
                 this.loading = false
             })
         })

@@ -467,7 +467,8 @@ export default {
     },
     methods: {
         getChatroom (id = this.id) {
-            id && getSetting('chatroom', { id }).then(data => {
+            id && getSetting('chatroom', { id })
+            .then(data => {
                 this.title = data.title
                 data.robots && data.robots.forEach(robot => {
                     robot.day_of_week = this.splitDayOfWeek(robot)
@@ -479,11 +480,9 @@ export default {
                     })
                 })
                 Object.assign(this.chatroom, data)
-                this.loading = false
-            }, error => {
-                $.errorNotify(error)
-                this.loading = false
             })
+            .catch($.errorNotify)
+            .finally(() => { this.loading = false })
         },
         getGamesName () {
             getGame('list', {
@@ -609,9 +608,7 @@ export default {
                     day_of_week: this.splitDayOfWeek(data)
                 }))
                 this.closeModal()
-            }, () => {
-                this.modal.loading = false
-            })
+            }).finally(() => { this.modal.loading = false })
         },
         openModal (mode = '', type = 2, robot = {
             avatar: null,

@@ -754,9 +754,8 @@ export default {
                 action: this.$t('game.retreat_schedule')
             }).then(data => {
                 this.modal.status === 'open' ? this.getRetreatedSchedules() : this.$refs.pulling.rebase()
-                this.modal.loading = false
                 this.hideModal()
-            }, () => {
+            }).finally(() => {
                 this.modal.loading = false
             })
         },
@@ -773,9 +772,8 @@ export default {
                 action: this.$t('dic.set')
             }).then(data => {
                 this.$refs.pulling.rebase()
-                this.modal.loading = false
                 this.hideModal()
-            }, () => {
+            }).finally(() => {
                 this.modal.loading = false
             })
         },
@@ -795,9 +793,8 @@ export default {
                     action: this.$t('game.manual_draw')
                 }).then(() => {
                     this.$refs.pulling.rebase()
-                    this.modal.loading = false
                     this.hideModal()
-                }, () => {
+                }).finally(() => {
                     this.modal.loading = false
                 })
             } else {

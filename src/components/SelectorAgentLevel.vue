@@ -56,6 +56,7 @@ export default {
         getSetting('agentLevel').then(data => {
             this.levels = data
             this.selectedLevel = this.level || ''
+        }).finally(() => {
             this.loading = false
         })
     }

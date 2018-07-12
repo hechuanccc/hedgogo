@@ -190,11 +190,8 @@ export default {
                 }
             }).then(data => {
                 this.queryset = data
-                this.queryset.forEach(e => {
-                    this.typeTransform(e)
-                })
-                this.loading = false
-            }, () => {
+                this.queryset.forEach(this.typeTransform)
+            }).finally(() => {
                 this.loading = false
             })
         },
@@ -270,8 +267,7 @@ export default {
                 this.typeTransform(data)
                 Object.assign(this.queryset[index], data)
                 this.modal.showModal = false
-                this.modal.loading = false
-            }, () => {
+            }).finally(() => {
                 this.modal.loading = false
             })
         }

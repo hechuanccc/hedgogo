@@ -109,8 +109,7 @@ export default {
             }
         }).then(data => {
             this.levels = data
-            this.loading = false
-        })
+        }).finally(() => { this.loading = false })
     }
 }
 </script>

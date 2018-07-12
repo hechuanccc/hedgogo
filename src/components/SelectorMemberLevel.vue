@@ -102,6 +102,7 @@ export default {
             params
         }).then(data => {
             this.levels = data
+        }).finally(() => {
             this.loading = false
         })
         if (this.mode === 'select') {

@@ -307,9 +307,8 @@ export default{
                     action: this.$t('game.manual_draw')
                 }).then(() => {
                     this.getPeriods()
-                    this.modal.loading = false
                     this.hideModal()
-                }, () => {
+                }).finally(() => {
                     this.modal.loading = false
                 })
             } else {
@@ -332,9 +331,8 @@ export default{
                 action: this.$t('dic.set')
             }).then(() => {
                 this.getPeriods()
-                this.modal.loading = false
                 this.hideModal()
-            }, () => {
+            }).finally(() => {
                 this.modal.loading = false
             })
         }
