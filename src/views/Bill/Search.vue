@@ -215,9 +215,9 @@
                 <th>{{ $t('dic.agent') }}</th>
                 <th class="text-center">{{ $t('time.transaction_at') }}</th>
                 <th class="text-center">{{ $t('finance.transaction_type') }}</th>
-                <th class="text-center">{{ $t('user.balance_before') }}</th>
-                <th class="text-center">{{ $t('user.balance_after') }}</th>
-                <th class="text-center">{{ $t('dic.amount') }}</th>
+                <th class="text-right">{{ $t('user.balance_before') }}</th>
+                <th class="text-right">{{ $t('user.balance_after') }}</th>
+                <th class="text-right">{{ $t('dic.amount') }}</th>
                 <th class="text-center">{{ $t('dic.status') }}</th>
                 <th class="text-center">{{ $t('finance.order_detail') }}</th>
             </tr>

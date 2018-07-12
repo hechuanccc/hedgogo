@@ -235,7 +235,7 @@
                         <br/>
                         {{ $t('user.balance_after') }}
                     </th>
-                    <th class="text-center p-r-xs">{{ $t('dic.amount') }}</th>
+                    <th class="text-right">{{ $t('dic.amount') }}</th>
                     <th>{{ $t('bank.bank_info') }}</th>
                     <th>{{ $t('dic.operator') }}</th>
                     <th width="5%" class="text-center">{{ $t('finance.payer_type') }}</th>
@@ -272,7 +272,7 @@
                         <p class="m-b-0" v-if="t.balance_after || t.balance_after === 0">{{ t.balance_after | currency('￥') }}</p>
                         <p class="m-b-0" v-else>-</p>
                     </td>
-                    <td class="text-right p-r-xs">{{ t.amount | currency('￥') }}</td>
+                    <td class="text-right">{{ t.amount | currency('￥') }}</td>
                     <td>
                         <p class="m-b-xs">{{ `${$t('dic.bank')}: ${t.member.bank.name}` }}</p>
                         <p class="m-b-xs">{{ `${$t('bank.account')}: ${t.member.bank.account}` }}</p>

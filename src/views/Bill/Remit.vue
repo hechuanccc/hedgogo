@@ -225,13 +225,13 @@
                     {{ $t('time.updated_at') }}
                 </th>
                 <th>{{ $t('finance.depositor') }}</th>
-                <th class="text-center">
+                <th class="text-right">
                     {{ $t('user.balance_before') }}
                 </th>
-                <th class="text-center">
+                <th class="text-right">
                     {{ $t('user.balance_after') }}
                 </th>
-                <th class="text-center">{{ $t('dic.amount') }}</th>
+                <th class="text-right">{{ $t('dic.amount') }}</th>
                 <th>{{ $t('dic.bank') }} - {{ $t('bank.account') }}</th>
                 <th class="text-center">{{ $t('dic.status') }}</th>
                 <th class="text-center">{{ $t('finance.order_detail') }}</th>
