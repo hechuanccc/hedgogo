@@ -198,6 +198,7 @@
                                         :picker-options="{shortcuts}"
                                         ref="created"
                                         v-show="timeCategory === 'created'"
+                                        @change="selectCreatedAt"
                                     />
                                     <el-date-picker
                                         style="width: 248px;"
@@ -210,6 +211,7 @@
                                         :picker-options="{shortcuts}"
                                         ref="settled"
                                         v-show="timeCategory === 'settled'"
+                                        @change="selectSettledAt"
                                     />
                                 </div>
                             </div>
@@ -646,24 +648,6 @@
                 },
                 deep: true
             },
-            created_at (newObj) {
-                if (`${newObj}` === `${this.defaultDate}` && `${[this.query.created_at_0, this.query.created_at_1]}` !== `${this.defaultDate}`) {
-                    [this.query.created_at_0, this.query.created_at_1] = [undefined, undefined]
-                } else {
-                    [this.query.created_at_0, this.query.created_at_1] = [...(newObj || [])]
-                }
-                this.autoTogglePopup = false
-                this.submit()
-            },
-            settled_at (newObj) {
-                if (`${newObj}` === `${this.defaultDate}` && `${[this.query.settled_at_0, this.query.settled_at_1]}` !== `${this.defaultDate}`) {
-                    [this.query.settled_at_0, this.query.settled_at_1] = [undefined, undefined]
-                } else {
-                    [this.query.settled_at_0, this.query.settled_at_1] = [...(newObj || [])]
-                }
-                this.autoTogglePopup = false
-                this.submit()
-            },
             period (newObj, old) {
                 clearInterval(this.interval)
                 this.interval = setInterval(this.getBetRecord, parseInt(this.period))
@@ -750,15 +734,18 @@
                     if (query.created_at_0 || query.created_at_1) {
                         this.timeCategory = 'created'
                         this.created_at = [query.created_at_0, query.created_at_1]
+                        this.settled_at = [undefined, undefined]
                         this.extra = 'account_type=1,2'
                     } else if (query.settled_at_0 || query.settled_at_1) {
                         this.timeCategory = 'settled'
                         this.settled_at = [query.settled_at_0, query.settled_at_1]
+                        this.created_at = [undefined, undefined]
                         this.extra = 'account_type=1,2'
                     } else {
                         // default date is today
                         this.timeCategory = 'created'
                         this.created_at = [this.today, this.today]
+                        this.settled_at = [undefined, undefined]
                         this.extra = `created_at_0=${this.today}&created_at_1=${this.today}&account_type=1,2`
                     }
                     this.game = query.game || ''
@@ -849,6 +836,22 @@
             },
             closeStatusSelector (value, id) {
                 this.query.status = `${value.map(v => v.value)}`
+                this.submit()
+            },
+            selectCreatedAt () {
+                if (`${this.created_at}` === `${this.defaultDate}` && `${[this.query.created_at_0, this.query.created_at_1]}` !== `${this.defaultDate}`) {
+                    [this.query.created_at_0, this.query.created_at_1] = [undefined, undefined]
+                } else {
+                    [this.query.created_at_0, this.query.created_at_1] = [...(this.created_at || [])]
+                }
+
+                this.autoTogglePopup = false
+                this.submit()
+            },
+            selectSettledAt () {
+                [this.query.settled_at_0, this.query.settled_at_1] = [...(this.settled_at || [])]
+
+                this.autoTogglePopup = false
                 this.submit()
             }
         },
