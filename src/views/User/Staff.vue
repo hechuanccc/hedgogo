@@ -26,7 +26,7 @@
                         </td>
                         <td>
                             <span class="label success" v-if="staff.status === 1">{{$t('status.active')}}</span>
-                            <span class="label" v-else>{{$t('status.inactive')}}</span>
+                            <span class="label danger" v-else>{{$t('status.inactive')}}</span>
                         </td>
                         <td>
                             <span v-if="staff.user_group">{{staff.user_group.name}}</span>

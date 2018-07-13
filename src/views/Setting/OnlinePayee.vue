@@ -44,12 +44,13 @@
                         <td>{{payee.expired_in}}</td>
                         <td>{{payee.display_name}}</td>
                         <td class="text-center">
-                            <span class="label success m-r-sm" v-if="payee.status==1">{{$t('status.active')}}</span>
-                            <span class="label danger m-r-sm" v-else>{{$t('status.disabled')}}</span>
-                            <template v-if="$root.permissions.includes('update_onlinepayee_status')">
-                                <a @click="toggleStatus(payee)" v-if="payee.status==1">{{$t('status.disabled')}}</a>
-                                <a @click="toggleStatus(payee)" v-else>{{$t('status.active')}}</a>
-                            </template>
+                            <status-switch
+                                :status="payee.status"
+                                :loading="!!statusSwitchLoading[payee.id]"
+                                :disabled="!updateOnlinepayeeStatusPermission"
+                                :options="[$t('status.disabled'), '']"
+                                @toggle="toggleStatus(payee)"
+                            />
                         </td>
                         <td>
                             <router-link
@@ -67,12 +68,14 @@
     </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import { getMerchant, updateMerchant } from '../../service'
 export default {
     data () {
         return {
             status: this.$route.query.status || '',
-            onlinePayee: []
+            onlinePayee: [],
+            statusSwitchLoading: {}
         }
     },
     created () {
@@ -98,12 +101,16 @@ export default {
         }
     },
     computed: {
+        updateOnlinepayeeStatusPermission () {
+            return this.$root.permissions.includes('update_onlinepayee_status')
+        },
         filteredOnlinePayee () {
             return this.onlinePayee.filter(p => !this.status || parseInt(p.status) === parseInt(this.status))
         }
     },
     methods: {
         toggleStatus (payee) {
+            this.$set(this.statusSwitchLoading, payee.id, true)
             updateMerchant('onlinePayee', {
                 id: payee.id,
                 data: {
@@ -112,10 +119,15 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                payee.status = data.status
-            }, () => {})
+            }).then(({ status }) => {
+                payee.status = status
+            }).finally(() => {
+                this.$delete(this.statusSwitchLoading, payee.id)
+            })
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>

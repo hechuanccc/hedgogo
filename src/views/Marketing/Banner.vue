@@ -96,13 +96,12 @@
                         <span v-if="banner.platform === 2">{{ $t('dic.pc') }}&nbsp;/&nbsp;{{ $t('dic.mobile') }}</span>
                     </td>
                     <td class="text-center v-m">
-                        <span class="label success" v-if="banner.status==1" >{{ $t('status.active') }}</span>
-                        <span class="label danger" v-if="banner.status==0">{{ $t('status.inactive') }}</span>
-                        <template v-if="updateBannerStatusPermission">
-                            <a class="text-sm m-l-sm" @click="toggleStatus(banner)">
-                                {{ banner.status === 0 ? $t('status.active') : $t('status.inactive') }}
-                            </a>
-                        </template>
+                        <status-switch
+                            :status="banner.status"
+                            :loading="!!statusSwitchLoading[banner.id]"
+                            :disabled="!updateBannerStatusPermission"
+                            @toggle="toggleStatus(banner)"
+                        />
                     </td>
                     <td class="text-center v-m" v-if="deleteBannerPermission">
                         <a class="md-btn md-flat" @click="deleteBanner(banner.id, $event, index)">
@@ -124,6 +123,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import {
     getSetting,
     updateSetting,
@@ -142,7 +142,8 @@ export default {
             },
             loading: true,
             uploadLoading: false,
-            reorderLoading: false
+            reorderLoading: false,
+            statusSwitchLoading: {}
         }
     },
     computed: {
@@ -191,8 +192,7 @@ export default {
             }).then(data => {
                 this.queryset = []
                 this.getBanners()
-                this.uploadLoading = false
-            }, () => {
+            }).finally(() => {
                 this.uploadLoading = false
             })
         },
@@ -213,6 +213,7 @@ export default {
             }
         },
         toggleStatus (banner) {
+            this.$set(this.statusSwitchLoading, banner.id, true)
             updateSetting('banner', {
                 id: banner.id,
                 data: {
@@ -221,8 +222,10 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                banner.status = data.status
+            }).then(({ status }) => {
+                banner.status = status
+            }).finally(() => {
+                this.$delete(this.statusSwitchLoading, banner.id)
             })
         },
         changeMode () {
@@ -240,8 +243,7 @@ export default {
                         element.rank = index + 1
                     })
                     this.mode = 1
-                    this.reorderLoading = false
-                }, () => {
+                }).finally(() => {
                     this.reorderLoading = false
                 })
             } else {
@@ -254,7 +256,8 @@ export default {
         }
     },
     components: {
-        draggable
+        draggable,
+        StatusSwitch
     }
 }
 </script>

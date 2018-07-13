@@ -60,15 +60,13 @@
                 </div>
               </div>
               <div class="col-xs-6 m-t-sm">
-                <span>{{ $t('dic.status') }} </span>
-                <div>
-                  <span class="label success" v-if="agent.status === 1" @click="toggleStatus">{{ $t('status.active') }}</span>
-                  <span class="label" v-else @click="toggleStatus">{{ $t('status.inactive') }}</span>
-                  <template v-if="$root.permissions.includes('update_agent_status')">
-                    <a class="text-sm m-l-sm" @click="toggleStatus" v-if="agent.status === 1">{{ $t('status.inactive') }}</a>
-                    <a class="text-sm m-l-sm" @click="toggleStatus" v-else>{{ $t('status.active') }}</a>
-                  </template>
-                </div>
+                <span>{{ $t('dic.status') }}</span>
+                <status-switch
+                  :status="agent.status"
+                  :loading="toggleLoading"
+                  :disabled="!$root.permissions.includes('update_agent_status')"
+                  @toggle="toggleStatus"
+                />
               </div>
               <div class="col-xs-6 m-t-sm">
                 <span>{{ $t('user.default_member_level') }}</span>
@@ -209,6 +207,7 @@
 </template>
 <script>
     import { getUser, updateUser, deleteAgent, resetPassword } from '../../service'
+    import StatusSwitch from '../../components/StatusSwitch.vue'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
 
@@ -230,10 +229,11 @@
                     },
                     commission_settings: {},
                     level: '',
-                    status: ''
+                    status: 1
                 },
                 created_at_0: Vue.moment().format(format),
-                created_at_1: Vue.moment().format(format)
+                created_at_1: Vue.moment().format(format),
+                toggleLoading: false
             }
         },
         beforeRouteEnter (to, from, next) {
@@ -250,6 +250,7 @@
                 this.getAgent(this.$route.params.agentId)
             },
             toggleStatus () {
+                this.toggleLoading = true
                 updateUser('agent', {
                     id: this.agent.id,
                     data: {
@@ -261,9 +262,11 @@
                 }, {
                     action: this.$t('dic.update'),
                     object: this.$t('dic.status')
-                }).then(data => {
-                    this.agent.status = data.status
-                }, () => {})
+                }).then(({ status }) => {
+                    this.agent.status = status
+                }).finally(() => {
+                    this.toggleLoading = false
+                })
             },
             resetPassword (event) {
                 if (!window.confirm(this.$t('system_msg.confirm_action_object', {
@@ -307,6 +310,9 @@
             isArray (o) {
                 return Object.prototype.toString.call(o) === '[object Array]'
             }
+        },
+        components: {
+            StatusSwitch
         }
     }
 </script>
