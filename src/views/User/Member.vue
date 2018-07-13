@@ -29,7 +29,7 @@
     <div class="row m-b m-r-xs m-l-xs m-b-sm" v-else>
       <label class="md-switch m-t-sm">
         <input type="checkbox" v-model="visitorFilter" class="has-value pull-right">
-        <i class="blue"></i>
+        <i class="success"></i>
         <span class="pull-right p-t-xs">{{ $t('misc.filter_visitor') }}</span>
       </label>
       <button

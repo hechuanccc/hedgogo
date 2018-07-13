@@ -95,15 +95,13 @@
                         {{ paymentType.description || '-' }}
                     </td>
                     <td class="text-center">
-                        <span class="label success m-r-sm" v-if="paymentType.status==1">{{ $t('status.active') }}</span>
-                        <span class="label danger m-r-sm" v-else>{{ $t('status.disabled') }}</span>
-                        <template v-if="$root.permissions.includes('update_onlinepayment_status')">
-                            <a @click="toggleStatus(paymentType)" v-if="!toggleLoading[paymentType.id] &&paymentType.status === 1">{{ $t('status.disabled') }}</a>
-                            <a @click="toggleStatus(paymentType)" v-else-if="!toggleLoading[paymentType.id]">{{ $t('status.active') }}</a>
-                            <span class="text-blue" v-else>
-                                &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
-                            </span>
-                        </template>
+                        <status-switch
+                            :status="paymentType.status"
+                            :loading="!!toggleLoading[paymentType.id]"
+                            :disabled="!updateOnlinepaymentStatusPermission"
+                            :options="[$t('status.disabled'), '']"
+                            @toggle="toggleStatus(paymentType)"
+                        />
                     </td>
                 </tr>
             </draggable>
@@ -120,6 +118,7 @@
 </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import draggable from 'vuedraggable'
 import { getMerchant, updateMerchant, adjustPaymentTypeOrder } from '../../service'
 export default {
@@ -156,6 +155,11 @@ export default {
             })
         }
     },
+    computed: {
+        updateOnlinepaymentStatusPermission () {
+            return this.$root.permissions.includes('update_onlinepayment_status')
+        }
+    },
     methods: {
         toggleStatus (paymentType) {
             this.$set(this.toggleLoading, paymentType.id, true)
@@ -168,11 +172,11 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                paymentType.status = data.status
-                this.$delete(this.toggleLoading, paymentType.id)
-            }, () => {
+            }).then(({ status }) => {
+                paymentType.status = status
+            }).catch(() => {
                 this.changeType(this.type)
+            }).finally(() => {
                 this.$delete(this.toggleLoading, paymentType.id)
             })
         },
@@ -225,6 +229,7 @@ export default {
         }
     },
     components: {
+        StatusSwitch,
         draggable
     }
 }

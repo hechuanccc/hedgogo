@@ -94,7 +94,7 @@
                 </tr>
             </thead>
             <tbody v-if="!listLoading">
-                <tr :key="chatroom.id" v-for="(chatroom, index) in chatrooms">
+                <tr :key="chatroom.id" v-for="chatroom in chatrooms">
                     <td class="text-uppercase"><router-link :to="`/chatroom/${chatroom.id}/edit`">{{ chatroom.title || $t('system.no_setting') }}</router-link></td>
                     <td class="text-uppercase">{{ gamesMapping[chatroom.id] || '-' }}</td>
                     <td v-if="chatroom.managers.length">
@@ -110,13 +110,11 @@
                     </td>
                     <td v-else>-</td>
                     <td class="text-center text-sm">
-                        <span class="label success" v-if="chatroom.status === 1">{{ $t('status.active') }}</span>
-                        <span class="label danger" v-if="chatroom.status === 0">{{ $t('status.disabled') }}</span>
-                        <a class="m-l-sm" @click="toggleStatus(index, chatroom)" v-if="!toggleLoading[index] && chatroom.status === 1">{{ $t('status.inactive') }}</a>
-                        <a class="m-l-sm" @click="toggleStatus(index, chatroom)" v-else-if="!toggleLoading[index]">{{ $t('status.active') }}</a>
-                        <span class="m-l-sm text-blue" v-else>
-                            &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
-                        </span>
+                        <status-switch
+                            :status="chatroom.status"
+                            @toggle="toggleStatus(chatroom)"
+                            :loading="!!toggleLoading[chatroom.id]"
+                        />
                     </td>
                 </tr>
             </tbody>
@@ -208,6 +206,7 @@
 </template>
 
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import {
     getSetting,
     getGame,
@@ -292,8 +291,8 @@ export default {
                 })
             })
         },
-        toggleStatus (index, chatroom) {
-            this.$set(this.toggleLoading, index, true)
+        toggleStatus (chatroom) {
+            this.$set(this.toggleLoading, chatroom.id, true)
             updateSetting('chatroom', {
                 id: chatroom.id,
                 data: {
@@ -303,11 +302,10 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                chatroom.status = data.status
-                this.$delete(this.toggleLoading, index)
-            }, () => {
-                this.$delete(this.toggleLoading, index)
+            }).then(({ status }) => {
+                chatroom.status = status
+            }).finally(() => {
+                this.$delete(this.toggleLoading, chatroom.id)
             })
         },
 
@@ -370,6 +368,9 @@ export default {
                 this.modal.showModal = false
             }).finally(() => { this.modal.loading = false })
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>

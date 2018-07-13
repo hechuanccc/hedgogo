@@ -123,12 +123,12 @@
                             <span v-if="announcement.platform === 2">{{ $t('dic.pc') }}&nbsp;/&nbsp;{{ $t('dic.mobile') }}</span>
                         </td>
                         <td>
-                            <span class="label success" v-if="announcement.status === 1" >{{ $t('status.active') }}</span>
-                            <span class="label danger" v-else>{{ $t('status.inactive') }}</span>
-                            <template v-if="updateAnnouncementStatusPermission">
-                                <a class="text-sm m-l-sm" @click="toggleStatus(announcement)" v-if="announcement.status === 0">{{ $t('status.active') }}</a>
-                                <a class="text-sm m-l-sm" @click="toggleStatus(announcement)" v-else>{{ $t('status.inactive') }}</a>
-                            </template>
+                            <status-switch
+                                :status="announcement.status"
+                                @toggle="toggleStatus(announcement)"
+                                :loading="!!statusSwitchLoading[announcement.id]"
+                                :disabled="!updateAnnouncementStatusPermission"
+                            />
                         </td>
                         <td v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
                             <a
@@ -152,6 +152,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import {
     getSetting,
     updateSetting,
@@ -169,7 +170,8 @@ export default {
                 announcement: '',
                 status: '1'
             },
-            id: ''
+            id: '',
+            statusSwitchLoading: {}
         }
     },
     created () {
@@ -245,6 +247,7 @@ export default {
             })
         },
         toggleStatus (announcement) {
+            this.$set(this.statusSwitchLoading, announcement.id, true)
             updateSetting('announcement', {
                 id: announcement.id,
                 data: {
@@ -253,11 +256,10 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                announcement.status = data.status
-                if (data.id === this.id) {
-                    this.announcement.status = data.status
-                }
+            }).then(({ status }) => {
+                announcement.status = status
+            }).finally(() => {
+                this.$delete(this.statusSwitchLoading, announcement.id)
             })
         },
         changeMode () {
@@ -285,7 +287,8 @@ export default {
         }
     },
     components: {
-        draggable
+        draggable,
+        StatusSwitch
     }
 }
 </script>

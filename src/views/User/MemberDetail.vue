@@ -273,12 +273,12 @@
             <div class="col-xs-5">
               <span class="title">{{$t('dic.status')}}</span>
               <div>
-                <span class="label success" v-if="member.status === 1">{{$t('status.active')}}</span>
-                <span class="label" v-else >{{$t('status.inactive')}}</span>
-                <template v-if="$root.permissions.includes('update_member_status')">
-                  <a class="text-sm m-l" @click="toggleStatus" v-if="member.status === 1">禁用</a>
-                  <a class="text-sm m-l" @click="toggleStatus" v-else>启用</a>
-                </template>
+                <status-switch
+                    :status="member.status"
+                    :loading="toggleLoading"
+                    :disabled="!$root.permissions.includes('update_member_status')"
+                    @toggle="toggleStatus"
+                />
               </div>
             </div>
             <div class="col-xs-5 col-xs-offset-1">
@@ -293,6 +293,7 @@
 </template>
 
 <script>
+    import StatusSwitch from '../../components/StatusSwitch.vue'
     import { getUser, updateUser, resetPassword } from '../../service'
     import Vue from 'vue'
     const format = 'YYYY-MM-DD'
@@ -311,7 +312,7 @@
                     balance: {
                         balance: ''
                     },
-                    status: '',
+                    status: 1,
                     agent: {},
                     transaction_info: {
                         ongoing: [],
@@ -323,7 +324,8 @@
                 accounts: [],
                 loading: true,
                 balanceLoading: true,
-                providerActive: ''
+                providerActive: '',
+                toggleLoading: false
             }
         },
         computed: {
@@ -363,6 +365,7 @@
         },
         methods: {
             toggleStatus () {
+                this.toggleLoading = true
                 updateUser('member', {
                     id: this.member.id,
                     data: {
@@ -374,9 +377,11 @@
                 }, {
                     action: this.$t('dic.update'),
                     object: this.$t('dic.status')
-                }).then(data => {
-                    this.member.status = data.status
-                }, () => {})
+                }).then(({ status }) => {
+                    this.member.status = status
+                }).finally(() => {
+                    this.toggleLoading = false
+                })
             },
             resetPassword (type, event) {
                 // type = member,  for reset member login password
@@ -430,6 +435,9 @@
                     this.member.balance.audit_amount = data.balance.audit_amount
                 })
             }
+        },
+        components: {
+            StatusSwitch
         }
     }
 </script>

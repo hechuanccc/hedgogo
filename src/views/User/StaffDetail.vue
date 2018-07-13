@@ -77,12 +77,12 @@
                 <div class="row p-t">
                     <div class="col-xs-5">
                         <span class="text-muted">{{$t('dic.status')}}</span>
-                        <div>
-                            <span :class="['label', staff.status?'success':'danger']">{{ staff.status ?  $t('status.active') : $t('status.inactive') }}</span>
-                            <template v-if="$root.permissions.includes('update_staff_status')">
-                                <a class="text-sm m-l" @click="toggleStatus">{{ staff.status ? $t('status.inactive') : $t('status.active') }}</a>
-                            </template>
-                        </div>
+                        <status-switch
+                            :status="staff.status"
+                            :loading="toggleLoading"
+                            :disabled="!$root.permissions.includes('update_staff_status')"
+                            @toggle="toggleStatus"
+                        />
                     </div>
                 </div>
             </div>
@@ -90,13 +90,15 @@
     </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import { getUser, updateUser, deleteStaff } from '../../service'
 export default {
     data () {
         return {
             staff: {
                 user_group: {}
-            }
+            },
+            toggleLoading: false
         }
     },
     created () {
@@ -114,6 +116,7 @@ export default {
             })
         },
         toggleStatus () {
+            this.toggleLoading = true
             updateUser('staff', {
                 id: this.staff.id,
                 data: {
@@ -124,9 +127,11 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
-            }).then(data => {
-                this.staff.status = data.status
-            }, () => {})
+            }).then(({ status }) => {
+                this.staff.status = status
+            }).finally(() => {
+                this.toggleLoading = false
+            })
         },
         deleteStaff (id, confirm, event) {
             if (confirm) {
@@ -143,6 +148,9 @@ export default {
                 this.$router.push('/staff')
             }, () => {})
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>

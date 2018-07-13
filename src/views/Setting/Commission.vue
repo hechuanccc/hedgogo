@@ -27,15 +27,12 @@
                         </router-link>
                     </td>
                     <td class="text-center text-sm">
-                        <span class="label success" v-if="commission.status === 1">{{ $t('status.active') }}</span>
-                        <span class="label danger" v-if="commission.status === 0">{{ $t('status.disabled') }}</span>
-                        <template v-if="$root.permissions.includes('update_commission_setting_status')">
-                            <a class="m-l-sm" @click="toggleStatus(index, commission)" v-if="!toggleLoading[index] && commission.status == 1">{{ $t('status.inactive') }}</a>
-                            <a class="m-l-sm" @click="toggleStatus(index, commission)" v-else-if="!toggleLoading[index]">{{ $t('status.active') }}</a>
-                            <span class="m-l-sm text-blue" v-else>
-                                &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
-                            </span>
-                        </template>
+                        <status-switch
+                            :status="commission.status"
+                            @toggle="toggleStatus(commission)"
+                            :loading="!!toggleLoading[commission.id]"
+                            :disabled="!updateCommissionSettingStatusPermission"
+                        />
                     </td>
                     <td class="text-center">{{ commission.member_num || 0 }}</td>
                     <td class="p-a-0 text-xs text-center" v-if="commission.rates && commission.rates.length">
@@ -81,6 +78,7 @@
 </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import { getSetting, updateSetting } from '../../service'
 import $ from '../../utils/util'
 export default {
@@ -95,6 +93,11 @@ export default {
     },
     created () {
         this.getCommissionSetting()
+    },
+    computed: {
+        updateCommissionSettingStatusPermission () {
+            return this.$root.permissions.includes('update_commission_setting_status')
+        }
     },
     methods: {
         getCommissionSetting () {
@@ -111,8 +114,8 @@ export default {
             .catch($.errorNotify)
             .finally(() => { this.loading = false })
         },
-        toggleStatus (index, commission) {
-            this.$set(this.toggleLoading, index, true)
+        toggleStatus (commission) {
+            this.$set(this.toggleLoading, commission.id, true)
             updateSetting('commission', {
                 id: commission.id,
                 data: {
@@ -123,9 +126,12 @@ export default {
                 action: this.$t('dic.update'),
                 object: this.$t('dic.status')
             })
-            .then(data => { commission.status = data.status })
-            .finally(() => { this.$delete(this.toggleLoading, index) })
+            .then(({ status }) => { commission.status = status })
+            .finally(() => { this.$delete(this.toggleLoading, commission.id) })
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>
