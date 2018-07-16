@@ -1,6 +1,6 @@
 <template>
   <select
-    class="form-control c-select w-sm"
+    class="form-control c-select w-md"
     v-model="selectedPayer"
     v-if="!loading && mode === 'selector' && payerList.length"
   >
@@ -29,7 +29,7 @@
     <i class="fa fa-spin fa-spinner"></i>
   </span>
   <span
-    class="p-b-xs p-t-xs form-control w-sm"
+    class="m-t-xs p-b-xs p-t-xs form-control w-md"
     v-else-if="!payerList.length && mode === 'selector'"
   >
     {{ $t('common.no_record') }}
@@ -45,6 +45,9 @@ export default {
             type: Boolean
         },
         member: {
+            default: ''
+        },
+        status: {
             default: ''
         },
         mode: {
@@ -93,7 +96,10 @@ export default {
     methods: {
         getPayer (id) {
             getMerchant('onlinePayer', {
-                ...(id && { member: id })
+                params: {
+                    ...(id && { member: id }),
+                    ...(this.status && { status: this.status })
+                }
             }).then(data => {
                 if (data.length && this.mode === 'selector' && !this.payer && !this.clearable) {
                     this.selectedPayer = data[0].id

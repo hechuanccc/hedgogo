@@ -19,6 +19,7 @@
                             <selector-online-payer
                                 :payer="selectedPayer"
                                 :member="transaction.member.id"
+                                status="1"
                                 @payer-select="payerSelect"
                             />
                         </div>
