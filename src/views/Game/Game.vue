@@ -159,7 +159,7 @@
                     </div>
                     <div class="row m-b m-l">
                         <div class="col-xs-4 text-center" v-if="modal.icon">
-                            <img :src="modal.icon" width="108" height="108">
+                            <img :src="modal.icon" width="108" height="108" alt="icon">
                         </div>
                         <div class="col-xs-4 text-center" v-else>
                             <div id="circle">

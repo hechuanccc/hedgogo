@@ -49,7 +49,7 @@
                             <div class="form-group">
                                 <label class="label-width">{{ $t('promotion.banner') }}</label>
                                 <div class="inline-form-control promo-image-container" v-if="promotion.image_url">
-                                    <img :src="promotion.image_url" class="promo-image">
+                                    <img :src="promotion.image_url" class="promo-image" alt="promo">
                                 </div>
                                 <div class="inline-form-control v-m">
                                     <input class="form-control" type="file" accept="image/*" @change="syncImage($event, 'image')">
@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <label class="label-width">{{ $t('promotion.banner_mobile') }}</label>
                                 <div class="inline-form-control promo-image-container" v-if="promotion.image_mobile_url">
-                                    <img :src="promotion.image_mobile_url" class="promo-image">
+                                    <img :src="promotion.image_mobile_url" class="promo-image" alt="promo">
                                 </div>
                                 <div class="inline-form-control">
                                     <input class="form-control" type="file" name="image" accept="image/*" @change="syncImage($event, 'image_mobile')">

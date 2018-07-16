@@ -65,7 +65,7 @@
                       <td><router-link :to="'/remit_payee/' + payee.id">{{payee.payee_name || payee.nickname}}</router-link></td>
                       <td>
                         <span v-if="payee.qr_code !== null">
-                            <img :src="payee.qr_code" class="qr-code" width="200px;">
+                            <img :src="payee.qr_code" class="qr-code" width="200px;" alt="qr_code">
                         </span>
                         <span v-else>-</span>
                       </td>

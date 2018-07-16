@@ -71,7 +71,7 @@
                             <tr>
                                 <th class="grey-50" width="200">{{$t('misc.qr_code')}}</th>
                                 <td>
-                                    <img :src="remit_payee.qr_code" class="qr-code">
+                                    <img :src="remit_payee.qr_code" class="qr-code" alt="qr_code">
                                 </td>
                             </tr>
                             <tr>

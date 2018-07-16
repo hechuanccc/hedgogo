@@ -92,7 +92,12 @@
                                 <div class="form-group">
                                     <label  class="label-width">{{$t('misc.qr_code')}}</label>
                                     <div class="inline-form-control" v-if="hasImage">
-                                        <img :src="payee.qr_code" width="112" class="qr-code">
+                                        <img
+                                            :src="payee.qr_code"
+                                            width="112"
+                                            class="qr-code"
+                                            alt="qr_code"
+                                        />
                                     </div>
                                     <div v-else>
                                         {{ $t('system.no_setting')}}

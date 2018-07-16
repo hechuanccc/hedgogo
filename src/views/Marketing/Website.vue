@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         <label class="text-uppercase m-b-0">{{$t('misc.logo')}}</label>
-                        <img :src="website.icon" height="30" v-if="hasIcon">
+                        <img :src="website.icon" height="30" v-if="hasIcon" alt="icon">
                         <span class="m-r-xs" v-else>{{ $t('system.no_setting') }}</span>
                         <input
                             type="file"
@@ -51,7 +51,7 @@
                     <div class="form-inline right-float-img">
                         <label class="form-control-label text-uppercase">{{ $t('website.right_float_img') }}</label>
                         <div class="inline-form-control" v-if="hasRightFloatImg">
-                            <img :src="website.right_float_img" height="180">
+                            <img :src="website.right_float_img" height="180" alt="right_float_img">
                             <button
                                 type="button"
                                 class="btn btn-xs btn-icon img-nav-btn"
@@ -101,7 +101,7 @@
                                     <div class="box-body text-center">
                                         <div class="m-a-sm" v-if="box.mode">{{ $t('website.header_img') }}</div>
                                         <div v-if="box.header_image">
-                                            <img :src="box.header_image" width="250" height="50">
+                                            <img :src="box.header_image" width="250" height="50" alt="header">
                                         </div>
                                         <div v-else style="height:50px; background:lightgrey; line-height:50px;">{{ $t('system.no_setting') }}</div>
                                         <div class="inline-form-control m-t-xs" v-if="box.mode">
@@ -125,7 +125,7 @@
                                         </div>
                                         <div class="row m-l-xs m-r-xs" v-if="box.status===0">
                                             <div v-if="box.main_image">
-                                                <img :src="box.main_image" height="300">
+                                                <img :src="box.main_image" height="300" alt="main">
                                             </div>
                                             <div v-else style="height:300px; background:lightgrey; line-height:300px;">
                                                 {{ $t('system.no_setting') }}

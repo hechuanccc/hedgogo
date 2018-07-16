@@ -227,7 +227,10 @@
 
                 <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && $root.permissions.includes('manual_confirm_onlinepayment')">
                     <div v-if="transaction.status === 3">
-                        <div  v-if="loading"><i class='fa fa-spinner'></i>   <b class="">正在加载中...</b></div>
+                        <div v-if="loading">
+                            <i class="fa fa-spin fa-spinner"></i>
+                            <b>{{ $t('system.loading') }}</b>
+                        </div>
                         <button class="btn w-sm md-btn blue" v-else @click="update('onlinePay', 1, true, $event)">{{$t('finance.manual_confirm')}}</button>
                         <div  v-if="!loading" class="text-muted m-t-sm">请求状态需要时间，请耐心等待</div>
 
@@ -394,7 +397,7 @@ export default {
                     }
                 }).then(data => {
                     this.transaction.status = data.status
-                    routerLink && this.$router.go(routerLink)
+                    routerLink && this.$router.push(routerLink)
                 }).finally(() => {
                     this.loading = false
                 })
