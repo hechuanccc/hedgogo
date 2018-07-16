@@ -315,6 +315,7 @@
 import { getTransaction, updateTransaction, withdrawCheckOrder } from '../../service'
 import TransactionStatus from '../../components/TransactionStatus'
 import ModalWithdrawPayee from '../../components/ModalWithdrawPayee'
+import $ from '../../utils/util'
 
 export default {
     data () {
@@ -359,6 +360,7 @@ export default {
     methods: {
         update (type, status, confirm, event) {
             // type remit, onlinepay, withdraw
+            let message = ''
             if (confirm && type === 'withdraw' && status === 1) {
                 if (!window.confirm(this.$t('misc.withdraw_audit_alert_msg'))) {
                     return
@@ -378,12 +380,37 @@ export default {
             if (type === 'remit') {
                 type = 'bill'
                 routerLink = '/bill/remit'
+                if (status === 1) {
+                    message = this.$t('finance.check_passed')
+                } else if (status === 5) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.remit_deny'),
+                        status: this.$t('status.success')
+                    })
+                }
             } else if (type === 'onlinePay') {
                 this.loading = true
+                message = this.$t('system_msg.action_object_status', {
+                    action: this.$t('finance.manual_confirm'),
+                    status: this.$t('status.success')
+                })
             } else if (type === 'withdraw') {
                 routerLink = '/bill/withdraw?status=3'
                 this.member = this.transaction.member.id
                 this.transactiontype = parseInt(this.transaction.transaction_type.id)
+                if (status === 1) {
+                    message = this.$t('finance.check_passed')
+                } else if (status === 4) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.withdraw_cancel'),
+                        status: this.$t('status.success')
+                    })
+                } else if (status === 5) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.withdraw_deny'),
+                        status: this.$t('status.success')
+                    })
+                }
             }
 
             if (this.transaction.id) {
@@ -396,6 +423,7 @@ export default {
                         transaction_type: this.transactiontype
                     }
                 }).then(data => {
+                    message && $.notify({ message })
                     this.transaction.status = data.status
                     routerLink && this.$router.push(routerLink)
                 }).finally(() => {
