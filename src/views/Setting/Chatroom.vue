@@ -366,7 +366,9 @@ export default {
                 this.typeTransform(data)
                 Object.assign(this.preferences[index], data)
                 this.modal.showModal = false
-            }).finally(() => { this.modal.loading = false })
+            }).finally(() => {
+                this.modal.loading = false
+            })
         }
     },
     components: {

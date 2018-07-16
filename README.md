@@ -42,6 +42,7 @@ npm run build --report
     │   ├──SelectorMemberLevel.vue          // 会员等级选择器组件
     │   ├──SelectorOnlinePayer.vue          // 代付商户选择器组件
     │   ├──SelectorTransactionType.vue      // 交易类型选择器组件
+    │   ├──StatusSwitch.vue                 // 状态切换器组件
     │   ├──Style.vue                        // 样式 
     │   ├──Tinymce.vue                      // TinyMCE
     │   └──TransactionStatus.vue            // 交易状态组件

@@ -227,7 +227,10 @@
 
                 <div v-if="transaction.merchant_status === 2 && transaction.transaction_type.code ==='online_pay' && $root.permissions.includes('manual_confirm_onlinepayment')">
                     <div v-if="transaction.status === 3">
-                        <div  v-if="loading"><i class='fa fa-spinner'></i>   <b class="">正在加载中...</b></div>
+                        <div v-if="loading">
+                            <i class="fa fa-spin fa-spinner"></i>
+                            <b>{{ $t('system.loading') }}</b>
+                        </div>
                         <button class="btn w-sm md-btn blue" v-else @click="update('onlinePay', 1, true, $event)">{{$t('finance.manual_confirm')}}</button>
                         <div  v-if="!loading" class="text-muted m-t-sm">请求状态需要时间，请耐心等待</div>
 
@@ -312,6 +315,7 @@
 import { getTransaction, updateTransaction, withdrawCheckOrder } from '../../service'
 import TransactionStatus from '../../components/TransactionStatus'
 import ModalWithdrawPayee from '../../components/ModalWithdrawPayee'
+import $ from '../../utils/util'
 
 export default {
     data () {
@@ -356,6 +360,7 @@ export default {
     methods: {
         update (type, status, confirm, event) {
             // type remit, onlinepay, withdraw
+            let message = ''
             if (confirm && type === 'withdraw' && status === 1) {
                 if (!window.confirm(this.$t('misc.withdraw_audit_alert_msg'))) {
                     return
@@ -375,12 +380,37 @@ export default {
             if (type === 'remit') {
                 type = 'bill'
                 routerLink = '/bill/remit'
+                if (status === 1) {
+                    message = this.$t('finance.check_passed')
+                } else if (status === 5) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.remit_deny'),
+                        status: this.$t('status.success')
+                    })
+                }
             } else if (type === 'onlinePay') {
                 this.loading = true
+                message = this.$t('system_msg.action_object_status', {
+                    action: this.$t('finance.manual_confirm'),
+                    status: this.$t('status.success')
+                })
             } else if (type === 'withdraw') {
                 routerLink = '/bill/withdraw?status=3'
                 this.member = this.transaction.member.id
                 this.transactiontype = parseInt(this.transaction.transaction_type.id)
+                if (status === 1) {
+                    message = this.$t('finance.check_passed')
+                } else if (status === 4) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.withdraw_cancel'),
+                        status: this.$t('status.success')
+                    })
+                } else if (status === 5) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.withdraw_deny'),
+                        status: this.$t('status.success')
+                    })
+                }
             }
 
             if (this.transaction.id) {
@@ -393,8 +423,9 @@ export default {
                         transaction_type: this.transactiontype
                     }
                 }).then(data => {
+                    message && $.notify({ message })
                     this.transaction.status = data.status
-                    routerLink && this.$router.go(routerLink)
+                    routerLink && this.$router.push(routerLink)
                 }).finally(() => {
                     this.loading = false
                 })

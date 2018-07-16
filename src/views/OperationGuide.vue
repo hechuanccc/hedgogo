@@ -205,7 +205,7 @@ export default {
                                 <li class="m-b-sm">
                                     盈利范围的设定可为多组区间不同比例，以下图为例，代理商的盈利范围在100~500元时，系统采用3%的佣金比例计算佣金，当代理商的盈利范围在500元以上时，系统采用6%的佣金比例计算佣金，若代理商的盈利范围不到100元，则无佣金。
                                     <div class="row text-center m-t-sm">
-                                        <img class="b-a" width="400" src="../../static/images/operation_guide_img_1.png"/>
+                                        <img class="b-a" width="400" src="../../static/images/operation_guide_img_1.png" alt="."/>
                                     </div>
                                 </li>
                             </ol>

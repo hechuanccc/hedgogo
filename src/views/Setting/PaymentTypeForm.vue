@@ -32,7 +32,7 @@
             <div class="form-group" v-if="payment.platform === 1 || payment.platform === 2">
                 <label class="label-width">Icon</label>
                 <div class="inline-form-control right-float-img" v-if="hasIcon">
-                    <img :src="payment.icon" height="60">
+                    <img :src="payment.icon" height="60" alt="icon">
                     <button
                         type="button"
                         class="btn btn-xs btn-icon img-nav-btn"

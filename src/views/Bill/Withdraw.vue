@@ -641,6 +641,21 @@
                 member,
                 transactionType
             }) {
+                let message = ''
+                if (status === 1) {
+                    message = this.$t('finance.check_passed')
+                } else if (status === 4) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.withdraw_cancel'),
+                        status: this.$t('status.success')
+                    })
+                } else if (status === 5) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.withdraw_deny'),
+                        status: this.$t('status.success')
+                    })
+                }
+
                 this.modal.loading = true
                 updateTransaction('withdraw', {
                     id: transactionId,
@@ -650,12 +665,8 @@
                         transaction_type: transactionType,
                         status
                     }
-                }, {
-                    action: status === 1 ? this.$t('finance.check_passed')
-                        : (status === 4 ? this.$t('finance.withdraw_cancel')
-                        : (status === 5 ? this.$t('finance.withdraw_deny')
-                        : ''))
                 }).then(data => {
+                    message && $.notify({ message })
                     this.$refs.pulling.rebase()
                     this.modal.showModal = false
                 }).finally(() => {

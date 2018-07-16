@@ -31,13 +31,13 @@
                                 <tr>
                                     <th class="grey-50" width="200">{{$t('promotion.banner')}}</th>
                                     <td>
-                                        <img :src="promotion.image" class="promo-image">
+                                        <img :src="promotion.image" class="promo-image" alt="banner">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th class="grey-50" width="200">{{$t('promotion.banner_mobile')}}</th>
                                     <td v-if="promotion.image_mobile">
-                                        <img :src="promotion.image_mobile" class="promo-image">
+                                        <img :src="promotion.image_mobile" class="promo-image" alt="banner">
                                     </td>
                                     <td v-else>{{$t('system.no_setting')}}</td>
                                 </tr>

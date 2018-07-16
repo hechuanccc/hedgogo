@@ -3,7 +3,7 @@
         <div class="left navside grey dk w-sm">
             <div class="navbar no-radius">
                 <a class="navbar-brand" href="/">
-                  <img src="../../static/images/logo.png" />
+                  <img src="../../static/images/logo.png" alt="logo"/>
                   <span class="hidden-folded inline">$t{{'app_name'}}</span>
                 </a>
             </div>

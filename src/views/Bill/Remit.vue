@@ -472,6 +472,7 @@
             },
             update (transaction, status, confirm, event) {
                 // type remit, onlinepay, withdraw
+                let message = ''
                 if (confirm) {
                     if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                         action: event.target.innerText
@@ -479,6 +480,15 @@
                         return
                     }
                 }
+                if (status === 1) {
+                    message = this.$t('finance.check_passed')
+                } else if (status === 5) {
+                    message = this.$t('system_msg.action_object_status', {
+                        action: this.$t('finance.remit_deny'),
+                        status: this.$t('status.success')
+                    })
+                }
+
                 if (transaction.id) {
                     updateTransaction('bill', {
                         id: transaction.id,
@@ -486,11 +496,8 @@
                         params: {
                             opt_expand: 'bank,updated_by'
                         }
-                    }, {
-                        action: status === 1 ? this.$t('finance.check_passed')
-                            : (status === 5 ? this.$t('finance.remit_deny')
-                            : '')
                     }).then(data => {
+                        message && $.notify({ message })
                         transaction.status = data.status
                         transaction.balance_after = data.balance_after
                         transaction.updated_at = data.updated_at

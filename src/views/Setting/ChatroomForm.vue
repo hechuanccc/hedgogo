@@ -156,6 +156,7 @@
                                         :src="element.user_robot.avatar_url || defaultAvatar"
                                         id="circle"
                                         style="height:40px; width:40px;"
+                                        alt="avatar"
                                     />
                                 </td>
                                 <td class="text-break-all">{{ element.user_robot.nickname }}</td>
@@ -256,11 +257,13 @@
                     :src="modal.robot.avatar"
                     id="circle"
                     v-if="modal.robot.hasAvatar"
+                    alt="avatar"
                   />
                   <img
                     :src="defaultAvatar"
                     id="circle"
                     v-else
+                    alt="default_avatar"
                   />
                   <div class="upload-overlay">
                     <i class="fa fa-cloud-upload"></i>
