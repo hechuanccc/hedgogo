@@ -158,10 +158,9 @@ export default {
                 id: this.staff.id,
                 data: staffResult
             }, {
-                action: this.staff.id ? this.$t('dic.update') : this.$t('dic.create'),
-                object: this.$t('dic.staff')
-            }).then(data => {
-                this.$router.push('/staff/' + data.id)
+                action: this.staff.id ? this.$t('title.staff_edit') : this.$t('title.staff_add')
+            }).then(({ id }) => {
+                this.$router.push('/staff/' + id)
             }, () => {})
         },
         getStaff (id) {

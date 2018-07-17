@@ -279,21 +279,20 @@ export default {
         },
         onSubmit (e) {
             this.loading = true
-            let memberResult = {}
-            Object.assign(memberResult, this.member)
+            let data = Object.assign({}, this.member)
             if (!this.bankFilled) {
-                this.$delete(memberResult, 'bank')
+                this.$delete(data, 'bank')
             }
 
             updateUser('member', {
                 id: this.id,
-                data: memberResult
+                data
             }, {
-                action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
-                object: this.$t('dic.member')
-            }).then(data => {
-                this.$router.push('/member/' + data.id)
-            }).finally(() => { this.loading = false })
+                action: this.id ? this.$t('title.member_edit') : this.$t('title.member_add')
+            })
+            .then(({ id }) => { this.$router.push('/member/' + id) })
+            .catch(() => {})
+            .finally(() => { this.loading = false })
         },
         getMember (id) {
             getUser('member', {

@@ -455,13 +455,4 @@
         width: 5rem;
     }
 }
-.loading {
-    text-align: center;
-}
-.table-striped > tbody > tr:nth-child(odd) {
-  background: none;
-}
-.table {
-  background-color: #fafafa
-}
 </style>

@@ -176,14 +176,11 @@ export default {
                 id: this.id,
                 data
             }, {
-                action: this.payer.id ? this.$t('dic.update') : this.$t('dic.create'),
-                object: this.$t('dic.online_payer')
-            }).then(data => {
-                this.$router.push(`/online_payer/${data.id}`)
-                this.submitLoading = false
-            }, () => {
-                this.submitLoading = false
+                action: this.payer.id ? this.$t('title.online_payer_edit') : this.$t('title.online_payer_add')
             })
+            .then(() => { this.$router.push(`/online_payer/${this.id}`) })
+            .catch(() => {})
+            .finally(() => { this.submitLoading = false })
         },
         getPayer (id) {
             getMerchant('onlinePayer', { id }).then(data => {
