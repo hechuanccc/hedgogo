@@ -409,11 +409,10 @@ export default {
                 id: this.agent.id,
                 data: this.initAgent
             }, {
-                action: this.agent.id ? this.$t('dic.update') : this.$t('dic.create'),
-                object: this.$t('dic.agent')
-            }).then(data => {
-                this.$router.push('/agent/' + data.id)
-            }, () => {})
+                action: this.agent.id ? this.$t('title.agent_edit') : this.$t('title.agent_add')
+            }).then(({ id }) => {
+                this.$router.push('/agent/' + id)
+            }).catch(() => {})
         },
         getAgent (id) {
             getUser('agent', {
@@ -439,19 +438,10 @@ export default {
             })
         },
         getAgentLevels () {
-            getSetting('agentLevel').then(data => {
-                this.agentLevels = data
-                this.agentLevelLoading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
-            })
-        },
-        // for agent field typeahead
-        prepareResponseData (data) {
-            return data
+            getSetting('agentLevel')
+            .then(data => { this.agentLevels = data })
+            .catch(() => {})
+            .finally(() => { this.agentLevelLoading = false })
         }
     },
     components: {

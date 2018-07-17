@@ -160,11 +160,12 @@ export default {
                     id: this.payment.id,
                     data: formData
                 }, {
-                    action: this.$t('dic.update'),
-                    object: this.$t('dic.payment_type')
+                    action: this.$t('title.payment_type_edit')
                 }).then(() => {
                     this.$router.push('/paymenttype/?type=' + this.payment.platform)
-                }).finally(() => { this.loading = false })
+                }, () => {}).finally(() => {
+                    this.loading = false
+                })
             }
         },
         getPaymentType (id) {

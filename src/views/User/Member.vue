@@ -15,10 +15,8 @@
           v-if="queryset.length"
           class="md-btn w-sm text-white-dk blue"
         >
-          <span>
-            <i class="fa fa-download"></i>
-            {{ $t('system.download_report') }}
-          </span>
+          <i class="fa fa-download"></i>
+          {{ $t('system.download_report') }}
         </a>
         <span class="md-btn w-sm" disabled v-else>
           <i class="fa fa-download"></i>
@@ -37,10 +35,8 @@
         type="button"
         @click="refresh"
       >
-        <span>
-          <i class="fa fa-spin fa-spinner" v-if="loading"></i>
-          {{ $t('system.refresh') }}
-        </span>
+        <i class="fa fa-spin fa-spinner" v-if="loading"></i>
+        {{ $t('system.refresh') }}
       </button>
     </div>
     <form 
@@ -285,7 +281,7 @@
             >
               <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('system.reset_condition') }}</span>
+              {{ $t('system.reset_condition') }}
             </button>
           </div>
         </div>
@@ -298,13 +294,12 @@
           <tr class="text-center">
             <th>{{ $t('user.account') }}</th>
             <th>{{ $t('user.real_name') }}</th>
-            <th>{{ $t('user.last_login') }}</th>
-            <th>{{ $t('user.loggedin_info') }}</th>
-            <th>{{ $t('dic.platform') }}</th>
-            <th>{{ $t('misc.area') }}</th>
             <th>{{ $t('dic.agent') }}</th>
-            <th class="text-center">{{ $t('dic.member_level') }}</th>
-            <th>{{ $t('dic.balance') }}</th>
+            <th class="text-center">{{ $t('user.last_login') }}</th>
+            <th>{{ $t('user.loggedin_info') }}</th>
+            <th class="text-center">{{ $t('dic.platform') }}</th>
+            <th>{{ $t('misc.area') }}</th>
+            <th class="text-right">{{ $t('dic.balance') }}</th>
           </tr>
         </thead>
         <tbody v-if="queryset.length > 0">
@@ -313,19 +308,21 @@
               <i class="text-success fa fa-circle m-r-xs" v-if="member.is_logged_in==true"></i>
               <router-link :to="'/member/' + member.id" v-if="member.account_type !== 0">{{ member.username }}</router-link>
               <span v-else>{{ $t('user.visitor') }}</span>
-              <br/>
               <span class="label red m-l" v-if="member.status!==1">{{ $t('status.inactive') }}</span>
+              <br/>
+              <router-link v-if="member.level && member.account_type !== 0" :to="'/level/' + member.level.id" class="text-xs m-l">{{ member.level.name }}</router-link>
             </td>
             <td>
               <div v-if="member.account_type !== 0">
                 {{ member.real_name || '-' }}
-                <div v-if="member.realname_repeated">
-                  <span class="label danger">{{ $t('misc.repeated') }}</span>
-                </div>
+                <span class="label danger" v-if="member.realname_repeated">{{ $t('misc.repeated') }}</span>
               </div>
               <span v-else>-</span>
             </td>
-            <td>
+            <td v-if="member.agent.name">
+              <router-link :to="'/agent/' + member.agent.id">{{ member.agent.name }}</router-link>
+            </td>
+            <td class="text-center">
               <span v-if="member.last_login">{{ member.last_login.login_at | moment('YYYY-MM-DD HH:mm') }}</span>
               <span v-else>-</span>
             </td>
@@ -334,27 +331,25 @@
               <br/>
               <span class="text-muted">{{ member.loggedin_ip || '-' }}</span>
             </td>
-            <td>
+            <td class="text-center">
               <span v-if="member.last_login">{{ $t('dic.' + member.last_login.platform.toLowerCase()) }}</span>
               <span v-else>-</span>
             </td>
             <td>
-              <div v-if="member.last_login">{{ member.last_login.address.country }} {{ member.last_login.address.region }} {{ member.last_login.address.city }}</div>
-              <div v-else>-</div>
-            </td>
-
-            <td v-if="member.agent.name">
-              <router-link :to="'/agent/' + member.agent.id">{{ member.agent.name }}</router-link>
-            </td>
-            <td class="text-center">
-              <router-link v-if="member.level && member.account_type !== 0" :to="'/level/' + member.level.id">{{ member.level.name }}</router-link>
+              <span v-if="member.last_login">
+                {{ member.last_login.address.country || '-' }}
+                {{ member.last_login.address.region || '-' }}
+                {{ member.last_login.address.city || '-' }}
+              </span>
               <span v-else>-</span>
             </td>
-            <td><div v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</div></td>
+            <td class="text-right">
+              <span v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
-      <table st-table="rowCollectionBasic" class="table table-striped b-t" v-else>
+      <table class="table table-striped b-t" v-else>
         <thead>
           <tr>
             <th>{{ $t('user.account') }}</th>
@@ -381,9 +376,7 @@
             </td>
             <td>
               {{ member.real_name || '-' }}
-              <div v-if="member.realname_repeated">
-                <span class="label danger">{{ $t('misc.repeated') }}</span>
-              </div>
+              <span class="label danger" v-if="member.realname_repeated">{{ $t('misc.repeated') }}</span>
             </td>
             <td>
             <div>
@@ -421,7 +414,7 @@
               <router-link :to="`/report/betrecord/?member=${member.username}&status=lose&created_at_1=${today}`">{{ member.total_loss | currency('￥') }}</router-link>
             </td>
             <td class="text-right">
-              <div v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</div>
+              <span v-if="member.balance" class="text-success">{{ member.balance.balance | currency('￥') }}</span>
             </td>
           </tr>
         </tbody>
@@ -444,7 +437,7 @@
 
 <script>
 import VueCookie from 'vue-cookie'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import url from '../../service/url'
 import { batchBanMember } from '../../service'
 import Pulling from '../../components/Pulling'
@@ -546,10 +539,9 @@ export default {
     methods: {
         setQueryAll () {
             if (this.$route.path === '/online_member') {
+                this.extra = 'logined=1'
                 if (this.visitorFilter) {
-                    this.extra = `logined=1&account_type=1,2`
-                } else {
-                    this.extra = `logined=1`
+                    this.extra = 'logined=1&account_type=1,2'
                 }
                 this.pageSelected = 'onlineMember'
             } else {
@@ -597,7 +589,7 @@ export default {
             }
         },
         search:
-            _.debounce(function () {
+            debounce(function () {
                 this.submit()
             },
         700),
@@ -638,6 +630,3 @@ export default {
     }
 }
 </script>
-
-<style lang="sass" scoped>
-</style>

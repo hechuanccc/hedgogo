@@ -297,10 +297,9 @@
                     id: this.id,
                     data: this.payee
                 }, {
-                    action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
-                    object: this.$t('dic.online_payee')
-                }).then(data => {
-                    this.$router.push('/online_payee/' + data.id)
+                    action: this.id ? this.$t('title.online_payee_edit') : this.$t('title.online_payee_add')
+                }).then(({ id }) => {
+                    this.$router.push('/online_payee/' + id)
                 }, () => {})
             },
             getPayee (id) {

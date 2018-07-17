@@ -379,12 +379,15 @@ export default {
             }, {
                 action: this.$t('dic.update'),
                 object: this.$t('title.game_name')
-            }).then(data => {
+            })
+            .then(data => {
                 Object.assign(this.queryset.find(game => game.id === id), {
                     display_name: data.display_name
                 })
                 this.cancelEditName(id)
-            }).finally(() => { this.$delete(this.editNameLoading, id) })
+            })
+            .catch(() => {})
+            .finally(() => { this.$delete(this.editNameLoading, id) })
         },
         cancelEditName (id) {
             this.$delete(this.editNameList, id)

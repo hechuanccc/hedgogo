@@ -206,10 +206,9 @@
                     id: this.payee.id,
                     data: formData
                 }, {
-                    action: this.payee.id ? this.$t('dic.update') : this.$t('dic.create'),
-                    object: this.$t('dic.remit_payee')
-                }).then(data => {
-                    this.$router.push('/remit_payee/' + data.id)
+                    action: this.payee.id ? this.$t('title.remit_payee_edit') : this.$t('title.remit_payee_add')
+                }).then(({ id }) => {
+                    this.$router.push('/remit_payee/' + id)
                 }, () => {})
             },
             getPayee (id) {

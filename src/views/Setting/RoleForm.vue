@@ -96,23 +96,22 @@ export default {
         },
         onSubmit (e) {
             this.getSelect()
-            let roleResult = {
+            let data = {
                 name: this.role.name,
                 manage_permissiongroup: this.selectId[0],
                 permissions: this.selectId[1]
             }
             updateSetting('role', {
                 id: this.role.id,
-                data: roleResult,
+                data,
                 params: {
                     opt_expand: 'group,permissions'
                 }
             }, {
-                action: this.role.id ? this.$t('dic.update') : this.$t('dic.create'),
-                object: this.$t('dic.role')
-            }).then(data => {
-                this.$router.push('/roles/' + data.id)
-            })
+                action: this.role.id ? this.$t('title.role_edit') : this.$t('title.role_add')
+            }).then(({ id }) => {
+                this.$router.push('/roles/' + id)
+            }, () => {})
         },
         getPermissionsAll () {
             getSetting('permission', {
