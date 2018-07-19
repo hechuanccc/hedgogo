@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/remit_payee">{{$t('nav.setting_remit_payee')}}</router-link></li>
+                <li class="active"><router-link to="/remit_payee">{{$t('title.remit_payee')}}</router-link></li>
                 <li class="active">{{$route.meta.title}}</li>
             </ol>
         </div>
@@ -12,23 +12,23 @@
                     <div class="row">
                         <div class="col-md-12 b-b m-b">
                             <div class="form-group">
-                                <label for="agent" class="label-width">{{$t('setting.payment_type')}}</label>
+                                <label for="agent" class="label-width">{{$t('title.payment_type')}}</label>
                                 <div class="from-control inline-form-control">
                                     <label class="md-check">
                                         <input type="radio" name="remit_type" checked="checked" v-model="payee.remit_type" value="1" ref="remit_type">
                                         <i class="blue"></i>
-                                        {{$t('setting.payment_normal')}}
+                                        {{$t('finance.payment_normal')}}
                                     </label>
 
                                     <label class="md-check m-l-lg" >
                                         <input type="radio" name="remit_type" v-model="payee.remit_type" value="2">
                                         <i class="blue"></i>
-                                        {{$t('setting.payment_wechat')}}
+                                        {{$t('finance.payment_wechat')}}
                                     </label>
                                     <label class="md-check m-l-lg" >
                                         <input type="radio" name="remit_type" v-model="payee.remit_type" value="3">
                                         <i class="blue"></i>
-                                        {{$t('setting.payment_alipay')}}
+                                        {{$t('finance.payment_alipay')}}
                                     </label>
                                 </div>
                             </div>
@@ -36,12 +36,12 @@
                         <div class="col-md-6 ">
                             <div v-show="payee.remit_type === '1'">
                                 <div class="form-group">
-                                    <label  class="label-width">{{$t('bank.name')}}</label>
+                                    <label  class="label-width">{{$t('dic.bank')}}</label>
                                     <selector-bank :bank.sync="payee.bank" :req.sync="bankRequired" @bank-select="bankSelect"/>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="label-width">{{$t('common.real_name')}}</label>
+                                    <label class="label-width">{{$t('user.real_name')}}</label>
                                     <div class="inline-form-control">
                                         <input
                                             class="form-control"
@@ -79,7 +79,7 @@
 
                             <div v-show="payee.remit_type === '2' || payee.remit_type === '3'">
                                 <div class="form-group">
-                                    <label class="label-width">{{$t('common.nickname')}} </label>
+                                    <label class="label-width">{{$t('user.nickname')}} </label>
                                     <div class="inline-form-control">
                                         <input
                                             class="form-control"
@@ -90,12 +90,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label  class="label-width">{{$t('common.qr_code')}}</label>
+                                    <label  class="label-width">{{$t('misc.qr_code')}}</label>
                                     <div class="inline-form-control" v-if="hasImage">
-                                        <img :src="payee.qr_code" width="112" class="qr-code">
+                                        <img
+                                            :src="payee.qr_code"
+                                            width="112"
+                                            class="qr-code"
+                                            alt="qr_code"
+                                        />
                                     </div>
                                     <div v-else>
-                                        {{ $t('action.no_setting')}}
+                                        {{ $t('system.no_setting')}}
                                     </div>
                                     <div class="inline-form-control">
                                         <input
@@ -110,24 +115,21 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="memo">{{$t('common.dashboard_memo')}}</label>
+                                <label for="memo">{{$t('finance.dashboard_memo')}}</label>
                                 <textarea class="form-control" name="memo" rows="2" placeholder="仅供管理员记录会员信息，会员无法查看" v-model="payee.memo"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="memo">{{ $t('common.client_memo') }}</label>
+                                <label for="memo">{{ $t('finance.client_memo') }}</label>
                                 <textarea class="form-control" name="client_description" rows="2" v-model="payee.client_description"></textarea>
                             </div>
                         </div>
                         <div class="col-md-12 b-b m-b p-b">
-                            <div class="p-b">{{$t('member.level')}} <span class="text-danger m-l" v-show="levelError">{{$t('setting.select_one_level')}}</span></div>
+                            <div class="p-b">{{$t('dic.member_level')}} <span class="text-danger m-l" v-show="levelError">{{$t('system_msg.no_select_object', { object: $t('dic.member_level') })}}</span></div>
                             <selector-member-level :level="payee.level" :mode="'checkbox'" @level-select="levelSelect"/>
                         </div>
                     </div>
                     <div>
-                        <div class="alert alert-danger" v-if="errorMsg">
-                            <span>{{ errorMsg }}</span> 
-                        </div>
-                        <button type="submit" class="md-btn w-sm blue">{{$t('common.save')}}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{$t('dic.submit')}}</button>
                     </div>
                 </form>
             </div>
@@ -156,9 +158,7 @@
                     qr_code_file: '',
                     remit_type: '1'
                 },
-                showLevelError: false,
-                hasImage: false,
-                errorMsg: ''
+                hasImage: false
             }
         },
         computed: {
@@ -205,11 +205,11 @@
                 updateMerchant('remitPayee', {
                     id: this.payee.id,
                     data: formData
-                }).then(data => {
-                    this.$router.push('/remit_payee/' + data.id)
-                }, error => {
-                    this.errorMsg = error
-                })
+                }, {
+                    action: this.payee.id ? this.$t('title.remit_payee_edit') : this.$t('title.remit_payee_add')
+                }).then(({ id }) => {
+                    this.$router.push('/remit_payee/' + id)
+                }, () => {})
             },
             getPayee (id) {
                 getMerchant('remitPayee', { id }).then(data => {

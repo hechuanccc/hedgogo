@@ -4,7 +4,7 @@
     v-model="selectedLevel"
     v-if="!loading && levels.length"
   >
-    <option value="">{{ $t('common.please_select') }}</option>
+    <option value="">{{ $t('system.please_select') }}</option>
     <option
       class="form-control"
       :value="l.id"
@@ -23,7 +23,7 @@
     class="p-b-xs p-t-xs form-control w-sm"
     v-else-if="!levels.length"
   >
-    {{ $t('common.no_record') }}
+    {{ $t('system.no_record') }}
   </span>
 </template>
 
@@ -56,6 +56,7 @@ export default {
         getSetting('agentLevel').then(data => {
             this.levels = data
             this.selectedLevel = this.level || ''
+        }).finally(() => {
             this.loading = false
         })
     }

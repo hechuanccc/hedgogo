@@ -6,7 +6,7 @@
         :disabled="disabled"
         v-if="!loading"
     >
-        <option value="">{{ $t('common.please_select') }}</option>
+        <option value="">{{ $t('system.please_select') }}</option>
         <option
             class="form-control"
             :value="e[attribute]"
@@ -70,6 +70,7 @@ export default {
             } else {
                 this.transactionTypes = data
             }
+        }).finally(() => {
             this.loading = false
         })
         this.myTransactionType = this.transactionType

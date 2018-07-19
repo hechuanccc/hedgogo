@@ -1,36 +1,25 @@
 <template>
-    <div class="box  ">
+    <div class="box">
         <div class="box-body">
-            <form class="form m-a" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
+            <form class="form m-a" @submit.prevent="onSubmit">
                 <div class="row b-b p-b m-b">
-                    <div class="col-md-10">
-                        <div>
-                            <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('manage.prev_password')}} </label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control w-lg inline" placeholder="请输入旧密码" v-model="user.prev_password" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('manage.new_password')}} </label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control w-lg inline" placeholder="至少包含一个字符，数字或符号" v-model="user.new_password" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="label-width col-xs-1">{{$t('manage.repeat_password')}} </label>
-                                <div class="inline-form-control">
-                                    <input type="password" class="form-control w-lg inline" placeholder="重复输入新密码" v-model="user.repeat_password" required/>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label class="m-b-0">{{$t('user.prev_password')}}</label>
+                        <input type="password" class="form-control w-lg" v-model="user.prev_password" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="m-b-0">{{$t('user.new_password')}}</label>
+                        <input type="password" class="form-control w-lg" v-model="user.new_password" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="m-b-0">{{$t('user.repeat_password')}}</label>
+                        <input type="password" class="form-control w-lg" v-model="user.repeat_password" required/>
                     </div>
                 </div>
-                <div class="m-t">
-                    <div class="alert alert-danger" v-if="errorMsg">{{errorMsg}}</div>
-                    <button type="" class="md-btn w-sm blue">{{$t('common.save')}}</button>
-                    <label class="text-success m-l" v-if="success">密码设置成功，需要重新登录，即将跳转至登录页</label>
-                </div>
+                <button type="submit" class="md-btn w-sm blue">
+                    <span v-if="!loading">{{$t('dic.submit')}}</span>
+                    <i class="fa fa-spin fa-spinner" v-else></i>
+                </button>
             </form>
         </div>
     </div>
@@ -38,6 +27,7 @@
 
 <script>
     import { changePassword } from '../service'
+    import $ from '../utils/util'
     export default {
         data () {
             return {
@@ -46,32 +36,23 @@
                     new_password: '',
                     repeat_password: ''
                 },
-                errorMsg: '',
-                success: false
-            }
-        },
-        watch: {
-            success (newObj, old) {
-                setTimeout(() => {
-                    this.$router.go('/login')
-                }, 4000)
+                loading: false
             }
         },
         methods: {
             onSubmit (e) {
-                changePassword(this.user).then(data => {
-                    this.errorMsg = ''
-                    this.success = true
-                }, error => {
-                    this.errorMsg = error
+                this.loading = true
+                changePassword(this.user).then(() => {
+                    $.notify({
+                        message: this.$t('system_msg.password_changed_success')
+                    })
+                    setTimeout(() => {
+                        this.$router.push('/login')
+                    }, 3000)
+                }).finally(() => {
+                    this.loading = false
                 })
             }
         }
     }
 </script>
-
-<style>
-    .row .website-text{
-        padding:0
-    }
-</style>

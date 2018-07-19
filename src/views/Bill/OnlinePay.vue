@@ -8,13 +8,13 @@
                 class="md-btn w-sm text-white-dk blue"
             >
                 <span>
-                    {{ $t('action.download_report') }}
                     <i class="fa fa-download"></i>
+                    {{ $t('system.download_report') }}
                 </span>
             </a>
             <span class="md-btn w-sm" disabled v-else>
-                {{ $t('action.download_report') }}
                 <i class="fa fa-download"></i>
+                {{ $t('system.download_report') }}
             </span>
         </div>
         <form class="form box m-b-sm" @submit.prevent="submit">
@@ -24,14 +24,14 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': status}"
-                        >{{ $t('common.status') }}
+                        >{{ $t('dic.status') }}
                         </label>
                         <select
                             class="form-control w-sm c-select"
                             style="display: block;"
                             v-model="status"
                         >
-                            <option value="">{{ $t('common.please_select') }}</option>
+                            <option value="">{{ $t('system.please_select') }}</option>
                             <option value="1">{{ $t('status.success') }}</option>
                             <option value="2">{{ $t('status.failed') }}</option>
                             <option value="3">{{ $t('status.ongoing') }}</option>
@@ -43,7 +43,7 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': query.member_level}"
-                        >{{ $t('member.level') }}
+                        >{{ $t('dic.member_level') }}
                         </label>
                         <selector-member-level
                             style="display: block;"
@@ -55,12 +55,12 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': query.member_q}"
-                        >{{ $t('common.member') }}
+                        >{{ $t('dic.member') }}
                         </label>
                         <input
                             v-model="query.member_q"
                             class="form-control w-sm"
-                            :placeholder="$t('common.member')"
+                            :placeholder="$t('dic.member')"
                             @input="search"
                         />
                     </div>
@@ -68,12 +68,12 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': query.online_payee}"
-                        >{{ $t('common.merchant') }}
+                        >{{ $t('finance.merchant') }}
                         </label>
                         <input
                             v-model="query.online_payee"
                             class="form-control w-sm"
-                            :placeholder="$t('common.merchant')"
+                            :placeholder="$t('finance.merchant')"
                             @input="search"
                         />
                     </div>
@@ -81,12 +81,12 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': query.real_name_q}"
-                        >{{ $t('common.real_name') }}
+                        >{{ $t('user.real_name') }}
                         </label>
                         <input
                             v-model="query.real_name_q"
                             class="form-control w-sm"
-                            :placeholder="$t('common.real_name')"
+                            :placeholder="$t('user.real_name')"
                             @input="search"
                         />
                     </div>
@@ -94,7 +94,7 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': query.amount_lte || query.amount_gte}"
-                        >{{ $t('common.amount') }}
+                        >{{ $t('dic.amount') }}
                         </label>
                         <div style="display: block;">
                             <input
@@ -102,7 +102,7 @@
                                 v-model="query.amount_gte"
                                 class="form-control inline w-sm"
                                 :max="query.amount_lte"
-                                :placeholder="$t('common.min_amount')"
+                                :placeholder="$t('misc.min_amount')"
                                 @input="search"
                             />
                             <span>
@@ -113,7 +113,7 @@
                                 v-model="query.amount_lte"
                                 class="form-control inline w-sm"
                                 :min="query.amount_gte"
-                                :placeholder="$t('common.max_amount')"
+                                :placeholder="$t('misc.max_amount')"
                                 @input="search"
                             />
                         </div>
@@ -126,7 +126,7 @@
                             :class="{'text-blue': selected === '0'
                                 ? created_at && (created_at[0] || created_at[1])
                                 : updated_at && (updated_at[0] || updated_at[1])}"
-                        >{{ $t('common.applied_at') }} / {{ $t('common.status_updated_at') }} 
+                        >{{ $t('time.applied_at') }} / {{ $t('time.updated_at') }} 
                         </label>
                         <div style="display: block;">
                             <select
@@ -134,8 +134,8 @@
                                 v-model="selected"
                                 @change="autoTogglePopup = true"
                             >
-                                <option value="0">{{ $t('common.applied_at') }}</option>
-                                <option value="1">{{ $t('common.status_updated_at') }}</option>
+                                <option value="0">{{ $t('time.applied_at') }}</option>
+                                <option value="1">{{ $t('time.updated_at') }}</option>
                             </select>
                             <el-date-picker
                                 style="width: 248px;"
@@ -147,7 +147,6 @@
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
                                 :picker-options="{shortcuts}"
-                                range-separator="-"
                                 v-show="selected === '0'"
                                 ref="created"
                             />
@@ -170,13 +169,13 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': query.transaction_id}"
-                        >{{ $t('bill.order_id') }}
+                        >{{ $t('finance.order_id') }}
                         </label>
                         <input
                             style="width: 244px;"
                             v-model.trim="query.transaction_id"
                             class="form-control w-sm"
-                            :placeholder="$t('bill.order_id')"
+                            :placeholder="$t('finance.order_id')"
                             @input="search"
                         />
                     </div>
@@ -184,18 +183,18 @@
                         <label
                             class="form-control-label p-b-0"
                             :class="{'text-blue': period}"
-                        >{{ $t('common.refresh_period') }}
+                        >{{ $t('system.refresh_period') }}
                         </label>
                         <select
                             class="form-control w-sm c-select inline"
                             v-model="period"
                             style="display: block;"
                         >
-                            <option value="">{{ $t('common.please_select') }}</option>
-                            <option :value="10000">{{ $t('common.seconds', { number: 10 }) }}</option>
-                            <option :value="30000">{{ $t('common.seconds', { number: 30 }) }}</option>
-                            <option :value="60000">{{ $t('common.seconds', { number: 60 }) }}</option>
-                            <option :value="120000">{{ $t('common.seconds', { number: 120 }) }}</option>
+                            <option value="">{{ $t('system.please_select') }}</option>
+                            <option :value="10000">{{ $t('time.seconds', { number: 10 }) }}</option>
+                            <option :value="30000">{{ $t('time.seconds', { number: 30 }) }}</option>
+                            <option :value="60000">{{ $t('time.seconds', { number: 60 }) }}</option>
+                            <option :value="120000">{{ $t('time.seconds', { number: 120 }) }}</option>
                         </select>
                     </div>
                     <button
@@ -206,30 +205,30 @@
                     >
                         <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                         <i v-else class="fa fa-trash-o"></i> 
-                        {{ $t('action.reset_condition') }}
+                        {{ $t('system.reset_condition') }}
                     </button>
                 </div>
             </div>
         </form>
         <div class="row m-l-xs">
             <b class="pull-right m-r text-danger">
-                {{ $t('common.total') }}&nbsp;{{ $t('bill.onlinepay') }}&nbsp;：&nbsp;{{ (total_amount || 0) | currency('￥') }}
+                {{ $t('dic.total') }}&nbsp;{{ $t('finance.online_pay') }}:&nbsp;{{ (total_amount || 0) | currency('￥') }}
             </b>
         </div>
         <table class="box table table-striped">
             <thead>
                 <tr>
-                    <th>{{ $t('common.member') }}</th>
+                    <th>{{ $t('dic.member') }}</th>
                     <th class="text-center text-sm">
-                        {{ $t('common.applied_at') }}&nbsp;/<br/>
-                        {{ $t('common.status_updated_at') }}
+                        {{ $t('time.applied_at') }}&nbsp;/<br/>
+                        {{ $t('time.updated_at') }}
                     </th>
-                    <th>{{ $t('common.merchant') }}</th>
-                    <th class="text-center">{{ $t('common.balance_before') }}</th>
-                    <th class="text-center">{{ $t('common.balance_after') }}</th>
-                    <th class="text-center">{{ $t('common.amount') }}</th>
-                    <th class="text-center">{{ $t('common.status') }}</th>
-                    <th class="text-center">{{ $t('bill.order_detail') }}</th>
+                    <th>{{ $t('finance.merchant') }}</th>
+                    <th class="text-right">{{ $t('user.balance_before') }}</th>
+                    <th class="text-right">{{ $t('user.balance_after') }}</th>
+                    <th class="text-right">{{ $t('dic.amount') }}</th>
+                    <th class="text-center">{{ $t('dic.status') }}</th>
+                    <th class="text-center">{{ $t('finance.order_detail') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -261,7 +260,7 @@
                         <transaction-status :transaction="t"></transaction-status>
                     </td>
                     <td class="text-center">
-                        <router-link :to="'/transaction/' + t.id">{{ $t('action.view') }}</router-link>
+                        <router-link :to="'/transaction/' + t.id">{{ $t('dic.view') }}</router-link>
                     </td>
                 </tr>
             </tbody>
@@ -307,7 +306,7 @@
                 export_query: [],
                 today: date.today[0],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                    text: this.$t(`common.${element}`),
+                    text: this.$t(`time.${element}`),
                     onClick (p) {
                         p.$emit('pick', date[element])
                     }

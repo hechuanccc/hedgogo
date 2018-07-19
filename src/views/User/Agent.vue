@@ -8,7 +8,7 @@
                         tag="button"
                         class="md-btn w-sm blue"
                         to="/agent/add"
-                    >{{ $t('nav.agent_add') }}
+                    >{{ $t('title.agent_add') }}
                     </router-link>
                 </div>
             </div>
@@ -22,12 +22,12 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.username_q}"
-                            >{{ $t('common.username') }}
+                            >{{ $t('user.username') }}
                             </label>
                             <input
                                 v-model.trim="query.username_q"
                                 class="form-control w-sm"
-                                :placeholder="$t('agent.account')"
+                                :placeholder="$t('user.account')"
                                 @input="search"
                             />
                         </div>
@@ -35,12 +35,12 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.real_name_q}"
-                            >{{ $t('common.real_name') }}
+                            >{{ $t('user.real_name') }}
                             </label>
                             <input
                                 v-model.trim="query.real_name_q"
                                 class="form-control w-sm"
-                                :placeholder="$t('common.real_name')"
+                                :placeholder="$t('user.real_name')"
                                 @input="search"
                             />
                         </div>
@@ -48,12 +48,12 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.promo_code_q}"
-                            >{{ $t('agent.promo_code') }}
+                            >{{ $t('user.promo_code') }}
                             </label>
                             <input
                                 v-model.trim="query.promo_code_q"
                                 class="form-control w-sm" 
-                                :placeholder="$t('agent.promo_code')"
+                                :placeholder="$t('user.promo_code')"
                                 @input="search"
                             />
                         </div>
@@ -61,12 +61,12 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.parent_agent_q}"
-                            >{{ $t('agent.parent_agent') }}
+                            >{{ $t('user.parent_agent') }}
                             </label>
                             <input
                                 v-model="query.parent_agent_q"
                                 class="form-control w-sm"
-                                :placeholder="$t('agent.parent_agent')"
+                                :placeholder="$t('user.parent_agent')"
                                 @input="search"
                             />
                         </div>
@@ -74,14 +74,14 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.level}"
-                            >{{ $t('agent.level') }}
+                            >{{ $t('user.agent_level') }}
                             </label>
                             <select
                                 class="form-control c-select w-sm"
                                 style="display: block;"
                                 v-model="level"
                             >
-                                <option value="">{{ $t('agent.level') }}</option>
+                                <option value="">{{ $t('user.agent_level') }}</option>
                                 <option value="1">大股东</option>
                                 <option value="2">股东</option>
                                 <option value="3">总代理</option>
@@ -92,7 +92,7 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': commission_settings}"
-                            >{{ $t('agent.commission_setting') }}
+                            >{{ $t('title.commission') }}
                             </label>
                             <selector-commission
                                 style="display: block;"
@@ -106,18 +106,18 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': userInfo_q}"
-                            >{{ $t('member.contact_info') }}
+                            >{{ $t('user.contact_info') }}
                             </label>
                             <div style="display: block;">
                                 <select
                                 class="pull-left form-control w-sm c-select no-b-r"
                                 v-model="userInfoSelect"
                                 >
-                                <option value="">{{ $t('common.please_select') }}</option>
-                                <option value="0">{{ $t('common.phone') }}</option>
-                                <option value="1">{{ $t('common.email') }}</option>
-                                <option value="2">{{ $t('common.qq') }}</option>
-                                <option value="3">{{ $t('common.wechat') }}</option>
+                                <option value="">{{ $t('system.please_select') }}</option>
+                                <option value="0">{{ $t('user.phone') }}</option>
+                                <option value="1">{{ $t('user.email') }}</option>
+                                <option value="2">{{ $t('user.qq') }}</option>
+                                <option value="3">{{ $t('user.wechat') }}</option>
                                 </select>
                                 <input
                                 v-model.trim="userInfo_q"
@@ -131,14 +131,14 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': status}"
-                            >{{ $t('common.status') }}
+                            >{{ $t('dic.status') }}
                             </label>
                             <select
                                 class="form-control c-select w-sm"
                                 style="display: block;"
                                 v-model="status"
                             >
-                                <option value="">{{ $t('common.please_select') }}</option>
+                                <option value="">{{ $t('system.please_select') }}</option>
                                 <option value="1">{{ $t('status.active') }}</option>
                                 <option value="0">{{ $t('status.inactive') }}</option>
                             </select>
@@ -147,12 +147,12 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.bank_account_q}"
-                            >{{ $t('agent.bank_account') }}
+                            >{{ $t('bank.account') }}
                             </label>
                             <input
                                 v-model="query.bank_account_q"
                                 class="form-control w-sm"
-                                :placeholder="$t('agent.bank_account')"
+                                :placeholder="$t('bank.account')"
                                 @input="search"
                             />
                         </div>
@@ -160,7 +160,7 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': created_at && (created_at[0] || created_at[1])}"
-                            >{{ $t('agent.joined_at') }}
+                            >{{ $t('time.joined_at') }}
                             </label>
                             <el-date-picker
                                 style="display: block;"
@@ -181,7 +181,7 @@
                         >
                             <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                             <i v-else class="fa fa-trash-o"></i> 
-                            <span>{{ $t('action.reset_condition') }}</span>
+                            <span>{{ $t('system.reset_condition') }}</span>
                         </button>
                     </div>
                 </div>
@@ -192,15 +192,15 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>{{ $t('agent.account') }}</th>
-                        <th>{{ $t('agent.level') }}</th>
-                        <th>{{ $t('agent.parent_agent') }}</th>
-                        <th>{{ $t('common.real_name') }}</th>
-                        <th class="text-center">{{ $t('agent.member_count') }}</th>
-                        <th class="text-center">{{ $t('agent.joined_at') }}</th>
-                        <th class="text-center">{{ $t('agent.commission_setting') }}</th>
-                        <th width="240">{{ $t('agent.domain') }}</th>
-                        <th>{{ $t('common.memo') }}</th>
+                        <th>{{ $t('user.account') }}</th>
+                        <th>{{ $t('user.agent_level') }}</th>
+                        <th>{{ $t('user.parent_agent') }}</th>
+                        <th>{{ $t('user.real_name') }}</th>
+                        <th class="text-center">{{ $t('user.member_count') }}</th>
+                        <th class="text-center">{{ $t('time.joined_at') }}</th>
+                        <th class="text-center">{{ $t('title.commission') }}</th>
+                        <th width="240">{{ $t('user.domain') }}</th>
+                        <th>{{ $t('dic.memo') }}</th>
                     </tr>
                 </thead>
                 <tbody v-if="queryset.length">
@@ -230,14 +230,14 @@
                             {{ agent.member_count }}
                         </td>
                         <td class="text-center text-sm">
-                            <span v-if="agent.created_at">{{ agent.created_at | moment("YYYY-MM-DD HH:mm") }}</span>
+                            <span v-if="agent.created_at">{{ agent.created_at | moment('YYYY-MM-DD HH:mm') }}</span>
                             <span v-else>-</span>
                         </td>
                         <td class="text-center">
                             <router-link :to="`/commission/${agent.commission_settings.id}/edit`" v-if="agent.commission_settings && agent.commission_settings.id">
                                 {{ agent.commission_settings.name }}
                             </router-link>
-                            <span v-else>{{ $t('action.no_setting') }}</span>
+                            <span v-else>{{ $t('system.no_setting') }}</span>
                         </td>
                         <td>
                             <span v-if="agent.domain && isArray(agent.domain.split(','))">
@@ -295,7 +295,7 @@ export default {
             commission_settings: '',
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 onClick (p) {
                     p.$emit('pick', date[element])
                 }

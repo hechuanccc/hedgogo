@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/game_list">{{ $t('nav.game_list') }}</router-link></li>
+                <li class="active"><router-link to="/game_list">{{ $t('title.game_list') }}</router-link></li>
                 <li class="active">{{ game.display_name }}</li>
             </ol>
         </div>
@@ -13,12 +13,12 @@
                         <thead class="text-center">
                             <tr>
                                 <th width="20%"></th>
-                                <th width="10%">{{ $t('game_manage.standard_odds') }}</th>
-                                <th width="10%">{{ $t('game_manage.odds') }}</th>
-                                <th width="15%">{{ $t('game_manage.return_rate') }}</th>
-                                <th width="15%">{{ $t('game_manage.min_per_bet') }}</th>
-                                <th width="15%">{{ $t('game_manage.max_per_bet') }}</th>
-                                <th width="15%">{{ $t('game_manage.max_per_draw') }}</th>
+                                <th width="10%">{{ $t('game.standard_odds') }}</th>
+                                <th width="10%">{{ $t('game.odds') }}</th>
+                                <th width="15%">{{ $t('finance.return') }}</th>
+                                <th width="15%">{{ $t('game.min_per_bet') }}</th>
+                                <th width="15%">{{ $t('game.max_per_bet') }}</th>
+                                <th width="15%">{{ $t('game.max_per_draw') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,15 +100,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="box-footer text-center" v-if="updatePlaysetDetailsPermission">
-                    <button class="btn md-btn w-sm blue" type="submit"><i class="fa fa-check"></i> {{ $t('action.confirm') }}</button>
-                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)"><i class="fa fa-repeat"></i> {{ $t('action.cancel') }}</button>
-                    <transition name="fade">
-                        <span class="text-success m-l-sm" v-show="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
-                    </transition>
-                    <transition name="fade">                    
-                        <span class="text-warning m-l-sm" v-show="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
-                    </transition>
+                <div class="box-footer text-center p-t-0" v-if="updatePlaysetDetailsPermission">
+                    <button class="btn md-btn w-sm blue" type="submit">{{ $t('dic.confirm') }}</button>
+                    <button class="btn md-btn w-sm" type="reset" @click="getPlaySet(game.id)">{{ $t('dic.cancel') }}</button>
                 </div>
             </form>
         </div>
@@ -116,6 +110,7 @@
 </template>
 <script>
 import { getGame, updateGame } from '../../service'
+import $ from '../../utils/util'
 export default {
     data () {
         return {
@@ -123,9 +118,7 @@ export default {
                 id: '',
                 display_name: ''
             },
-            playsets: [],
-            successMsg: '',
-            errorMsg: ''
+            playsets: []
         }
     },
     computed: {
@@ -169,22 +162,18 @@ export default {
                     params: {
                         game: this.game.id
                     }
+                }, {
+                    action: this.$t('dic.update')
                 }).then(data => {
-                    this.successMsg = `${this.$t('game_manage.modify_success')}`
-                    setTimeout(() => {
-                        this.successMsg = ''
-                    }, 2000)
                     this.playsets.forEach(playset => {
                         this.$set(playset, 'updated', false)
                     })
-                }, error => {
-                    this.errorMsg = error
                 })
             } else {
-                this.errorMsg = this.$t('game_manage.no_change')
-                setTimeout(() => {
-                    this.errorMsg = ''
-                }, 2000)
+                $.notify({
+                    message: this.$t('system_msg.no_change'),
+                    type: 'warning'
+                })
             }
         }
     }
@@ -193,11 +182,5 @@ export default {
 <style lang="scss" scoped>
 .text-center th {
     text-align: center;
-}
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0
 }
 </style>

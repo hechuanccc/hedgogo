@@ -4,13 +4,13 @@
         <table st-table="rowCollectionBasic" class="table table-striped b-t v-m">
             <thead>
                 <tr>
-                    <th width="15%" class="text-center">{{ $t('global_parameters.name') }}</th>
-                    <th>{{ $t('global_parameters.value') }}</th>
+                    <th width="15%" class="text-center">{{ $t('misc.parameter') }}</th>
+                    <th>{{ $t('misc.parameter_value') }}</th>
                     <th
                         width="7%"
                         class="text-center"
                         v-if="$root.permissions.includes('update_global_parameters_setting')"
-                    >{{ $t('global_parameters.operating') }}
+                    >{{ $t('dic.operate') }}
                     </th>
                 </tr>
             </thead>
@@ -63,7 +63,7 @@
                         </label>
                     </td>
                     <td class="text-center align-middle">
-                        <a @click="openModal(index, preference)" v-if="preference.type !== 3">{{ $t('action.update') }}</a>
+                        <a @click="openModal(index, preference)" v-if="preference.type !== 3">{{ $t('dic.update') }}</a>
                     </td>
                 </tr>
             </tbody>
@@ -71,12 +71,12 @@
         <div class="row" v-if="loading">
             <div class="text-center m-a">
                 <i class="fa fa-spin fa-spinner"></i>
-                <b>{{ $t('common.loading') }}</b>
+                <b>{{ $t('system.loading') }}</b>
             </div>
         </div>
         <div class="row" v-if="!loading && !queryset.length">
             <div class="text-center m-a">
-                <span>{{ $t('common.no_record') }}</span>
+                <span>{{ $t('system.no_record') }}</span>
             </div>
         </div>
     </div>
@@ -85,7 +85,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <strong>{{ $t('action.update') }} - {{ modal.displayName }}</strong>
+                    <strong>{{ $t('dic.update') }} - {{ modal.displayName }}</strong>
                     <button type="button" class="close" aria-hidden="true" @click="modal.showModal = false">×</button>
                 </div>
                 <div class="modal-body">
@@ -93,7 +93,7 @@
                         <div v-if="modal.type === 1 && typeof modal.value === 'object'">
                             <label
                                 class="form-control-label p-b-0"
-                            >{{ $t('global_parameters.value') }}
+                            >{{ $t('misc.parameter_value') }}
                             </label>
                             <div class="row m-t-xs" v-for="(e, index) in modal.value" :key="index">
                                 <div class="col-sm-4 col-sm-offset-1 text-right">
@@ -120,7 +120,7 @@
                         </div>
                         <div v-else>
                             <label class="form-control-label p-b-0" >
-                                {{ $t('global_parameters.value') }}
+                                {{ $t('misc.parameter_value') }}
                             </label>
                             <textarea
                                 v-model.trim="modal.value"
@@ -142,11 +142,11 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn blue w-xs" @click="updatePreference(modal)">
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                     <button class="btn w-xs" @click="modal.showModal = false">
-                        {{ $t('action.cancel') }}
+                        {{ $t('dic.cancel') }}
                     </button>
                 </div>
             </div>
@@ -190,15 +190,8 @@ export default {
                 }
             }).then(data => {
                 this.queryset = data
-                this.queryset.forEach(e => {
-                    this.typeTransform(e)
-                })
-                this.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+                this.queryset.forEach(this.typeTransform)
+            }).finally(() => {
                 this.loading = false
             })
         },
@@ -267,19 +260,14 @@ export default {
             updateSystemParameter({
                 key,
                 data: result
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('misc.parameter_value')
             }).then(data => {
-                $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
-                })
                 this.typeTransform(data)
                 Object.assign(this.queryset[index], data)
                 this.modal.showModal = false
-                this.modal.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }).finally(() => {
                 this.modal.loading = false
             })
         }

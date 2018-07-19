@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/messages">{{ $t('nav.message') }}</router-link></li>
+                <li class="active"><router-link to="/messages">{{ $t('title.message') }}</router-link></li>
                 <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
@@ -12,20 +12,20 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <label  class="label-width">{{ $t('messages.title') }}</label>
+                                <label  class="label-width">{{ $t('message.title') }}</label>
                                 <div class="inline-form-control">
                                     <input type="text" class="form-control" placeholder="标题不能超过100个字节" v-model="message.title" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width">{{ $t('messages.receiver') }}</label>
+                                <label  class="label-width">{{ $t('message.receiver') }}</label>
                                 <div class="inline-form-control">
-                                    <input  type="text" class="form-control" @blur='checkMemberHandler' v-model="message.receiver" :disabled="!(!message.member_level)">
+                                    <input class="form-control" @blur='checkMemberHandler' v-model="message.receiver" :disabled="!(!message.member_level)">
                                 </div>
                                 <label class="text-danger m-l">  * 接收人或群发只能选择一个，接收人可以同时填写多个（以英文 "," 隔开）</label>
                             </div>
                             <div class="form-group">
-                                <label  class="label-width">{{ $t('messages.members') }} </label>
+                                <label  class="label-width">{{ $t('message.receiver_group') }} </label>
                                 <div class="inline-form-control">
                                     <selector-member-level :level="message.member_level" :disabled="!(!message.receiver)" @level-choose="changeFromLevel"/>
                                 </div>
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label  class="label-width">{{ $t('messages.text') }} </label>
+                                <label class="label-width">{{ $t('message.content') }} </label>
                                 <textarea v-model="message.content" class="form-control" rows="3" placeholder="内容不能超过500个字节" required></textarea>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="alert alert-danger" v-if="errorMsg">
                             <span>{{ errorMsg }}</span>
                         </div>
-                        <button type="submit" class="md-btn w-sm blue">{{ $t('common.send') }}</button>
+                        <button type="submit" class="md-btn w-sm blue">{{ $t('dic.submit') }}</button>
                     </div>
                 </form>
             </div>
@@ -79,10 +79,11 @@
                     }
                     updateSetting('message', {
                         data: this.message
+                    }, {
+                        action: this.$t('dic.create'),
+                        object: this.$t('dic.message')
                     }).then(() => {
                         this.$router.push('/messages/')
-                    }, error => {
-                        this.errorMsg = error
                     })
                 } else {
                     this.errorMsg = '群发或接收人必须填写一个'

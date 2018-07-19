@@ -10,12 +10,12 @@
                     @change="getImg"
                 />
                 <button class="md-btn w-sm blue">
-                    <span v-if="!uploadLoading">{{ $t('action.create') }}</span>
+                    <span v-if="!uploadLoading">{{ $t('dic.create') }}</span>
                     <i class="fa fa-spin fa-spinner" v-else></i>
                 </button>
             </div>
             <div class="pull-left form-group" v-if="$root.permissions.includes('add_new_banner')">
-                <label class="form-control-label">{{ $t('manage.platform_select') }}</label>
+                <label class="form-control-label">{{ $t('system.select_platform') }}</label>
                 <label class="radio-inline">
                     <input
                         type="radio"
@@ -24,7 +24,7 @@
                         name="platform"
                         v-model="banner.platform"
                     />
-                    {{ $t('manage.all') }}
+                    {{ $t('system.select_all') }}
                 </label>
                 <label class="radio-inline">
                     <input
@@ -34,7 +34,7 @@
                         v-model="banner.platform"
                     />
                     <i class="blue"></i>
-                    {{ $t('manage.pc') }}
+                    {{ $t('dic.pc') }}
                 </label>
                 <label class="radio-inline">
                     <input
@@ -44,7 +44,7 @@
                         v-model="banner.platform"
                     />
                     <i class="blue"></i>
-                    {{ $t('manage.mobile') }}
+                    {{ $t('dic.mobile') }}
                 </label>
             </div>
             <div class="pull-right" v-if="$root.permissions.includes('update_banner_order')">
@@ -53,10 +53,10 @@
                     class="md-btn w-sm blue m-b"
                     @click="changeMode"
                 >
-                    <span v-if="!reorderLoading">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</span>
+                    <span v-if="!reorderLoading">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</span>
                     <i class="fa fa-spin fa-spinner" v-else></i>
                 </button>
-                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('dic.cancel') }}</button>
             </div>
         </div>
     </form>
@@ -72,10 +72,10 @@
             <thead>
                 <tr>
                     <th v-show="!mode"></th>
-                    <th><span class="m-l">{{ $t('manage.img') }}</span></th>
-                    <th class="text-center">{{ $t('manage.platform') }}</th>
-                    <th class="text-center">{{ $t('member.status') }}</th>
-                    <th class="text-center" v-if="$root.permissions.includes('delete_banner')">{{ $t('manage.operate') }}</th>
+                    <th><span class="m-l">{{ $t('misc.img') }}</span></th>
+                    <th class="text-center">{{ $t('dic.platform') }}</th>
+                    <th class="text-center">{{ $t('dic.status') }}</th>
+                    <th class="text-center" v-if="$root.permissions.includes('delete_banner')">{{ $t('dic.operate') }}</th>
                 </tr>
             </thead>
             <draggable v-model="queryset" :element="'tbody'" :options="{disabled: mode}" v-if="queryset.length">
@@ -91,22 +91,21 @@
                         >
                     </td>
                     <td class="text-center v-m">
-                        <span v-if="banner.platform === 0">{{ $t('manage.mobile') }}</span>
-                        <span v-if="banner.platform === 1">{{ $t('manage.pc') }}</span>
-                        <span v-if="banner.platform === 2">{{ $t('manage.pc') }}&nbsp;/&nbsp;{{ $t('manage.mobile') }}</span>
+                        <span v-if="banner.platform === 0">{{ $t('dic.mobile') }}</span>
+                        <span v-if="banner.platform === 1">{{ $t('dic.pc') }}</span>
+                        <span v-if="banner.platform === 2">{{ $t('dic.pc') }}&nbsp;/&nbsp;{{ $t('dic.mobile') }}</span>
                     </td>
                     <td class="text-center v-m">
-                        <span class="label success" v-if="banner.status==1" >{{ $t('status.active') }}</span>
-                        <span class="label danger" v-if="banner.status==0">{{ $t('status.inactive') }}</span>
-                        <template v-if="updateBannerStatusPermission">
-                            <a class="text-sm m-l-sm" @click="toggleStatus(banner)">
-                                {{ banner.status === 0 ? $t('status.active') : $t('status.inactive') }}
-                            </a>
-                        </template>
+                        <status-switch
+                            :status="banner.status"
+                            :loading="!!statusSwitchLoading[banner.id]"
+                            :disabled="!updateBannerStatusPermission"
+                            @toggle="toggleStatus(banner)"
+                        />
                     </td>
                     <td class="text-center v-m" v-if="deleteBannerPermission">
                         <a class="md-btn md-flat" @click="deleteBanner(banner.id, $event, index)">
-                            {{ $t('action.delete') }}
+                            {{ $t('dic.delete') }}
                         </a>
                     </td>
                 </tr>
@@ -114,16 +113,17 @@
         </table>
         <div class="row text-center p-a" v-show="loading">
             <i class="fa fa-spin fa-spinner"></i>&nbsp;
-            <b>{{ $t('common.loading') }}...</b>
+            <b>{{ $t('system.loading') }}</b>
         </div>
         <div class="row text-center p-b" v-if="!loading && !queryset.length">
-            {{ $t('common.no_record') }}
+            {{ $t('system.no_record') }}
         </div>
     </div>
 </div>
 </template>
 <script>
 import draggable from 'vuedraggable'
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import {
     getSetting,
     updateSetting,
@@ -142,7 +142,8 @@ export default {
             },
             loading: true,
             uploadLoading: false,
-            reorderLoading: false
+            reorderLoading: false,
+            statusSwitchLoading: {}
         }
     },
     computed: {
@@ -159,27 +160,24 @@ export default {
     methods: {
         getBanners () {
             this.loading = true
-            getSetting('banner').then(data => {
+            getSetting('banner')
+            .then(data => {
                 this.queryset = data.sort((a, b) => a.rank - b.rank)
-                this.loading = false
-            }, error => {
-                this.errorNotify({error})
-                this.loading = false
             })
+            .catch($.errorNotify)
+            .finally(() => { this.loading = false })
         },
         deleteBanner (id, event, index) {
-            if (!window.confirm(this.$t('common.confirm', {
+            if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                 action: event.target.innerText
             }))) {
                 return
             }
-            deleteSetting('banner', id).then(() => {
-                $.notify({
-                    message: this.$t('action.delete') + this.$t('status.success')
-                })
+            deleteSetting('banner', id, {
+                action: this.$t('dic.delete'),
+                object: 'Banner'
+            }).then(() => {
                 this.queryset.splice(index, 1)
-            }, error => {
-                this.errorNotify({error})
             })
         },
         onSubmit () {
@@ -188,16 +186,13 @@ export default {
             formData.append('platform', this.banner.platform)
             updateSetting('banner', {
                 data: formData
+            }, {
+                action: this.$t('dic.create'),
+                object: 'Banner'
             }).then(data => {
                 this.queryset = []
-                this.loading = true
                 this.getBanners()
-                $.notify({
-                    message: this.$t('action.create') + this.$t('status.success')
-                })
-                this.uploadLoading = false
-            }, error => {
-                this.errorNotify({error})
+            }).finally(() => {
                 this.uploadLoading = false
             })
         },
@@ -206,7 +201,7 @@ export default {
             if (e.target.files[0].size > 1 * 1000 * 1000) {
                 e.target.value = ''
                 $.notify({
-                    message: this.$t('common.file_size_too_large'),
+                    message: this.$t('system_msg.file_size_too_large'),
                     type: 'warning'
                 })
                 return
@@ -218,39 +213,37 @@ export default {
             }
         },
         toggleStatus (banner) {
+            this.$set(this.statusSwitchLoading, banner.id, true)
             updateSetting('banner', {
                 id: banner.id,
                 data: {
                     status: banner.status ^ 1
                 }
-            }).then(data => {
-                banner.status = data.status
-                $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
-                })
-            }, error => {
-                this.errorNotify({error})
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
+            }).then(({ status }) => {
+                banner.status = status
+            }).finally(() => {
+                this.$delete(this.statusSwitchLoading, banner.id)
             })
         },
         changeMode () {
             if (!this.mode) {
                 this.reorderLoading = true
                 updateSetting('bannerRank', {
-                    data: this.queryset.map((element, index) => Object({
-                        id: element.id,
+                    data: this.queryset.map(({ id }, index) => Object({
+                        id,
                         rank: index + 1
                     }))
+                }, {
+                    action: this.$t('system.adjust_rank')
                 }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })
-                    $.notify({
-                        message: this.$t('game_manage.adjust_rank') + this.$t('status.success')
-                    })
                     this.mode = 1
-                    this.reorderLoading = false
-                }, error => {
-                    this.errorNotify({error})
+                }).finally(() => {
                     this.reorderLoading = false
                 })
             } else {
@@ -260,16 +253,11 @@ export default {
         cancelAdjustRank () {
             this.queryset = this.queryset.sort((a, b) => a.rank - b.rank)
             this.mode = !this.mode
-        },
-        errorNotify ({error: message}) {
-            $.notify({
-                message,
-                type: 'danger'
-            })
         }
     },
     components: {
-        draggable
+        draggable,
+        StatusSwitch
     }
 }
 </script>

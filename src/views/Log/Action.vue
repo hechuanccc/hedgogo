@@ -8,7 +8,7 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': action_time && (action_time[0] || action_time[1])}"
-                            >{{ $t('actionrecord.action_time') }}
+                            >{{ $t('time.operated_at') }}
                             </label>
                             <el-date-picker
                                 style="display: block;"
@@ -26,13 +26,13 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.action_username_q}"
-                            >{{ $t('actionrecord.action_username') }}
+                            >{{ $t('dic.operator') }}
                             </label>
                             <input
                                 type="text"
                                 v-model="query.action_username_q"
                                 class="form-control w-sm"
-                                :placeholder="$t('actionrecord.action_username')"
+                                :placeholder="$t('dic.operator')"
                                 @input="search"
                             />
                         </div>
@@ -40,13 +40,13 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.action_ip_q}"
-                            >{{ $t('actionrecord.action_ip') }}
+                            >{{ $t('misc.ip') }}
                             </label>
                             <input
                                 type="text"
                                 v-model="query.action_ip_q"
                                 class="form-control w-sm"
-                                :placeholder="$t('actionrecord.action_ip')"
+                                :placeholder="$t('misc.ip')"
                                 @input="search"
                             />
                         </div>
@@ -54,19 +54,19 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': actionType}"
-                            >{{ $t('actionrecord.action_type') }}
+                            >{{ $t('action.action_type') }}
                             </label>
                             <select
                                 class="form-control w-sm c-select"
                                 style="display: block;"
                                 v-model="actionType"
                             >
-                                <option value=""><span class="text-muted">{{ $t('common.please_select') }}</span></option>
+                                <option value=""><span class="text-muted">{{ $t('system.please_select') }}</span></option>
                                 <option
                                     :value="`${index}`"
                                     v-for="(actionType, index) in actionTypes"
                                     :key="index"
-                                >{{ $t('actionrecord.action_types.' + actionType) }}
+                                >{{ $t('action.action_types.' + actionType) }}
                                 </option>
                             </select>
                         </div>
@@ -74,14 +74,14 @@
                             <label
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': query.description_q}"
-                            >{{ $t('actionrecord.description') }}
+                            >{{ $t('action.description') }}
                             </label>
                             <input
                                 type="text"
                                 v-model="query.description_q"
                                 class="form-control"
                                 style="width: 224px;"
-                                :placeholder="`${$t('actionrecord.enter_keywords')} ${$t('actionrecord.separated_by_spaces')}`"
+                                :placeholder="`${$t('system.enter_keywords')} ${$t('misc.separated_by_spaces')}`"
                                 @input="search"
                             />
                         </div>
@@ -90,12 +90,12 @@
                                 class="form-control-label p-b-0"
                                 :class="{'text-blue': actionResult}"
                                 style="display: block;"
-                            >{{ $t('actionrecord.action_result') }}
+                            >{{ $t('dic.status') }}
                             </label>
                             <label class="sm-check m-r m-t-sm m-l">
                                 <input class="c-radio" type="radio" value="" v-model="actionResult">
                                 <i class="blue m-r-xs"></i>
-                                {{ $t('common.show_all') }}
+                                {{ $t('system.show_all') }}
                             </label>
                             <label class="sm-check m-r">
                                 <input class="c-radio" type="radio" value="1" v-model="actionResult">
@@ -116,7 +116,7 @@
                         >
                             <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                             <i v-else class="fa fa-trash-o"></i> 
-                            <span>{{ $t('action.reset_condition') }}</span>
+                            <span>{{ $t('system.reset_condition') }}</span>
                         </button>
                     </div>
                 </div>
@@ -126,18 +126,18 @@
             <table class="table table-striped b-t">
                 <thead>
                     <tr>
-                        <th style="width: 10%" class="text-center">{{ $t('actionrecord.action_time') }}</th>
-                        <th style="width: 10%">{{ $t('actionrecord.action_username') }}</th>
-                        <th style="width: 10%">{{ $t('actionrecord.action_user_type') }}</th>
-                        <th style="width: 10%">{{ $t('actionrecord.action_ip') }}</th>
-                        <th style="width: 10%">{{ $t('actionrecord.action_type') }}</th>
-                        <th>{{ $t('actionrecord.description') }}</th>
-                        <th style="width: 5%" class="text-center">{{ $t('actionrecord.action_result') }}</th>
+                        <th style="width: 10%" class="text-center">{{ $t('time.operated_at') }}</th>
+                        <th style="width: 10%">{{ $t('dic.operator') }}</th>
+                        <th style="width: 10%">{{ $t('dic.role') }}</th>
+                        <th style="width: 10%">{{ $t('misc.ip') }}</th>
+                        <th style="width: 10%">{{ $t('action.action_type') }}</th>
+                        <th>{{ $t('action.description') }}</th>
+                        <th style="width: 5%" class="text-center">{{ $t('dic.status') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(report, index) in queryset" :key="index">
-                        <td class="text-center">{{ report.action_time | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td class="text-center">{{ report.action_time | moment('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>{{ report.action_username || '-' }}</td>
                         <td>{{ report.action_user_type || '-' }}</td>
                         <td>{{ report.action_ip || '-' }}</td>
@@ -183,7 +183,7 @@ export default {
             actionTypes: ['finance', 'configuration', 'member_information', 'game'],
             today: date.today[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 onClick (p) {
                     p.$emit('pick', date[element])
                 }

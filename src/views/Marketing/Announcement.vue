@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row m-l-xs m-r-xs m-b-xs">
+        <div class="row m-l-xs m-r-xs m-b-sm">
             <div class="pull-left">
                 <button
                     class="md-btn w-sm blue"
@@ -8,66 +8,76 @@
                     @click="createAnnouncement"
                     v-if="!showAll"
                     :disabled="!$root.permissions.includes('add_new_announcement')"
-                >{{ $t('manage.add_announcement') }}
+                >{{ $t('dic.create') }}
                 </button>
                 <button
                     class="md-btn w-sm blue"
                     type="button"
                     @click="showAll = false"
                     v-else
-                >
-                    <span>{{ $t('action.hide') }}</span>
+                >{{ $t('system.hide') }}
                 </button>              
             </div>
-            <div class="pull-center m-t-sm">
-                <span class="alert alert-success text-success m-r p-a-sm" v-if="successMsg"><i class="fa fa-check"></i> {{ successMsg }}</span>
-                <span class="alert alert-danger text-danger m-r p-a-sm" v-if="errorMsg"><i class="fa fa-times"></i> {{ errorMsg }}</span>
-            </div>
             <div class="pull-right">
-                <button type="button" class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-                <button type="button" class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+                <button
+                    type="button"
+                    class="md-btn w-sm blue"
+                    @click="changeMode"
+                >{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}
+                </button>
+                <button
+                    type="button"
+                    class="md-btn w-sm m-l-sm"
+                    v-show="!mode"
+                    @click="cancelAdjustRank"
+                >{{ $t('dic.cancel') }}
+                </button>
             </div>
         </div>
         <div class="box" v-show="showAll">
-            <div class="box-body ">
+            <div class="box-body">
                 <form 
                     class="form"
                     @submit.prevent="onSubmit"
                 >
                     <div class="row" >
                         <div class="col-xs-10">
-
                             <div class="clearfix m-t">
-                                <label class="col-xs-1 text-right form-control-label">{{$t('cms.announcement')}}</label>
+                                <label class="col-xs-1 text-right form-control-label">{{ $t('dic.announcement') }}</label>
                                 <div class="col-xs-6">
-                                    <textarea class="form-control" rows="3" required v-model="announcement.announcement"></textarea>
+                                    <textarea
+                                        class="form-control"
+                                        rows="3"
+                                        required
+                                        v-model="announcement.announcement"
+                                    />
                                 </div>
                             </div>
 
                             <div class="clearfix m-t">
-                                <label class="col-xs-1">{{$t('manage.platform_select')}}</label>
+                                <label class="col-xs-1">{{ $t('system.select_platform') }}</label>
                                 <div class="col-xs-8  m-b form-group">
-                                    <label class="md-check md-check-md m-r">
+                                    <label class="md-check m-r">
                                         <input type="radio" value="2" checked v-model="announcement.platform">
                                         <i class="blue"></i>
-                                        {{$t('manage.all')}}
+                                        {{ $t('system.select_all') }}
                                     </label>
                                     <label class="md-check m-r">
                                         <input type="radio" value="1" v-model="announcement.platform">
                                         <i class="blue"></i>
-                                        {{$t('manage.pc')}}
+                                        {{ $t('dic.pc') }}
                                     </label>
                                     <label class="md-check m-r">
                                         <input type="radio" value="0" v-model="announcement.platform">
                                         <i class="blue"></i>
-                                        {{$t('manage.mobile')}}
+                                        {{ $t('dic.mobile') }}
                                     </label>
                                 </div>
                             </div>
                             <div class="clearfix">
                                 <label class="col-xs-1 text-right form-control-label"> </label>
                                 <div class="col-xs-3">
-                                    <button class="md-btn w-sm blue " type="submit">{{$t('common.save')}}</button>
+                                    <button class="md-btn w-sm blue" type="submit">{{ $t('dic.submit') }}</button>
                                 </div>
                             </div>
 
@@ -80,50 +90,60 @@
         <div class="box">
             <table st-table="rowCollectionBasic" class="table table-striped b-t">
                 <thead>
-                <tr>
-                    <th v-show="!mode"></th>
-                    <th>{{ $t('cms.announcement') }}</th>
-                    <th>{{ $t('manage.platform') }}</th>
-                    <th>{{ $t('member.status') }}</th>
-                    <th v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
-                        {{ $t('manage.operate') }}
-                    </th>
-                </tr>
+                    <tr>
+                        <th v-show="!mode"></th>
+                        <th>{{ $t('dic.announcement') }}</th>
+                        <th class="text-center">{{ $t('dic.platform') }}</th>
+                        <th class="text-center">{{ $t('dic.status') }}</th>
+                        <th
+                            class="text-center"
+                            v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')"
+                        >{{ $t('dic.operate') }}
+                        </th>
+                    </tr>
                 </thead>
-                <draggable v-model="queryset" :element="'tbody'" :options="{disabled:mode}">
-                <tr v-for="(announcement, key) in queryset" :key="key">
-                    <td v-show="!mode" class="text-center"><i class="fa fa-reorder text-blue"></i></td>
-                    <td class="word-break">
-                       {{ announcement.announcement }}
-                    </td>
-                    <td>
-                        <span v-if="announcement.platform === 0">{{ $t('manage.mobile') }}</span>
-                        <span v-if="announcement.platform === 1">{{ $t('manage.pc') }}</span>
-                        <span v-if="announcement.platform === 2">{{ $t('manage.pc') }}/{{ $t('manage.mobile') }}</span>
-                    </td>
-                    <td>
-                        <span class="label success" v-if="announcement.status === 1" >{{ $t('status.active') }}</span>
-                        <span class="label danger" v-else>{{ $t('status.inactive') }}</span>
-                        <template v-if="updateAnnouncementStatusPermission">
-                            <a class="text-sm m-l" @click="toggleStatus(announcement)" v-if="announcement.status === 0">{{ $t('status.active') }}</a>
-                            <a class="text-sm m-l" @click="toggleStatus(announcement)" v-else>{{ $t('status.inactive') }}</a>
-                        </template>
-                    </td>
-                    <td v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
-                        <a
-                            class="m-r-sm"
-                            @click="updateAnnouncement(announcement)"
-                            v-if="$root.permissions.includes('update_announcement')"
-                        >{{ $t('action.update') }}
-                        </a>
-                        <a
-                            class="m-r-sm"
-                            @click="deleteAnnouncement(announcement.id, $event)"
-                            v-if="$root.permissions.includes('delete_announcement')"
-                        >{{ $t('action.delete') }}
-                        </a>
-                    </td>
-                </tr>
+                <draggable
+                    v-model="queryset"
+                    :element="'tbody'"
+                    :options="{ disabled: mode }"
+                >
+                    <tr
+                        class="text-center"
+                        :class="{'pointer': !mode}"
+                        v-for="(announcement, key) in queryset"
+                        :key="key"
+                    >
+                        <td v-show="!mode"><i class="fa fa-reorder text-blue"></i></td>
+                        <td class="text-left word-break">
+                            {{ announcement.announcement }}
+                        </td>
+                        <td>
+                            <span v-if="announcement.platform === 0">{{ $t('dic.mobile') }}</span>
+                            <span v-if="announcement.platform === 1">{{ $t('dic.pc') }}</span>
+                            <span v-if="announcement.platform === 2">{{ $t('dic.pc') }}&nbsp;/&nbsp;{{ $t('dic.mobile') }}</span>
+                        </td>
+                        <td>
+                            <status-switch
+                                :status="announcement.status"
+                                @toggle="toggleStatus(announcement)"
+                                :loading="!!statusSwitchLoading[announcement.id]"
+                                :disabled="!updateAnnouncementStatusPermission"
+                            />
+                        </td>
+                        <td v-if="$root.permissions.includes('delete_announcement') || $root.permissions.includes('update_announcement')">
+                            <a
+                                @click="updateAnnouncement(announcement)"
+                                v-if="$root.permissions.includes('update_announcement')"
+                            >{{ $t('dic.update') }}
+                            </a>
+                            <a
+                                class="m-l-sm"
+                                @click="deleteAnnouncement(announcement.id, $event)"
+                                v-if="$root.permissions.includes('delete_announcement')"
+                            >{{ $t('dic.delete') }}
+                            </a>
+                        </td>
+                    </tr>
                 </draggable>
             </table>
         </div>
@@ -132,6 +152,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import {
     getSetting,
     updateSetting,
@@ -150,8 +171,7 @@ export default {
                 status: '1'
             },
             id: '',
-            errorMsg: '',
-            successMsg: ''
+            statusSwitchLoading: {}
         }
     },
     created () {
@@ -172,13 +192,16 @@ export default {
             })
         },
         deleteAnnouncement (id, event) {
-            if (!window.confirm(this.$t('common.confirm', {
+            if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                 action: event.target.innerText
             }))) {
                 return
             }
 
-            deleteSetting('announcement', id).then(() => {
+            deleteSetting('announcement', id, {
+                action: this.$t('dic.delete'),
+                object: this.$t('dic.announcement')
+            }).then(() => {
                 let index = this.findIndexOfQueryset(id)
                 this.queryset.splice(index, 1)
                 if (this.id === id) {
@@ -210,6 +233,9 @@ export default {
             updateSetting('announcement', {
                 id: this.id,
                 data: this.announcement
+            }, {
+                action: this.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.announcement')
             }).then(data => {
                 this.showAll = false
                 this.id = ''
@@ -218,41 +244,38 @@ export default {
                     this.queryset.splice(index, 1)
                 }
                 this.queryset = [data, ...this.queryset]
-                this.showSuccessMsg()
-            }, error => {
-                this.errorMsg = error
             })
         },
         toggleStatus (announcement) {
+            this.$set(this.statusSwitchLoading, announcement.id, true)
             updateSetting('announcement', {
                 id: announcement.id,
                 data: {
                     status: announcement.status ^ 1
                 }
-            }).then(data => {
-                announcement.status = data.status
-                if (data.id === this.id) {
-                    this.announcement.status = data.status
-                }
-            }, error => {
-                this.errorMsg = error
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
+            }).then(({ status }) => {
+                announcement.status = status
+            }).finally(() => {
+                this.$delete(this.statusSwitchLoading, announcement.id)
             })
         },
         changeMode () {
             if (!this.mode) {
                 updateSetting('announcementRank', {
-                    data: this.queryset.map((element, index) => Object({
-                        id: element.id,
+                    data: this.queryset.map(({ id }, index) => Object({
+                        id,
                         rank: index + 1
                     }))
+                }, {
+                    action: this.$t('system.adjust_rank')
                 }).then(data => {
                     this.queryset.forEach((element, index) => {
                         element.rank = index + 1
                     })
                     this.mode = true
-                    this.showSuccessMsg()
-                }, error => {
-                    this.errorMsg = `${this.$t('status.failed')} (${error})`
                 })
             } else {
                 this.mode = false
@@ -261,16 +284,11 @@ export default {
         cancelAdjustRank () {
             this.getAnnouncements()
             this.mode = !this.mode
-        },
-        showSuccessMsg () {
-            this.successMsg = this.$t('status.success')
-            setTimeout(() => {
-                this.successMsg = ''
-            }, 3000)
         }
     },
     components: {
-        draggable
+        draggable,
+        StatusSwitch
     }
 }
 </script>

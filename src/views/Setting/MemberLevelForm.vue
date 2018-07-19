@@ -1,7 +1,7 @@
 <template>
 <div>
     <ol class="breadcrumb">
-        <li class="active"><router-link to="/level">{{ $t('nav.setting_level') }}</router-link></li>
+        <li class="active"><router-link to="/level">{{ $t('title.member_level') }}</router-link></li>
         <li class="active">{{ $route.meta.title }}</li>
     </ol>
     <div class="box">
@@ -11,7 +11,7 @@
                     <div class="col-xs-5">
                         <div class="form-group">
                             <label for="level-name" class="label-width">
-                                {{ $t('common.name') }}
+                                {{ $t('dic.name') }}
                             </label>
                             <div class="inline-form-control">
                                 <input
@@ -25,7 +25,7 @@
                             <label
                                 for="remit-limit"
                                 class="label-width"
-                            >{{ $t('level.remit_limit') }}
+                            >{{ $t('finance.remit_limit') }}
                             </label>
                             <input
                                 class="form-control w-sm inline"
@@ -46,7 +46,7 @@
                             <label
                                 for="online-limit"
                                 class="label-width"
-                            >{{ $t('level.online_pay_limit') }}
+                            >{{ $t('finance.online_pay_limit') }}
                             </label>
                             <input
                                 class="form-control w-sm inline"
@@ -66,7 +66,7 @@
                             <label
                                 for="withdraw-limit"
                                 class="label-width"
-                            >{{ $t('level.withdraw_limit') }}
+                            >{{ $t('finance.withdraw_limit') }}
                             </label>
                             <input
                                 class="form-control w-sm inline"
@@ -86,7 +86,7 @@
                             <label
                                 for="withdraw-limit"
                                 class="label-width-md"
-                            >{{ $t('level.max_withdraw_count_per_day') }}
+                            >{{ $t('finance.withdraw_limit_count_per_day') }}
                             </label>
                             <input
                                 class="form-control w-sm inline"
@@ -98,13 +98,13 @@
                             <label
                                 for="reg-present"
                                 class="label-width"
-                            >{{ $t('level.reg_present') }}
+                            >{{ $t('finance.register_present') }}
                             </label>
                             <div class="row text-muted">
-                                <label class="col-xs-2">{{ $t('level.reg_present_status') }}</label>
-                                <label class="col-xs-3">{{ $t('level.reg_present_need_bankinfo') }}</label>
-                                <label class="col-xs-3">{{ $t('level.reg_present_amount') }}</label>
-                                <label class="col-xs-3">{{ $t('level.reg_present_check_amount') }}</label>
+                                <label class="col-xs-2">{{ $t('system.enabled_status') }}</label>
+                                <label class="col-xs-3">{{ $t('finance.register_present_bank_info') }}</label>
+                                <label class="col-xs-3">{{ $t('finance.register_present_amount') }}</label>
+                                <label class="col-xs-3">{{ $t('finance.audit_amount') }}</label>
                             </div>
                             <div class="form-group row">
                                 <div class="col-xs-2">
@@ -139,10 +139,10 @@
                             <label
                                 for="baudit-ratio"
                                 class="label-width"
-                            >{{ $t('level.deposit_audit_ratio') }}</label>
+                            >{{ $t('finance.deposit_audit_ratio') }}</label>
                             <div class="form-group row">
                                 <div class="col-xs-4">
-                                    <label class="text-muted">{{ $t('bill.remit') }}&nbsp;%</label>
+                                    <label class="text-muted">{{ $t('finance.remit') }}&nbsp;%</label>
                                     <input
                                         type="number"
                                         class="form-control"
@@ -150,7 +150,7 @@
                                     />
                                 </div>
                                 <div class="col-xs-4">
-                                    <label class="text-muted">{{ $t('bill.online_pay') }}&nbsp;%</label>
+                                    <label class="text-muted">{{ $t('finance.online_pay') }}&nbsp;%</label>
                                     <input
                                         type="number"
                                         class="form-control"
@@ -165,7 +165,7 @@
                             <label
                                 for="bremit-offer"
                                 class="label-width"
-                            >{{ $t('level.remit_offer') }}
+                            >{{ $t('finance.remit_discount') }}
                             </label>
                             <input
                                 type="button"
@@ -174,10 +174,10 @@
                                 value="新增一组"
                             />
                             <div class="row text-muted">
-                                <label class="col-xs-3">{{ $t('level.threshold') }}</label>
-                                <label class="col-xs-2">{{ $t('level.rate') }}&nbsp;%</label>
-                                <label class="col-xs-2">{{ $t('level.check_rate') }}</label>
-                                <label class="col-xs-2">{{ $t('level.discount_limit') }}</label>
+                                <label class="col-xs-3">{{ $t('finance.deposit_amount') }}</label>
+                                <label class="col-xs-2">{{ $t('finance.discount_rate') }}&nbsp;%</label>
+                                <label class="col-xs-2">{{ $t('finance.audit_multiple') }}</label>
+                                <label class="col-xs-2">{{ $t('finance.discount_limit') }}</label>
                             </div>
                             <div
                                 class="form-group row"
@@ -221,14 +221,14 @@
                                         class="pull-right"
                                         v-if="index > 0"
                                         @click="deleteDiscount(level.remit_discounts, index)"
-                                    >{{ $t('action.delete') }}
+                                    >{{ $t('dic.delete') }}
                                     </a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group m-t-md b-b">
-                            <label for="birthday" class="label-width">{{ $t('level.online_pay_offer') }}</label>
+                            <label for="birthday" class="label-width">{{ $t('finance.online_pay_discount') }}</label>
                             <input
                                 type="button"
                                 class="btn grey-600 btn-sm pull-right"
@@ -236,10 +236,10 @@
                                 value="新增一组"
                             />
                             <div class="row text-muted">
-                                <label class="col-xs-3">{{ $t('level.threshold') }}</label>
-                                <label class="col-xs-2">{{ $t('level.rate') }}&nbsp;%</label>
-                                <label class="col-xs-2">{{ $t('level.check_rate') }}</label>
-                                <label class="col-xs-2">{{ $t('level.discount_limit') }}</label>
+                                <label class="col-xs-3">{{ $t('finance.deposit_amount') }}</label>
+                                <label class="col-xs-2">{{ $t('finance.discount_rate') }}&nbsp;%</label>
+                                <label class="col-xs-2">{{ $t('finance.audit_multiple') }}</label>
+                                <label class="col-xs-2">{{ $t('finance.discount_limit') }}</label>
                             </div>
                             <div
                                 class="form-group row"
@@ -283,14 +283,14 @@
                                         class="pull-right"
                                         v-if="index > 0"
                                         @click="deleteDiscount(level.online_discounts, index)"
-                                    >{{ $t('action.delete') }}
+                                    >{{ $t('dic.delete') }}
                                     </a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="memo" class="col-xs-12">{{ $t('common.memo') }}</label>
+                            <label for="memo" class="col-xs-12">{{ $t('dic.memo') }}</label>
                             <div class="col-xs-8 p-r-0">
                                 <textarea
                                     class="form-control"
@@ -304,7 +304,7 @@
                 </div>
                 <button type="submit" class="md-btn w-sm blue">
                     <i class="fa fa-spin fa-spinner" v-if="loading"></i>
-                    <span v-else>{{ $t('common.save') }}</span>
+                    <span v-else>{{ $t('dic.submit') }}</span>
                 </button>
             </form>
         </div>
@@ -314,7 +314,6 @@
 </template>
 <script>
 import { getSetting, updateSetting } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -402,17 +401,12 @@ export default {
             updateSetting('memberLevel', {
                 id: this.level.id,
                 data: this.level
+            }, {
+                action: this.level.id ? this.$t('dic.update') : this.$t('dic.create'),
+                object: this.$t('dic.member_level')
             }).then(data => {
                 this.$router.push('/level/' + data.id)
-                this.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
-                })
-            }, error => {
-                this.notify({
-                    message: error,
-                    type: 'danger'
-                })
-            })
+            }).finally(() => { this.loading = false })
         },
         getLevel (id) {
             this.loading = true
@@ -434,15 +428,7 @@ export default {
                     if (data[key] === null) delete data[key]
                 }
                 this.level = Object.assign(this.level, data)
-                this.loading = false
-            })
-        },
-        notify ({message, type = 'success'}, loading = false) {
-            $.notify({
-                message,
-                type
-            })
-            this.loading = loading
+            }).finally(() => { this.loading = false })
         }
     }
 }

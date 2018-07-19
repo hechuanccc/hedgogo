@@ -6,13 +6,13 @@
         <table st-table="rowCollectionBasic" class="table table-striped b-t v-m">
             <thead>
                 <tr>
-                    <th width="15%" class="text-center">{{ $t('global_parameters.name') }}</th>
-                    <th>{{ $t('global_parameters.value') }}</th>
+                    <th width="15%" class="text-center">{{ $t('misc.parameter') }}</th>
+                    <th>{{ $t('misc.parameter_value') }}</th>
                     <th
                         width="7%"
                         class="text-center"
                         v-if="$root.permissions.includes('update_global_parameters_setting')"
-                    >{{ $t('global_parameters.operating') }}
+                    >{{ $t('dic.operate') }}
                     </th>
                 </tr>
             </thead>
@@ -65,18 +65,18 @@
                         </label>
                     </td>
                     <td class="text-center align-middle">
-                        <a @click="openModal(index, preference)" v-if="preference.type !== 3">{{ $t('action.update') }}</a>
+                        <a @click="openModal(index, preference)" v-if="preference.type !== 3">{{ $t('dic.update') }}</a>
                     </td>
                 </tr>
             </tbody>
         </table>
         <div class="row text-center p-a" v-if="preferenceLoading">
             <i class="fa fa-spin fa-spinner"></i>
-            <b>{{ $t('common.loading') }}&nbsp;...</b>
+            <b>{{ $t('system.loading') }}</b>
         </div>
         <div class="row" v-if="!preferenceLoading && !preferences.length">
             <div class="text-center m-a">
-                <span>{{ $t('common.no_record') }}</span>
+                <span>{{ $t('system.no_record') }}</span>
             </div>
         </div>
     </div>
@@ -86,16 +86,16 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{{ $t('setting.display_name') }}</th>
+                    <th>{{ $t('misc.display_name') }}</th>
                     <th>{{ $t('chatroom.game_room') }}</th>
                     <th>{{ $t('chatroom.manager') }}</th>
                     <th>{{ $t('chatroom.plan_maker') }}</th>
-                    <th class="text-center">{{ $t('common.status') }}</th>
+                    <th class="text-center">{{ $t('dic.status') }}</th>
                 </tr>
             </thead>
             <tbody v-if="!listLoading">
-                <tr :key="chatroom.id" v-for="(chatroom, index) in chatrooms">
-                    <td class="text-uppercase"><router-link :to="`/chatroom/${chatroom.id}/edit`">{{ chatroom.title || $t('action.no_setting') }}</router-link></td>
+                <tr :key="chatroom.id" v-for="chatroom in chatrooms">
+                    <td class="text-uppercase"><router-link :to="`/chatroom/${chatroom.id}/edit`">{{ chatroom.title || $t('system.no_setting') }}</router-link></td>
                     <td class="text-uppercase">{{ gamesMapping[chatroom.id] || '-' }}</td>
                     <td v-if="chatroom.managers.length">
                         <p class="m-b-0" v-for="(m, i) in chatroom.managers" :key="i">
@@ -110,24 +110,22 @@
                     </td>
                     <td v-else>-</td>
                     <td class="text-center text-sm">
-                        <span class="label success" v-if="chatroom.status === 1">{{ $t('status.active') }}</span>
-                        <span class="label danger" v-if="chatroom.status === 0">{{ $t('status.disabled') }}</span>
-                        <a class="m-l-sm" @click="toggleStatus(index, chatroom)" v-if="!toggleLoading[index] && chatroom.status === 1">{{ $t('status.inactive') }}</a>
-                        <a class="m-l-sm" @click="toggleStatus(index, chatroom)" v-else-if="!toggleLoading[index]">{{ $t('status.active') }}</a>
-                        <span class="m-l-sm text-blue" v-else>
-                            &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
-                        </span>
+                        <status-switch
+                            :status="chatroom.status"
+                            @toggle="toggleStatus(chatroom)"
+                            :loading="!!toggleLoading[chatroom.id]"
+                        />
                     </td>
                 </tr>
             </tbody>
         </table>
         <div class="row text-center p-a" v-if="listLoading">
             <i class="fa fa-spin fa-spinner"></i>
-            <b>{{ $t('common.loading') }}&nbsp;...</b>
+            <b>{{ $t('system.loading') }}</b>
         </div>
         <div class="row" v-if="!listLoading && !chatrooms.length">
             <div class="text-center m-a">
-                <span>{{ $t('common.no_record') }}</span>
+                <span>{{ $t('system.no_record') }}</span>
             </div>
         </div>
     </div>
@@ -137,7 +135,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <strong>{{ $t('action.update') }} - {{ modal.displayName }}</strong>
+                    <strong>{{ $t('dic.update') }} - {{ modal.displayName }}</strong>
                     <button type="button" class="close" aria-hidden="true" @click="modal.showModal = false">×</button>
                 </div>
                 <div class="modal-body">
@@ -145,7 +143,7 @@
                         <div v-if="modal.type === 1 && typeof modal.value === 'object'">
                             <label
                                 class="form-control-label p-b-0"
-                            >{{ $t('global_parameters.value') }}
+                            >{{ $t('misc.parameter_value') }}
                             </label>
                             <div class="row m-t-xs" v-for="(e, index) in modal.value" :key="index">
                                 <div class="col-sm-4 col-sm-offset-1 text-right">
@@ -172,7 +170,7 @@
                         </div>
                         <div v-else>
                             <label class="form-control-label p-b-0" >
-                                {{ $t('global_parameters.value') }}
+                                {{ $t('misc.parameter_value') }}
                             </label>
                             <textarea
                                 v-model.trim="modal.value"
@@ -194,11 +192,11 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn blue w-xs" @click="updatePreference(modal)">
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                     <button class="btn w-xs" @click="modal.showModal = false">
-                        {{ $t('action.cancel') }}
+                        {{ $t('dic.cancel') }}
                     </button>
                 </div>
             </div>
@@ -208,6 +206,7 @@
 </template>
 
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import {
     getSetting,
     getGame,
@@ -292,26 +291,21 @@ export default {
                 })
             })
         },
-        toggleStatus (index, chatroom) {
-            this.$set(this.toggleLoading, index, true)
+        toggleStatus (chatroom) {
+            this.$set(this.toggleLoading, chatroom.id, true)
             updateSetting('chatroom', {
                 id: chatroom.id,
                 data: {
                     title: chatroom.title,
                     status: chatroom.status ^ 1
                 }
-            }).then(data => {
-                chatroom.status = data.status
-                $.notify({
-                    message: this.$t('action.update') + this.$t('common.status') + this.$t('status.success')
-                })
-                this.$delete(this.toggleLoading, index)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
-                this.$delete(this.toggleLoading, index)
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
+            }).then(({ status }) => {
+                chatroom.status = status
+            }).finally(() => {
+                this.$delete(this.toggleLoading, chatroom.id)
             })
         },
 
@@ -365,22 +359,20 @@ export default {
             updateSystemParameter({
                 key,
                 data: result
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('misc.parameter_value')
             }).then(data => {
-                $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
-                })
                 this.typeTransform(data)
                 Object.assign(this.preferences[index], data)
                 this.modal.showModal = false
-                this.modal.loading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }).finally(() => {
                 this.modal.loading = false
             })
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>

@@ -2,7 +2,7 @@
 <div>
     <div class="box p-a">
         <div class="row m-t">
-            <label class="m-l-sm col-xs-2">{{ $t('manage.agent_joining_agreement') }} </label>
+            <label class="m-l-sm col-xs-2">{{ $t('website.agent_joining_agreement') }} </label>
         </div>
         <div class="row m-t-xs">
             <div class="col-md-12">
@@ -24,7 +24,7 @@
                     @click="updateWebsiteAgreement"
                     :disabled="!updateWebsiteManagementPermission"
                 >
-                    <span v-if="!websiteAgreementLoading">{{$t('common.save')}}</span>
+                    <span v-if="!websiteAgreementLoading">{{$t('dic.submit')}}</span>
                     <i class="fa fa-spin fa-spinner" v-else></i>
                 </button>
             </div>
@@ -33,11 +33,7 @@
 </div>
 </template>
 <script>
-import {
-    getSetting,
-    updateWebsite
-} from '../../service'
-import $ from '../../utils/util'
+import { getSetting, updateWebsite } from '../../service'
 
 export default {
     data () {
@@ -60,17 +56,13 @@ export default {
 
             updateWebsite('websiteAgreement', {
                 description: this.websiteAgreement
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('website.agent_joining_agreement')
             }).then(data => {
                 this.websiteAgreement = data.description
-                $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
-                })
                 this.websiteAgreementLoading = false
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, () => {
                 this.websiteAgreementLoading = false
             })
         }

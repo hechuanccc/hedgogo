@@ -6,7 +6,7 @@
         :required="req"
         :disabled="disabled"
     >
-        <option value="">{{$t('common.please_select')}}</option>
+        <option value="">{{$t('system.please_select')}}</option>
         <option class="form-control" :value="l.id" v-for="l in levels" :key="l.id">{{l.name}}</option>
     </select>
     <div class="checkbox" v-else-if="!loading && mode === 'checkbox'">
@@ -102,6 +102,7 @@ export default {
             params
         }).then(data => {
             this.levels = data
+        }).finally(() => {
             this.loading = false
         })
         if (this.mode === 'select') {

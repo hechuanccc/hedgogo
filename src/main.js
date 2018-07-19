@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
-import locales from './i18n/locales'
+import i18n from './i18n'
 import VueCookie from 'vue-cookie'
 import Moment from 'vue-moment'
 import store from './vuex/store'
@@ -21,15 +21,6 @@ if (HTTPS && HTTPS.replace(/"/g, '') === '1') {
     if (window.location.protocol === 'http:') {
         window.location.replace(url.replace(/http:/, 'https:'))
     }
-}
-
-let navLang = navigator.language || navigator.userLanguage
-if (navLang === 'zh-CN' || navLang === 'zh-cn') {
-    Vue.config.lang = 'cn'
-} else if (navLang === 'en-US' || navLang === 'en-us') {
-    Vue.config.lang = 'en'
-} else {
-    Vue.config.lang = 'cn'
 }
 
 const config = require('../config')
@@ -68,11 +59,7 @@ axios.interceptors.response.use(response => {
         return Promise.reject(handleError(response.data.msg))
     }
 }, () => {
-    return Promise.reject(Vue.config.lang === 'cn' ? '服务异常，请稍后再试' : 'An error occured. Please try again later.')
-})
-
-Object.keys(locales).forEach(lang => {
-    Vue.locale(lang, locales[lang])
+    return Promise.reject(i18n.t('system_msg.server_error'))
 })
 
 router.beforeEach((to, from, next) => {
@@ -105,6 +92,7 @@ sync(store, router)
 const app = new Vue({
     router,
     store,
+    i18n,
     ...App
 }).$mount('#app')
 

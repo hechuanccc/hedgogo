@@ -5,12 +5,12 @@
             <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': status}"
-            >{{ $t('common.status') }}
+            >{{ $t('dic.status') }}
             </label>
             <label class="sm-check m-r m-b-0">
                 <input class="c-radio" type="radio" value="" v-model="status">
                 <i class="blue m-r-xs"></i>
-                {{ $t('common.show_all') }}
+                {{ $t('system.show_all') }}
             </label>
             <label class="sm-check m-r m-b-0">
                 <input class="c-radio" type="radio" value="1" v-model="status">
@@ -24,8 +24,8 @@
             </label>
         </div>
         <div class="pull-right">
-            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('game_manage.adjust_rank') : $t('action.confirm') }}</button>
-            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('action.cancel') }}</button>
+            <button class="md-btn w-sm blue m-b" @click="changeMode">{{ mode ? $t('system.adjust_rank') : $t('dic.confirm') }}</button>
+            <button class="md-btn w-sm m-b m-l-sm" v-show="!mode" @click="cancelAdjustRank">{{ $t('dic.cancel') }}</button>
         </div>
     </div>
     <div class="box p-a">
@@ -36,7 +36,7 @@
                         :to="'/paymenttype/?type=0'"
                         class="nav-link _600"
                         :class="{'active': type === '0' }"
-                    >{{ $t('manage.pc') }}
+                    >{{ $t('dic.pc') }}
                     </router-link>
                 </li>
                 <li class="nav-item">
@@ -44,7 +44,7 @@
                         :to="'/paymenttype/?type=1'"
                         class="nav-link _600"
                         :class="{'active': type === '1' }"
-                    >{{ $t('manage.mobile') }}
+                    >{{ $t('dic.mobile') }}
                     </router-link>
                 </li>
             </ul>
@@ -53,11 +53,11 @@
             <thead>
                 <tr>
                     <th v-show="!mode" width="3%"></th>
-                    <th width="20%">{{ $t('common.name') }}</th>
-                    <th width="20%">{{ $t('setting.display_name') }}</th>
-                    <th width="20%">{{ $t('setting.payee') }}</th>
-                    <th width="20%">{{ $t('common.dashboard_memo') }}</th>
-                    <th width="20%" class="text-center">{{ $t('common.status') }}</th>
+                    <th width="20%">{{ $t('dic.name') }}</th>
+                    <th width="20%">{{ $t('misc.display_name') }}</th>
+                    <th width="20%">{{ $t('title.online_payee') }}</th>
+                    <th width="20%">{{ $t('finance.dashboard_memo') }}</th>
+                    <th width="20%" class="text-center">{{ $t('dic.status') }}</th>
                 </tr>
             </thead>
             <draggable
@@ -95,15 +95,13 @@
                         {{ paymentType.description || '-' }}
                     </td>
                     <td class="text-center">
-                        <span class="label success m-r-sm" v-if="paymentType.status==1">{{ $t('status.active') }}</span>
-                        <span class="label danger m-r-sm" v-else>{{ $t('status.disabled') }}</span>
-                        <template v-if="$root.permissions.includes('update_onlinepayment_status')">
-                            <a @click="toggleStatus(paymentType)" v-if="!toggleLoading[paymentType.id] &&paymentType.status === 1">{{ $t('status.disabled') }}</a>
-                            <a @click="toggleStatus(paymentType)" v-else-if="!toggleLoading[paymentType.id]">{{ $t('status.active') }}</a>
-                            <span class="text-blue" v-else>
-                                &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
-                            </span>
-                        </template>
+                        <status-switch
+                            :status="paymentType.status"
+                            :loading="!!toggleLoading[paymentType.id]"
+                            :disabled="!updateOnlinepaymentStatusPermission"
+                            :options="[$t('status.disabled'), '']"
+                            @toggle="toggleStatus(paymentType)"
+                        />
                     </td>
                 </tr>
             </draggable>
@@ -111,18 +109,18 @@
         
         <div class="row text-center p-a" v-if="loading">
             <i class="fa fa-spin fa-spinner"></i>
-            <b>{{ $t('common.loading') }}&nbsp;...</b>
+            <b>{{ $t('system.loading') }}</b>
         </div>
         <div class="row text-center p-a" v-if="!loading && !filteredPaymentTypes.length">
-            {{ $t('common.no_record') }}
+            {{ $t('system.no_record') }}
         </div>
     </div>
 </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import draggable from 'vuedraggable'
 import { getMerchant, updateMerchant, adjustPaymentTypeOrder } from '../../service'
-import $ from '../../utils/util'
 export default {
     data () {
         return {
@@ -157,6 +155,11 @@ export default {
             })
         }
     },
+    computed: {
+        updateOnlinepaymentStatusPermission () {
+            return this.$root.permissions.includes('update_onlinepayment_status')
+        }
+    },
     methods: {
         toggleStatus (paymentType) {
             this.$set(this.toggleLoading, paymentType.id, true)
@@ -166,18 +169,14 @@ export default {
                     status: paymentType.status ^ 1,
                     code: paymentType.code
                 }
-            }).then(data => {
-                paymentType.status = data.status
-                $.notify({
-                    message: this.$t('game_manage.modify_success')
-                })
-                this.$delete(this.toggleLoading, paymentType.id)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
+            }).then(({ status }) => {
+                paymentType.status = status
+            }).catch(() => {
                 this.changeType(this.type)
+            }).finally(() => {
                 this.$delete(this.toggleLoading, paymentType.id)
             })
         },
@@ -192,8 +191,7 @@ export default {
                     paymentType.detail = paymentType.detail.filter(payee => payee.activate)
                 })
                 this.changeType()
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         changeMode () {
             if (!this.mode) {
@@ -205,17 +203,11 @@ export default {
                     params: {
                         opt_expand: 1
                     }
+                }, {
+                    action: this.$t('system.adjust_rank')
                 }).then(data => {
-                    $.notify({
-                        message: this.$t('game_manage.modify_success')
-                    })
                     this.getPaymentType()
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
-                })
+                }, () => {})
             } else {
                 this.status = ''
                 this.changeType()
@@ -237,6 +229,7 @@ export default {
         }
     },
     components: {
+        StatusSwitch,
         draggable
     }
 }

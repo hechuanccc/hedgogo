@@ -10,7 +10,7 @@
                 tag="div"
                 class="box p-a-xs pointer"
             >
-                <h6 class="box-header p-b-0">{{ $t(`common.overview.title.${item}`) }}</h6>
+                <h6 class="box-header p-b-0">{{ $t(`overview.title.${item}`) }}</h6>
                 <div class="box-body text-center" v-if="loading">
                     <i class="fa fa-3x fa-spin fa-spinner fa-fw"></i>
                 </div>
@@ -29,7 +29,7 @@
                     />
                 </div>
                 <div class="box-body" v-else>
-                    <span>{{ $t('common.no_record') }}</span>
+                    <span>{{ $t('system.no_record') }}</span>
                 </div>
             </router-link>
         </div>
@@ -85,8 +85,7 @@ export default {
         getOverviewData () {
             getReport('general').then(data => {
                 this.fillData(data)
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         fillData (data) {
             this.dataCategory.forEach(category => {
@@ -102,13 +101,13 @@ export default {
                     this.$set(this.dataCollection, category, {
                         labels: data[category].label,
                         datasets: [{
-                            label: this.$t('common.overview.label.bet_amount'),
+                            label: this.$t('overview.label.bet_amount'),
                             yAxisID: 'bet_amount',
                             backgroundColor: this.hslTransform(this.color[category][0]),
                             borderWidth: 0,
                             data: data[category].bet_amount.map(d => Math.round(d))
                         }, {
-                            label: this.$t('common.overview.label.profit'),
+                            label: this.$t('overview.label.profit'),
                             yAxisID: 'profit',
                             backgroundColor: data[category].profit.map(p => p >= 0
                                 ? this.hslTransform(this.color[category][1])
@@ -184,7 +183,7 @@ export default {
                     this.$set(this.dataCollection, category, {
                         labels: data[category].label,
                         datasets: [{
-                            label: this.$t(`common.overview.label.${category}`),
+                            label: this.$t(`overview.label.${category}`),
                             pointBorderColor: `hsl(${this.color[category][0]}, 88%, 55%)`,
                             pointBackgroundColor: '#ffffff',
                             backgroundColor: this.hslTransform(this.color[category]),

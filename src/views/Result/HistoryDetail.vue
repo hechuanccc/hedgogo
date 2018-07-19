@@ -8,18 +8,18 @@
             <div class="row m-l-xs m-r-xs">
                 <div class="pull-left m-r-xs">
                     <label class="form-control-label p-b-0">
-                        {{$t('game_history.periods')}}
+                        {{$t('dic.period')}}
                     </label>
                     <input
                         type="text"
                         v-model.trim="input.period"
-                        :placeholder="$t('game_history.periods')"
+                        :placeholder="$t('dic.period')"
                         class="form-control w-md"
                     >
                 </div>
                 <div class="pull-left" v-if="!mode">
                     <label class="form-control-label p-b-0">
-                        {{$t('game_history.date')}}
+                        {{$t('dic.date')}}
                     </label>
                     <div>
                         <el-date-picker
@@ -52,7 +52,7 @@
                 v-model="mode"
             />
             <i class="blue"></i>
-            {{$t('game_history.abnormal_period')}}
+            {{$t('game.period_abnormal')}}
         </label>
     </div>
     <div class="card col">
@@ -64,15 +64,15 @@
                             width="8%"
                             :class="{'p-b-md': twoRow}"
                         >
-                            {{ $t('game_history.periods') }}
+                            {{ $t('dic.period') }}
                         </th>
                         <th
                             width="10%"
                             :class="{'p-b-md': twoRow}"
                         >
-                            {{ $t('game_history.draw_date') }}
+                            {{ $t('time.draw_at') }}
                         </th>
-                        <th class="text-center" :class="{'p-b-md': twoRow}">{{ $t('game_history.period_bet_record') }}</th>
+                        <th class="text-center" :class="{'p-b-md': twoRow}">{{ $t('game.period_current_bet_count') }}</th>
                         <th
                             :width="(game.code === 'bjkl8' || game.code === 'auluck8') ? '360' : ''"
                             :class="{'p-b-md': twoRow}"
@@ -87,11 +87,11 @@
                                     :key="col"
                                     @click="changeResultColMode(col)"
                                 >
-                                    <b>{{ `${resultCol.length > 3 ? '' : $t('game_history.show')}${$t('game_history.' + col)}` }}</b>
+                                    <b>{{ `${resultCol.length > 3 ? '' : $t('system.show')}${$t('result.' + col)}` }}</b>
                                 </span>
                             </template>
                             <span v-else>
-                                {{ $t('game_history.draw_number') }}
+                                {{ $t('game.draw_number') }}
                             </span>
                         </th>
                         <th
@@ -99,7 +99,7 @@
                             :width="sumCol.length * 50"
                             v-if="sumCol.length > 0"
                         >
-                            <div class="b-b p-b-sm">{{ sumCol1st2nd ? $t('game_history.sum_of_first_second') : $t('game_history.sum') }}</div>
+                            <div class="b-b p-b-sm">{{ sumCol1st2nd ? $t('result.sum_of_first_second') : $t('result.sum') }}</div>
                             <template v-for="col in sumCol" >
                                 <div
                                     class="m-t-sm"
@@ -109,7 +109,7 @@
                                         'width': `${100 / sumCol.length}%`
                                     }"
                                 >
-                                    {{ $t('game_history.' + col) }}
+                                    {{ $t('result.' + col) }}
                                 </div>
                             </template>
                         </th>
@@ -118,7 +118,7 @@
                             :width="threeBallsSumCol.length * 50"
                             v-if="threeBallsSumCol.length > 0"
                         >
-                            <div class="b-b p-b-sm">{{ $t('game_history.three_balls_sum_col') }}</div>
+                            <div class="b-b p-b-sm">{{ $t('result.three_balls_sum_col') }}</div>
                             <template v-for="col in threeBallsSumCol" >
                                 <div
                                     class="m-t-sm"
@@ -128,7 +128,7 @@
                                         'width': `${100 / threeBallsSumCol.length}%`
                                     }"
                                 >
-                                    {{ $t('game_history.' + col) }}
+                                    {{ $t('result.' + col) }}
                                 </div>
                             </template>
                         </th>
@@ -137,7 +137,7 @@
                             :width="dragonTigerCol.length * 50"
                             v-if="dragonTigerCol.length > 0"
                         >
-                            <div :class="dragonTigerCol.length > 1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.dragon') + $t('game_history.tiger') }}</div>
+                            <div :class="dragonTigerCol.length > 1 ? 'b-b p-b-sm' : ''">{{ $t('result.dragon') + $t('result.tiger') }}</div>
                             <template
                                 v-for="(col, index) in dragonTigerCol"
                                 v-if="dragonTigerCol.length > 1"
@@ -161,7 +161,7 @@
                             v-if="niouniouCol.length > 0"
                         >
                             <div :class="niouniouCol.length > 1 ? 'b-b p-b-sm' : ''">
-                                {{ $t('game_history.niouniou_col_head') }}
+                                {{ $t('game.niouniou_col_head') }}
                             </div>
                             <template
                                 v-for="(col, index) in niouniouCol"
@@ -175,7 +175,7 @@
                                         'width' : `${100 / niouniouCol.length}%`
                                     }"
                                 >
-                                    {{ $t(`game_history.niouniou_col_sub_head[${index}]`) }}
+                                    {{ $t(`game.niouniou_col_sub_head[${index}]`) }}
                                 </div>
                             </template>
                         </th>
@@ -184,7 +184,7 @@
                             :width="comparisonCol.length * 50"
                             v-if="comparisonCol.length > 0"
                         >
-                            <div :class="comparisonCol.length>1 ? 'b-b p-b-sm' : ''">{{ $t('game_history.comparison') }}</div>
+                            <div :class="comparisonCol.length>1 ? 'b-b p-b-sm' : ''">{{ $t('result.comparison') }}</div>
                             <template v-for="col in comparisonCol" v-if="comparisonCol.length>1">
                                 <div
                                     class="m-t-sm"
@@ -194,7 +194,7 @@
                                         'width': `${100 / comparisonCol.length}%`
                                     }"
                                 >
-                                    {{ $t('game_history.' + col) }}
+                                    {{ $t('result.' + col) }}
                                 </div>
                             </template>
                         </th>
@@ -204,10 +204,10 @@
                             :key="col"
                             v-if="otherCol.length > 0"
                         >
-                            {{ $t('game_history.' + col) }}
+                            {{ $t('result.' + col) }}
                         </th>
                         <th :class="{'p-b-md': twoRow}">
-                            {{ $t('game_history.operating') }}
+                            {{ $t('dic.operate') }}
                         </th>
                     </tr>
                 </thead>
@@ -223,12 +223,12 @@
                         <td v-if="sched.status !== 'cancelled'">
                             <span
                                 class="label btn blue"
-                                @click="showModal(sched, 'retreat_sched')"
+                                @click="showModal(sched, 'retreat_schedule')"
                                 v-if="$root.permissions.includes('retrieve_ongoing_bets')"
                             >
-                                <b>{{ $t('game_history.retreat_sched') }}</b>
+                                <b>{{ $t('game.retreat_schedule') }}</b>
                             </span>
-                            <span class="label" v-else>{{ $t('game_history.ongoing') }}</span>
+                            <span class="label" v-else>{{ $t('game.ongoing') }}</span>
                         </td>
                         <td v-else></td>
                         <td v-if="sumCol.length > 0"></td>
@@ -243,7 +243,7 @@
                         >
                         </td>
                         <td>
-                            <span v-if="sched.status === 'cancelled'">{{ $t('game_history.schedule_cancelled') }}</span>
+                            <span v-if="sched.status === 'cancelled'">{{ $t('game.cancelled') }}</span>
                         </td>
                     </tr>
                     <tr
@@ -253,9 +253,9 @@
                         <td>
                             <span>{{ result.issue_number }}</span>
                             <br/>
-                            <span class="text-muted" v-if="result.is_manual">({{ $t('game_history.manual_draw') }})</span>
-                            <span class="text-muted" v-else-if="result.status && result.status === 'cancelled'">({{ $t(`game_history.${result.status}`) }})</span>
-                            <span class="text-muted" v-else-if="result.remarks !== 'manual_draw' && result.remarks !== null">({{ $t(`game_history.${result.remarks}`) }})</span>
+                            <span class="text-muted" v-if="result.is_manual">({{ $t('game.manual_draw') }})</span>
+                            <span class="text-muted" v-else-if="result.status && result.status === 'cancelled'">({{ $t(`game.${result.status}`) }})</span>
+                            <span class="text-muted" v-else-if="result.remarks !== 'manual_draw' && result.remarks !== null">({{ $t(`game.${result.remarks}`) }})</span>
                         </td>
                         <td>{{ mode ? result.schedule_result : result.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
                         <td>{{ result.bets_count }}</td>
@@ -276,11 +276,11 @@
                                     :class="['circle', 'm-r-xs inline', result.result_category[`${resultColMode}_${index}`]]"
                                     :key="`${result.issue_number}_${resultColMode}_${index}`"
                                 >
-                                    {{ $t('game_history.' + result.result_category[`${resultColMode}_${index}`]) }}
+                                    {{ $t('result.' + result.result_category[`${resultColMode}_${index}`]) }}
                                 </div>
                             </div>
                         </td>
-                        <td v-else-if="result.result_status === 'official_invalid'">{{ $t('game_history.official_invalid') }}</td>
+                        <td v-else-if="result.result_status === 'official_invalid'">{{ $t('system_msg.official_invalid') }}</td>
                         <td
                             class="p-l-0 p-r-0"
                             v-for="(colList, index) in allCol"
@@ -296,7 +296,7 @@
                                     :class="`text-${result.result_category[col]}`"
                                     :key="`${result.issue_number}_${col}_${result.result_category[col]}`"
                                 >
-                                    {{ Number.isInteger(result.result_category[col]) ? result.result_category[col] : $t('game_history.' + result.result_category[col]) }}
+                                    {{ Number.isInteger(result.result_category[col]) ? result.result_category[col] : $t('result.' + result.result_category[col]) }}
                                 </div>
                             </template>
                         </td>
@@ -327,7 +327,7 @@
                             v-if="otherCol.length > 0 && result.result_status === 'valid'"
                         >
                             <span v-if="typeof result.result_category[col] === 'number'">{{ result.result_category[col] }}</span>
-                            <span :class="`text-${result.result_category[col]}`" v-else>{{ $t('game_history.' + result.result_category[col]) }}</span>
+                            <span :class="`text-${result.result_category[col]}`" v-else>{{ $t('result.' + result.result_category[col]) }}</span>
                         </td>
                         <td v-else-if="result.result_status === 'official_invalid'"></td>
                         <td>
@@ -339,24 +339,24 @@
                                 @click="showModal(result, 'manual_draw')"
                                 v-if="$root.permissions.includes('manually_draw_game_result')"
                                 :disabled="result.remarks === 'manual_draw' || !$root.permissions.includes('manually_draw_game_result')"
-                            ><b>{{ $t('game_history.manual_draw') }}</b>
+                            ><b>{{ $t('game.manual_draw') }}</b>
                             </button>
                             <span v-else-if="!mode">-</span>
                             <span
                                 class="label btn blue"
                                 @click="showModal(result, 'no_draw')"
                                 v-show="mode && $root.permissions.includes('official_no_draw')"
-                            ><b>{{ $t('game_history.no_draw') }}</b>
+                            ><b>{{ $t('game.no_draw') }}</b>
                             </span>
                             <span v-show="mode && !$root.permissions.includes('manually_draw_game_result') && !$root.permissions.includes('official_no_draw')">
                                 -
                             </span>
                             <span
                                 class="label btn blue"
-                                @click="showModal(result, 'retreat_sched')"
+                                @click="showModal(result, 'retreat_schedule')"
                                 v-if="$root.permissions.includes('retrieve_ongoing_bets') && result.bets_count && result.status !== 'cancelled' && !mode"
                             >
-                                <b>{{ $t('game_history.retreat_sched') }}</b>
+                                <b>{{ $t('game.retreat_schedule') }}</b>
                             </span>
                         </td>
                     </tr>
@@ -369,32 +369,32 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span><b>{{ game.display_name }} - {{ $t(`game_history.${modal.mode}`) }}</b></span>
+                    <span><b>{{ game.display_name }} - {{ $t(`game.${modal.mode}`) }}</b></span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="modal-body p-a-md">
-                    <template v-if="modal.mode === 'retreat_sched' && modal.status === 'close'">
+                    <template v-if="modal.mode === 'retreat_schedule' && modal.status === 'close'">
                         <p>
-                            {{ $t('game_history.retreat_sched_sure', {
+                            {{ $t('system_msg.confirm_retreat_schedule', {
                                 game: game.display_name,
                                 period: modal.scheduleResult.issue_number
                             }) }}
                         </p>
                         <p v-if="modal.memberAmount">
-                            {{ $t('game_history.current_period') }}
-                            {{ $t('game_history.member_win') }}:
+                            {{ $t('game.period_current') }}
+                            {{ $t('bet.member_win') }}:
                             <span class="text-success m-r-sm">{{ modal.memberAmount[0] | currency('￥', 2) }}</span>
-                            {{ $t('game_history.member_lose') }}:
+                            {{ $t('bet.member_lose') }}:
                             <span class="text-danger">{{ modal.memberAmount[1] | currency('￥', 2) }}</span>
                         </p>
                     </template>
                     <table st-table="rowCollectionBasic" class="table b-t m-t v-m" v-else>
                         <thead>
                             <tr>
-                                <th class="text-center">{{ $t('game_history.periods') }}</th>
-                                <th class="text-center" v-if="modal.mode === 'no_draw'">{{ $t('game_history.period_bet_record') }}</th>
-                                <th class="text-center">{{ $t('game_history.draw_date') }}</th>
-                                <th class="text-center" v-show="modal.mode ==='manual_draw'">{{ $t('game_history.draw_number') }}</th>
+                                <th class="text-center">{{ $t('dic.period') }}</th>
+                                <th class="text-center" v-if="modal.mode === 'no_draw'">{{ $t('game.period_current_bet_count') }}</th>
+                                <th class="text-center">{{ $t('time.draw_at') }}</th>
+                                <th class="text-center" v-show="modal.mode ==='manual_draw'">{{ $t('game.draw_number') }}</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
@@ -408,9 +408,9 @@
                                         v-model="modal.scheduleResult.result_str"
                                         :disabled="!$root.permissions.includes('manually_draw_game_result')"
                                     />
-                                    <span>{{ $t('game_history.result_str_tips', {
+                                    <span>{{ $t('system_msg.draw_number_tip', {
                                         num_len: game.rules.num_len,
-                                        unique: game.rules.unique ? $t('game_history.non_repetitive') : $t('game_history.repeatable'),
+                                        unique: game.rules.unique ? $t('misc.no_repeatable') : $t('misc.repeatable'),
                                         range_floor: game.rules.range_value[0],
                                         range_ceil: game.rules.range_value[1],
                                         separator: game.rules.separator
@@ -419,14 +419,14 @@
                             </tr>
                         </tbody>
                     </table>
-                    <template v-if="modal.mode === 'retreat_sched' && modal.status === 'close'">
+                    <template v-if="modal.mode === 'retreat_schedule' && modal.status === 'close'">
                         <table class="table b-t m-t v-m">
                             <thead>
                                 <tr>
-                                    <th>{{ $t('common.member') }}</th>
-                                    <th class="text-right">{{ $t('common.settlementamount') }}</th>
-                                    <th class="text-right">{{ $t('common.settlementbalance') }}</th>
-                                    <th class="text-right">{{ $t('common.settlementretreat') }}</th>
+                                    <th>{{ $t('dic.member') }}</th>
+                                    <th class="text-right">{{ $t('bet.settled_amount') }}</th>
+                                    <th class="text-right">{{ $t('bet.settled_balance') }}</th>
+                                    <th class="text-right">{{ $t('bet.settled_retreat') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -439,16 +439,13 @@
                             </tbody>
                         </table>
                     </template>
-                    <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="inline pull-left m-l-sm m-t-sm" v-if="modal.mode === 'manual_draw' && $root.permissions.includes('manually_draw_game_result')">
                         <label class="check">
                             <input type="checkbox" v-model="modal.sureDraw"/>
                             <i class="blue"></i>
-                            {{$t('game_history.sure_manual_draw', {
+                            {{$t('system_msg.confirm_manual_draw', {
                                 bet_record_count: modal.betrecords
                             })}}
                         </label>
@@ -457,15 +454,15 @@
                         <label class="check">
                             <input type="checkbox" v-model="modal.inform"/>
                             <i class="blue"></i>
-                            {{$t('game_history.inform_no_draw')}}
+                            {{$t('system_msg.no_draw_inform')}}
                         </label>
                         <label class="check m-l-sm" v-if="modal.betrecords">
                             <input type="checkbox" v-model="modal.retreat"/>
                             <i class="blue"></i>
-                            {{$t('game_history.retreat_sched_all')}}
+                            {{$t('system_msg.retreat_schedule_all')}}
                         </label>
                     </div>
-                    <button type="button" class="inline pull-right btn w-xs" @click="hideModal">{{ $t('action.cancel') }}</button>
+                    <button type="button" class="inline pull-right btn w-xs" @click="hideModal">{{ $t('dic.cancel') }}</button>
                     <button
                         type="button"
                         class="inline pull-right btn blue m-r-xs w-xs"
@@ -473,7 +470,7 @@
                         v-if="modal.mode === 'manual_draw' && $root.permissions.includes('manually_draw_game_result')"
                         :disabled="!modal.sureDraw"
                     >
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                     <button
@@ -482,7 +479,7 @@
                         @click="noDrawHandler"
                         v-else-if="modal.mode === 'no_draw'"
                     >
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                     <button
@@ -491,7 +488,7 @@
                         @click="retreatSchedule"
                         v-else
                     >
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </div>
@@ -514,7 +511,6 @@
 <script>
 import url from '../../service/url'
 import Pulling from '../../components/Pulling'
-import AlertMsg from '../../components/AlertMsg'
 import Vue from 'vue'
 import _ from 'lodash'
 import date from '../../utils/date'
@@ -530,7 +526,7 @@ export default {
         return {
             today: Vue.moment().format(dateFormat),
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 onClick (p) {
                     p.$emit('pick', date[element])
                 }
@@ -559,7 +555,6 @@ export default {
                 sureDraw: false,
                 inform: false,
                 retreat: false,
-                msg: '',
                 loading: false
             },
             extra: '',
@@ -712,16 +707,16 @@ export default {
                     },
                     time: this.mode ? sched.schedule_result : sched.created_at,
                     betrecords: sched.bets_count,
-                    msg: this.$t(`game_history.${modalMode}_initial_msg`),
                     sureDraw: false,
                     isShow: true,
                     inform: false,
                     retreat: false
                 })
-                // this.$nextTick(() => {
-                //     this.$refs.alertMsg.trigger('warning')
-                // })
-            } else if (modalMode === 'retreat_sched') {
+                $.notify({
+                    message: this.$t(`system_msg.${modalMode}_alert`),
+                    type: 'warning'
+                })
+            } else if (modalMode === 'retreat_schedule') {
                 let id = sched.status === 'open' ? sched.id : sched.schedule_id
                 id && getGame('scheduleRetreat', { id }).then(data => {
                     let memberAmount = data.bets_info && data.bets_info
@@ -755,14 +750,12 @@ export default {
                 data: {
                     status: this.modal.status === 'close' ? 'force_cancelled' : 'cancelled'
                 }
+            }, {
+                action: this.$t('game.retreat_schedule')
             }).then(data => {
-                this.modal.msg = this.$t('game_history.schedule_cancelled')
-                this.$refs.alertMsg.trigger('success', 1, true)
                 this.modal.status === 'open' ? this.getRetreatedSchedules() : this.$refs.pulling.rebase()
-                this.modal.loading = false
-            }, error => {
-                this.modal.msg = this.$t('game_history.retreat_sched_fail') + this.$t('game_history.try_later') + `（${error}）`
-                this.$refs.alertMsg.trigger('danger')
+                this.hideModal()
+            }).finally(() => {
                 this.modal.loading = false
             })
         },
@@ -775,14 +768,12 @@ export default {
                     inform: this.modal.inform ? 1 : 0,
                     retreat: this.modal.retreat ? 1 : 0
                 }
+            }, {
+                action: this.$t('dic.set')
             }).then(data => {
-                this.modal.msg = this.$t('common.setting') + this.$t('status.success')
-                this.$refs.alertMsg.trigger('success', 1, true)
                 this.$refs.pulling.rebase()
-                this.modal.loading = false
-            }, error => {
-                this.modal.msg = `${this.$t('status.failed')}（${error}）`
-                this.$refs.alertMsg.trigger('danger')
+                this.hideModal()
+            }).finally(() => {
                 this.modal.loading = false
             })
         },
@@ -790,8 +781,7 @@ export default {
             if (this.modal.scheduleResult.result_str) {
                 let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
                 if (!judgement) {
-                    this.modal.msg = this.$t('game_history.wrong_result_str')
-                    this.$refs.alertMsg.trigger('danger')
+                    $.errorNotify(this.$t('system_msg.draw_number_wrong'))
                     return
                 } else {
                     this.modal.scheduleResult.result_str = result
@@ -799,19 +789,19 @@ export default {
                 this.modal.loading = true
                 updateGame('result', {
                     data: this.modal.scheduleResult
+                }, {
+                    action: this.$t('game.manual_draw')
                 }).then(() => {
-                    this.modal.msg = this.$t('game_history.manual_draw_success')
-                    this.$refs.alertMsg.trigger('success', 1, true)
                     this.$refs.pulling.rebase()
-                    this.modal.loading = false
-                }, error => {
-                    this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error}）`
-                    this.$refs.alertMsg.trigger('danger')
+                    this.hideModal()
+                }).finally(() => {
                     this.modal.loading = false
                 })
             } else {
-                this.modal.msg = this.$t('game_history.no_setting_draw_number')
-                this.$refs.alertMsg.trigger('warning')
+                $.notify({
+                    message: this.$t('game.draw_number_no_set'),
+                    type: 'warning'
+                })
             }
         },
         submit () {
@@ -927,8 +917,7 @@ export default {
         }
     },
     components: {
-        Pulling,
-        AlertMsg
+        Pulling
     },
     beforeDestroy () {
         clearInterval(this.timingPulling)

@@ -2,11 +2,11 @@
 <div>
     <div class="m-b-sm row">
         <div class="col-xs-2">
-            <h6>{{$t('game_history.overview')}}</h6>
+            <h6>{{$t('title.overview')}}</h6>
         </div>
         <div class="col-3 pull-right">
             <button class="md-btn w-sm blue loading" @click="getPeriods()">
-                <i class="fa fa-spin fa-spinner" v-if="!isLatest"></i> <span>{{ $t('game_history.refresh')}}</span>
+                <i class="fa fa-spin fa-spinner" v-if="!isLatest"></i> <span>{{ $t('system.refresh')}}</span>
             </button>
         </div>
     </div>
@@ -15,11 +15,11 @@
             <thead>
                 <tr>
                     <th scope="col" width="15%" class="p-l-md">
-                        {{$t('game_history.game')}}
+                        {{$t('dic.game')}}
                     </th>
-                    <th scope="col" class="text-center" width="15%">{{ $t('game_history.already_result') }}</th>
-                    <th scope="col" class="text-center" width="15%">{{ $t('game_history.notyet_result') }}</th>
-                    <th scope="col" colspan="3" class="text-center" width="55%">{{$t('game_history.abnormal_msg')}}</th>
+                    <th scope="col" class="text-center" width="15%">{{ $t('game.period_drawed') }}</th>
+                    <th scope="col" class="text-center" width="15%">{{ $t('game.period_last') }}</th>
+                    <th scope="col" colspan="3" class="text-center" width="55%">{{$t('game.period_abnormal')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,13 +44,13 @@
                         <table class="table m-a-0">
                             <thead>
                                 <tr>
-                                    <th class="text-center" width="33%">{{ $t('game_history.abnormal_period') }}</th>
-                                    <th class="text-center" width="33%">{{ $t('game_history.period_bet_record') }}</th>
+                                    <th class="text-center" width="33%">{{ $t('game.period_abnormal') }}</th>
+                                    <th class="text-center" width="33%">{{ $t('game.period_current_bet_count') }}</th>
                                     <th
                                         class="text-center"
                                         width="33%"
                                         v-if="$root.permissions.includes('manually_draw_game_result') || $root.permissions.includes('official_no_draw')"
-                                    >{{ $t('game_history.operating') }}</th>
+                                    >{{ $t('dic.operate') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,13 +63,13 @@
                                             @click="showModal(game, sched)"
                                             v-if="$root.permissions.includes('manually_draw_game_result')"
                                         >
-                                            {{ $t('game_history.manual_draw') }}
+                                            {{ $t('game.manual_draw') }}
                                         </span>
                                         <span
                                             class="label btn blue"
                                             @click="showModal(game, sched, 'no_draw')"
                                             v-if="$root.permissions.includes('official_no_draw')"
-                                        >{{ $t('game_history.no_draw') }}
+                                        >{{ $t('game.no_draw') }}
                                         </span>
                                     </td>
                                 </tr>
@@ -85,14 +85,14 @@
                                                 }
                                             }"
                                         >
-                                        {{ `${$t('game_history.show_all')}${$t('game_history.abnormal_period')}(${game.abnormal_count})`  }}
+                                        {{ `${$t('system.show_all')}${$t('game.period_abnormal')}(${game.abnormal_count})`  }}
                                         </router-link>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </td>
-                    <td v-else class="text-muted">{{ $t('game_history.no_abnormal')}}</td>
+                    <td v-else class="text-muted">{{ $t('game.period_no_abnormal')}}</td>
                 </tr>
                 </template>
             </tbody>
@@ -100,23 +100,23 @@
     </div>
     <p v-else class="text-center">
         <i class="fa fa-spin fa-spinner"></i>
-        <b>{{ $t('common.loading') }}...</b>
+        <b>{{ $t('system.loading') }}</b>
     </p>
     <div class="modal" v-if="modal.isShow">
         <div class="modal-backdrop fade in" @click="hideModal"></div>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span>{{ modal.game.display_name }} - {{ $t(`game_history.${modal.mode}`) }}</span>
+                    <span>{{ modal.game.display_name }} - {{ $t(`game.${modal.mode}`) }}</span>
                     <button type="button" class="close" aria-hidden="true" @click="hideModal">×</button>
                 </div>
                 <div class="modal-body">
                     <table st-table="rowCollectionBasic" class="table b-t">
                         <thead>
                             <tr>
-                                <th class="text-center">{{ $t('game_history.periods') }}</th>
-                                <th class="text-center">{{ $t('game_history.period_bet_record') }}</th>
-                                <th class="text-center" v-if="modal.mode === 'manual_draw'">{{ $t('game_history.draw_number') }}</th>
+                                <th class="text-center">{{ $t('dic.period') }}</th>
+                                <th class="text-center">{{ $t('game.period_current_bet_count') }}</th>
+                                <th class="text-center" v-if="modal.mode === 'manual_draw'">{{ $t('game.draw_number') }}</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
@@ -125,9 +125,9 @@
                                 <td>{{ modal.bets_count }}</td>
                                 <td v-if="modal.mode === 'manual_draw'">
                                     <input class="form-control" v-model="modal.scheduleResult.result_str" :disabled="!$root.permissions.includes('manually_draw_game_result')">
-                                    <span>{{ $t('game_history.result_str_tips',{
+                                    <span>{{ $t('system_msg.draw_number_tip',{
                                             num_len: modal.game.rules.num_len,
-                                            unique: modal.game.rules.unique?$t('game_history.non_repetitive'):$t('game_history.repeatable'),
+                                            unique: modal.game.rules.unique?$t('misc.no_repeatable'):$t('misc.repeatable'),
                                             range_floor: modal.game.rules.range_value[0],
                                             range_ceil: modal.game.rules.range_value[1],
                                             separator: modal.game.rules.separator
@@ -135,10 +135,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
-                    <div class="m-l m-r">
-                        <alert-msg :msg="modal.msg" ref="alertMsg" @hide-modal="hideModal"></alert-msg>
-                    </div>                
+                    </table>         
                 </div>
                 <div class="modal-footer">
                     <div class="inline pull-left m-l-sm m-t-sm checkbox" v-if="modal.mode === 'manual_draw'">
@@ -149,7 +146,7 @@
                                 :disabled="!$root.permissions.includes('manually_draw_game_result')"
                             >
                             <i class="blue"></i>
-                            {{ $t('game_history.sure_manual_draw', {
+                            {{ $t('system_msg.confirm_manual_draw', {
                                 bet_record_count: modal.bets_count
                             }) }}
                         </label>
@@ -161,19 +158,19 @@
                                 v-model="modal.inform"
                                 :disabled="!$root.permissions.includes('official_no_draw')">
                             <i class="blue"></i>
-                            {{ $t('game_history.inform_no_draw') }}
+                            {{ $t('system_msg.no_draw_inform') }}
                         </label>
                         <label class="check m-l-sm" v-if="modal.bets_count">
                             <input type="checkbox" v-model="modal.retreat"/>
                             <i class="blue"></i>
-                            {{$t('game_history.retreat_sched_all')}}
+                            {{$t('system_msg.retreat_schedule_all')}}
                         </label>
                     </div>
                     <button
                         type="button"
                         class="inline pull-right btn w-xs"
                         @click="hideModal"
-                    >{{ $t('action.cancel') }}
+                    >{{ $t('dic.cancel') }}
                     </button>
                     <button 
                         type="button"
@@ -182,7 +179,7 @@
                         v-if="modal.mode === 'manual_draw'"
                         :disabled="!$root.permissions.includes('manually_draw_game_result') || !modal.sureDraw"
                     >
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>                        
                     </button>
                     <button
@@ -192,7 +189,7 @@
                         v-else
                         :disabled="!$root.permissions.includes('official_no_draw')"
                     >
-                        <span v-if="!modal.loading">{{ $t('action.confirm') }}</span>
+                        <span v-if="!modal.loading">{{ $t('dic.confirm') }}</span>
                         <i class="fa fa-spin fa-spinner" v-else></i>
                     </button>
                 </div>
@@ -203,7 +200,6 @@
 </template>
 <script>
 import { getGame, updateGame } from '../../service'
-import AlertMsg from '../../components/AlertMsg'
 import Vue from 'vue'
 import $ from '../../utils/util'
 const dateFormat = 'YYYY-MM-DD'
@@ -229,7 +225,6 @@ export default{
                 },
                 inform: false,
                 retreat: false,
-                msg: '',
                 loading: false
             },
             today: Vue.moment().format(dateFormat),
@@ -285,11 +280,11 @@ export default{
                     sureDraw: 0,
                     inform: false,
                     retreat: false,
-                    isShow: true,
-                    msg: this.$t(`game_history.${mode}_initial_msg`)
+                    isShow: true
                 }
-                this.$nextTick(() => {
-                    this.$refs.alertMsg.trigger('warning')
+                $.notify({
+                    message: this.$t(`system_msg.${mode}_alert`),
+                    type: 'warning'
                 })
             })
         },
@@ -300,8 +295,7 @@ export default{
             if (this.modal.scheduleResult.result_str) {
                 let [judgement, result] = $.validateResultStr(this.modal.scheduleResult.result_str)
                 if (!judgement) {
-                    this.modal.msg = this.$t('game_history.wrong_result_str')
-                    this.$refs.alertMsg.trigger('danger')
+                    $.errorNotify(this.$t('system_msg.draw_number_wrong'))
                     return
                 } else {
                     this.modal.scheduleResult.result_str = result
@@ -309,19 +303,19 @@ export default{
                 this.modal.loading = true
                 updateGame('result', {
                     data: this.modal.scheduleResult
+                }, {
+                    action: this.$t('game.manual_draw')
                 }).then(() => {
-                    this.modal.msg = this.$t('game_history.manual_draw_success')
-                    this.$refs.alertMsg.trigger('success', 1, true)
                     this.getPeriods()
-                    this.modal.loading = false
-                }, error => {
-                    this.modal.msg = this.$t('game_history.manual_draw_fail') + `（${error}）`
-                    this.$refs.alertMsg.trigger('danger')
+                    this.hideModal()
+                }).finally(() => {
                     this.modal.loading = false
                 })
             } else {
-                this.modal.msg = this.$t('game_history.no_setting_draw_number')
-                this.$refs.alertMsg.trigger('warning')
+                $.notify({
+                    message: this.$t('game.draw_number_no_set'),
+                    type: 'warning'
+                })
             }
         },
         noDrawHandler () {
@@ -333,23 +327,18 @@ export default{
                     inform: this.modal.inform ? 1 : 0,
                     retreat: this.modal.retreat ? 1 : 0
                 }
-            }).then(data => {
-                this.modal.msg = this.$t('common.setting') + this.$t('status.success')
-                this.$refs.alertMsg.trigger('success', 1, true)
+            }, {
+                action: this.$t('dic.set')
+            }).then(() => {
                 this.getPeriods()
-                this.modal.loading = false
-            }, error => {
-                this.modal.msg = `${this.$t('status.failed')}（${error}）`
-                this.$refs.alertMsg.trigger('danger')
+                this.hideModal()
+            }).finally(() => {
                 this.modal.loading = false
             })
         }
     },
     beforeDestroy () {
         clearInterval(this.timing)
-    },
-    components: {
-        AlertMsg
     }
 }
 </script>

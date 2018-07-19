@@ -5,21 +5,19 @@
             <table st-table="rowCollectionBasic" class="table table-striped">
                 <thead>
                     <tr>
-                        <th width="60%">{{ $t('common.name') }}</th>
-                        <th width="40%" class="text-center">{{ $t('common.status') }}</th>
+                        <th width="60%">{{ $t('dic.name') }}</th>
+                        <th width="40%" class="text-center">{{ $t('dic.status') }}</th>
                     </tr>
                 </thead>
                 <tbody v-if="!loading">
                     <tr :key="bank.id" v-for="bank in banks">
                         <td>{{ bank.name }}</td>
                         <td class="text-center b-r-2x">
-                            <span v-if="bank.status === 1" class="label success">{{ $t('status.active') }}</span>
-                            <span v-else class="label danger">{{ $t('status.inactive') }}</span>
-                            <a class="m-l-sm" @click="toggleStatus(bank)" v-if="!toggleLoading[bank.id] && bank.status === 1">{{ $t('status.disabled') }}</a>
-                            <a class="m-l-sm" @click="toggleStatus(bank)" v-else-if="!toggleLoading[bank.id]">{{ $t('status.active') }}</a>
-                            <span class="text-blue m-l-sm" v-else>
-                                &nbsp;&nbsp;<i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp;
-                            </span>
+                            <status-switch
+                                :status="bank.status"
+                                @toggle="toggleStatus(bank)"
+                                :loading="!!toggleLoading[bank.id]"
+                            />
                         </td>
                     </tr>
                 </tbody>
@@ -27,17 +25,17 @@
         </div>
     </div>
     <div class="row text-center" v-if="!loading && !bankList[0].length && !bankList[1].length">
-        <b>{{ $t('common.no_data') }}</b>
+        <b>{{ $t('system.no_data') }}</b>
     </div>
     <div class="row text-center" v-else-if="loading">
         <i class="fa fa-spin fa-spinner"></i>
-        <b>{{ $t('common.loading') }}...</b>
+        <b>{{ $t('system.loading') }}...</b>
     </div>
 </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import { getSetting, updateSetting } from '../../service'
-import $ from '../../utils/util'
 
 export default {
     data () {
@@ -57,8 +55,7 @@ export default {
                     data[index] && this.bankList[0].push(data[index])
                     data[index + 1] && this.bankList[1].push(data[index + 1])
                 }
-                this.loading = false
-            })
+            }).finally(() => { this.loading = false })
         },
         toggleStatus (bank = {}) {
             this.$set(this.toggleLoading, bank.id, true)
@@ -67,20 +64,16 @@ export default {
                 data: {
                     status: bank.status ^ 1
                 }
-            }).then(data => {
-                bank.status = data.status
-                $.notify({
-                    message: this.$t('action.update') + this.$t('status.success')
-                })
-                this.$delete(this.toggleLoading, bank.id)
-            }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
-                this.$delete(this.toggleLoading, bank.id)
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
             })
+            .then(({ status }) => { bank.status = status })
+            .finally(() => { this.$delete(this.toggleLoading, bank.id) })
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>

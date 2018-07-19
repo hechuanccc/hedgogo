@@ -8,13 +8,13 @@
                             class="md-btn w-sm blue m-r-xs inline"
                             type="submit"
                             @click="refresh"
-                        >{{ $t('common.refresh') }}
+                        >{{ $t('system.refresh') }}
                         </button>
                         <button
                             class="md-btn w-sm"
                             type="submit"
                             @click="newWindow"
-                        >{{ $t('common.new_window') }}
+                        >{{ $t('system.new_window') }}
                         </button>
                     </div>
                 </div>
@@ -33,13 +33,13 @@
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': query.member}"
                                 >
-                                    {{ $t('common.member') }}
-                                    <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                                    {{ $t('dic.member') }}
+                                    <span class="text-muted">({{ $t('system.accurate_search') }})</span>
                                 </label>
                                 <input
                                     v-model.trim="query.member"
                                     class="form-control w-sm"
-                                    :placeholder="$t('common.member')"
+                                    :placeholder="$t('dic.member')"
                                     @input="search"
                                 />
                             </div>
@@ -47,12 +47,12 @@
                                 <label
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': query.id}"
-                                >{{ $t('report.bet_record_number') }}
+                                >{{ $t('bet.bet_id') }}
                                 </label>
                                 <input
                                     v-model.trim="query.id"
                                     class="form-control w-sm"
-                                    :placeholder="$t('report.bet_record_number')"
+                                    :placeholder="$t('bet.bet_id')"
                                     @input="search"
                                 />
                             </div>
@@ -61,13 +61,13 @@
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': query.issue_number}"
                                 >
-                                    {{ $t('game_history.periods') }}
-                                    <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                                    {{ $t('dic.period') }}
+                                    <span class="text-muted">({{ $t('system.accurate_search') }})</span>
                                 </label>
                                 <input
                                     v-model.trim="query.issue_number"
                                     class="form-control w-sm"
-                                    :placeholder="$t('game_history.periods')"
+                                    :placeholder="$t('dic.period')"
                                     @input="search"
                                 />
                             </div>
@@ -75,7 +75,7 @@
                                 <label
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': status && status.length}"
-                                >{{ $t('common.status') }}
+                                >{{ $t('dic.status') }}
                                 </label>
                                 <div :class="{'w-sm': !status || status.length <= 1}">
                                     <multiselect
@@ -87,7 +87,7 @@
                                         :hide-selected="true"
                                         :preserve-search="false"
                                         :searchable="false"
-                                        :placeholder="$t('common.please_select')"
+                                        :placeholder="$t('system.please_select')"
                                         label="title"
                                         track-by="value" 
                                         :preselect-first="false"
@@ -111,7 +111,7 @@
                                                 <i class="fa fa-times"></i>
                                             </span>
                                         </template>
-                                        <template slot="noResult">{{ $t('common.no_record') }}</template>
+                                        <template slot="noResult">{{ $t('system.no_record') }}</template>
                                     </multiselect>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                 <label
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': query.bet_lte || query.bet_gte}"
-                                >{{ $t('common.amount') }}
+                                >{{ $t('dic.amount') }}
                                 </label>
                                 <div style="display: block;">
                                     <input
@@ -127,7 +127,7 @@
                                         v-model="query.bet_gte"
                                         class="form-control inline w-sm"
                                         :max="query.bet_lte"
-                                        :placeholder="$t('common.min_amount')"
+                                        :placeholder="$t('misc.min_amount')"
                                         @input="search"
                                     />
                                     <span>
@@ -138,7 +138,7 @@
                                         v-model="query.bet_lte"
                                         class="form-control inline w-sm"
                                         :min="query.bet_gte"
-                                        :placeholder="$t('common.max_amount')"
+                                        :placeholder="$t('misc.max_amount')"
                                         @input="search"
                                     />
                                 </div>
@@ -148,22 +148,22 @@
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': platform}"
                                     style="display: block;"
-                                >{{ $t('manage.platform') }}
+                                >{{ $t('dic.platform') }}
                                 </label>
                                 <label class="sm-check m-r m-t-sm m-l">
                                     <input class="c-radio" type="radio" value="" v-model="platform">
                                     <i class="blue m-r-xs"></i>
-                                    {{ $t('common.show_all') }}
+                                    {{ $t('system.show_all') }}
                                 </label>
                                 <label class="sm-check m-r">
                                     <input class="c-radio" type="radio" value="pc" v-model="platform">
                                     <i class="blue m-r-xs"></i>
-                                    <span>{{ $t('manage.pc') }}</span>
+                                    <span>{{ $t('dic.pc') }}</span>
                                 </label>
                                 <label class="sm-check m-r">
                                     <input class="c-radio" type="radio" value="mobile" v-model="platform">
                                     <i class="blue m-r-xs"></i>
-                                    <span>{{ $t('manage.mobile') }}</span>
+                                    <span>{{ $t('dic.mobile') }}</span>
                                 </label>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                         ? created_at && (created_at[0] || created_at[1])
                                         : settled_at && (settled_at[0] || settled_at[1])
                                     }"
-                                >{{ '投注时间' }} / {{ '结算时间' }} 
+                                >{{ $t('time.betted_at') }} / {{ $t('time.settled_at') }} 
                                 </label>
                                 <div style="display: block;">
                                     <select
@@ -183,8 +183,8 @@
                                         v-model="timeCategory"
                                         @change="autoTogglePopup = true"
                                     >
-                                        <option value="created">{{ '投注时间' }}</option>
-                                        <option value="settled">{{ '结算时间' }}</option>
+                                        <option value="created">{{ $t('time.betted_at') }}</option>
+                                        <option value="settled">{{ $t('time.settled_at') }}</option>
                                     </select>
 
                                     <el-date-picker
@@ -219,7 +219,7 @@
                                 <label
                                     class="form-control-label p-b-0"
                                     :class="{'text-blue': game}"
-                                >{{ $t('common.game') }}
+                                >{{ $t('dic.game') }}
                                 </label>
                                 <div style="display: block;">
                                     <selector-game
@@ -234,7 +234,7 @@
                                         v-model="game_category" 
                                         :disabled="!game || categories.length === 0"
                                     >
-                                        <option value="">{{ $t('common.gamecategory') }}</option>
+                                        <option value="">{{ $t('game.category') }}</option>
                                         <option
                                             name="game"
                                             v-for="category in categories"
@@ -254,7 +254,7 @@
                             >
                                 <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                                 <i v-else class="fa fa-trash-o"></i> 
-                                <span>{{ $t('action.reset_condition') }}</span>
+                                {{ $t('system.reset_condition') }}</span>
                             </button>
                         </div>
                     </div>
@@ -267,18 +267,18 @@
                     <div class="box-body clearfix form-input-sm">
                         <div class="row m-l-xs m-r-xs">
                             <div class="col-xs-12">
-                                <label class="text-sm m-r-sm m-t-xs m-b">{{ $t('betrecord.game_selection') }}</label>
+                                <label class="text-sm m-r-sm m-t-xs m-b">{{ $t('dic.game') }}</label>
                                 <button
                                     class="btn-md r w-xs blue no-border m-r-sm"
                                     type="button"
                                     @click="selectall"
-                                >{{ $t('common.select_all') }}
+                                >{{ $t('system.select_all') }}
                                 </button>
                                 <button
                                     class="btn-md r w-xs no-border grey-400"
                                     type="button"
                                     @click="deselectall"
-                                >{{ $t('common.deselect_all') }}
+                                >{{ $t('system.deselect_all') }}
                                 </button>
                             </div>
                         </div>
@@ -301,13 +301,13 @@
                                         class="form-control-label p-b-0"
                                         :class="{'text-blue': query.member}"
                                     >
-                                        {{ $t('common.member') }}
-                                        <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                                        {{ $t('dic.member') }}
+                                        <span class="text-muted">({{ $t('system.accurate_search') }})</span>
                                     </label>
                                     <input
                                         v-model="query.member"
                                         class="form-control w-sm"
-                                        :placeholder="$t('common.member')"
+                                        :placeholder="$t('dic.member')"
                                         @input="search"
                                     />
                                 </div>
@@ -315,13 +315,13 @@
                                     <label
                                         class="form-control-label p-b-0"
                                         :class="{'text-blue': query.bet_gte}"
-                                    >{{ $t('common.min_amount') }}
+                                    >{{ $t('misc.min_amount') }}
                                     </label>
                                     <input
                                         type="number"
                                         v-model="query.bet_gte"
                                         class="form-control w-sm"
-                                        :placeholder="$t('common.min_amount')"
+                                        :placeholder="$t('misc.min_amount')"
                                         @input="search"
                                     />
                                 </div>
@@ -330,13 +330,13 @@
                                         class="form-control-label p-b-0"
                                         :class="{'text-blue': query.issue_number}"
                                     >
-                                        {{ $t('game_history.periods') }}
-                                        <span class="text-muted">({{ $t('common.accurate_search') }})</span>
+                                        {{ $t('dic.period') }}
+                                        <span class="text-muted">({{ $t('system.accurate_search') }})</span>
                                     </label>
                                     <input
                                         v-model="query.issue_number"
                                         class="form-control w-sm"
-                                        :placeholder="$t('game_history.periods')"
+                                        :placeholder="$t('dic.period')"
                                         @input="search"
                                     />
                                 </div>
@@ -344,17 +344,17 @@
                                     <label
                                         class="form-control-label p-b-0"
                                         :class="{'text-blue': period}"
-                                    >{{ $t('common.refresh_period') }}
+                                    >{{ $t('system.refresh_period') }}
                                     </label>
                                     <select
                                         class="form-control w-sm c-select inline"
                                         v-model="period"
                                         style="display: block;"
                                     >
-                                        <option value="5000">{{ $t('common.seconds', { number: 5 }) }}</option>
-                                        <option value="10000">{{ $t('common.seconds', { number: 10 }) }}</option>
-                                        <option value="30000">{{ $t('common.seconds', { number: 30 }) }}</option>
-                                        <option value="60000">{{ $t('common.seconds', { number: 60 }) }}</option>
+                                        <option value="5000">{{ $t('time.seconds', { number: 5 }) }}</option>
+                                        <option value="10000">{{ $t('time.seconds', { number: 10 }) }}</option>
+                                        <option value="30000">{{ $t('time.seconds', { number: 30 }) }}</option>
+                                        <option value="60000">{{ $t('time.seconds', { number: 60 }) }}</option>
                                     </select>
                                 </div>
                                 <div class="pull-left m-r-xs">
@@ -362,22 +362,22 @@
                                         class="form-control-label p-b-0"
                                         :class="{'text-blue': platform}"
                                         style="display: block;"
-                                    >{{ $t('manage.platform') }}
+                                    >{{ $t('dic.platform') }}
                                     </label>
                                     <label class="sm-check m-r m-t-sm m-l">
                                         <input class="c-radio" type="radio" value="" v-model="platform">
                                         <i class="blue m-r-xs"></i>
-                                        {{ $t('common.show_all') }}
+                                        {{ $t('system.show_all') }}
                                     </label>
                                     <label class="sm-check m-r">
                                         <input class="c-radio" type="radio" value="pc" v-model="platform">
                                         <i class="blue m-r-xs"></i>
-                                        <span>{{ $t('manage.pc') }}</span>
+                                        <span>{{ $t('dic.pc') }}</span>
                                     </label>
                                     <label class="sm-check m-r">
                                         <input class="c-radio" type="radio" value="mobile" v-model="platform">
                                         <i class="blue m-r-xs"></i>
-                                        <span>{{ $t('manage.mobile') }}</span>
+                                        <span>{{ $t('dic.mobile') }}</span>
                                     </label>
                                 </div>
                                 <button
@@ -388,7 +388,7 @@
                                 >
                                     <i v-if="loading" class="fa fa-spin fa-spinner"></i> 
                                     <i v-else class="fa fa-trash-o"></i> 
-                                    <span>{{ $t('action.reset_condition') }}</span>
+                                    {{ $t('system.reset_condition') }}
                                 </button>
                             </div>
                         </div>
@@ -402,15 +402,15 @@
                     <label class="check m-b-0 pointer">
                         <input type="checkbox" value="1" name="account_type" v-model="account_type"/>
                         <i class="blue"></i>
-                        {{ $t('action.filter_trial_account') }}
+                        {{ $t('misc.filter_visitor') }}
                     </label>
                 </div>
                 <div class="pull-right total-amount" v-show="pageSelected === 'normal'">
-                    <span>{{ $t('betrecord.total_profit') }} : </span>
+                    <span>{{ $t('bet.total_profit') }} : </span>
                     <span v-if="queryset.length">{{ total_profit | currency('￥') }}</span>
                     <span v-else>{{ 0 | currency('￥') }}</span>
                     <span>|</span>
-                    <span>{{ $t('betrecord.total_bet_amount') }} : </span>
+                    <span>{{ $t('bet.total_bet_amount') }} : </span>
                     <span v-if="queryset.length">{{ total_amount | currency('￥') }}</span>
                     <span v-else>{{ 0 | currency('￥') }}</span>
                 </div>
@@ -420,23 +420,22 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>{{ $t('report.bet_record_number') }}</th>
+                        <th>{{ $t('bet.bet_id') }}</th>
                         <th class="text-center text-xs">
-                            {{ $t('betrecord.betted_at') }}&nbsp;/
+                            {{ $t('time.betted_at') }}&nbsp;/
                             <br/>
-                            {{ $t('common.settledat') }}
+                            {{ $t('time.settled_at') }}
                         </th>
-                        <th>{{ $t('common.member') }}</th>
-                        <th>{{ $t('manage.platform') }}</th>
-                        <th>{{ $t('common.game') }}</th>
-                        <th>{{ $t('game_history.periods') }}</th>
-                        <th>{{ $t('game_manage.play') }}</th>
-                        <th class="text-right">{{ $t('common.betamount') }}</th>
-                        <th class="text-right">{{ $t('common.settlementamount') }}</th>
-                        <th class="text-right">{{ $t('game_manage.odds') }}&nbsp;/&nbsp;{{ $t('bill.return') }}</th>
-                        <th class="text-right">{{ $t('common.profit') }}</th>
-                        <th class="text-center" width="5%">{{ $t('common.status') }}</th>
-                        <th class="text-center">{{ $t('betrecord.cancel_bet') }}</th>
+                        <th>{{ $t('dic.member') }}</th>
+                        <th>{{ $t('dic.platform') }}</th>
+                        <th>{{ $t('dic.game') }}&nbsp;/&nbsp;{{ $t('dic.period') }}</th>
+                        <th>{{ $t('game.play') }}</th>
+                        <th class="text-right">{{ $t('bet.bet_amount') }}</th>
+                        <th class="text-right">{{ $t('bet.settled_amount') }}</th>
+                        <th class="text-right">{{ $t('game.odds') }}&nbsp;/&nbsp;{{ $t('finance.return') }}&nbsp;(%)</th>
+                        <th class="text-right">{{ $t('dic.profit') }}</th>
+                        <th class="text-center" width="5%">{{ $t('dic.status') }}</th>
+                        <th class="text-center">{{ $t('bet.cancel_bet') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -448,9 +447,11 @@
                             <span v-else>-</span>
                         </td>
                         <td><router-link :to="'/member/' + t.member.id">{{ t.member.username }}</router-link></td>
-                        <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
-                        <td>{{ t.game.display_name }}</td>
-                        <td>{{ t.issue_number }}</td>
+                        <td>{{ (t.platform && $t('dic.' + t.platform)) || '-' }}</td>
+                        <td>
+                            {{ t.game.display_name }}<br/>
+                            {{ t.issue_number }}
+                        </td>
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
                         <td class="text-right">{{ t.bet_amount | currency('￥') }}</td>
                         <td class="text-right">{{ t.settlement_amount | currency('￥') }}</td>
@@ -458,12 +459,12 @@
                         <td class="text-right">{{ t.profit || 0 | currency('￥') }}</td>
                         <td class="text-center p-l-xs p-r-xs">
                             <div class="flex-value status">
-                                <span class="label danger" v-if="t.status === 'lose'">{{ $t('betrecord.lose') }}</span>
-                                <span class="label success" v-if="t.status === 'win'">{{ $t('betrecord.win') }}</span>
-                                <span class="label warn" v-if="t.status === 'ongoing'">{{ $t('betrecord.ongoing') }}</span>
-                                <span class="label ongoing" v-if="t.status === 'tie'">{{ $t('betrecord.tie') }}</span>
+                                <span class="label danger" v-if="t.status === 'lose'">{{ $t('bet.lose') }}</span>
+                                <span class="label success" v-if="t.status === 'win'">{{ $t('bet.win') }}</span>
+                                <span class="label warn" v-if="t.status === 'ongoing'">{{ $t('bet.ongoing') }}</span>
+                                <span class="label ongoing" v-if="t.status === 'tie'">{{ $t('bet.tie') }}</span>
                                 <span class="label ongoing" v-if="t.status === 'cancelled'">{{ $t('status.cancelled') }}</span>
-                                <span class="label ongoing" v-if="t.status === 'no_draw'">{{ $t('game_history.no_draw') }}</span>
+                                <span class="label ongoing" v-if="t.status === 'no_draw'">{{ $t('game.no_draw') }}</span>
                             </div>
                         </td>
                         <td class="text-center p-r-xs p-l-xs">
@@ -472,7 +473,7 @@
                                     type="button"
                                     class="btn btn-xs blue sm-btn m-b-sm f-b text-xs"
                                     @click="cancelBet(t, 'cancelled', true, $event)"
-                                >{{ $t('betrecord.cancel_bet') }}
+                                >{{ $t('bet.cancel_bet') }}
                                 </button>
                             </span>
                             <span v-else>-</span>
@@ -485,16 +486,16 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>{{ $t('report.bet_record_number') }}</th>
-                        <th class="text-center">{{ $t('betrecord.betted_at') }}</th>
-                        <th>{{ $t('common.member') }}</th>
-                        <th>{{ $t('manage.platform') }}</th>
-                        <th>{{ $t('member.account_type') }}</th>
-                        <th>{{ $t('common.game') }}</th>
-                        <th>{{ $t('game_history.periods') }}</th>
-                        <th>{{ $t('game_manage.play') }}</th>
-                        <th>{{ $t('game_manage.odds') }}&nbsp;/&nbsp;{{ $t('game_manage.return_rate') }}&nbsp;(%)</th>
-                        <th class="text-right">{{ $t('common.betamount') }}</th>
+                        <th>{{ $t('bet.bet_id') }}</th>
+                        <th class="text-center">{{ $t('time.betted_at') }}</th>
+                        <th>{{ $t('dic.member') }}</th>
+                        <th>{{ $t('dic.platform') }}</th>
+                        <th>{{ $t('user.account_type') }}</th>
+                        <th>{{ $t('dic.game') }}</th>
+                        <th>{{ $t('dic.period') }}</th>
+                        <th>{{ $t('game.play') }}</th>
+                        <th>{{ $t('game.odds') }}&nbsp;/&nbsp;{{ $t('finance.return') }}&nbsp;(%)</th>
+                        <th class="text-right">{{ $t('bet.bet_amount') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -503,13 +504,13 @@
                             <router-link v-if="t.member.account_type !== 0" :to="'/report/betrecord/' + t.id">{{ t.id }}</router-link>
                             <span v-else>{{ t.id }}</span>
                         </td>
-                        <td class="text-center text-sm">{{ t.created_at | moment("YYYY-MM-DD HH:mm:ss") }}</td>
+                        <td class="text-center text-sm">{{ t.created_at | moment('YYYY-MM-DD HH:mm:ss') }}</td>
                         <td>
                             <router-link :to="'/member/' + t.member.id" v-if="t.member.account_type !== 0">{{ t.member.username }}</router-link>
-                            <span v-else>{{ $t('member.visitor') }}</span>
+                            <span v-else>{{ $t('user.visitor') }}</span>
                         </td>
-                        <td>{{ (t.platform && $t('manage.' + t.platform)) || '-' }}</td>
-                        <td>{{ t.member.account_type !== 0 ? $t('member.real_account') : $t('member.trial_account') }}</td>
+                        <td>{{ (t.platform && $t('dic.' + t.platform)) || '-' }}</td>
+                        <td>{{ t.member.account_type !== 0 ? $t('user.real_account') : $t('user.trial_account') }}</td>
                         <td>{{ t.game.display_name }}</td>
                         <td>{{ t.issue_number }}</td>
                         <td>{{ t.play.play_group.display_name }} @ {{ t.play.display_name }}</td>
@@ -557,22 +558,22 @@
                 status: [],
                 statusOptions: [{
                     value: 'ongoing',
-                    title: this.$t('betrecord.ongoing')
+                    title: this.$t('status.ongoing')
                 }, {
                     value: 'win',
-                    title: this.$t('betrecord.win')
+                    title: this.$t('bet.win')
                 }, {
                     value: 'lose',
-                    title: this.$t('betrecord.lose')
+                    title: this.$t('bet.lose')
                 }, {
                     value: 'cancelled',
                     title: this.$t('status.cancelled')
                 }, {
                     value: 'tie',
-                    title: this.$t('betrecord.tie')
+                    title: this.$t('bet.tie')
                 }, {
                     value: 'no_draw',
-                    title: this.$t('game_history.no_draw')
+                    title: this.$t('game.no_draw')
                 }],
                 platform: '',
                 created_at: ['', ''],
@@ -590,7 +591,7 @@
                 yesterday: date.yesterday[0],
                 defaultDate: [],
                 shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                    text: this.$t(`common.${element}`),
+                    text: this.$t(`time.${element}`),
                     onClick (p) {
                         p.$emit('pick', date[element])
                     }
@@ -805,7 +806,7 @@
             },
             cancelBet (betrecord, status, confirm, event) {
                 if (confirm) {
-                    if (!window.confirm(this.$t('bill.confirm_declined', {
+                    if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                         action: event.target.innerText
                     }))) {
                         return
@@ -815,10 +816,10 @@
                     cancelBet({
                         id: betrecord.id,
                         data: { status }
+                    }, {
+                        action: this.$t('bet.cancel_bet')
                     }).then(data => {
                         betrecord.status = data.status
-                    }, error => {
-                        this.errorMsg = error
                     })
                 }
             },

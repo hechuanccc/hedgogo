@@ -2,7 +2,7 @@
     <div>
         <div class="m-b">
             <ol class="breadcrumb">
-                <li class="active"><router-link to="/staff">{{ $t('nav.staff') }}</router-link></li>
+                <li class="active"><router-link to="/staff">{{ $t('title.staff_list') }}</router-link></li>
                 <li class="active">{{ $route.meta.title }}</li>
             </ol>
         </div>
@@ -13,12 +13,12 @@
                         <h2 class="v-m m-t-sm">{{ staff.username }}</h2>
                     </div>
                     <div class="col-md-5 col-md-offset-3 text-right">
-                        <router-link class="md-btn md-flat m-r-sm" :to="'/staff/'+staff.id+'/edit'">{{ $t('action.update') }}</router-link>
+                        <router-link class="md-btn md-flat m-r-sm" :to="'/staff/'+staff.id+'/edit'">{{ $t('dic.update') }}</router-link>
                         <a
                             class="md-btn md-flat m-r-sm"
                             @click="deleteStaff(staff.id, true, $event)"
                             v-if="$root.permissions.includes('remove_staff')"
-                        >{{ $t('action.delete') }}
+                        >{{ $t('dic.delete') }}
                         </a>
                     </div>
                 </div>
@@ -26,26 +26,26 @@
             <div class="box-body">
                 <div class="row m-b p-b b-b">
                     <div class="col-xs-9">
-                        <span class="text-muted">{{ $t('staff.staff_info') }}</span>
+                        <span class="text-muted">{{ $t('title.staff_detail') }}</span>
                         <table class="table b-a m-t-sm">
                             <tbody>
                                 <tr>
-                                    <th class="grey-50" width="130">{{ $t('staff.account') }}</th>
+                                    <th class="grey-50" width="130">{{ $t('user.account') }}</th>
                                     <td>{{ staff.username }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50" width="130">{{ $t('staff.role') }}</th>
+                                    <th class="grey-50" width="130">{{ $t('dic.role') }}</th>
                                     <td>
                                         <span v-if="staff.user_group">{{ staff.user_group.name }}</span>
-                                        <span v-else>{{ $t('action.no_setting') }}</span>
+                                        <span v-else>{{ $t('system.no_setting') }}</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50" width="130">{{ $t('staff.email') }}</th>
-                                    <td>{{ staff.email ? staff.email : $t('staff.no_setting') }}</td>
+                                    <th class="grey-50" width="130">{{ $t('user.email') }}</th>
+                                    <td>{{ staff.email ? staff.email : $t('system.no_setting') }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50">{{$t('staff.permission')}}</th>
+                                    <th class="grey-50">{{$t('dic.permission')}}</th>
                                     <td v-if="staff.user_group">
                                         <template v-for="(list, index) in staff.user_group.permissions">
                                             <div class="row">
@@ -63,10 +63,10 @@
                                             </div>
                                         </template>
                                     </td>
-                                    <td v-else>{{ $t('action.no_setting') }}</td>
+                                    <td v-else>{{ $t('system.no_setting') }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="grey-50">{{$t('common.memo')}}</th>
+                                    <th class="grey-50">{{$t('dic.memo')}}</th>
                                     <td>{{ staff.memo }}</td>
                                 </tr>
                             </tbody>
@@ -76,14 +76,13 @@
 
                 <div class="row p-t">
                     <div class="col-xs-5">
-                        <span class="text-muted">{{$t('staff.status')}}</span>
-                        <div>
-                            <span :class="['label', staff.status?'success':'danger']">{{ staff.status ?  $t('status.active') : $t('status.inactive') }}</span>
-                            <template v-if="$root.permissions.includes('update_staff_status')">
-                                <a class="text-sm m-l" @click="toggleStatus">{{ staff.status ? $t('staff.disabled') : $t('staff.enabled') }}</a>
-                            </template>
-                            <span class="text-success text-sm m-l" v-show="statusUpdated">{{ $t('staff.status_updated') }}</span>
-                        </div>
+                        <span class="text-muted">{{$t('dic.status')}}</span>
+                        <status-switch
+                            :status="staff.status"
+                            :loading="toggleLoading"
+                            :disabled="!$root.permissions.includes('update_staff_status')"
+                            @toggle="toggleStatus"
+                        />
                     </div>
                 </div>
             </div>
@@ -91,6 +90,7 @@
     </div>
 </template>
 <script>
+import StatusSwitch from '../../components/StatusSwitch.vue'
 import { getUser, updateUser, deleteStaff } from '../../service'
 export default {
     data () {
@@ -98,7 +98,7 @@ export default {
             staff: {
                 user_group: {}
             },
-            statusUpdated: false
+            toggleLoading: false
         }
     },
     created () {
@@ -116,7 +116,7 @@ export default {
             })
         },
         toggleStatus () {
-            this.statusUpdated = false
+            this.toggleLoading = true
             updateUser('staff', {
                 id: this.staff.id,
                 data: {
@@ -124,26 +124,33 @@ export default {
                     group: this.staff.user_group.id,
                     status: this.staff.status ^ 1
                 }
-            }).then(data => {
-                this.staff.status = data.status
-                this.statusUpdated = true
-                setTimeout(() => {
-                    this.statusUpdated = false
-                }, 2000)
+            }, {
+                action: this.$t('dic.update'),
+                object: this.$t('dic.status')
+            }).then(({ status }) => {
+                this.staff.status = status
+            }).finally(() => {
+                this.toggleLoading = false
             })
         },
         deleteStaff (id, confirm, event) {
             if (confirm) {
-                if (!window.confirm(this.$t('common.confirm', {
+                if (!window.confirm(this.$t('system_msg.confirm_action_object', {
                     action: event.target.innerText
                 }))) {
                     return
                 }
             }
-            deleteStaff(id).then(() => {
+            deleteStaff(id, {
+                action: this.$t('dic.delete'),
+                object: this.$t('dic.staff')
+            }).then(() => {
                 this.$router.push('/staff')
-            })
+            }, () => {})
         }
+    },
+    components: {
+        StatusSwitch
     }
 }
 </script>

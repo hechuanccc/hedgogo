@@ -14,16 +14,51 @@
                     管理后台 · 登录
                     </div>
                     <form @submit.prevent="loginHandler" class="form">
-                        <div class="md-form-group">
-                            <input type="text" class="md-input" v-model="user.username" name="username" ref="input">
-                            <label>Username</label>
+                        <div class="md-form-group p-b-xs p-t-xs">
+                            <label
+                                class="form-control-label p-l-0 p-b-0 text-xs"
+                                :class="{
+                                    'text-blue': inputFocus.username,
+                                    'text-muted': !inputFocus.username
+                                }"
+                            >{{ $t('user.username') }}
+                            </label>
+                            <input
+                                class="form-control no-border b-b p-l-xs"
+                                spellcheck="false"
+                                v-model="user.username"
+                                @focus="inputFocus.username = true"
+                                @blur="inputFocus.username = false"
+                                name="username"
+                                ref="input"
+                                required
+                            >
                         </div>
-                        <div class="md-form-group">
-                            <input type="password" class="md-input" v-model="user.password" name="password">
-                            <label>Password</label>
+                        <div class="md-form-group p-t-xs">
+                            <label
+                                class="form-control-label p-l-0 p-b-0 text-xs"
+                                :class="{
+                                    'text-blue': inputFocus.password,
+                                    'text-muted': !inputFocus.password
+                                }"
+                            >{{ $t('user.password') }}
+                            </label>
+                            <input
+                                spellcheck="false"
+                                type="password"
+                                class="form-control no-border b-b p-l-xs"
+                                v-model="user.password"
+                                @focus="inputFocus.password = true"
+                                @blur="inputFocus.password = false"
+                                name="password"
+                                required
+                            >
                         </div>
                         <div v-show="errorMsg" class="text-danger m-b-sm"> {{errorMsg}} </div>
-                        <button type="submit" class="btn primary btn-block p-x-md" @keyup.enter="loginHandler">登录</button>
+                        <button type="submit" class="btn blue btn-block p-x-md" @keyup.enter="loginHandler">
+                            <i v-if="loading" class="fa fa-spin fa-spinner"></i>
+                            <span v-else>{{ $t('title.login') }}</span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -41,6 +76,11 @@
                     username: '',
                     password: ''
                 },
+                inputFocus: {
+                    username: false,
+                    password: false
+                },
+                loading: false,
                 errorMsg: ''
             }
         },
@@ -59,9 +99,12 @@
         },
         methods: {
             loginHandler () {
-                login(this.user).then(data => {
+                this.loading = true
+                login(this.user, {
+                    action: this.$t('title.login')
+                }).then(data => {
                     if (data.type === 'agent') {
-                        this.errorMsg = this.$t('common.agent_login_error')
+                        this.errorMsg = this.$t('system_msg.agent_login_error')
                         return
                     }
                     $.storage.save({type: data.type})
@@ -81,8 +124,10 @@
                     let url = this.$route.query.next
                     url = url ? decodeURIComponent(url.split('?')[0]) : '/'
                     this.$router.push(url)
-                }, error => {
-                    this.errorMsg = (typeof error === 'string') ? error : this.$t('common.error_occurred_msg')
+                }).catch(error => {
+                    this.errorMsg = (typeof error === 'string') ? error : this.$t('system_msg.error_occurred')
+                }).finally(() => {
+                    this.loading = false
                 })
             }
         },

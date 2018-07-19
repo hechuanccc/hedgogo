@@ -6,7 +6,7 @@
         :required="req"
         v-if="!loading && banks.length"
     >
-        <option class="form-control" value="">{{$t('common.please_select')}}</option>
+        <option class="form-control" value="">{{$t('system.please_select')}}</option>
         <option
             class="form-control"
             :value="b.id"
@@ -28,7 +28,7 @@
         :class="width"
         v-else-if="!banks.length"
     >
-        {{ $t('common.no_data') }}
+        {{ $t('system.no_data') }}
     </span>
 </template>
 
@@ -66,6 +66,7 @@ export default {
                 this.showStatus && data.sort((a, b) => b.status - a.status)
                 this.banks = data
                 this.myBank = this.bank
+            }).finally(() => {
                 this.loading = false
             })
         })

@@ -4,7 +4,7 @@
         v-model="myCommission"
         :required="required"
     >
-        <option value="">{{$t('common.please_select')}}</option>
+        <option value="">{{$t('system.please_select')}}</option>
         <option
             class="form-control"
             :key="c.id"

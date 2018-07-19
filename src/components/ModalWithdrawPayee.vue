@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="row m-t-sm p-b b-b">
-                        <div class="col-sm-3 col-sm-offset-1 text-right m-t-sm">{{ $t('setting.merchant_num') }}</div>
+                        <div class="col-sm-3 col-sm-offset-1 text-right m-t-sm">{{ $t('finance.merchant_id') }}</div>
                         <div class="col-sm-5" v-if="transaction.member && transaction.member.id">
                             <selector-online-payer
                                 :payer="selectedPayer"
@@ -29,31 +29,31 @@
                     </div>
                     <div class="row m-t-sm p-t-sm">
                         <div class="col-sm-12 text-center">
-                        <h5>{{ $t('bill.order_detail') }}</h5>
+                        <h5>{{ $t('finance.order_detail') }}</h5>
                         </div>
                     </div>
                     <div class="row m-t-sm">
-                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('common.real_name') }}</div>
+                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('user.real_name') }}</div>
                         <div class="col-sm-5" v-if="transaction.member">
                             {{ transaction.member.real_name }}
                         </div>
                     </div>
                     <div class="row m-t-sm">
-                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('bill.withdraw') + $t('common.amount') }}</div>
+                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('finance.withdraw') + $t('dic.amount') }}</div>
                         <div class="col-sm-5">
                             {{ transaction.amount | currency('￥') }}
                         </div>
                     </div>
                     <div class="row m-t-sm">
-                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('bill.withdraw') + $t('common.applied_at') }}</div>
+                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('finance.withdraw') + $t('time.applied_at') }}</div>
                         <div class="col-sm-5" v-if="transaction.member">
-                            {{ transaction.created_at | moment("YYYY-MM-DD HH:mm:ss") }}
+                            {{ transaction.created_at | moment('YYYY-MM-DD HH:mm:ss') }}
                         </div>
                     </div>
                     <div class="row m-t-sm">
-                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('bill.deposit_info') }}</div>
+                        <div class="col-sm-3 col-sm-offset-1 text-right">{{ $t('finance.withdraw_payee_info') }}</div>
                         <div class="col-sm-5" v-if="transaction.member">
-                            <p class="m-b-xs">{{ $t('bank.name') }}: {{ transaction.member.bank.name }}</p>
+                            <p class="m-b-xs">{{ $t('dic.bank') }}: {{ transaction.member.bank.name }}</p>
                             <p>{{ $t('bank.account') }}: {{ transaction.member.bank.account }}</p>
                         </div>
                     </div>
@@ -65,13 +65,13 @@
                         :disabled="!selectedPayer"
                     >
                         <span v-if="modal.loading"><i class="fa fa-spin fa-spinner"></i></span>
-                        <span v-else>{{ $t('action.confirm') }}</span>
+                        <span v-else>{{ $t('dic.confirm') }}</span>
                     </button>
                     <button
                         type="button"
                         class="btn dark-white p-x-md w-xs"
                         @click="modal.showModal = false">
-                        {{ $t('action.cancel') }}
+                        {{ $t('dic.cancel') }}
                     </button>
                 </div>
             </div>
@@ -80,7 +80,6 @@
 </template>
 <script>
 import { autoWithdraw } from '../service'
-import $ from '../utils/util'
 import SelectorOnlinePayer from '../components/SelectorOnlinePayer'
 
 export default {
@@ -131,17 +130,11 @@ export default {
                         status: 1,
                         online_payer: this.selectedPayer
                     }
+                }, {
+                    action: this.$t('finance.withdraw_payee')
                 }).then(data => {
-                    $.notify({
-                        message: this.$t('bill.withdraw_payee') + this.$t('status.success')
-                    })
                     this.$emit('withdraw-payee-status', 1)
-                    this.modal.loading = false
-                }, error => {
-                    $.notify({
-                        message: error,
-                        type: 'danger'
-                    })
+                }).finally(() => {
                     this.modal.loading = false
                 })
             }

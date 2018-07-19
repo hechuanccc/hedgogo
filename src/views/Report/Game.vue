@@ -11,7 +11,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.start_date && query.end_date}"
-              >{{ $t('common.date') }}
+              >{{ $t('dic.date') }}
               </label>
               <el-date-picker
                 style="display: block;"
@@ -29,14 +29,14 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.game_code}"
-              >{{ $t('common.game') }}
+              >{{ $t('dic.game') }}
               </label>
               <select
                 class="form-control c-select block"
                 v-model="query.game_code"
                 @change="clickGame()"
               >
-                <option value="">{{ $t('common.please_select') }}</option>
+                <option value="">{{ $t('system.please_select') }}</option>
                 <option
                   class="form-control"
                   :value="g.code"
@@ -51,7 +51,7 @@
               <label
                 class="form-control-label p-b-0"
                 :class="{'text-blue': query.category}"
-              >{{ $t('report.game.category') }}
+              >{{ $t('game.category') }}
               </label>
               <select
                 class="form-control w-md c-select block"
@@ -59,20 +59,20 @@
                 @change="clickCategory()"
                 :disabled="!activeGame"
               >
-                <option value="">{{ $t('common.please_select') }}</option>
+                <option value="">{{ $t('system.please_select') }}</option>
                 <option
                   class="form-control"
                   :value="c.code"
                   v-for="c in categoryList"
                   :key="c.code"
                 >
-                  {{ c.display_name }}&nbsp;-&nbsp;{{ $t(`manage.${c.platform}`) }}
+                  {{ c.display_name }}&nbsp;-&nbsp;{{ $t(`dic.${c.platform}`) }}
                 </option>
               </select>
             </div>
             <div class="pull-left m-r-xs">
               <label class="form-control-label">
-                {{ $t('report.game.dimension_displaying') }}
+                {{ $t('system.dimension_displaying') }}
               </label>
               <div class="m-l">
                 <label class="m-r-xs pointer">
@@ -83,7 +83,7 @@
                     :disabled="!!(activeGame || activeCategory)"
                   />
                   <i class="blue"></i>
-                  {{ $t('manage.platform') }}
+                  {{ $t('dic.platform') }}
                 </label>
               </div>
             </div>
@@ -95,7 +95,7 @@
             >
               <i v-if="loading.game" class="fa fa-spin fa-spinner"></i> 
               <i v-else class="fa fa-trash-o"></i> 
-              <span>{{ $t('action.reset_condition') }}</span>
+              <span>{{ $t('system.reset_condition') }}</span>
             </button>
           </div>
         </div>
@@ -105,10 +105,10 @@
       <table st-table="rowCollectionBasic" class="table table-striped b-t">
         <thead>
           <tr>
-            <th class="text-center" width="15%" v-if="gameList.length && !activeGame">{{ $t('common.game') }}</th>
-            <th class="text-center" v-if="activeGame && !activeCategory" width="15%">{{ $t('report.game.category') }}</th>
-            <th class="text-center" v-if="activeGame && activeCategory" width="15%">{{ $t('report.game.play') }}</th>
-            <th class="text-center" v-if="activeGame || activeCategory || dimension.platform" width="5%">{{ $t('manage.platform') }}</th>
+            <th class="text-center" width="15%" v-if="gameList.length && !activeGame">{{ $t('dic.game') }}</th>
+            <th class="text-center" v-if="activeGame && !activeCategory" width="15%">{{ $t('game.category') }}</th>
+            <th class="text-center" v-if="activeGame && activeCategory" width="15%">{{ $t('game.play') }}</th>
+            <th class="text-center" v-if="activeGame || activeCategory || dimension.platform" width="5%">{{ $t('dic.platform') }}</th>
             <th class="text-right pointer" :width="`${otherColWidth}%`" v-for="col in otherCol" :key="col" @click="clickSort(col)">
                 {{ $t(`report.game.${col}`) }}
                 <span v-if="sort.title !== col || !sort.sorting">&nbsp;<i class="fa fa-sort text-black-lt"></i></span>
@@ -153,9 +153,9 @@
                   platform: filteredData[index-1].platform
                 })"
               >
-                <a>{{ $t(`manage.${filteredData[index-1].platform}`) }}</a>
+                <a>{{ $t(`dic.${filteredData[index-1].platform}`) }}</a>
               </td>
-              <td v-else-if="activeGame || activeCategory || dimension.platform" class="text-center">{{ $t(`manage.${filteredData[index-1].platform}`) }}</td>
+              <td v-else-if="activeGame || activeCategory || dimension.platform" class="text-center">{{ $t(`dic.${filteredData[index-1].platform}`) }}</td>
               <td>{{ filteredData[index-1].amount | currency('￥') }}</td>
               <td>{{ filteredData[index-1].member_count }}</td>
               <td>{{ filteredData[index-1].avg_amount | currency('￥') }}</td>
@@ -169,7 +169,7 @@
       </table>
       <div class="row text-center p-a" v-if="loading.game">
         <i class="fa fa-spin fa-spinner"></i>
-        <b>{{ $t('common.loading') }}&nbsp;...</b>
+        <b>{{ $t('system.loading') }}</b>
       </div>
     </div>
 </div>
@@ -212,7 +212,7 @@ export default {
             playList: [],
             yesterday: date.yesterday[0],
             shortcuts: ['today', 'yesterday', 'this_week', 'this_month', 'last_month'].map(element => Object({
-                text: this.$t(`common.${element}`),
+                text: this.$t(`time.${element}`),
                 onClick (p) {
                     p.$emit('pick', date[element])
                 }
@@ -371,10 +371,7 @@ export default {
                 }))
                 this.loading[type] = false
             }, error => {
-                $.notify({
-                    message: error,
-                    type: 'danger'
-                })
+                $.errorNotify(error)
                 this.loading[type] = false
             })
         },

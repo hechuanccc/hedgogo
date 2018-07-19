@@ -1,11 +1,15 @@
 import Vue from 'vue'
-// import VueResource from 'vue-resource'
+import i18n from '../i18n'
 
 const STORAGE_KEY = 'data-storage'
 const typeIcon = {
     danger: 'fa fa-close',
     success: 'fa fa-check',
     warning: 'fa fa-warning'
+}
+const typeStatus = {
+    success: i18n.t('status.success'),
+    danger: i18n.t('status.failed')
 }
 
 export default class $ {
@@ -124,12 +128,34 @@ export default class $ {
         }
     }
 
-    static notify ({verticalAlign = 'top', horizontalAlign = 'center', message = '', type = 'success'}) {
+    static notify ({ message = '', type = 'success' }, { action, object } = {}) {
+        message = message || i18n.t('system_msg.action_object_status', {
+            ...(action && { action }),
+            ...(object && { object }),
+            status: typeStatus[type]
+        })
         Vue.prototype.$notifications.notify({
             message: `<i class="${typeIcon[type]}"></i> ${message}`,
-            horizontalAlign: horizontalAlign,
-            verticalAlign: verticalAlign,
+            horizontalAlign: 'center',
+            verticalAlign: 'top',
             type: type
+        })
+    }
+
+    static successHandler (data, { action, object } = {}) {
+        $.notify({}, { action, object })
+        return Promise.resolve(data)
+    }
+
+    static errorHandler (error) {
+        $.errorNotify(error)
+        return Promise.reject(error)
+    }
+
+    static errorNotify (error) {
+        $.notify({
+            message: error,
+            type: 'danger'
         })
     }
 
