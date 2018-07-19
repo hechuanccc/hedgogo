@@ -263,7 +263,7 @@
                         <button
                             class="btn md-btn w-sm blue m-r-sm"
                             @click="withdrawPayeeModalShow = true"
-                            v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                            v-if="$root.permissions.includes('allow_withdraw_transaction') && transaction.available_payers && transaction.available_payers.length"
                         >代付打款
                         </button>
                         <button
