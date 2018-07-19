@@ -262,7 +262,7 @@
                         <button
                             class="btn md-btn w-sm blue m-r-sm"
                             @click="withdrawPayeeModalShow = true"
-                            v-if="$root.permissions.includes('allow_withdraw_transaction')"
+                            v-if="$root.permissions.includes('allow_withdraw_transaction') && transaction.available_payers && transaction.available_payers.length"
                         >{{$t('finance.withdraw_payee')}}
                         </button>
                         <button
